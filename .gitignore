@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+
+# IDE
+.classpath
+
+# compiled
+target
+out
+build
+bin
+gen
+*.class
+

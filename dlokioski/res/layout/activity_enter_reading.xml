@@ -1,0 +1,436 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".EnterReadingActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_temperature" />
+
+            <EditText
+                android:id="@+id/input_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_degrees_celsius" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_temperature_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_temperature_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_pH" />
+
+            <EditText
+                android:id="@+id/input_pH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_ntu" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_ph_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_ph_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_turbidity" />
+
+            <EditText
+                android:id="@+id/input_turbidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_turbidity_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_turbidity_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_tds" />
+
+            <EditText
+                android:id="@+id/input_tds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_milligrams_liter" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_tds_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_tds_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/heading_free_chlorine_concentration" />
+
+            <EditText
+                android:id="@+id/input_free_chlorine_concentration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_chlorine_with_units" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/heading_total_chlorine_concentration" />
+
+            <EditText
+                android:id="@+id/input_total_chlorine_concentration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_chlorine_with_units" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/heading_free_chlorine_residual" />
+
+            <EditText
+                android:id="@+id/input_free_chlorine_residual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_chlorine_with_units" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/heading_total_chlorine_residual" />
+
+            <EditText
+                android:id="@+id/input_total_chlorine_residual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_chlorine_with_units" />
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_alkalinity" />
+
+            <EditText
+                android:id="@+id/input_alkalinity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_calcium_carbonate" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_alkalinity_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_alkalinity_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_hardness" />
+
+            <EditText
+                android:id="@+id/input_hardness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_calcium_carbonate" />
+
+            <RadioGroup style="@style/measurement_location">
+                <RadioButton
+                    android:id="@+id/button_hardness_location_borehole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_borehole" />
+
+                <RadioButton
+                    android:id="@+id/button_hardness_location_wtu_eff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_wtu_eff" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_color" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/button_color_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ok" />
+
+                <RadioButton
+                    android:id="@+id/button_color_not_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_ok" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/label_odor" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/button_odor_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ok" />
+
+                <RadioButton
+                    android:id="@+id/button_odor_not_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_ok" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View style="@style/horizontal_rule" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/measurement_heading"
+                android:text="@string/heading_taste" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/button_taste_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ok" />
+
+                <RadioButton
+                    android:id="@+id/button_taste_not_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_ok" />
+            </RadioGroup>
+        </LinearLayout>
+        
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/button_save"
+            android:onClick="saveReadings" />
+    </LinearLayout>
+</ScrollView>

@@ -3,6 +3,10 @@
 
 # IDE
 .classpath
+*.iml
+*.iws
+*.ipr
+idea
 
 # compiled
 target

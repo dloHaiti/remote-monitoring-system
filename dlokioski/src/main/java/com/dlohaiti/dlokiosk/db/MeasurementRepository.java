@@ -25,15 +25,19 @@ public class MeasurementRepository {
         this.context = context;
     }
 
-    public void add(List<Reading> readings) throws IOException {
+    public SaveResult add(List<Reading> readings) {
         JSONObject data;
         try {
             data = formatData(readings, new Date());
         } catch (JSONException e) {
-            throw new IOException("Error formating data.", e);
+            return SaveResult.FAILURE;
         }
-
-        appendData(data);
+        try {
+            appendData(data);
+        } catch (IOException e) {
+            return SaveResult.FAILURE;
+        }
+        return SaveResult.SUCCESSFUL;
     }
 
     private JSONObject formatData(List<Reading> readings, Date date) throws JSONException {

@@ -8,17 +8,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.dlohaiti.dlokiosk.db.MeasurementRepository;
+import com.dlohaiti.dlokiosk.db.SaveResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnterReadingActivity extends Activity {
 
+    private MeasurementRepository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
+        repository = new MeasurementRepository(this);
     }
 
     private void setupActionBar() {
@@ -132,6 +138,19 @@ public class EnterReadingActivity extends Activity {
         readings.add(new Reading(Measurements.COLOR, okToString(colorIsOK), colorLocation));
         readings.add(new Reading(Measurements.ODOR, okToString(odorIsOK), odorLocation));
         readings.add(new Reading(Measurements.TASTE, okToString(tasteIsOK), tasteLocation));
+
+        SaveResult saveResult = repository.add(readings);
+        switch(saveResult) {
+            case SUCCESSFUL:
+                Toast.makeText(this, "saved readings :)", Toast.LENGTH_LONG).show();
+                break;
+            case FAILURE:
+                Toast.makeText(this, "failed to save readings :(", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(this, "unknown result.", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     private String okToString(boolean ok) {

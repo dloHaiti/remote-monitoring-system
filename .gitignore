@@ -6,7 +6,7 @@
 *.iml
 *.iws
 *.ipr
-idea
+.idea
 
 # compiled
 target

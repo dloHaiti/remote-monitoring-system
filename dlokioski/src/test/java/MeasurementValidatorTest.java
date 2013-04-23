@@ -1,38 +1,37 @@
-import com.dlohaiti.dlokiosk.Measurements;
-import com.dlohaiti.dlokiosk.Reading;
-import com.dlohaiti.dlokiosk.ReadingValidator;
+import com.dlohaiti.dlokiosk.MeasurementType;
+import com.dlohaiti.dlokiosk.MeasurementValidator;
+import com.dlohaiti.dlokiosk.Measurement;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.dlohaiti.dlokiosk.MeasurementLocation.BOREHOLE;
-import static com.dlohaiti.dlokiosk.Measurements.*;
+import static com.dlohaiti.dlokiosk.MeasurementType.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class ReadingValidatorTest {
+public class MeasurementValidatorTest {
 
-    private ReadingValidator validator;
+    private MeasurementValidator validator;
 
-
-    private void expectValid(Measurements measurementType, String... values) {
+    private void expectValid(MeasurementType measurementType, String... values) {
         for (String value : values) {
-            Reading reading = new Reading(measurementType, value, BOREHOLE);
-            boolean passed = validator.validate(reading);
+            Measurement measurement = new Measurement(measurementType, value, BOREHOLE);
+            boolean passed = validator.validate(measurement);
             assertThat(passed, is(true));
         }
     }
 
-    private void expectInvalid(Measurements measurementType, String... values) {
+    private void expectInvalid(MeasurementType measurementType, String... values) {
         for (String value : values) {
-            Reading reading = new Reading(measurementType, value, BOREHOLE);
-            boolean passed = validator.validate(reading);
+            Measurement measurement = new Measurement(measurementType, value, BOREHOLE);
+            boolean passed = validator.validate(measurement);
             assertThat(passed, is(false));
         }
     }
 
     @Before
     public void setUp() {
-        validator = new ReadingValidator();
+        validator = new MeasurementValidator();
     }
 
     @Test

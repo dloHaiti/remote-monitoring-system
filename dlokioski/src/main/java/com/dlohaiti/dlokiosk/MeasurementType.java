@@ -1,6 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
-public enum Measurements {
+public enum MeasurementType {
     TEMPERATURE,
     PH,
     TURBIDITY,

@@ -1,18 +1,18 @@
 package com.dlohaiti.dlokiosk;
 
-public class Reading {
+public class Measurement {
 
-    private Measurements name;
+    private MeasurementType name;
     private String value;
     private MeasurementLocation samplingSite;
 
-    public Reading(Measurements name, String value, MeasurementLocation samplingSite) {
+    public Measurement(MeasurementType name, String value, MeasurementLocation samplingSite) {
         this.name = name;
         this.value = value;
         this.samplingSite = samplingSite;
     }
 
-    public Measurements getName() {
+    public MeasurementType getName() {
         return name;
     }
 

@@ -8,17 +8,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.dlohaiti.dlokiosk.db.MeasurementRepository;
+import com.dlohaiti.dlokiosk.db.SaveResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnterReadingActivity extends Activity {
 
+    private MeasurementRepository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
+        repository = new MeasurementRepository(this);
     }
 
     private void setupActionBar() {
@@ -118,20 +124,33 @@ public class EnterReadingActivity extends Activity {
             // do something when site not selected (don't let submit form?)
         }
 
-        List<Reading> readings = new ArrayList<Reading>();
-        readings.add(new Reading(Measurements.TEMPERATURE, temperature, temperatureLocation));
-        readings.add(new Reading(Measurements.PH, pH, pHLocation));
-        readings.add(new Reading(Measurements.TURBIDITY, turbidity, turbidityLocation));
-        readings.add(new Reading(Measurements.TDS, tds, tdsLocation));
-        readings.add(new Reading(Measurements.FREE_CHLORINE_CONCENTRATION, freeChlorineConcentration, freeChlorineConcentrationLocation));
-        readings.add(new Reading(Measurements.TOTAL_CHLORINE_CONCENTRATION, totalChlorineConcentration, totalChlorineConcentrationLocation));
-        readings.add(new Reading(Measurements.FREE_CHLORINE_RESIDUAL, freeChlorineResidual, freeChlorineResidualLocation));
-        readings.add(new Reading(Measurements.TOTAL_CHLORINE_RESIDUAL, totalChlorineResidual, totalChlorineResidualLocation));
-        readings.add(new Reading(Measurements.ALKALINITY, alkalinity, alkalinityLocation));
-        readings.add(new Reading(Measurements.HARDNESS, hardness, hardnessLocation));
-        readings.add(new Reading(Measurements.COLOR, okToString(colorIsOK), colorLocation));
-        readings.add(new Reading(Measurements.ODOR, okToString(odorIsOK), odorLocation));
-        readings.add(new Reading(Measurements.TASTE, okToString(tasteIsOK), tasteLocation));
+        List<Measurement> measurements = new ArrayList<Measurement>();
+        measurements.add(new Measurement(MeasurementType.TEMPERATURE, temperature, temperatureLocation));
+        measurements.add(new Measurement(MeasurementType.PH, pH, pHLocation));
+        measurements.add(new Measurement(MeasurementType.TURBIDITY, turbidity, turbidityLocation));
+        measurements.add(new Measurement(MeasurementType.TDS, tds, tdsLocation));
+        measurements.add(new Measurement(MeasurementType.FREE_CHLORINE_CONCENTRATION, freeChlorineConcentration, freeChlorineConcentrationLocation));
+        measurements.add(new Measurement(MeasurementType.TOTAL_CHLORINE_CONCENTRATION, totalChlorineConcentration, totalChlorineConcentrationLocation));
+        measurements.add(new Measurement(MeasurementType.FREE_CHLORINE_RESIDUAL, freeChlorineResidual, freeChlorineResidualLocation));
+        measurements.add(new Measurement(MeasurementType.TOTAL_CHLORINE_RESIDUAL, totalChlorineResidual, totalChlorineResidualLocation));
+        measurements.add(new Measurement(MeasurementType.ALKALINITY, alkalinity, alkalinityLocation));
+        measurements.add(new Measurement(MeasurementType.HARDNESS, hardness, hardnessLocation));
+        measurements.add(new Measurement(MeasurementType.COLOR, okToString(colorIsOK), colorLocation));
+        measurements.add(new Measurement(MeasurementType.ODOR, okToString(odorIsOK), odorLocation));
+        measurements.add(new Measurement(MeasurementType.TASTE, okToString(tasteIsOK), tasteLocation));
+
+        SaveResult saveResult = repository.add(measurements);
+        switch(saveResult) {
+            case SUCCESSFUL:
+                Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
+                break;
+            case FAILURE:
+                Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(this, "unknown result.", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     private String okToString(boolean ok) {

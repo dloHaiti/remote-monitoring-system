@@ -1,7 +1,7 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
-import com.dlohaiti.dlokiosk.Reading;
+import com.dlohaiti.dlokiosk.Measurement;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,19 +25,23 @@ public class MeasurementRepository {
         this.context = context;
     }
 
-    public void add(List<Reading> readings) throws IOException {
+    public SaveResult add(List<Measurement> measurements) {
         JSONObject data;
         try {
-            data = formatData(readings, new Date());
+            data = formatData(measurements, new Date());
         } catch (JSONException e) {
-            throw new IOException("Error formating data.", e);
+            return SaveResult.FAILURE;
         }
-
-        appendData(data);
+        try {
+            appendData(data);
+        } catch (IOException e) {
+            return SaveResult.FAILURE;
+        }
+        return SaveResult.SUCCESSFUL;
     }
 
-    private JSONObject formatData(List<Reading> readings, Date date) throws JSONException {
-        JSONArray values = new JSONArray(readings);
+    private JSONObject formatData(List<Measurement> measurements, Date date) throws JSONException {
+        JSONArray values = new JSONArray(measurements);
         JSONObject data = new JSONObject();
         data.put(FIELD_NAME_TIMESTAMP, new SimpleDateFormat(DATE_FORMAT).format(date));
         data.put(FIELD_NAME_MEASUREMENTS, values);

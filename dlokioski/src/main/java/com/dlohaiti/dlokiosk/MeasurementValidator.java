@@ -1,42 +1,58 @@
 package com.dlohaiti.dlokiosk;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.math.BigDecimal;
+
 public class MeasurementValidator {
     public boolean validate(Measurement measurement) {
         switch(measurement.getName()) {
             case TEMPERATURE:
-                Double degrees = Double.valueOf(measurement.getValue());
-                return degrees >= 10 && degrees <= 30;
+                return numberBetweenInclusive(measurement.getValue(), 10, 30);
             case PH:
-                Double pH = Double.valueOf(measurement.getValue());
-                return pH >= 5 && pH <= 9;
+                return numberBetweenInclusive(measurement.getValue(), 5, 9);
             case TURBIDITY:
-                Double turbidity = Double.valueOf(measurement.getValue());
-                return turbidity >= 0 && turbidity <= 10;
+                return numberBetweenInclusive(measurement.getValue(), 0, 10);
             case TDS:
-                Double tds = Double.valueOf(measurement.getValue());
-                return tds >= 100 && tds <= 800;
+                return numberBetweenInclusive(measurement.getValue(), 100, 800);
             case FREE_CHLORINE_CONCENTRATION:
-                Double freeChlorineConcentration = Double.valueOf(measurement.getValue());
-                return freeChlorineConcentration >= 5000 && freeChlorineConcentration <= 9000;
+                return numberBetweenInclusive(measurement.getValue(), 5000, 9000);
             case TOTAL_CHLORINE_CONCENTRATION:
-                Double totalChlorineConcentration = Double.valueOf(measurement.getValue());
-                return totalChlorineConcentration >= 5000 && totalChlorineConcentration <= 10000;
+                return numberBetweenInclusive(measurement.getValue(), 5000, 10000);
             case FREE_CHLORINE_RESIDUAL:
-                Double freeChlorineResidual = Double.valueOf(measurement.getValue());
-                return freeChlorineResidual >= 0 && freeChlorineResidual <= 1;
+                return numberBetweenInclusive(measurement.getValue(), 0, 1);
             case TOTAL_CHLORINE_RESIDUAL:
-                Double totalChlorineResidual = Double.valueOf(measurement.getValue());
-                return totalChlorineResidual >= 0 && totalChlorineResidual <= 1;
+                return numberBetweenInclusive(measurement.getValue(), 0, 1);
             case ALKALINITY:
-                Double alkalinity = Double.valueOf(measurement.getValue());
-                return alkalinity >= 100 && alkalinity <= 500;
+                return numberBetweenInclusive(measurement.getValue(), 100, 500);
             case HARDNESS:
-                Double hardness = Double.valueOf(measurement.getValue());
-                return hardness >= 100 && hardness <= 700;
+                return numberBetweenInclusive(measurement.getValue(), 100, 700);
             case COLOR:
-
+                return valueSelected(measurement.getValue());
+            case ODOR:
+                return valueSelected(measurement.getValue());
+            case TASTE:
+                return valueSelected(measurement.getValue());
             default:
                 return false;
         }
+    }
+
+    private boolean valueSelected(String value) {
+        if(StringUtils.isNotEmpty(value)) {
+            SelectionValue actual = SelectionValue.valueOf(value);
+            return actual == SelectionValue.OK || actual == SelectionValue.NOT_OK;
+        }
+        return false;
+    }
+
+    private boolean numberBetweenInclusive(String value, int low, int high) {
+        if(NumberUtils.isNumber(value)) {
+            BigDecimal actual = new BigDecimal(value);
+            return actual.compareTo(new BigDecimal(low)) >= 0 &&
+                    actual.compareTo(new BigDecimal(high)) <= 0;
+        }
+        return false;
     }
 }

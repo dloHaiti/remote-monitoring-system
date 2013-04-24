@@ -1,7 +1,7 @@
 package com.dlohaiti.dloserver
 
 class Reading {
-    Date dateCreated
+    Date timestamp
 
     static hasMany = [measurements: Measurement]
 }

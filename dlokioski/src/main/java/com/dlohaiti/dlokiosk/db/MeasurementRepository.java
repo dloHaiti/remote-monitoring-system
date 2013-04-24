@@ -29,9 +29,13 @@ public class MeasurementRepository {
     }
 
     public SaveResult add(List<Measurement> measurements) {
+        return add(measurements, new Date());
+    }
+
+    public SaveResult add(List<Measurement> measurements, Date timestamp) {
         JSONObject data;
         try {
-            data = formatData(measurements, new Date());
+            data = formatData(measurements, timestamp);
         } catch (JSONException e) {
             return SaveResult.FAILURE;
         }
@@ -43,15 +47,17 @@ public class MeasurementRepository {
         return SaveResult.SUCCESSFUL;
     }
 
-    private JSONObject formatData(List<Measurement> measurements, Date date) throws JSONException {
+    private JSONObject formatData(List<Measurement> measurements, Date timestamp) throws JSONException {
 
         JSONArray values = formatMeasurements(measurements);
 
         JSONObject data = new JSONObject();
-        data.put(FIELD_NAME_TIMESTAMP, new SimpleDateFormat(DATE_FORMAT).format(date));
+        data.put(FIELD_NAME_TIMESTAMP, new SimpleDateFormat(DATE_FORMAT).format(timestamp));
         data.put(FIELD_NAME_MEASUREMENTS, values);
 
-        return data;
+        JSONObject returnValue = new JSONObject();
+        returnValue.put("reading", data);
+        return returnValue;
     }
 
     private JSONArray formatMeasurements(List<Measurement> measurements) throws JSONException {

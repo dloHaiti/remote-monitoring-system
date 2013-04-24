@@ -18,12 +18,15 @@ import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EnterReadingActivity extends RoboActivity {
 
     private MeasurementRepository repository;
     @Inject private MeasurementsValidator validator;
+    private Map<MeasurementType, View> typeInputMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,20 @@ public class EnterReadingActivity extends RoboActivity {
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
         repository = new MeasurementRepository(this, validator);
+        typeInputMap = new HashMap<MeasurementType, View>();
+        typeInputMap.put(MeasurementType.TEMPERATURE, findViewById(R.id.temperature_row));
+        typeInputMap.put(MeasurementType.PH, findViewById(R.id.ph_row));
+        typeInputMap.put(MeasurementType.TURBIDITY, findViewById(R.id.turbidity_row));
+        typeInputMap.put(MeasurementType.TDS, findViewById(R.id.tds_row));
+        typeInputMap.put(MeasurementType.FREE_CHLORINE_CONCENTRATION, findViewById(R.id.free_chlorine_concentration_row));
+        typeInputMap.put(MeasurementType.TOTAL_CHLORINE_CONCENTRATION, findViewById(R.id.total_chlorine_concentration_row));
+        typeInputMap.put(MeasurementType.FREE_CHLORINE_RESIDUAL, findViewById(R.id.free_chlorine_residual_row));
+        typeInputMap.put(MeasurementType.TOTAL_CHLORINE_RESIDUAL, findViewById(R.id.total_chlorine_residual_row));
+        typeInputMap.put(MeasurementType.ALKALINITY, findViewById(R.id.alkalinity_row));
+        typeInputMap.put(MeasurementType.HARDNESS, findViewById(R.id.hardness_row));
+        typeInputMap.put(MeasurementType.COLOR, findViewById(R.id.color_row));
+        typeInputMap.put(MeasurementType.ODOR, findViewById(R.id.odor_row));
+        typeInputMap.put(MeasurementType.TASTE, findViewById(R.id.taste_row));
     }
 
     private void setupActionBar() {
@@ -54,6 +71,9 @@ public class EnterReadingActivity extends RoboActivity {
     }
 
     public void saveReadings(View v) {
+        for (View row : typeInputMap.values()) {
+            row.setBackgroundColor(0x00000000);
+        }
         String temperature = getStringValueOfEditText(R.id.input_temperature);
         String pH = getStringValueOfEditText(R.id.input_pH);
         String turbidity = getStringValueOfEditText(R.id.input_turbidity);
@@ -91,9 +111,13 @@ public class EnterReadingActivity extends RoboActivity {
         measurements.add(new Measurement(MeasurementType.TASTE, taste.name(), MeasurementLocation.WTU_EFF));
 
         SaveResult saveResult = repository.add(measurements);
-        if(saveResult.successful()) {
+        if (saveResult.successful()) {
             Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
-        } else if(!saveResult.passedValidation()) {
+        } else if (!saveResult.passedValidation()) {
+            for (MeasurementType type : saveResult.getValidationFailures()) {
+                View view = typeInputMap.get(type);
+                view.setBackgroundColor(0x50FF0000);
+            }
             Toast.makeText(this, "did not save! :( please correct invalid data", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();

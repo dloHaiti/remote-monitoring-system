@@ -14,6 +14,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/temperature_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -55,6 +56,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/ph_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -93,6 +95,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/turbidity_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -126,6 +129,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/tds_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -164,6 +168,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/free_chlorine_concentration_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -188,6 +193,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/total_chlorine_concentration_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -212,6 +218,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/free_chlorine_residual_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -236,6 +243,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/total_chlorine_residual_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -260,6 +268,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/alkalinity_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -298,6 +307,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/hardness_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -336,6 +346,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/color_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -367,6 +378,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/odor_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -398,6 +410,7 @@
         <View style="@style/horizontal_rule" />
 
         <LinearLayout
+            android:id="@+id/taste_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >

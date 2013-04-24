@@ -58,9 +58,9 @@ public class EnterReadingActivity extends Activity {
         String totalChlorineResidual = getStringValueOfEditText(R.id.input_total_chlorine_residual);
         String alkalinity = getStringValueOfEditText(R.id.input_alkalinity);
         String hardness = getStringValueOfEditText(R.id.input_hardness);
-        boolean colorIsOK = isChecked(R.id.button_color_ok);
-        boolean odorIsOK = isChecked(R.id.button_odor_ok);
-        boolean tasteIsOK = isChecked(R.id.button_taste_ok);
+        SelectionValue color = getSelectionValueOfRadioButtons(R.id.button_color_ok, R.id.button_color_not_ok);
+        SelectionValue odor = getSelectionValueOfRadioButtons(R.id.button_odor_ok, R.id.button_odor_not_ok);
+        SelectionValue taste = getSelectionValueOfRadioButtons(R.id.button_taste_ok, R.id.button_taste_not_ok);
 
         MeasurementLocation temperatureLocation = null;
         MeasurementLocation pHLocation = null;
@@ -135,9 +135,9 @@ public class EnterReadingActivity extends Activity {
         measurements.add(new Measurement(MeasurementType.TOTAL_CHLORINE_RESIDUAL, totalChlorineResidual, totalChlorineResidualLocation));
         measurements.add(new Measurement(MeasurementType.ALKALINITY, alkalinity, alkalinityLocation));
         measurements.add(new Measurement(MeasurementType.HARDNESS, hardness, hardnessLocation));
-        measurements.add(new Measurement(MeasurementType.COLOR, okToString(colorIsOK), colorLocation));
-        measurements.add(new Measurement(MeasurementType.ODOR, okToString(odorIsOK), odorLocation));
-        measurements.add(new Measurement(MeasurementType.TASTE, okToString(tasteIsOK), tasteLocation));
+        measurements.add(new Measurement(MeasurementType.COLOR, color.name(), colorLocation));
+        measurements.add(new Measurement(MeasurementType.ODOR, odor.name(), odorLocation));
+        measurements.add(new Measurement(MeasurementType.TASTE, taste.name(), tasteLocation));
 
         SaveResult saveResult = repository.add(measurements);
         switch(saveResult) {
@@ -153,8 +153,14 @@ public class EnterReadingActivity extends Activity {
         }
     }
 
-    private String okToString(boolean ok) {
-        return ok ? "OK" : "NOT OK";
+    private SelectionValue getSelectionValueOfRadioButtons(int okButtonId, int notOkButtonId) {
+        if(((RadioButton) findViewById(okButtonId)).isChecked()) {
+            return SelectionValue.OK;
+        }
+        if(((RadioButton) findViewById(notOkButtonId)).isChecked()) {
+            return SelectionValue.NOT_OK;
+        }
+        return SelectionValue.UNSELECTED;
     }
 
     private boolean isChecked(int buttonId) {

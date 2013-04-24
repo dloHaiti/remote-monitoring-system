@@ -21,10 +21,13 @@ class ReadingController {
         }
 
         JSON.use("deep")
+
+        // TODO handle database error (status: 503)
         if (reading.save()) {
-            render ([msg: "OK"] as JSON)
+            render (status: 201, text: [msg: "OK"] as JSON)
         } else {
-            render (status: 201, test: [msg: reading.errors] as JSON)
+            // TODO Better formatting of error msgs
+            render (status: 422, text: [msg: reading.errors] as JSON)
         }
     }
 }

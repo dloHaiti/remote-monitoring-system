@@ -25,14 +25,14 @@ class EndpointsTests extends APITestCase {
             """ }
         }
 
-        assertStatus 200
+        assertStatus 201
         assertContentStrict '{"msg":"OK"}'
     }
 
     void testPostingAnEmptyReading() {
         post('/reading')
 
-        assertStatus 201
+        assertStatus 422
     }
     void testPostingAnInvalidReading() {
         post('/reading') {
@@ -45,6 +45,6 @@ class EndpointsTests extends APITestCase {
             """ }
         }
 
-        assertStatus 201
+        assertStatus 422
     }
 }

@@ -9,48 +9,55 @@ public class MeasurementValidator {
     public boolean validate(Measurement measurement) {
         switch(measurement.getName()) {
             case TEMPERATURE:
-                return numberBetweenInclusive(measurement.getValue(), 10, 30);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 10, 30);
             case PH:
-                return numberBetweenInclusive(measurement.getValue(), 5, 9);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 5, 9);
             case TURBIDITY:
-                return numberBetweenInclusive(measurement.getValue(), 0, 10);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 0, 10);
             case TDS:
-                return numberBetweenInclusive(measurement.getValue(), 100, 800);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 100, 800);
             case FREE_CHLORINE_CONCENTRATION:
-                return numberBetweenInclusive(measurement.getValue(), 5000, 9000);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 5000, 9000);
             case TOTAL_CHLORINE_CONCENTRATION:
-                return numberBetweenInclusive(measurement.getValue(), 5000, 10000);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 5000, 10000);
             case FREE_CHLORINE_RESIDUAL:
-                return numberBetweenInclusive(measurement.getValue(), 0, 1);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 0, 1);
             case TOTAL_CHLORINE_RESIDUAL:
-                return numberBetweenInclusive(measurement.getValue(), 0, 1);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 0, 1);
             case ALKALINITY:
-                return numberBetweenInclusive(measurement.getValue(), 100, 500);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 100, 500);
             case HARDNESS:
-                return numberBetweenInclusive(measurement.getValue(), 100, 700);
+                return locationSelectedAndNumberBetweenInclusive(measurement, 100, 700);
             case COLOR:
-                return valueSelected(measurement.getValue());
+                return locationAndValueSelected(measurement);
             case ODOR:
-                return valueSelected(measurement.getValue());
+                return locationAndValueSelected(measurement);
             case TASTE:
-                return valueSelected(measurement.getValue());
+                return locationAndValueSelected(measurement);
             default:
                 return false;
         }
     }
 
-    private boolean valueSelected(String value) {
-        if(StringUtils.isNotEmpty(value)) {
-            SelectionValue actual = SelectionValue.valueOf(value);
-            return actual == SelectionValue.OK || actual == SelectionValue.NOT_OK;
+    private boolean locationSelected(MeasurementLocation samplingSite) {
+        return MeasurementLocation.UNSELECTED != samplingSite;
+    }
+
+    private boolean locationAndValueSelected(Measurement measurement) {
+        boolean locationSelected = locationSelected(measurement.getSamplingSite());
+        if(StringUtils.isNotEmpty(measurement.getValue())) {
+            SelectionValue actual = SelectionValue.valueOf(measurement.getValue());
+            return locationSelected && actual != SelectionValue.UNSELECTED;
         }
         return false;
     }
 
-    private boolean numberBetweenInclusive(String value, int low, int high) {
-        if(NumberUtils.isNumber(value)) {
-            BigDecimal actual = new BigDecimal(value);
-            return actual.compareTo(new BigDecimal(low)) >= 0 &&
+    private boolean locationSelectedAndNumberBetweenInclusive(Measurement measurement, int low, int high) {
+        boolean locationSelected = locationSelected(measurement.getSamplingSite());
+        if(NumberUtils.isNumber(measurement.getValue())) {
+            BigDecimal actual = new BigDecimal(measurement.getValue());
+            return locationSelected &&
+                    actual.compareTo(new BigDecimal(low)) >= 0 &&
                     actual.compareTo(new BigDecimal(high)) <= 0;
         }
         return false;

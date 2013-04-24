@@ -1,9 +1,7 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
-import com.dlohaiti.dlokiosk.Measurement;
-import com.dlohaiti.dlokiosk.MeasurementLocation;
-import com.dlohaiti.dlokiosk.MeasurementType;
+import com.dlohaiti.dlokiosk.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -20,12 +18,14 @@ import static org.mockito.Mockito.*;
 public class MeasurementRepositoryTest {
 
     private MeasurementRepository repository;
+    private MeasurementsValidator validator;
     private Context context;
 
     @Before
     public void setup() {
         context = mock(Context.class);
-        repository = new MeasurementRepository(context);
+        validator = new MeasurementsValidator(new MeasurementValidator());
+        repository = new MeasurementRepository(context, validator);
     }
 
     @Test

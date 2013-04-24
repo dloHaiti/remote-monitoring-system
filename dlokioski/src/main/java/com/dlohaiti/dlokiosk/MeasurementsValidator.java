@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk;
 
+import com.google.inject.Inject;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +9,7 @@ import java.util.Set;
 public class MeasurementsValidator {
     private MeasurementValidator validator;
 
+    @Inject
     public MeasurementsValidator(MeasurementValidator validator) {
         this.validator = validator;
     }

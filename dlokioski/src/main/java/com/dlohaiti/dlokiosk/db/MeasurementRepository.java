@@ -2,6 +2,8 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
 import com.dlohaiti.dlokiosk.Measurement;
+import com.dlohaiti.dlokiosk.MeasurementsValidator;
+import com.dlohaiti.dlokiosk.ValidationResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,13 +24,19 @@ public class MeasurementRepository {
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
     private static final String MEASUREMENTS_FILE = "dlokioski.dat";
 
+    private MeasurementsValidator validator;
     private Context context;
 
-    public MeasurementRepository(Context context) {
+    public MeasurementRepository(Context context, MeasurementsValidator validator) {
         this.context = context;
+        this.validator = validator;
     }
 
     public SaveResult add(List<Measurement> measurements) {
+        ValidationResult result = validator.validate(measurements);
+        if(!result.passed()) {
+            return SaveResult.VALIDATION_FAILURE;
+        }
         JSONObject data;
         try {
             data = formatData(measurements, new Date());

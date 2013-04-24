@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -11,20 +10,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.SaveResult;
+import com.google.inject.Inject;
+import roboguice.activity.RoboActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnterReadingActivity extends Activity {
+public class EnterReadingActivity extends RoboActivity {
 
     private MeasurementRepository repository;
+    @Inject private MeasurementsValidator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
-        repository = new MeasurementRepository(this);
+        repository = new MeasurementRepository(this, validator);
     }
 
     private void setupActionBar() {
@@ -85,9 +87,12 @@ public class EnterReadingActivity extends Activity {
         measurements.add(new Measurement(MeasurementType.TASTE, taste.name(), MeasurementLocation.WTU_EFF));
 
         SaveResult saveResult = repository.add(measurements);
-        switch(saveResult) {
+        switch (saveResult) {
             case SUCCESSFUL:
                 Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
+                break;
+            case VALIDATION_FAILURE:
+                Toast.makeText(this, "invalid form! :(", Toast.LENGTH_LONG).show();
                 break;
             case FAILURE:
                 Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
@@ -99,20 +104,20 @@ public class EnterReadingActivity extends Activity {
     }
 
     private MeasurementLocation getMeasurementLocation(int boreholeButtonId, int wtuEffButtonId) {
-        if(isChecked(boreholeButtonId)) {
+        if (isChecked(boreholeButtonId)) {
             return MeasurementLocation.BOREHOLE;
         }
-        if(isChecked(wtuEffButtonId)) {
+        if (isChecked(wtuEffButtonId)) {
             return MeasurementLocation.WTU_EFF;
         }
         return MeasurementLocation.UNSELECTED;
     }
 
     private SelectionValue getSelectionValueOfRadioButtons(int okButtonId, int notOkButtonId) {
-        if(isChecked(okButtonId)) {
+        if (isChecked(okButtonId)) {
             return SelectionValue.OK;
         }
-        if(isChecked(notOkButtonId)) {
+        if (isChecked(notOkButtonId)) {
             return SelectionValue.NOT_OK;
         }
         return SelectionValue.UNSELECTED;

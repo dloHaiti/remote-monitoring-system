@@ -1,9 +1,9 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
-import com.dlohaiti.dlokiosk.Measurement;
-import com.dlohaiti.dlokiosk.MeasurementsValidator;
-import com.dlohaiti.dlokiosk.ValidationResult;
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
+import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

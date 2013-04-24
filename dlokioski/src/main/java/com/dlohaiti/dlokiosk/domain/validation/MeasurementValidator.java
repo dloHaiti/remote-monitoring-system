@@ -1,5 +1,8 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.domain.validation;
 
+import com.dlohaiti.dlokiosk.SelectionValue;
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 

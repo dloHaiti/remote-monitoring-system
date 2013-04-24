@@ -1,11 +1,15 @@
 package com.dlohaiti.dlokiosk;
 
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
+import com.dlohaiti.dlokiosk.domain.MeasurementType;
+import com.dlohaiti.dlokiosk.domain.validation.MeasurementValidator;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.dlohaiti.dlokiosk.MeasurementLocation.BOREHOLE;
-import static com.dlohaiti.dlokiosk.MeasurementLocation.UNSELECTED;
-import static com.dlohaiti.dlokiosk.MeasurementType.*;
+import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.BOREHOLE;
+import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.UNSELECTED;
+import static com.dlohaiti.dlokiosk.domain.MeasurementType.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

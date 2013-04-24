@@ -1,7 +1,11 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
-import com.dlohaiti.dlokiosk.*;
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
+import com.dlohaiti.dlokiosk.domain.MeasurementType;
+import com.dlohaiti.dlokiosk.domain.validation.MeasurementValidator;
+import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import org.junit.Before;
 import org.junit.Test;
 

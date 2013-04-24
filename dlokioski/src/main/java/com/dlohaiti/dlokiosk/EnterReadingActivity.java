@@ -10,6 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.SaveResult;
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
+import com.dlohaiti.dlokiosk.domain.MeasurementType;
+import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 

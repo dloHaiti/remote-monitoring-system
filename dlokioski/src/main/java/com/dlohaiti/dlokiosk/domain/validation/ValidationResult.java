@@ -1,4 +1,6 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.domain.validation;
+
+import com.dlohaiti.dlokiosk.domain.MeasurementType;
 
 import java.util.Set;
 

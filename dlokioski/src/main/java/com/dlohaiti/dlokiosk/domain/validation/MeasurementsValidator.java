@@ -1,5 +1,7 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.domain.validation;
 
+import com.dlohaiti.dlokiosk.domain.Measurement;
+import com.dlohaiti.dlokiosk.domain.MeasurementType;
 import com.google.inject.Inject;
 
 import java.util.HashSet;

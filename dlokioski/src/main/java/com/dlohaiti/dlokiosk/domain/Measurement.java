@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.domain;
 
 public class Measurement {
 

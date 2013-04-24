@@ -14,10 +14,13 @@ import java.util.List;
 
 public class MeasurementRepository {
 
+    private static final String FIELD_NAME_VALUE = "value";
     private static final String FIELD_NAME_TIMESTAMP = "timestamp";
     private static final String FIELD_NAME_MEASUREMENTS = "measurements";
-    private static final String DATE_FORMAT = "yyyy-mm-dd hh:MM:ss";
-    private static String MEASUREMENTS_FILE = "dlokioski.dat";
+    private static final String FIELD_NAME_PARAMETER = "parameter";
+    private static final String FIELD_NAME_LOCATION = "location";
+    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
+    private static final String MEASUREMENTS_FILE = "dlokioski.dat";
 
     private Context context;
 
@@ -41,11 +44,29 @@ public class MeasurementRepository {
     }
 
     private JSONObject formatData(List<Measurement> measurements, Date date) throws JSONException {
-        JSONArray values = new JSONArray(measurements);
+
+        JSONArray values = formatMeasurements(measurements);
+
         JSONObject data = new JSONObject();
         data.put(FIELD_NAME_TIMESTAMP, new SimpleDateFormat(DATE_FORMAT).format(date));
         data.put(FIELD_NAME_MEASUREMENTS, values);
+
         return data;
+    }
+
+    private JSONArray formatMeasurements(List<Measurement> measurements) throws JSONException {
+        JSONArray values = new JSONArray();
+
+        for (Measurement measurement: measurements) {
+            JSONObject value = new JSONObject();
+            value.put(FIELD_NAME_PARAMETER, measurement.getName());
+            value.put(FIELD_NAME_VALUE, measurement.getValue());
+            value.put(FIELD_NAME_LOCATION, measurement.getSamplingSite());
+
+            values.put(value);
+        }
+
+        return values;
     }
 
     private void appendData(JSONObject reading) throws IOException {

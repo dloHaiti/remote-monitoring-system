@@ -13,6 +13,9 @@ target
 out
 build
 bin
-gen
 *.class
+
+# generated
+gen
+plugins
 

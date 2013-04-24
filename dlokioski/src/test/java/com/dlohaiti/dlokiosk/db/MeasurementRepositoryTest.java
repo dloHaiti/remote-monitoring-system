@@ -9,13 +9,14 @@ import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -26,11 +27,15 @@ public class MeasurementRepositoryTest {
 
     private MeasurementRepository repository;
     private Context context;
+    private MeasurementsValidator validator;
+    private FileOutputStream outputStream;
 
     @Before
-    public void setup() {
+    public void setup() throws FileNotFoundException {
         context = mock(Context.class);
-        MeasurementsValidator validator = mock(MeasurementsValidator.class);
+        validator = mock(MeasurementsValidator.class);
+        outputStream = mock(FileOutputStream.class);
+        given(context.openFileOutput(anyString(), anyInt())).willReturn(outputStream);
         given(validator.validate(anyList())).willReturn(new ValidationResult(new HashSet<MeasurementType>()));
         repository = new MeasurementRepository(context, validator);
     }
@@ -43,9 +48,6 @@ public class MeasurementRepositoryTest {
     public void shouldWriteToLogFile() throws IOException {
         Date now = new Date();
 
-        FileOutputStream outputStream = mock(FileOutputStream.class);
-        when(context.openFileOutput(anyString(), anyInt())).thenReturn(outputStream);
-
         Measurement measurement = new Measurement(MeasurementType.PH, "5", MeasurementLocation.BOREHOLE);
         repository.add(Arrays.asList(measurement), now);
 
@@ -54,5 +56,30 @@ public class MeasurementRepositoryTest {
         verify(outputStream).write(expected.getBytes());
     }
 
+    @Test
+    public void shouldRunValidationsBeforeSaving() {
+        List<Measurement> measurements = Arrays.asList(new Measurement(MeasurementType.TASTE, "OK", MeasurementLocation.WTU_EFF));
+        repository.add(measurements);
+        verify(validator).validate(measurements);
+    }
 
+    @Test
+    public void shouldReturnValidationFailedSaveResultWhenValidationFails() {
+        List<Measurement> measurements = Arrays.asList(new Measurement(MeasurementType.TDS, "15000", MeasurementLocation.BOREHOLE));
+        Set<MeasurementType> invalid = new HashSet<MeasurementType>();
+        invalid.add(MeasurementType.TDS);
+        given(validator.validate(measurements)).willReturn(new ValidationResult(invalid));
+
+        SaveResult saveResult = repository.add(measurements);
+
+        assertThat(saveResult.passedValidation(), is(false));
+        assertThat(saveResult.getValidationFailures(), is(invalid));
+    }
+
+    @Test
+    public void shouldReturnValidationSuccessfulWhenPasses() {
+        List<Measurement> measurements = Arrays.asList(new Measurement(MeasurementType.TDS, "150", MeasurementLocation.BOREHOLE));
+        SaveResult saveResult = repository.add(measurements);
+        assertThat(saveResult.passedValidation(), is(true));
+    }
 }

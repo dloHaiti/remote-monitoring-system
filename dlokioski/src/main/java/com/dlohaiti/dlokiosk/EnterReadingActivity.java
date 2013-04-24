@@ -91,19 +91,12 @@ public class EnterReadingActivity extends RoboActivity {
         measurements.add(new Measurement(MeasurementType.TASTE, taste.name(), MeasurementLocation.WTU_EFF));
 
         SaveResult saveResult = repository.add(measurements);
-        switch (saveResult) {
-            case SUCCESSFUL:
-                Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
-                break;
-            case VALIDATION_FAILURE:
-                Toast.makeText(this, "invalid form! :(", Toast.LENGTH_LONG).show();
-                break;
-            case FAILURE:
-                Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                Toast.makeText(this, "unknown result.", Toast.LENGTH_LONG).show();
-                break;
+        if(saveResult.successful()) {
+            Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
+        } else if(!saveResult.passedValidation()) {
+            Toast.makeText(this, "did not save! :( please correct invalid data", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
         }
     }
 

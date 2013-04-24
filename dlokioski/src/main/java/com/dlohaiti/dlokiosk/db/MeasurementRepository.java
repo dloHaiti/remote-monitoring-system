@@ -39,20 +39,20 @@ public class MeasurementRepository {
     public SaveResult add(List<Measurement> measurements, Date timestamp) {
         ValidationResult result = validator.validate(measurements);
         if (!result.passed()) {
-            return SaveResult.VALIDATION_FAILURE;
+            return new SaveResult(result);
         }
-        JSONObject data;
+        boolean saveSuccessful = true;
         try {
-            data = formatData(measurements, timestamp);
-        } catch (JSONException e) {
-            return SaveResult.FAILURE;
-        }
-        try {
+            JSONObject data = formatData(measurements, timestamp);
             appendData(data);
+        } catch (JSONException e) {
+            //TODO: test this
+            saveSuccessful = false;
         } catch (IOException e) {
-            return SaveResult.FAILURE;
+            //TODO: test this
+            saveSuccessful = false;
         }
-        return SaveResult.SUCCESSFUL;
+        return new SaveResult(result, saveSuccessful);
     }
 
     private JSONObject formatData(List<Measurement> measurements, Date timestamp) throws JSONException {

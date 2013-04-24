@@ -4,8 +4,8 @@ import android.content.Context;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
-import com.dlohaiti.dlokiosk.domain.validation.MeasurementValidator;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
+import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -23,13 +25,13 @@ import static org.mockito.Mockito.*;
 public class MeasurementRepositoryTest {
 
     private MeasurementRepository repository;
-    private MeasurementsValidator validator;
     private Context context;
 
     @Before
     public void setup() {
         context = mock(Context.class);
-        validator = new MeasurementsValidator(new MeasurementValidator());
+        MeasurementsValidator validator = mock(MeasurementsValidator.class);
+        given(validator.validate(anyList())).willReturn(new ValidationResult(new HashSet<MeasurementType>()));
         repository = new MeasurementRepository(context, validator);
     }
 

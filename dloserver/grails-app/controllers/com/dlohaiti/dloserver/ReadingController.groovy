@@ -15,7 +15,7 @@ class ReadingController {
         }
     }
 
-    def update() {
+    def save() {
         Reading reading = new Reading()
         reading.timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")
 

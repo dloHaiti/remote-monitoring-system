@@ -21,7 +21,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
                 ']}}'
 
-        controller.update()
+        controller.save()
 
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 200 == controller.response.status
@@ -35,7 +35,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
                 ']}}'
 
-        controller.update()
+        controller.save()
 
         println controller.response.contentAsString
 

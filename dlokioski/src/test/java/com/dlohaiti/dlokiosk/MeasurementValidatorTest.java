@@ -1,6 +1,5 @@
-import com.dlohaiti.dlokiosk.MeasurementType;
-import com.dlohaiti.dlokiosk.MeasurementValidator;
-import com.dlohaiti.dlokiosk.Measurement;
+package com.dlohaiti.dlokiosk;
+
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,11 +1,8 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.domain.validation;
 
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
-import com.dlohaiti.dlokiosk.domain.validation.MeasurementValidator;
-import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
-import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -4,17 +4,6 @@ import grails.converters.JSON
 
 class ReadingController {
 
-    def show() {
-        if (params.id && Reading.exists(params.id)) {
-            Reading reading = Reading.findByDateCreated(params.id)
-            render reading as JSON
-        }
-        else {
-            List<Reading> all = Reading.list()
-            render all as JSON
-        }
-    }
-
     def save() {
         Reading reading = new Reading()
         reading.timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")

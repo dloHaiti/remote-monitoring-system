@@ -20,8 +20,8 @@ public class Measurement {
         return value;
     }
 
-    public String getSamplingSite() {
-        return samplingSite.name();
+    public MeasurementLocation getSamplingSite() {
+        return samplingSite;
     }
 
 }

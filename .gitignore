@@ -18,4 +18,5 @@ bin
 # generated
 gen
 plugins
+*.h2.db
 

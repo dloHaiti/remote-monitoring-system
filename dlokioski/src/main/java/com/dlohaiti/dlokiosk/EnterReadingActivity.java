@@ -39,6 +39,7 @@ public class EnterReadingActivity extends RoboActivity {
     @InjectView(R.id.color_row) private LinearLayout colorRow;
     @InjectView(R.id.odor_row) private LinearLayout odorRow;
     @InjectView(R.id.taste_row) private LinearLayout tasteRow;
+
     @InjectView(R.id.input_temperature) private EditText temperature;
     @InjectView(R.id.input_pH) private EditText pH;
     @InjectView(R.id.input_turbidity) private EditText turbidity;
@@ -49,6 +50,7 @@ public class EnterReadingActivity extends RoboActivity {
     @InjectView(R.id.input_total_chlorine_residual) private EditText totalChlorineResidual;
     @InjectView(R.id.input_alkalinity) private EditText alkalinity;
     @InjectView(R.id.input_hardness) private EditText hardness;
+
     @InjectView(R.id.button_color_ok) private RadioButton colorOk;
     @InjectView(R.id.button_color_not_ok) private RadioButton colorNotOk;
     @InjectView(R.id.button_odor_ok) private RadioButton odorOk;
@@ -137,6 +139,7 @@ public class EnterReadingActivity extends RoboActivity {
 
         SaveResult saveResult = repository.add(measurements);
         if (saveResult.successful()) {
+            resetForm();
             Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
         } else if (!saveResult.passedValidation()) {
             setValidationErrors(saveResult.getValidationFailures());
@@ -147,20 +150,20 @@ public class EnterReadingActivity extends RoboActivity {
     }
 
     private MeasurementLocation getLocation(RadioButton borehole, RadioButton wtuEff) {
-        if(borehole.isChecked()) {
+        if (borehole.isChecked()) {
             return MeasurementLocation.BOREHOLE;
         }
-        if(wtuEff.isChecked()) {
+        if (wtuEff.isChecked()) {
             return MeasurementLocation.WTU_EFF;
         }
         return MeasurementLocation.UNSELECTED;
     }
 
     private SelectionValue getSelected(RadioButton ok, RadioButton notOk) {
-        if(ok.isChecked()) {
+        if (ok.isChecked()) {
             return SelectionValue.OK;
         }
-        if(notOk.isChecked()) {
+        if (notOk.isChecked()) {
             return SelectionValue.NOT_OK;
         }
         return SelectionValue.UNSELECTED;
@@ -177,5 +180,23 @@ public class EnterReadingActivity extends RoboActivity {
         for (View row : typeInputMap.values()) {
             row.setBackgroundColor(0x00000000);
         }
+    }
+
+    private void resetForm() {
+        for (EditText editText : Arrays.asList(temperature, pH, turbidity, tds, freeChlorineConcentration, totalChlorineConcentration, freeChlorineResidual, totalChlorineResidual, alkalinity, hardness)) {
+            editText.setText("");
+        }
+        for (RadioButton radioButton : Arrays.asList(temperatureBorehole, temperatureWtuEff,
+                phBorehole, phWtuEff,
+                turbidityBorehole, turbidityWtuEff,
+                tdsBorehole, tdsWtuEff,
+                alkalinityBorehole, alkalinityWtuEff,
+                hardnessBorehole, hardnessWtuEff,
+                colorOk, colorNotOk,
+                odorOk, odorNotOk,
+                tasteOk, tasteNotOk)) {
+            radioButton.setChecked(false);
+        }
+
     }
 }

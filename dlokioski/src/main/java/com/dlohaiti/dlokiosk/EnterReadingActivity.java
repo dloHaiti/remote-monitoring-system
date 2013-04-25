@@ -5,9 +5,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.SaveResult;
 import com.dlohaiti.dlokiosk.domain.Measurement;
@@ -16,17 +14,59 @@ import com.dlohaiti.dlokiosk.domain.MeasurementType;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.*;
+import static com.dlohaiti.dlokiosk.domain.MeasurementType.*;
 
 public class EnterReadingActivity extends RoboActivity {
 
     private MeasurementRepository repository;
+    private Map<MeasurementType, LinearLayout> typeInputMap;
     @Inject private MeasurementsValidator validator;
-    private Map<MeasurementType, View> typeInputMap;
+    @InjectView(R.id.temperature_row) private LinearLayout temperatureRow;
+    @InjectView(R.id.ph_row) private LinearLayout phRow;
+    @InjectView(R.id.turbidity_row) private LinearLayout turbidityRow;
+    @InjectView(R.id.tds_row) private LinearLayout tdsRow;
+    @InjectView(R.id.free_chlorine_concentration_row) private LinearLayout freeChlorineConcentrationRow;
+    @InjectView(R.id.total_chlorine_concentration_row) private LinearLayout totalChlorineConcentrationRow;
+    @InjectView(R.id.free_chlorine_residual_row) private LinearLayout freeChlorineResidualRow;
+    @InjectView(R.id.total_chlorine_residual_row) private LinearLayout totalChlorineResidualRow;
+    @InjectView(R.id.alkalinity_row) private LinearLayout alkalinityRow;
+    @InjectView(R.id.hardness_row) private LinearLayout hardnessRow;
+    @InjectView(R.id.color_row) private LinearLayout colorRow;
+    @InjectView(R.id.odor_row) private LinearLayout odorRow;
+    @InjectView(R.id.taste_row) private LinearLayout tasteRow;
+    @InjectView(R.id.input_temperature) private EditText temperature;
+    @InjectView(R.id.input_pH) private EditText pH;
+    @InjectView(R.id.input_turbidity) private EditText turbidity;
+    @InjectView(R.id.input_tds) private EditText tds;
+    @InjectView(R.id.input_free_chlorine_concentration) private EditText freeChlorineConcentration;
+    @InjectView(R.id.input_total_chlorine_concentration) private EditText totalChlorineConcentration;
+    @InjectView(R.id.input_free_chlorine_residual) private EditText freeChlorineResidual;
+    @InjectView(R.id.input_total_chlorine_residual) private EditText totalChlorineResidual;
+    @InjectView(R.id.input_alkalinity) private EditText alkalinity;
+    @InjectView(R.id.input_hardness) private EditText hardness;
+    @InjectView(R.id.button_color_ok) private RadioButton colorOk;
+    @InjectView(R.id.button_color_not_ok) private RadioButton colorNotOk;
+    @InjectView(R.id.button_odor_ok) private RadioButton odorOk;
+    @InjectView(R.id.button_odor_not_ok) private RadioButton odorNotOk;
+    @InjectView(R.id.button_taste_ok) private RadioButton tasteOk;
+    @InjectView(R.id.button_taste_not_ok) private RadioButton tasteNotOk;
+    @InjectView(R.id.button_temperature_location_borehole) private RadioButton temperatureBorehole;
+    @InjectView(R.id.button_temperature_location_wtu_eff) private RadioButton temperatureWtuEff;
+    @InjectView(R.id.button_ph_location_borehole) private RadioButton phBorehole;
+    @InjectView(R.id.button_ph_location_wtu_eff) private RadioButton phWtuEff;
+    @InjectView(R.id.button_turbidity_location_borehole) private RadioButton turbidityBorehole;
+    @InjectView(R.id.button_turbidity_location_wtu_eff) private RadioButton turbidityWtuEff;
+    @InjectView(R.id.button_tds_location_borehole) private RadioButton tdsBorehole;
+    @InjectView(R.id.button_tds_location_wtu_eff) private RadioButton tdsWtuEff;
+    @InjectView(R.id.button_alkalinity_location_borehole) private RadioButton alkalinityBorehole;
+    @InjectView(R.id.button_alkalinity_location_wtu_eff) private RadioButton alkalinityWtuEff;
+    @InjectView(R.id.button_hardness_location_borehole) private RadioButton hardnessBorehole;
+    @InjectView(R.id.button_hardness_location_wtu_eff) private RadioButton hardnessWtuEff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +74,20 @@ public class EnterReadingActivity extends RoboActivity {
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
         repository = new MeasurementRepository(this, validator);
-        typeInputMap = new HashMap<MeasurementType, View>();
-        typeInputMap.put(MeasurementType.TEMPERATURE, findViewById(R.id.temperature_row));
-        typeInputMap.put(MeasurementType.PH, findViewById(R.id.ph_row));
-        typeInputMap.put(MeasurementType.TURBIDITY, findViewById(R.id.turbidity_row));
-        typeInputMap.put(MeasurementType.TDS, findViewById(R.id.tds_row));
-        typeInputMap.put(MeasurementType.FREE_CHLORINE_CONCENTRATION, findViewById(R.id.free_chlorine_concentration_row));
-        typeInputMap.put(MeasurementType.TOTAL_CHLORINE_CONCENTRATION, findViewById(R.id.total_chlorine_concentration_row));
-        typeInputMap.put(MeasurementType.FREE_CHLORINE_RESIDUAL, findViewById(R.id.free_chlorine_residual_row));
-        typeInputMap.put(MeasurementType.TOTAL_CHLORINE_RESIDUAL, findViewById(R.id.total_chlorine_residual_row));
-        typeInputMap.put(MeasurementType.ALKALINITY, findViewById(R.id.alkalinity_row));
-        typeInputMap.put(MeasurementType.HARDNESS, findViewById(R.id.hardness_row));
-        typeInputMap.put(MeasurementType.COLOR, findViewById(R.id.color_row));
-        typeInputMap.put(MeasurementType.ODOR, findViewById(R.id.odor_row));
-        typeInputMap.put(MeasurementType.TASTE, findViewById(R.id.taste_row));
+        typeInputMap = new HashMap<MeasurementType, LinearLayout>();
+        typeInputMap.put(TEMPERATURE, temperatureRow);
+        typeInputMap.put(PH, phRow);
+        typeInputMap.put(TURBIDITY, turbidityRow);
+        typeInputMap.put(TDS, tdsRow);
+        typeInputMap.put(FREE_CHLORINE_CONCENTRATION, freeChlorineConcentrationRow);
+        typeInputMap.put(TOTAL_CHLORINE_CONCENTRATION, totalChlorineConcentrationRow);
+        typeInputMap.put(FREE_CHLORINE_RESIDUAL, freeChlorineResidualRow);
+        typeInputMap.put(TOTAL_CHLORINE_RESIDUAL, totalChlorineResidualRow);
+        typeInputMap.put(ALKALINITY, alkalinityRow);
+        typeInputMap.put(HARDNESS, hardnessRow);
+        typeInputMap.put(COLOR, colorRow);
+        typeInputMap.put(ODOR, odorRow);
+        typeInputMap.put(TASTE, tasteRow);
     }
 
     private void setupActionBar() {
@@ -71,84 +111,71 @@ public class EnterReadingActivity extends RoboActivity {
     }
 
     public void saveReadings(View v) {
-        for (View row : typeInputMap.values()) {
-            row.setBackgroundColor(0x00000000);
-        }
-        String temperature = getStringValueOfEditText(R.id.input_temperature);
-        String pH = getStringValueOfEditText(R.id.input_pH);
-        String turbidity = getStringValueOfEditText(R.id.input_turbidity);
-        String tds = getStringValueOfEditText(R.id.input_tds);
-        String freeChlorineConcentration = getStringValueOfEditText(R.id.input_free_chlorine_concentration);
-        String totalChlorineConcentration = getStringValueOfEditText(R.id.input_total_chlorine_concentration);
-        String freeChlorineResidual = getStringValueOfEditText(R.id.input_free_chlorine_residual);
-        String totalChlorineResidual = getStringValueOfEditText(R.id.input_total_chlorine_residual);
-        String alkalinity = getStringValueOfEditText(R.id.input_alkalinity);
-        String hardness = getStringValueOfEditText(R.id.input_hardness);
-        SelectionValue color = getSelectionValueOfRadioButtons(R.id.button_color_ok, R.id.button_color_not_ok);
-        SelectionValue odor = getSelectionValueOfRadioButtons(R.id.button_odor_ok, R.id.button_odor_not_ok);
-        SelectionValue taste = getSelectionValueOfRadioButtons(R.id.button_taste_ok, R.id.button_taste_not_ok);
+        clearValidationErrors();
 
-        MeasurementLocation temperatureLocation = getMeasurementLocation(R.id.button_temperature_location_borehole, R.id.button_temperature_location_wtu_eff);
-        MeasurementLocation pHLocation = getMeasurementLocation(R.id.button_ph_location_borehole, R.id.button_ph_location_wtu_eff);
-        MeasurementLocation turbidityLocation = getMeasurementLocation(R.id.button_turbidity_location_borehole, R.id.button_turbidity_location_wtu_eff);
-        MeasurementLocation tdsLocation = getMeasurementLocation(R.id.button_tds_location_borehole, R.id.button_tds_location_wtu_eff);
-        MeasurementLocation alkalinityLocation = getMeasurementLocation(R.id.button_alkalinity_location_borehole, R.id.button_alkalinity_location_wtu_eff);
-        MeasurementLocation hardnessLocation = getMeasurementLocation(R.id.button_hardness_location_borehole, R.id.button_hardness_location_wtu_eff);
+        MeasurementLocation temperatureLocation = getLocation(temperatureBorehole, temperatureWtuEff);
+        MeasurementLocation pHLocation = getLocation(phBorehole, phWtuEff);
+        MeasurementLocation turbidityLocation = getLocation(turbidityBorehole, turbidityWtuEff);
+        MeasurementLocation tdsLocation = getLocation(tdsBorehole, tdsWtuEff);
+        MeasurementLocation alkalinityLocation = getLocation(alkalinityBorehole, alkalinityWtuEff);
+        MeasurementLocation hardnessLocation = getLocation(hardnessBorehole, hardnessWtuEff);
 
         List<Measurement> measurements = new ArrayList<Measurement>();
-        measurements.add(new Measurement(MeasurementType.TEMPERATURE, temperature, temperatureLocation));
-        measurements.add(new Measurement(MeasurementType.PH, pH, pHLocation));
-        measurements.add(new Measurement(MeasurementType.TURBIDITY, turbidity, turbidityLocation));
-        measurements.add(new Measurement(MeasurementType.TDS, tds, tdsLocation));
-        measurements.add(new Measurement(MeasurementType.FREE_CHLORINE_CONCENTRATION, freeChlorineConcentration, MeasurementLocation.WTU_FEED));
-        measurements.add(new Measurement(MeasurementType.TOTAL_CHLORINE_CONCENTRATION, totalChlorineConcentration, MeasurementLocation.WTU_FEED));
-        measurements.add(new Measurement(MeasurementType.FREE_CHLORINE_RESIDUAL, freeChlorineResidual, MeasurementLocation.WTU_EFF));
-        measurements.add(new Measurement(MeasurementType.TOTAL_CHLORINE_RESIDUAL, totalChlorineResidual, MeasurementLocation.WTU_EFF));
-        measurements.add(new Measurement(MeasurementType.ALKALINITY, alkalinity, alkalinityLocation));
-        measurements.add(new Measurement(MeasurementType.HARDNESS, hardness, hardnessLocation));
-        measurements.add(new Measurement(MeasurementType.COLOR, color.name(), MeasurementLocation.WTU_EFF));
-        measurements.add(new Measurement(MeasurementType.ODOR, odor.name(), MeasurementLocation.WTU_EFF));
-        measurements.add(new Measurement(MeasurementType.TASTE, taste.name(), MeasurementLocation.WTU_EFF));
+        measurements.add(new Measurement(TEMPERATURE, temperature.getText().toString(), temperatureLocation));
+        measurements.add(new Measurement(PH, pH.getText().toString(), pHLocation));
+        measurements.add(new Measurement(TURBIDITY, turbidity.getText().toString(), turbidityLocation));
+        measurements.add(new Measurement(TDS, tds.getText().toString(), tdsLocation));
+        measurements.add(new Measurement(FREE_CHLORINE_CONCENTRATION, freeChlorineConcentration.getText().toString(), WTU_FEED));
+        measurements.add(new Measurement(TOTAL_CHLORINE_CONCENTRATION, totalChlorineConcentration.getText().toString(), WTU_FEED));
+        measurements.add(new Measurement(FREE_CHLORINE_RESIDUAL, freeChlorineResidual.getText().toString(), WTU_EFF));
+        measurements.add(new Measurement(TOTAL_CHLORINE_RESIDUAL, totalChlorineResidual.getText().toString(), WTU_EFF));
+        measurements.add(new Measurement(ALKALINITY, alkalinity.getText().toString(), alkalinityLocation));
+        measurements.add(new Measurement(HARDNESS, hardness.getText().toString(), hardnessLocation));
+        measurements.add(new Measurement(COLOR, getSelected(colorOk, colorNotOk).name(), WTU_EFF));
+        measurements.add(new Measurement(ODOR, getSelected(odorOk, odorNotOk).name(), WTU_EFF));
+        measurements.add(new Measurement(TASTE, getSelected(tasteOk, tasteNotOk).name(), WTU_EFF));
 
         SaveResult saveResult = repository.add(measurements);
         if (saveResult.successful()) {
             Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();
         } else if (!saveResult.passedValidation()) {
-            for (MeasurementType type : saveResult.getValidationFailures()) {
-                View view = typeInputMap.get(type);
-                view.setBackgroundColor(0x50FF0000);
-            }
+            setValidationErrors(saveResult.getValidationFailures());
             Toast.makeText(this, "did not save! :( please correct invalid data", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
         }
     }
 
-    private MeasurementLocation getMeasurementLocation(int boreholeButtonId, int wtuEffButtonId) {
-        if (isChecked(boreholeButtonId)) {
+    private MeasurementLocation getLocation(RadioButton borehole, RadioButton wtuEff) {
+        if(borehole.isChecked()) {
             return MeasurementLocation.BOREHOLE;
         }
-        if (isChecked(wtuEffButtonId)) {
+        if(wtuEff.isChecked()) {
             return MeasurementLocation.WTU_EFF;
         }
         return MeasurementLocation.UNSELECTED;
     }
 
-    private SelectionValue getSelectionValueOfRadioButtons(int okButtonId, int notOkButtonId) {
-        if (isChecked(okButtonId)) {
+    private SelectionValue getSelected(RadioButton ok, RadioButton notOk) {
+        if(ok.isChecked()) {
             return SelectionValue.OK;
         }
-        if (isChecked(notOkButtonId)) {
+        if(notOk.isChecked()) {
             return SelectionValue.NOT_OK;
         }
         return SelectionValue.UNSELECTED;
     }
 
-    private boolean isChecked(int buttonId) {
-        return ((RadioButton) findViewById(buttonId)).isChecked();
+    private void setValidationErrors(Set<MeasurementType> validationFailures) {
+        for (MeasurementType type : validationFailures) {
+            View view = typeInputMap.get(type);
+            view.setBackgroundColor(0x50FF0000);
+        }
     }
 
-    private String getStringValueOfEditText(int inputId) {
-        return ((TextView) findViewById(inputId)).getText().toString();
+    private void clearValidationErrors() {
+        for (View row : typeInputMap.values()) {
+            row.setBackgroundColor(0x00000000);
+        }
     }
 }

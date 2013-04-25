@@ -1,11 +1,39 @@
 package com.dlohaiti.dloserver
 
 import grails.converters.JSON
+import grails.util.Environment
+import groovy.sql.Sql
 
 class HealthcheckController {
 
-    // TODO check connection with database
+    def dataSource
+
     def index() {
-        render ([msg: "OK"] as JSON)
+        def result = [
+                db: isDatabaseConnectionAvailable()
+        ]
+        render(result as JSON)
+    }
+
+    private boolean isDatabaseConnectionAvailable() {
+        try {
+            Reading.count()
+            return true
+        } catch (Exception e) {
+            log.error("Error detected during health check", e)
+            return false
+        }
+    }
+
+    // TODO Remove!! It' here just for manual tests
+    def shutdown() {
+        if (Environment.currentEnvironment != Environment.PRODUCTION) {
+            try {
+                def db = new Sql(dataSource)
+                db.execute("shutdown")
+            } catch (e) {
+            }
+        }
+        render !isDatabaseConnectionAvailable()
     }
 }

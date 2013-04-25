@@ -4,15 +4,12 @@ import com.grailsrocks.functionaltest.APITestCase
 
 class EndpointsTests extends APITestCase {
 
-    public static final String MSG_OK = '{"msg":"OK"}'
-
     void testServerIsUpAndRunning() {
         get("/healthcheck")
 
         assertStatus 200
-        assertContentStrict MSG_OK
+        assertContentStrict '{"db":true}'
     }
-
 
     void testPostingAValidReading() {
         post('/reading') {
@@ -34,6 +31,7 @@ class EndpointsTests extends APITestCase {
 
         assertStatus 422
     }
+
     void testPostingAnInvalidReading() {
         post('/reading') {
             headers['Content-Type'] = 'application/json'

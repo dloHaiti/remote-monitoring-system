@@ -38,7 +38,7 @@ public class MeasurementRepository {
         return add(measurements, new Date());
     }
 
-    private SaveResult add(List<Measurement> measurements, Date timestamp) {
+    public SaveResult add(List<Measurement> measurements, Date timestamp) {
         ValidationResult result = validator.validate(measurements);
         if (!result.passed()) {
             return new SaveResult(result);

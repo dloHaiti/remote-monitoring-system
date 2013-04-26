@@ -6,7 +6,7 @@
   <artifactId>dlokioski</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>apk</packaging>
-  <name>dlokioski</name>
+  <name>dloKiosk</name>
 
   <properties>
     <platform.version>4.0.1.2</platform.version>
@@ -72,7 +72,7 @@
   </dependencies>
 
   <build>
-    <finalName>dloKioski</finalName>
+    <finalName>${project.name}</finalName>
     <plugins>
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
@@ -87,7 +87,7 @@
             <platform>15</platform>
           </sdk>
           <emulator>
-            <avd>dloKioski</avd>
+            <avd>Default</avd>
           </emulator>
           <undeployBeforeDeploy>true</undeployBeforeDeploy>
         </configuration>

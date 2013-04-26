@@ -18,6 +18,7 @@ class HealthcheckController {
     private boolean isDatabaseConnectionAvailable() {
         try {
             Reading.count()
+            log.debug("Checking database connectivity: OK")
             return true
         } catch (Exception e) {
             log.error("Error detected during health check", e)

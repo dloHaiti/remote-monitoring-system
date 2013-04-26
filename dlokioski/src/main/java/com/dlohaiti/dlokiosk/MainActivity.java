@@ -6,34 +6,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.dlohaiti.dlokiosk.client.HealthcheckClient;
 import com.dlohaiti.dlokiosk.client.RestClient;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends RoboActivity {
     private static final String TAG = "MainActivity";
 
-    @InjectView(R.id.serverStatusTextView)
-    TextView serverStatusTextView;
     @InjectView(R.id.serverStatusProgressBar)
     ProgressBar serverStatusProgressBar;
+    @InjectView(R.id.statusImage)
+    ImageView statusImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dismissProgressBar();
 
         new CheckServerStatusTask(getString(R.string.dlo_server_url)).execute();
     }
@@ -52,6 +47,7 @@ public class MainActivity extends RoboActivity {
 
     private void showProgressBar() {
         serverStatusProgressBar.setVisibility(View.VISIBLE);
+        statusImage.setVisibility(View.INVISIBLE);
     }
 
     private void dismissProgressBar() {
@@ -59,13 +55,14 @@ public class MainActivity extends RoboActivity {
     }
 
     private void refreshStatus(Boolean result) {
-        String statusText;
+        int imageResource;
         if (result) {
-            statusText = getString(R.string.server_status_online_label);
+            imageResource = R.drawable.green_checkmark;
         } else {
-            statusText = getString(R.string.server_status_offline_label);
+            imageResource = R.drawable.red_x;
         }
-        serverStatusTextView.setText(statusText);
+        statusImage.setImageResource(imageResource);
+        statusImage.setVisibility(View.VISIBLE);
     }
 
     private void logException(Exception e) {
@@ -101,7 +98,6 @@ public class MainActivity extends RoboActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             dismissProgressBar();
-
             refreshStatus(result);
         }
     }

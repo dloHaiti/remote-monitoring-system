@@ -31,5 +31,9 @@
     <string name="heading_total_chlorine_concentration">Total Chlorine Concentration</string>
     <string name="button_wtu_eff">WTU Eff</string>
     <string name="button_borehole">Borehole</string>
+    <string name="dlo_server_url">http://10.0.2.2:8080/dloserver</string>
+    <string name="server_status_checking_label">Server Status: Checking</string>
+    <string name="server_status_online_label">Server Status: Online</string>
+    <string name="server_status_offline_label">Server Status: Offline</string>
 
 </resources>

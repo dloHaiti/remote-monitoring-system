@@ -13,9 +13,21 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:onClick="moveToNewReadingScreen"
-        android:text="@string/record_new_reading_button" />
+        android:text="@string/record_new_reading_button" android:id="@+id/button"
+        android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/serverStatusProgressBar"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="112dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/server_status_checking_label"
+            android:id="@+id/serverStatusTextView"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="171dp"/>
 
 </RelativeLayout>

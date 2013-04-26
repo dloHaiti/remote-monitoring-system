@@ -8,14 +8,14 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ReadingClientTest {
-    ReadingClient readingClient;
+public class HealthcheckClientTest {
+    HealthcheckClient healthcheckClient;
     RestClient restClient;
 
     @Before
     public void setup() {
         restClient = mock(RestClient.class);
-        readingClient = new ReadingClient(restClient);
+        healthcheckClient = new HealthcheckClient(restClient);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class ReadingClientTest {
         HealthcheckStatus okStatus = getHealthcheckStatus(true);
         when(restClient.get("/healthcheck", HealthcheckStatus.class)).thenReturn(okStatus);
 
-        assertThat(readingClient.getServerStatus(), is(true));
+        assertThat(healthcheckClient.getServerStatus(), is(true));
     }
 
     @Test
@@ -31,12 +31,12 @@ public class ReadingClientTest {
         HealthcheckStatus failStatus = getHealthcheckStatus(false);
         when(restClient.get("/healthcheck", HealthcheckStatus.class)).thenReturn(failStatus);
 
-        assertThat(readingClient.getServerStatus(), is(false));
+        assertThat(healthcheckClient.getServerStatus(), is(false));
     }
 
     private HealthcheckStatus getHealthcheckStatus(boolean dbStatus) {
         HealthcheckStatus okStatus = new HealthcheckStatus();
-        okStatus.db = dbStatus;
+        okStatus.setDb(dbStatus);
         return okStatus;
     }
 }

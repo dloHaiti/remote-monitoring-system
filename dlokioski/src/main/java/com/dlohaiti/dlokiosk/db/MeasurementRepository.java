@@ -4,6 +4,7 @@ import android.content.Context;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
+import com.google.inject.Inject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class MeasurementRepository {
     private MeasurementsValidator validator;
     private Context context;
 
+    @Inject
     public MeasurementRepository(Context context, MeasurementsValidator validator) {
         this.context = context;
         this.validator = validator;
@@ -36,7 +38,7 @@ public class MeasurementRepository {
         return add(measurements, new Date());
     }
 
-    public SaveResult add(List<Measurement> measurements, Date timestamp) {
+    private SaveResult add(List<Measurement> measurements, Date timestamp) {
         ValidationResult result = validator.validate(measurements);
         if (!result.passed()) {
             return new SaveResult(result);

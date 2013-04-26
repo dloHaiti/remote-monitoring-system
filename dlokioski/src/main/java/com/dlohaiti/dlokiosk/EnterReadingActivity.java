@@ -5,27 +5,29 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.SaveResult;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
-import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.util.*;
 
-import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.*;
+import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.WTU_EFF;
+import static com.dlohaiti.dlokiosk.domain.MeasurementLocation.WTU_FEED;
 import static com.dlohaiti.dlokiosk.domain.MeasurementType.*;
 
 public class EnterReadingActivity extends RoboActivity {
 
-    private MeasurementRepository repository;
     private Map<MeasurementType, LinearLayout> typeInputMap;
-    @Inject private MeasurementsValidator validator;
+    @Inject private MeasurementRepository repository;
     @InjectView(R.id.temperature_row) private LinearLayout temperatureRow;
     @InjectView(R.id.ph_row) private LinearLayout phRow;
     @InjectView(R.id.turbidity_row) private LinearLayout turbidityRow;
@@ -71,11 +73,10 @@ public class EnterReadingActivity extends RoboActivity {
     @InjectView(R.id.button_hardness_location_wtu_eff) private RadioButton hardnessWtuEff;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_reading);
         setupActionBar();
-        repository = new MeasurementRepository(this, validator);
         typeInputMap = new HashMap<MeasurementType, LinearLayout>();
         typeInputMap.put(TEMPERATURE, temperatureRow);
         typeInputMap.put(PH, phRow);
@@ -147,6 +148,10 @@ public class EnterReadingActivity extends RoboActivity {
         } else {
             Toast.makeText(this, "failed to save measurements :(", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public Set<View> getInputRows() {
+        return new HashSet<View>(typeInputMap.values());
     }
 
     private MeasurementLocation getLocation(RadioButton borehole, RadioButton wtuEff) {

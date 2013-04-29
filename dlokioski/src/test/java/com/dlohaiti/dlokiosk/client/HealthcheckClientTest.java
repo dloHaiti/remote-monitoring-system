@@ -9,8 +9,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class HealthcheckClientTest {
-    HealthcheckClient healthcheckClient;
-    RestClient restClient;
+    private HealthcheckClient healthcheckClient;
+    private RestClient restClient;
 
     @Before
     public void setup() {

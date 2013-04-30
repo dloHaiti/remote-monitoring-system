@@ -8,19 +8,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
-    
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="moveToNewReadingScreen"
-        android:text="@string/record_new_reading_button" android:id="@+id/button"
-        android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+
     <RelativeLayout
             android:layout_width="172dp"
             android:layout_height="39dp"
             android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="120dp" android:id="@+id/relativeLayout">
         <ImageView
                 android:layout_width="37dp"
                 android:layout_height="37dp"
@@ -41,5 +34,21 @@
                 android:id="@+id/serverStatusProgressBar"
                 android:layout_alignLeft="@+id/statusImage" android:layout_alignBottom="@+id/statusImage"/>
     </RelativeLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" android:layout_centerVertical="true">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="moveToNewReadingScreen"
+            android:text="@string/record_new_reading_button" android:id="@+id/button"
+            android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+        <Button android:layout_width="100dp" android:layout_height="fill_parent"
+                android:onClick="doManualSync" android:text="@string/manual_sync_button"
+                android:id="@+id/manualSyncButton" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    </LinearLayout>
 
 </RelativeLayout>

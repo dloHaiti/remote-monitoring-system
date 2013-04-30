@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="record_new_reading_button">New Reading</string>
+    <string name="manual_sync_button">Manual Sync</string>
     <string name="title_activity_enter_reading">Enter New Reading</string>
     <string name="label_temperature">Temperature</string>
     <string name="label_pH">pH</string>

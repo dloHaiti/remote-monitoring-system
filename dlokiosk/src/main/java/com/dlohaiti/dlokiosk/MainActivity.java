@@ -26,7 +26,7 @@ public class MainActivity extends RoboActivity implements StatusView {
         super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus) {
-            new CheckServerStatusTask(this, getString(R.string.dlo_server_url)).execute();
+            new CheckServerStatusTask(this.getApplicationContext(), this, getString(R.string.dlo_server_url)).execute();
         }
     }
 
@@ -42,6 +42,7 @@ public class MainActivity extends RoboActivity implements StatusView {
     }
 
     public void doManualSync(View view) {
+        new ManualSyncReadingsTask(this).execute();
     }
 
     @Override

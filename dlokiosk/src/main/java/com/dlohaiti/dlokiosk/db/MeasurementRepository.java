@@ -28,7 +28,7 @@ public class MeasurementRepository {
     private static final String FIELD_NAME_PARAMETER = "parameter";
     private static final String FIELD_NAME_LOCATION = "location";
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
-    private static final String MEASUREMENTS_FILE = "dlokioski.dat";
+    private static final String MEASUREMENTS_FILE = "dlokiosk.dat";
 
     private static final Logger logger = LoggerFactory.getLogger(MeasurementRepository.class);
 

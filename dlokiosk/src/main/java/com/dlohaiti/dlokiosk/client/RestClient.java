@@ -1,20 +1,23 @@
 package com.dlohaiti.dlokiosk.client;
 
+import com.dlohaiti.dlokiosk.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import roboguice.inject.InjectResource;
 
 public class RestClient {
 
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
-    private final String baseUrl;
     private final RestTemplate restTemplate;
 
-    public RestClient(String baseUrl) {
-        this.baseUrl = baseUrl;
+    @InjectResource(R.string.dlo_server_url)
+    String baseUrl;
+
+    public RestClient() {
         restTemplate = getJsonRestTemplate();
     }
 

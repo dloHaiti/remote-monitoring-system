@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk.client;
 
+import com.google.inject.Inject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -7,6 +9,7 @@ import java.io.StringReader;
 public class ReadingClient {
     private RestClient restClient;
 
+    @Inject
     public ReadingClient(RestClient restClient) {
         this.restClient = restClient;
     }

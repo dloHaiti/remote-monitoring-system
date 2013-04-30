@@ -1,8 +1,11 @@
 package com.dlohaiti.dlokiosk.client;
 
+import com.google.inject.Inject;
+
 public class HealthcheckClient {
     private RestClient restClient;
 
+    @Inject
     public HealthcheckClient(RestClient restClient) {
         this.restClient = restClient;
     }

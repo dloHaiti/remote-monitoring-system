@@ -3,7 +3,7 @@ package com.dlohaiti.dlokiosk;
 import android.content.Context;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.client.HealthcheckClient;
-import com.dlohaiti.dlokiosk.client.RestClient;
+import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
 import java.io.PrintWriter;
@@ -12,13 +12,13 @@ import java.io.Writer;
 
 public class CheckServerStatusTask extends RoboAsyncTask<Boolean> {
 
+    @Inject
     private HealthcheckClient healthcheckClient;
     private StatusView statusView;
 
     public CheckServerStatusTask(Context context, StatusView statusView, String baseUrl) {
         super(context);
         this.statusView = statusView;
-        healthcheckClient = new HealthcheckClient(new RestClient(baseUrl));
     }
 
     @Override

@@ -10,6 +10,7 @@
 
     <properties>
         <platform.version>4.0.1.2</platform.version>
+        <powermock.version>1.5</powermock.version>
     </properties>
 
     <dependencies>
@@ -44,6 +45,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-android</artifactId>
+            <version>1.6.1-RC1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.pivotallabs</groupId>
@@ -67,6 +73,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

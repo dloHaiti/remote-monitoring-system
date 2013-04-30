@@ -6,9 +6,19 @@ import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,21 +31,31 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(LoggerFactory.class)
 public class MeasurementRepositoryTest {
 
     private MeasurementRepository repository;
     private Context context;
     private MeasurementsValidator validator;
     private FileOutputStream outputStream;
+    private FileInputStream inputStream;
 
     @Before
     public void setup() throws FileNotFoundException {
+        mockStatic(LoggerFactory.class);
+        Logger logger = mock(Logger.class);
+        when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
+
         context = mock(Context.class);
         validator = mock(MeasurementsValidator.class);
         outputStream = mock(FileOutputStream.class);
+        inputStream = mock(FileInputStream.class);
         given(context.openFileOutput(anyString(), anyInt())).willReturn(outputStream);
+        given(context.openFileInput(anyString())).willReturn(inputStream);
         given(validator.validate(anyList())).willReturn(new ValidationResult(new HashSet<MeasurementType>()));
         repository = new MeasurementRepository(context, validator);
     }
@@ -54,6 +74,17 @@ public class MeasurementRepositoryTest {
         String expected = "{\"reading\":{\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"location\":\"BOREHOLE\",\"value\":\"5\"}]}}";
 
         verify(outputStream).write(expected.getBytes());
+    }
+
+    @Test
+    public void shouldCloseLogFileEvenOnExceptions() throws IOException {
+        Measurement measurement = new Measurement(MeasurementType.PH, "5", MeasurementLocation.BOREHOLE);
+
+        doThrow(new IOException()).when(outputStream).write(Matchers.<byte[]>any());
+
+        repository.add(Arrays.asList(measurement));
+
+        verify(outputStream).close();
     }
 
     @Test
@@ -82,4 +113,33 @@ public class MeasurementRepositoryTest {
         SaveResult saveResult = repository.add(measurements);
         assertThat(saveResult.passedValidation(), is(true));
     }
+
+    @Test
+    public void shouldGetWholeLogFileWhenReadingIt() throws IOException {
+        given(inputStream.available()).willReturn(1000);
+        given(inputStream.read((byte[]) any())).willReturn(1000);
+
+        String result = repository.getAll();
+
+        assertThat(result.length(), is(1000));
+    }
+
+    @Test
+    public void shouldReturnEmptyStringWhenLogFileIsMissing() throws IOException {
+        given(context.openFileInput(anyString())).willThrow(new FileNotFoundException());
+
+        String result = repository.getAll();
+
+        assertThat(result, is(StringUtils.EMPTY));
+    }
+
+
+    @Test
+    public void shouldRemoveLogFileOnPurgeCall() throws IOException {
+        given(context.deleteFile(anyString())).willReturn(true);
+
+        assertThat(repository.purge(), is(true));
+    }
+
+
 }

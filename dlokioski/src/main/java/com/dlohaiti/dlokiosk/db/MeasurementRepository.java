@@ -8,12 +8,17 @@ import com.google.inject.Inject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class MeasurementRepository {
 
@@ -25,6 +30,8 @@ public class MeasurementRepository {
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
     private static final String MEASUREMENTS_FILE = "dlokioski.dat";
 
+    private static final Logger logger = LoggerFactory.getLogger(MeasurementRepository.class);
+
     private MeasurementsValidator validator;
     private Context context;
 
@@ -32,6 +39,23 @@ public class MeasurementRepository {
     public MeasurementRepository(Context context, MeasurementsValidator validator) {
         this.context = context;
         this.validator = validator;
+    }
+
+    public String getAll() {
+        try {
+            byte[] buffer;
+            FileInputStream inputStream = context.openFileInput(MEASUREMENTS_FILE);
+            try {
+                buffer = new byte[inputStream.available()];
+                inputStream.read(buffer);
+            } finally {
+                inputStream.close();
+            }
+            return new String(buffer);
+        } catch (IOException e) {
+            logger.error("Error while reading " + MEASUREMENTS_FILE, e);
+            return EMPTY;
+        }
     }
 
     public SaveResult add(List<Measurement> measurements) {
@@ -49,9 +73,11 @@ public class MeasurementRepository {
             appendData(data);
         } catch (JSONException e) {
             //TODO: test this
+            logger.error("Error while formatting json data", e);
             saveSuccessful = false;
         } catch (IOException e) {
             //TODO: test this
+            logger.error("Error while writing to " + MEASUREMENTS_FILE, e);
             saveSuccessful = false;
         }
         return new SaveResult(result, saveSuccessful);
@@ -89,8 +115,14 @@ public class MeasurementRepository {
         FileOutputStream outputStream;
 
         outputStream = context.openFileOutput(MEASUREMENTS_FILE, Context.MODE_APPEND);
-        outputStream.write(reading.toString().getBytes());
-        outputStream.close();
+        try {
+            outputStream.write(reading.toString().getBytes());
+        } finally {
+            outputStream.close();
+        }
     }
 
+    public boolean purge() {
+        return context.deleteFile(MEASUREMENTS_FILE);
+    }
 }

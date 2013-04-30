@@ -61,6 +61,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         String expected = "{\"reading\":{\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"location\":\"BOREHOLE\",\"value\":\"5\"}]}}";
 
         verify(outputStream).write(expected.getBytes());
+        verify(outputStream).write('\n');
     }
 
     @Test

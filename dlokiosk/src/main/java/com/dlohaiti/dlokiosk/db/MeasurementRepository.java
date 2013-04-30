@@ -117,6 +117,7 @@ public class MeasurementRepository {
         outputStream = context.openFileOutput(MEASUREMENTS_FILE, Context.MODE_APPEND);
         try {
             outputStream.write(reading.toString().getBytes());
+            outputStream.write('\n');
         } finally {
             outputStream.close();
         }

@@ -34,5 +34,6 @@
     <string name="button_borehole">Borehole</string>
     <string name="dlo_server_url">http://10.0.2.2:8080/dloserver</string>
     <string name="server_status_checking_label">Server Status</string>
+    <string name="sending_readings_message">Sending readings to server</string>
 
 </resources>

@@ -1,22 +1,16 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
+import com.dlohaiti.dlokiosk.AbstractUnitTest;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Matchers;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,12 +25,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(LoggerFactory.class)
-public class MeasurementRepositoryTest {
+public class MeasurementRepositoryTest extends AbstractUnitTest {
 
     private MeasurementRepository repository;
     private Context context;
@@ -46,10 +37,6 @@ public class MeasurementRepositoryTest {
 
     @Before
     public void setup() throws FileNotFoundException {
-        mockStatic(LoggerFactory.class);
-        Logger logger = mock(Logger.class);
-        when(LoggerFactory.getLogger(any(Class.class))).thenReturn(logger);
-
         context = mock(Context.class);
         validator = mock(MeasurementsValidator.class);
         outputStream = mock(FileOutputStream.class);

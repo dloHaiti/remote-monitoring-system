@@ -29,8 +29,15 @@ public class MainActivity extends RoboActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
-        new CheckServerStatusTask(getString(R.string.dlo_server_url)).execute();
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus) {
+            new CheckServerStatusTask(getString(R.string.dlo_server_url)).execute();
+        }
     }
 
     @Override
@@ -46,8 +53,8 @@ public class MainActivity extends RoboActivity {
     }
 
     private void showProgressBar() {
-        serverStatusProgressBar.setVisibility(View.VISIBLE);
         statusImage.setVisibility(View.INVISIBLE);
+        serverStatusProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void dismissProgressBar() {

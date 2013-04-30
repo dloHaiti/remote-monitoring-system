@@ -5,8 +5,14 @@ import grails.converters.JSON
 class ReadingController {
 
     def save() {
-        Reading reading = new Reading()
+        def timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")
+        Reading reading = Reading.findByTimestamp(timestamp)
+        if (!reading) {
+            reading = new Reading()
+        }
+
         try {
+            log.debug "Received $params"
             reading.timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")
 
             int numMeasurements = 0

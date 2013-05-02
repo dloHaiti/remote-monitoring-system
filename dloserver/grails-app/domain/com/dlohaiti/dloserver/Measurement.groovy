@@ -7,6 +7,6 @@ class Measurement {
     MeasurementLocation location
     String value
 
-    static belongsTo = Reading
+    static belongsTo = [reading: Reading]
 }
 

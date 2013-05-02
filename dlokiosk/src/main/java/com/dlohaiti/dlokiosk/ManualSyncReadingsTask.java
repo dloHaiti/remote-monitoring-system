@@ -1,17 +1,21 @@
 package com.dlohaiti.dlokiosk;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
+import com.dlohaiti.dlokiosk.domain.Reading;
 import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
-public class ManualSyncReadingsTask extends RoboAsyncTask<Void> {
+import java.util.Collection;
+
+public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
     private Activity activity;
-    @Inject
     private ProgressDialog progressDialog;
+
     @Inject
     private MeasurementRepository repository;
     @Inject
@@ -20,6 +24,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<Void> {
 
     public ManualSyncReadingsTask(Activity activity) {
         super(activity.getApplicationContext());
+        this.progressDialog = new ProgressDialog(activity);
         this.activity = activity;
     }
 
@@ -35,13 +40,30 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<Void> {
     }
 
     @Override
-    public Void call() throws Exception {
-        return null;  //TODO
+    public String call() throws Exception {
+        Collection<Reading> readings = repository.getReadings();
+        if (readings.isEmpty()) {
+            return activity.getString(R.string.no_readings_msg);
+        }
+        for (Reading reading: readings) {
+            if (!readingClient.send(reading)) {
+                return activity.getString(R.string.send_error_msg);
+            }
+        }
+        return activity.getString(R.string.send_success_msg, readings.size());
+    }
+
+    private void showMessage(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
-    protected void onSuccess(Void aVoid) {
-        // TODO
+    protected void onSuccess(String message) {
+        showMessage(message);
     }
 
     @Override

@@ -35,5 +35,9 @@
     <string name="dlo_server_url">http://10.0.2.2:8080/dloserver</string>
     <string name="server_status_checking_label">Server Status</string>
     <string name="sending_readings_message">Sending readings to server</string>
+    <string name="no_readings_msg">No readings to send</string>
+    <string name="send_error_msg">Error sending readings to server.</string>
+    <string name="send_success_msg">Successfully sent %1$d readings to server.</string>
+
 
 </resources>

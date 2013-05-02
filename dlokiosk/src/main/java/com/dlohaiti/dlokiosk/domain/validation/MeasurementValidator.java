@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class MeasurementValidator {
     public boolean validate(Measurement measurement) {
-        switch(measurement.getName()) {
+        switch(measurement.getParameter()) {
             case TEMPERATURE:
                 return locationSelectedAndNumberBetweenInclusive(measurement, 10, 30);
             case PH:
@@ -47,7 +47,7 @@ public class MeasurementValidator {
     }
 
     private boolean locationAndValueSelected(Measurement measurement) {
-        boolean locationSelected = locationSelected(measurement.getSamplingSite());
+        boolean locationSelected = locationSelected(measurement.getLocation());
         if(StringUtils.isNotEmpty(measurement.getValue())) {
             SelectionValue actual = SelectionValue.valueOf(measurement.getValue());
             return locationSelected && actual != SelectionValue.UNSELECTED;
@@ -56,7 +56,7 @@ public class MeasurementValidator {
     }
 
     private boolean locationSelectedAndNumberBetweenInclusive(Measurement measurement, int low, int high) {
-        boolean locationSelected = locationSelected(measurement.getSamplingSite());
+        boolean locationSelected = locationSelected(measurement.getLocation());
         if(NumberUtils.isNumber(measurement.getValue())) {
             BigDecimal actual = new BigDecimal(measurement.getValue());
             return locationSelected &&

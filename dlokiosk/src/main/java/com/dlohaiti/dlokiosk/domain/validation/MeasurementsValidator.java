@@ -21,7 +21,7 @@ public class MeasurementsValidator {
         for(Measurement measurement : measurements) {
             boolean passed = validator.validate(measurement);
             if(!passed) {
-                invalidMeasurements.add(measurement.getName());
+                invalidMeasurements.add(measurement.getParameter());
             }
         }
         return new ValidationResult(invalidMeasurements);

@@ -5,8 +5,10 @@ import com.dlohaiti.dlokiosk.AbstractUnitTest;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
+import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         given(context.openFileOutput(anyString(), anyInt())).willReturn(outputStream);
         given(context.openFileInput(anyString())).willReturn(inputStream);
         given(validator.validate(anyList())).willReturn(new ValidationResult(new HashSet<MeasurementType>()));
-        repository = new MeasurementRepository(context, validator);
+        repository = new MeasurementRepository(context, validator, new ObjectMapper());
     }
 
     private String formatDate(Date date) {
@@ -58,7 +60,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         Measurement measurement = new Measurement(MeasurementType.PH, "5", MeasurementLocation.BOREHOLE);
         repository.add(Arrays.asList(measurement), now);
 
-        String expected = "{\"reading\":{\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"location\":\"BOREHOLE\",\"value\":\"5\"}]}}";
+        String expected = "{\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"value\":\"5\",\"location\":\"BOREHOLE\"}]}";
 
         verify(outputStream).write(expected.getBytes());
         verify(outputStream).write('\n');
@@ -70,7 +72,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
 
         doThrow(new IOException()).when(outputStream).write(Matchers.<byte[]>any());
 
-        repository.add(Arrays.asList(measurement));
+        repository.add(Arrays.asList(measurement), new Date());
 
         verify(outputStream).close();
     }
@@ -78,7 +80,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
     @Test
     public void shouldRunValidationsBeforeSaving() {
         List<Measurement> measurements = Arrays.asList(new Measurement(MeasurementType.TASTE, "OK", MeasurementLocation.WTU_EFF));
-        repository.add(measurements);
+        repository.add(measurements, new Date());
         verify(validator).validate(measurements);
     }
 
@@ -89,7 +91,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         invalid.add(MeasurementType.TDS);
         given(validator.validate(measurements)).willReturn(new ValidationResult(invalid));
 
-        SaveResult saveResult = repository.add(measurements);
+        SaveResult saveResult = repository.add(measurements, new Date());
 
         assertThat(saveResult.passedValidation(), is(false));
         assertThat(saveResult.getValidationFailures(), is(invalid));
@@ -98,27 +100,17 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
     @Test
     public void shouldReturnValidationSuccessfulWhenPasses() {
         List<Measurement> measurements = Arrays.asList(new Measurement(MeasurementType.TDS, "150", MeasurementLocation.BOREHOLE));
-        SaveResult saveResult = repository.add(measurements);
+        SaveResult saveResult = repository.add(measurements, new Date());
         assertThat(saveResult.passedValidation(), is(true));
-    }
-
-    @Test
-    public void shouldGetWholeLogFileWhenReadingIt() throws IOException {
-        given(inputStream.available()).willReturn(1000);
-        given(inputStream.read((byte[]) any())).willReturn(1000);
-
-        String result = repository.getAll();
-
-        assertThat(result.length(), is(1000));
     }
 
     @Test
     public void shouldReturnEmptyStringWhenLogFileIsMissing() throws IOException {
         given(context.openFileInput(anyString())).willThrow(new FileNotFoundException());
 
-        String result = repository.getAll();
+        Collection<Reading> result = repository.getReadings();
 
-        assertThat(result, is(StringUtils.EMPTY));
+        assertThat(result.size(), is(0));
     }
 
 

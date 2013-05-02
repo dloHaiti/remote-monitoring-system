@@ -14,6 +14,7 @@ import com.dlohaiti.dlokiosk.db.SaveResult;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
+import com.dlohaiti.dlokiosk.domain.Reading;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -138,7 +139,11 @@ public class EnterReadingActivity extends RoboActivity {
         measurements.add(new Measurement(ODOR, getSelected(odorOk, odorNotOk).name(), WTU_EFF));
         measurements.add(new Measurement(TASTE, getSelected(tasteOk, tasteNotOk).name(), WTU_EFF));
 
-        SaveResult saveResult = repository.add(measurements);
+        Reading reading = new Reading();
+        reading.setTimestamp(new Date());
+        reading.setMeasurements(measurements);
+
+        SaveResult saveResult = repository.add(reading);
         if (saveResult.successful()) {
             resetForm();
             Toast.makeText(this, "saved measurements :)", Toast.LENGTH_LONG).show();

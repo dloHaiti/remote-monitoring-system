@@ -2,26 +2,39 @@ package com.dlohaiti.dlokiosk.domain;
 
 public class Measurement {
 
-    private MeasurementType name;
+    private MeasurementType parameter;
     private String value;
-    private MeasurementLocation samplingSite;
+    private MeasurementLocation location;
 
-    public Measurement(MeasurementType name, String value, MeasurementLocation samplingSite) {
-        this.name = name;
+    public Measurement() { }
+
+    public Measurement(MeasurementType parameter, String value, MeasurementLocation location) {
+        this.parameter = parameter;
         this.value = value;
-        this.samplingSite = samplingSite;
+        this.location = location;
     }
 
-    public MeasurementType getName() {
-        return name;
+    public MeasurementType getParameter() {
+        return parameter;
     }
 
     public String getValue() {
         return value;
     }
 
-    public MeasurementLocation getSamplingSite() {
-        return samplingSite;
+    public MeasurementLocation getLocation() {
+        return location;
     }
 
+    public void setParameter(MeasurementType parameter) {
+        this.parameter = parameter;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setLocation(MeasurementLocation location) {
+        this.location = location;
+    }
 }

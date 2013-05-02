@@ -10,13 +10,12 @@ import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.emptyList;
 
@@ -42,18 +41,17 @@ public class MeasurementRepository {
 
     public Collection<Reading> getReadings() {
         FileInputStream inputStream = null;
+
         try {
             try {
                 Collection<Reading> readings = new ArrayList<Reading>();
                 inputStream = context.openFileInput(MEASUREMENTS_FILE);
-                DataInputStream in = new DataInputStream(inputStream);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    readings.add(mapper.readValue(line, Reading.class));
+                Iterator<Reading> it = mapper.reader(Reading.class).readValues(inputStream);
+                while (it.hasNext()) {
+                    readings.add(it.next());
                 }
+
                 return readings;
             } catch (IOException e) {
                 logger.warn("Error while reading " + MEASUREMENTS_FILE, e);

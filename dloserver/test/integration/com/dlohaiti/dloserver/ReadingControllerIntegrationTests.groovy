@@ -12,10 +12,10 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
     }
 
     void testValidData() {
-        controller.request.json = '{"reading":{"timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
+        controller.request.json = '{"timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
-                ']}}'
+                ']}'
 
         controller.save()
 
@@ -27,10 +27,10 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     void testShouldUpdateDataWithTheSameTimeStamp() {
         String timestamp = "2013-04-24 12:00:02 EDT"
-        controller.request.json = '{"reading":{"timestamp":"' + timestamp +'","measurements":[' +
+        controller.request.json = '{"timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
-                ']}}'
+                ']}'
         controller.save()
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
@@ -39,10 +39,10 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
         reset()
 
-        controller.request.json = '{"reading":{"timestamp":"' + timestamp +'","measurements":[' +
+        controller.request.json = '{"timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
-                ']}}'
+                ']}'
         controller.save()
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
@@ -51,10 +51,10 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
     }
 
     void testInvalidTimestampFormat() {
-        controller.request.json = '{"reading":{"timestamp":"24/12/12-00:00:01","measurements":[' +
+        controller.request.json = '{"timestamp":"24/12/12-00:00:01","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
-                ']}}'
+                ']}'
 
         controller.save()
 

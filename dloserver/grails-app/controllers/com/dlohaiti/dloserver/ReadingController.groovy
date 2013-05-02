@@ -5,32 +5,26 @@ import grails.converters.JSON
 class ReadingController {
 
     def save() {
-        def timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")
+        log.debug "Received $params"
+        def timestamp = params.date("timestamp", "yyyy-MM-dd hh:mm:ss z")
         Reading reading = Reading.findByTimestamp(timestamp)
         if (!reading) {
             reading = new Reading()
         }
 
         try {
-            log.debug "Received $params"
-            reading.timestamp = params.date("reading.timestamp", "yyyy-MM-dd hh:mm:ss z")
+            reading.timestamp = timestamp
 
-            int numMeasurements = 0
-            def measurementJson = params["reading[0]"]
-            while (measurementJson) {
-                Measurement measurement = new Measurement()
-                measurement.parameter = measurementJson.parameter
-                measurement.location = measurementJson.location
-                measurement.value = measurementJson.value
+            params.measurements?.each {
+                Measurement measurement = new Measurement(it)
                 reading.addToMeasurements(measurement)
-                numMeasurements++
-                measurementJson = params["reading[$numMeasurements]"]
             }
 
             if (reading.save()) {
                 render(status: 201, text: [msg: "OK"] as JSON)
             } else {
                 // TODO Better formatting of error msgs
+                log.debug(reading.errors)
                 render(status: 422, text: [msg: reading.errors] as JSON)
             }
         } catch (Exception e) {

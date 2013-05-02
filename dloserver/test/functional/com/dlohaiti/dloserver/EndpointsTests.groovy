@@ -15,10 +15,10 @@ class EndpointsTests extends APITestCase {
         post('/reading') {
             headers['Content-Type'] = 'application/json'
             body { """
-                {"reading":{"timestamp":"2013-04-24 00:00:01 EDT","measurements":[
+                {"timestamp":"2013-04-24 00:00:01 EDT","measurements":[
                     {"parameter":"PH","location":"BOREHOLE","value":"5"},
                     {"parameter":"COLOR","location":"WTU_EFF","value":"OK"}
-                ]}}
+                ]}
             """ }
         }
 
@@ -36,10 +36,10 @@ class EndpointsTests extends APITestCase {
         post('/reading') {
             headers['Content-Type'] = 'application/json'
             body { """
-                {"reading":{"measurements":[
+                {"measurements":[
                     {"parameter":"PH","location":"BOREHOLE","value":"5"},
                     {"parameter":"COLOR","location":"WTU_EFF","value":"OK"}
-                ]}}
+                ]}
             """ }
         }
 

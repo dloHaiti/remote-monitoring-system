@@ -41,6 +41,10 @@ public class MainActivity extends RoboActivity implements StatusView {
         startActivity(intent);
     }
 
+    public void moveToNewSaleScreen(View view) {
+        startActivity(new Intent(this, EnterSaleActivity.class));
+    }
+
     public void doManualSync(View view) {
         new ManualSyncReadingsTask(this).execute();
     }

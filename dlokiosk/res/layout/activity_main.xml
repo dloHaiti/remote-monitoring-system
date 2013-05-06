@@ -46,14 +46,21 @@
 
   <LinearLayout
     android:orientation="horizontal"
-    android:layout_width="195dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true">
 
     <Button
       android:layout_width="100dp"
-      android:layout_height="wrap_content"
+      android:layout_height="fill_parent"
+      android:onClick="moveToNewSaleScreen"
+      android:text="@string/new_sale_button"
+      android:id="@+id/new_sale_button" />
+
+    <Button
+      android:layout_width="100dp"
+      android:layout_height="fill_parent"
       android:layout_gravity="center"
       android:onClick="moveToNewReadingScreen"
       android:text="@string/record_new_reading_button"

@@ -20,6 +20,7 @@
     <ImageView
       android:layout_width="37dp"
       android:layout_height="37dp"
+      android:contentDescription="@string/server_status_content_description"
       android:id="@+id/statusImage"
       android:visibility="invisible"
       android:scaleType="fitXY"
@@ -33,7 +34,7 @@
       android:id="@+id/serverStatusTextView"
       android:layout_toRightOf="@+id/serverStatusProgressBar"
       android:layout_centerVertical="true"
-      android:textSize="20px" />
+      android:textSize="20dp" />
 
     <ProgressBar
       android:layout_width="wrap_content"
@@ -56,18 +57,14 @@
       android:layout_gravity="center"
       android:onClick="moveToNewReadingScreen"
       android:text="@string/record_new_reading_button"
-      android:id="@+id/button"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true" />
+      android:id="@+id/button" />
 
     <Button
       android:layout_width="100dp"
       android:layout_height="fill_parent"
       android:onClick="doManualSync"
       android:text="@string/manual_sync_button"
-      android:id="@+id/manualSyncButton"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true" />
+      android:id="@+id/manualSyncButton" />
   </LinearLayout>
 
 </RelativeLayout>

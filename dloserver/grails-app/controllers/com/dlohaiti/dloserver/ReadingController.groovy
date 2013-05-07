@@ -15,6 +15,7 @@ class ReadingController {
         try {
             reading.timestamp = timestamp
 
+            // FIXME It's duplicating measurements that are already in the collection
             params.measurements?.each {
                 Measurement measurement = new Measurement(it)
                 reading.addToMeasurements(measurement)

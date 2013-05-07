@@ -18,6 +18,8 @@ class ReadingController {
             // FIXME It's duplicating measurements that are already in the collection
             params.measurements?.each {
                 Measurement measurement = new Measurement(it)
+                measurement.clearErrors()
+                measurement.location = Location.findByNameIlike(it.location)
                 reading.addToMeasurements(measurement)
             }
 

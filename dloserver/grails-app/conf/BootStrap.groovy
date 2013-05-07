@@ -4,9 +4,9 @@ class BootStrap {
 
     def init = { servletContext ->
         if (Location.count() == 0) {
-            new Location(name: 'BOREHOLE').save()
-            new Location(name: 'WTU EFF').save()
-            new Location(name: 'WTU FEED').save()
+            new Location(name: 'Borehole').save()
+            new Location(name: 'WTU Eff').save()
+            new Location(name: 'WTU Feed').save()
         }
     }
     def destroy = {

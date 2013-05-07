@@ -23,6 +23,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert 201 == controller.response.status
         assert 1 == Reading.count()
         assert 2 == Reading.first().measurements.size()
+        assert "Borehole" == Reading.first().measurements.first().location.name
     }
 
     void testShouldUpdateDataWithTheSameTimeStamp() {

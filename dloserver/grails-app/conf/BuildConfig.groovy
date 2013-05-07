@@ -61,5 +61,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.1'
 
         compile ":functional-test:2.0.RC1"
+
+        runtime ':jasper:1.6.1'
     }
 }

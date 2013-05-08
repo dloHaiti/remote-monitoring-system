@@ -8,14 +8,14 @@ class ReadingController {
         log.debug "Received $params"
         def timestamp = params.date("timestamp", "yyyy-MM-dd hh:mm:ss z")
         Reading reading = Reading.findByTimestamp(timestamp)
-        if (!reading) {
-            reading = new Reading()
+        if (reading) {
+            reading.delete()
         }
+        reading = new Reading()
 
         try {
             reading.timestamp = timestamp
 
-            // FIXME It's duplicating measurements that are already in the collection
             params.measurements?.each {
                 Measurement measurement = new Measurement(it)
                 measurement.clearErrors()
@@ -23,7 +23,7 @@ class ReadingController {
                 reading.addToMeasurements(measurement)
             }
 
-            if (reading.save()) {
+            if (reading.save(flush: true)) {
                 render(status: 201, text: [msg: "OK"] as JSON)
             } else {
                 // TODO Better formatting of error msgs

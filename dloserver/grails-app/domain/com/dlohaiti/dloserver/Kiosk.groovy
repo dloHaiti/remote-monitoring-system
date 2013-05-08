@@ -1,6 +1,6 @@
 package com.dlohaiti.dloserver
 
-class Kioski {
+class Kiosk {
 
     String name
 

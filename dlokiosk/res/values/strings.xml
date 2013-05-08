@@ -41,6 +41,7 @@
   <string name="server_status_content_description">Server Status</string>
   <string name="new_sale_button">New Sale</string>
   <string name="title_activity_enter_sale">New Sale</string>
+  <string name="checkout">checkout</string>
 
 
 </resources>

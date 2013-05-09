@@ -9,9 +9,9 @@ public class ProductRepository {
     private List<Product> products = new ArrayList<Product>();
 
     public List<Product> list() {
-        products.add(new Product(1L, "5GAL"));
-        products.add(new Product(2L, "10GAL"));
-        products.add(new Product(3L, "15GAL"));
+        products.add(new Product(1L, "2GAL", R.drawable.two_g));
+        products.add(new Product(2L, "5GAL", R.drawable.five_g));
+        products.add(new Product(3L, "10GAL", R.drawable.ten_g));
         return products;
     }
 
@@ -21,6 +21,6 @@ public class ProductRepository {
                 return product;
             }
         }
-        return new Product(null, null);
+        return new Product(null, null, -1);
     }
 }

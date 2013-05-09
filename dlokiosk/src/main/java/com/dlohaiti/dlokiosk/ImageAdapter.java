@@ -41,7 +41,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(R.drawable.green_checkmark);
+        imageView.setImageResource(products.get(position).getResource());
         return imageView;
     }
 }

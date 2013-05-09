@@ -25,7 +25,7 @@ public class SalesRepository {
         List<Product> products = new ArrayList<Product>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            products.add(new Product(cursor.getLong(0), cursor.getString(1)));
+            products.add(new Product(cursor.getLong(0), cursor.getString(1), -1));
             cursor.moveToNext();
         }
         return products;

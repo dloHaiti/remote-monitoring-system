@@ -1,17 +1,16 @@
 package com.dlohaiti.dloserver
 
-public enum MeasurementType {
-    TEMPERATURE,
-    PH,
-    TURBIDITY,
-    TDS,
-    FREE_CHLORINE_CONCENTRATION,
-    TOTAL_CHLORINE_CONCENTRATION,
-    FREE_CHLORINE_RESIDUAL,
-    TOTAL_CHLORINE_RESIDUAL,
-    ALKALINITY,
-    HARDNESS,
-    COLOR,
-    ODOR,
-    TASTE
+class MeasurementType {
+
+    String name
+    String unit
+    BigDecimal min
+    BigDecimal max
+
+    static constraints = {
+        name(blank: false, unique: true)
+        unit(nullable: true)
+        min(nullable: true)
+        max(nullable: true, validator: { val, obj -> ((val == null) || (obj.min < val))})
+    }
 }

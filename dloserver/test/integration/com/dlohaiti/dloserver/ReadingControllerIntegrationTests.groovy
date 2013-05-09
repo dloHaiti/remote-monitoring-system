@@ -1,17 +1,14 @@
 package com.dlohaiti.dloserver
 
+import org.junit.Before
+import org.junit.Test
+
 class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     ReadingController controller = new ReadingController()
 
-    protected void reset() {
-        controller.request.clearAttributes()
-        controller.request.removeAllParameters()
-        controller.response.committed = false
-        controller.response.resetBuffer()
-    }
-
-    void testValidData() {
+    @Test
+    void shouldSaveValidDataToDb() {
         controller.request.json = '{"timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
@@ -26,7 +23,8 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert "Borehole" == Reading.first().measurements.first().location.name
     }
 
-    void testShouldUpdateDataWithTheSameTimeStamp() {
+    @Test
+    void shouldUpdateDataWithTheSameTimeStamp() {
         String timestamp = "2013-04-24 12:00:02 EDT"
         controller.request.json = '{"timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
@@ -53,7 +51,8 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert 2 == Reading.first().measurements.size()
     }
 
-    void testInvalidTimestampFormat() {
+    @Test
+    void shouldRejectInvalidTimestampFormat() {
         controller.request.json = '{"timestamp":"24/12/12-00:00:01","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
@@ -65,5 +64,12 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
         assert 422 == controller.response.status
         assert 0 == Reading.count()
+    }
+
+    private void reset() {
+        controller.request.clearAttributes()
+        controller.request.removeAllParameters()
+        controller.response.committed = false
+        controller.response.resetBuffer()
     }
 }

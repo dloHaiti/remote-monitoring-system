@@ -4,35 +4,25 @@ import grails.converters.JSON
 
 class ReadingController {
 
+    def readingsService
+
     def save() {
         log.debug "Received $params"
-        def timestamp = params.date("timestamp", "yyyy-MM-dd hh:mm:ss z")
-        Reading reading = Reading.findByTimestamp(timestamp)
-        if (reading) {
-            reading.delete()
-        }
-        reading = new Reading()
+
+        Reading reading
 
         try {
-            reading.timestamp = timestamp
+            reading = readingsService.saveReading(params)
 
-            params.measurements?.each {
-                Measurement measurement = new Measurement(it)
-                measurement.clearErrors()
-                measurement.location = Location.findByNameIlike(it.location)
-                reading.addToMeasurements(measurement)
-            }
-
-            if (reading.save(flush: true)) {
-                render(status: 201, text: [msg: "OK"] as JSON)
-            } else {
+            if (reading.hasErrors()) {
                 // TODO Better formatting of error msgs
                 log.debug(reading.errors)
                 render(status: 422, text: [msg: reading.errors] as JSON)
+            } else {
+                render(status: 201, text: [msg: "OK"] as JSON)
             }
         } catch (Exception e) {
-            log.error("Error saving Reading [$reading.timestamp]: ", e)
-            // FIXME Not working, it's throwing and 500 error
+            log.error("Error saving Reading [${params.date('timestamp', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
             render(status: 503, text: [msg: e.message] as JSON)
         }
     }

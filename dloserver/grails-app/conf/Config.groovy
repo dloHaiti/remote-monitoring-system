@@ -92,8 +92,10 @@ log4j = {
     debug 'grails.app'
 }
 
-dloserver = {
+dloserver {
     readings.incoming  = '/tmp/incoming'
     readings.processed = '/tmp/processed'
     readings.failed    = '/tmp/failed'
+
+    measurement.timeformat = "yyyy-MM-dd hh:mm:ss z"
 }

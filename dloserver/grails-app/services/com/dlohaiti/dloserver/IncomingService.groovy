@@ -4,6 +4,8 @@ class IncomingService {
 
     def grailsApplication
 
+    static transactional = false
+
     public List<String> getIncomingFiles() {
         def result = []
 

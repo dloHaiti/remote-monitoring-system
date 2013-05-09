@@ -18,9 +18,11 @@ class ReadingsService {
             measurement.location = Location.findByNameIlike(it.location)
             measurement.parameter = MeasurementType.findByNameIlike(it.parameter)
             measurement.value = parseValue(it.value)
+            measurement.timestamp = timestamp
             reading.addToMeasurements(measurement)
         }
 
+        reading.kiosk = Kiosk.findByName(params.kiosk)
         reading.save(flush: true)
         return reading
     }

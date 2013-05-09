@@ -1,8 +1,14 @@
 package com.dlohaiti.dloserver
 
 import com.grailsrocks.functionaltest.APITestCase
+import org.junit.BeforeClass
 
 class EndpointsTests extends APITestCase {
+
+    @BeforeClass
+    static void setup() {
+        new Kiosk(name: "k1").save()
+    }
 
     void testServerIsUpAndRunning() {
         get("/healthcheck")
@@ -15,7 +21,7 @@ class EndpointsTests extends APITestCase {
         post('/reading') {
             headers['Content-Type'] = 'application/json'
             body { """
-                {"timestamp":"2013-04-24 00:00:01 EDT","measurements":[
+                {"kiosk":"k1", "timestamp":"2013-04-24 00:00:01 EDT","measurements":[
                     {"parameter":"PH","location":"BOREHOLE","value":"5"},
                     {"parameter":"COLOR","location":"WTU_EFF","value":"OK"}
                 ]}

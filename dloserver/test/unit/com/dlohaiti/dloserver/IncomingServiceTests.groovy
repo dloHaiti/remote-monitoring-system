@@ -99,7 +99,7 @@ class IncomingServiceTests {
     }
 
 
-    File createIncomingFile(String filename) {
+    private File createIncomingFile(String filename) {
         def dir = new File(grailsApplication.config.dloserver.readings.incoming.toString())
         def file = new File(dir, filename)
         file.createNewFile()

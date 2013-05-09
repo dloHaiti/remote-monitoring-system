@@ -24,7 +24,7 @@ class IncomingService {
         def file = new File(filename)
         def result = file.renameTo(new File(processedFolder, file.getName()))
 
-        log.debug("Moving file $filename to 'processed' folder: ${result?'success':'error'}")
+        log.debug("Moving file $filename to 'processed' folder: ${result?'SUCCESS':'ERROR'}")
         return result
     }
 
@@ -32,7 +32,7 @@ class IncomingService {
         def file = new File(filename)
         def result = file.renameTo(new File(failedFolder, file.getName()))
 
-        log.debug("Moving file $filename to 'failed' folder: ${result?'success':'error'}")
+        log.debug("Moving file $filename to 'failed' folder: ${result?'SUCCESS':'ERROR'}")
         return result
     }
 

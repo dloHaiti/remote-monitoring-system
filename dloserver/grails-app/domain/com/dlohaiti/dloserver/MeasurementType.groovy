@@ -14,7 +14,7 @@ class MeasurementType {
         unit(nullable: true)
         min(nullable: true)
         max(nullable: true, validator: { val, obj -> ((val == null) || (obj.min < val))})
-        sensor(nullable: true, unique: true)
+        sensor(nullable: true, unique: true, display: false)
     }
 
     public String toString() {

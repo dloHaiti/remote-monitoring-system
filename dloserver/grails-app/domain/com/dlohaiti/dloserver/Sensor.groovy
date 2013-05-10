@@ -10,10 +10,14 @@ class Sensor {
     static belongsTo = [kiosk: Kiosk]
 
     static constraints = {
-        kiosk(nullable: false)
         sensorId(blank: false, unique: true)
+        displayName(blank: false)
+        kiosk(nullable: false)
         measurementType(nullable: false)
         location(nullable: false)
-        displayName(blank: false)
+    }
+
+    public String toString() {
+        "$sensorId: $displayName"
     }
 }

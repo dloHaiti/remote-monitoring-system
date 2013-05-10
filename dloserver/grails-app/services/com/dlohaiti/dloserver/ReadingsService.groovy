@@ -69,6 +69,10 @@ class ReadingsService {
             Measurement measurement
             if (validLine) {
                 measurement = parseMeasurement(nextLine)
+                if (measurementIsNotUnique(measurement)) {
+                    log.warn("Measurement for sensor ${measurement.parameter.sensor.sensorId} @ ${measurement.timestamp} ignored, as it was already in DB")
+                    continue
+                }
                 reading.addToMeasurements(measurement)
                 reading.kiosk = measurement.parameter?.sensor?.kiosk
                 validLine = measurement.validate()
@@ -90,6 +94,10 @@ class ReadingsService {
         }
         log.info("Finished importing file '$filename' with ${reading.measurements?.size()} measurements")
         return true
+    }
+
+    private static boolean measurementIsNotUnique(Measurement measurement) {
+        Measurement.findByParameterAndTimestamp(measurement.parameter, measurement.timestamp)
     }
 
     private Measurement parseMeasurement(String[] nextLine) {

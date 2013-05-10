@@ -50,6 +50,23 @@ s2,2013-12-12 00:01:02 EDT,8
     }
 
     @Test
+    void shouldIgnoreAlreadyImportedMeasurements() {
+        createIncomingFile("file1.csv") <<
+                """s1,2013-12-12 00:01:02 EDT,20
+s2,2013-12-12 00:01:02 EDT,8
+"""
+        createIncomingFile("file_with_duplicated_measurement.csv") <<
+                """s1,2013-12-12 00:01:02 EDT,25
+s2,2013-12-12 05:00:00 EDT,9
+"""
+        readingsService.importIncomingFiles()
+
+        assert Reading.count() == 2
+        assert Measurement.countByParameter(temperature) == 1
+        assert Measurement.countByParameter(ph) == 2
+    }
+
+    @Test
     void shouldProcessAllValidFiles() {
         createIncomingFile("file1.csv") <<
                 """s1,2013-12-12 00:01:02 EDT,20

@@ -14,8 +14,8 @@ class Measurement {
         timestamp(nullable: false)
         value(nullable: false, validator: {
             val, obj ->
-                ((obj.parameter.min == null) || (val >= obj.parameter?.min)) &&
-                        ((obj.parameter.max == null) || (val <= obj.parameter?.max))
+                ((obj.parameter?.min == null) || (val >= obj.parameter?.min)) &&
+                        ((obj.parameter?.max == null) || (val <= obj.parameter?.max))
         })
     }
 }

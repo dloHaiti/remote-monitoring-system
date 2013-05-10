@@ -38,42 +38,56 @@ class ReadingsService {
     }
 
     public void importIncomingFiles() {
-        log.info("Importing new incoming files")
+        log.debug("Processing new incoming files")
 
         def incomingFiles = incomingService.incomingFiles
 
+        if (incomingFiles?.size()) {
+            log.info("Found ${incomingFiles?.size()} new files to be imported")
+        }
+
         incomingFiles.each {
-            def result = importFile(it)
-            log.info("Finished importing file $it: ${result?'SUCCESS':'ERROR'}")
-            if (result) {
+            if (importFile(it)) {
                 incomingService.markAsProcessed(it)
             } else {
                 incomingService.markAsFailed(it)
             }
         }
 
-        log.info("Finished importing ${incomingFiles.size()} files")
+        log.debug("Finished processing ${incomingFiles.size()} files")
     }
 
     private boolean importFile(String filename) {
+        log.info("Started importing file '$filename'")
         CSVReader reader = new CSVReader(new FileReader(filename))
         Reading reading = new Reading(timestamp: new Date())
 
-        String [] nextLine
+        String[] nextLine
         while ((nextLine = reader.readNext()) != null) {
-            if (nextLine.length == 3) {
-                Measurement measurement = parseMeasurement(nextLine)
-                reading.timestamp = measurement.timestamp
+            boolean validLine = (nextLine.length == 3)
+            Measurement measurement
+            if (validLine) {
+                measurement = parseMeasurement(nextLine)
                 reading.addToMeasurements(measurement)
                 reading.kiosk = measurement.parameter?.sensor?.kiosk
+                validLine = measurement.validate()
+            }
+            if (!validLine) {
+                log.error("File '$filename' will be rejected because it contains an invalid line: \"${nextLine}\"")
+                if (measurement?.hasErrors()) {
+                    log.debug(measurement.errors)
+                }
+                return false
             }
         }
 
-        reading.save(flush: true)
-        if (reading.hasErrors()) {
+        def result = reading.save(flush: true)
+        if (!result) {
+            log.error("Could not import file '$filename' with ${reading.measurements?.size()} measurements")
             log.debug(reading.errors)
             return false
         }
+        log.info("Finished importing file '$filename' with ${reading.measurements?.size()} measurements")
         return true
     }
 
@@ -84,9 +98,9 @@ class ReadingsService {
 
         def sensor = Sensor.findBySensorIdIlike(sensorId)
         def measurement = new Measurement()
-        measurement.parameter = sensor.measurementType
+        measurement.parameter = sensor?.measurementType
+        measurement.location = sensor?.location
         measurement.value = parseValue(value)
-        measurement.location = sensor.location
         measurement.timestamp = Date.parse(grailsApplication.config.dloserver.measurement.timeformat.toString(), timestamp)
         return measurement
     }

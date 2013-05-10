@@ -1,18 +1,16 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import android.graphics.Bitmap;
+
 public class Product {
     private final Long id;
     private final String sku;
-    private final int resource;
+    private final Bitmap imageResource;
 
-    public Product(String sku, int resource) {
-        this(null, sku, resource);
-    }
-
-    public Product(Long id, String sku, int resource) {
+    public Product(Long id, String sku, Bitmap resource) {
         this.id = id;
         this.sku = sku;
-        this.resource = resource;
+        this.imageResource = resource;
     }
 
     public Long getId() {
@@ -23,7 +21,7 @@ public class Product {
         return sku;
     }
 
-    public int getResource() {
-        return resource;
+    public Bitmap getImageResource() {
+        return imageResource;
     }
 }

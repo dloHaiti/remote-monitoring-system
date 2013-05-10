@@ -25,7 +25,8 @@ public class SalesRepository {
         List<Product> products = new ArrayList<Product>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            products.add(new Product(cursor.getLong(0), cursor.getString(1), -1));
+            //TODO: product will not need icon as a sale
+            products.add(new Product(cursor.getLong(0), cursor.getString(1), null));
             cursor.moveToNext();
         }
         return products;

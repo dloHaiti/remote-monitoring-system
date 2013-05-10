@@ -41,7 +41,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(products.get(position).getResource());
+        imageView.setImageBitmap(products.get(position).getImageResource());
         return imageView;
     }
 }

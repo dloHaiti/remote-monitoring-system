@@ -1,5 +1,6 @@
 package com.dlohaiti.dloserver
 
+import com.dlohaiti.dloserver.endpoint.ReadingController
 import org.junit.BeforeClass
 import org.junit.Test
 

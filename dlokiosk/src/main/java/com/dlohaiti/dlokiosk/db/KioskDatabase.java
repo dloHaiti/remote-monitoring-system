@@ -19,12 +19,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 SalesTable.TABLE_NAME,
                 SalesTable.ID,
                 SalesTable.QUANTITY,
-                SalesTable.SKU
+                SalesTable.SKU,
+                SalesTable.CREATED_AT
         );
         String createProducts = String.format(
                 "CREATE TABLE %s(" +
@@ -310,6 +312,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static String ID = "ID";
         public static String QUANTITY = "QUANTITY";
         public static String SKU = "SKU";
+        public static String CREATED_AT = "CREATED_AT";
     }
 
     public static class ProductsTable {

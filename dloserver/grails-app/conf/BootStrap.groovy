@@ -1,3 +1,4 @@
+import com.dlohaiti.dloserver.Kiosk
 import com.dlohaiti.dloserver.Location
 import com.dlohaiti.dloserver.Measurement
 import com.dlohaiti.dloserver.MeasurementType
@@ -5,6 +6,8 @@ import com.dlohaiti.dloserver.MeasurementType
 class BootStrap {
 
     def init = { servletContext ->
+        new Kiosk(name: "HARDCODED K1").save()
+
         if (Measurement.count() == 0) {
             new MeasurementType(name: "Temperature", unit: "°C", min: 10, max: 30).save()
             new MeasurementType(name: "pH", unit: "", min: 5, max: 9).save()

@@ -9,7 +9,6 @@ import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
 import com.dlohaiti.dlokiosk.domain.validation.ValidationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -60,7 +59,7 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         Measurement measurement = new Measurement(MeasurementType.PH, "5", MeasurementLocation.BOREHOLE);
         repository.add(Arrays.asList(measurement), now);
 
-        String expected = "{\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"value\":\"5\",\"location\":\"BOREHOLE\"}]}";
+        String expected = "{\"kiosk\":\"HARDCODED K1\",\"timestamp\":\"" + formatDate(now) + "\",\"measurements\":[{\"parameter\":\"PH\",\"value\":\"5\",\"location\":\"BOREHOLE\"}]}";
 
         verify(outputStream).write(expected.getBytes());
         verify(outputStream).write('\n');

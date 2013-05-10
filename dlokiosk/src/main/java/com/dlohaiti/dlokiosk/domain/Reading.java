@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Reading {
+    private String kiosk = "HARDCODED K1";
     private Date timestamp = new Date();
     private List<Measurement> measurements;
 
@@ -21,5 +22,13 @@ public class Reading {
 
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
+    }
+
+    public String getKiosk() {
+        return kiosk;
+    }
+
+    public void setKiosk(String kiosk) {
+        this.kiosk = kiosk;
     }
 }

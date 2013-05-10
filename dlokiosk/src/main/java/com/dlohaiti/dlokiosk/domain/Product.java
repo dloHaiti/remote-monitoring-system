@@ -24,4 +24,26 @@ public class Product {
     public Bitmap getImageResource() {
         return imageResource;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (id != null ? !id.equals(product.id) : product.id != null) return false;
+        if (!imageResource.equals(product.imageResource)) return false;
+        if (!sku.equals(product.sku)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + sku.hashCode();
+        result = 31 * result + imageResource.hashCode();
+        return result;
+    }
 }

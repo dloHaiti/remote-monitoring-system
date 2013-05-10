@@ -99,3 +99,13 @@ dloserver {
 
     measurement.timeformat = "yyyy-MM-dd hh:mm:ss z"
 }
+
+environments {
+    test {
+        dloserver {
+            readings.incoming  = 'target/csv/incoming'
+            readings.processed = 'target/csv/processed'
+            readings.failed    = 'target/csv/failed'
+        }
+    }
+}

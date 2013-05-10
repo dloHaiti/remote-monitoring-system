@@ -7,11 +7,13 @@ import org.junit.Test
 @TestFor(IncomingService)
 class IncomingServiceTests {
 
+    private static TEST_FOLDER = "target/csv/"
+
     @Before
     void setup() {
-        grailsApplication.config.dloserver.readings.incoming = '/tmp/incoming'
-        grailsApplication.config.dloserver.readings.processed = '/tmp/processed'
-        grailsApplication.config.dloserver.readings.failed = '/tmp/failed'
+        grailsApplication.config.dloserver.readings.incoming = TEST_FOLDER + 'incoming'
+        grailsApplication.config.dloserver.readings.processed = TEST_FOLDER + 'processed'
+        grailsApplication.config.dloserver.readings.failed = TEST_FOLDER + 'failed'
 
         def readingsFolders = grailsApplication.config.dloserver.readings
         [readingsFolders.incoming, readingsFolders.processed, readingsFolders.failed].each {
@@ -23,12 +25,6 @@ class IncomingServiceTests {
     @Test
     void shouldReturnAnEmptyListWhenThereAreNoFilesInTheIncomingFolder() {
         assert service.getIncomingFiles() == []
-    }
-
-    @Test
-    void shouldIncludeAbsolutePathOnFileNames() {
-        createIncomingFile("file1.csv")
-        assert service.getIncomingFiles().first() == grailsApplication.config.dloserver.readings.incoming + "/file1.csv"
     }
 
     @Test

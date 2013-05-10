@@ -6,6 +6,7 @@ class ReadingsService {
 
     def incomingService
     def grailsApplication
+    def messageSource
 
     public saveReading(params) {
         Date timestamp = params.date("timestamp", grailsApplication.config.dloserver.measurement.timeformat.toString())
@@ -59,7 +60,7 @@ class ReadingsService {
 
     private boolean importFile(String filename) {
         log.info("Started importing file '$filename'")
-        CSVReader reader = new CSVReader(new FileReader(filename))
+        CSVReader reader = new CSVReader(new StringReader(incomingService.getFileContent(filename)))
         Reading reading = new Reading(timestamp: new Date())
 
         String[] nextLine
@@ -74,8 +75,8 @@ class ReadingsService {
             }
             if (!validLine) {
                 log.error("File '$filename' will be rejected because it contains an invalid line: \"${nextLine}\"")
-                if (measurement?.hasErrors()) {
-                    log.debug(measurement.errors)
+                measurement?.errors?.allErrors?.collect {
+                    log.debug(messageSource.getMessage(it, Locale.CANADA))
                 }
                 return false
             }

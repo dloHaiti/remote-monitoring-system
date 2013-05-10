@@ -1,15 +1,15 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.endpoint.ReadingController
-import org.junit.BeforeClass
+import org.junit.Before
 import org.junit.Test
 
 class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     ReadingController controller = new ReadingController()
 
-    @BeforeClass
-    static void setup() {
+    @Before
+    void setup() {
         new Kiosk(name: "k1").save()
     }
 

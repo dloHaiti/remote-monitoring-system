@@ -10,7 +10,9 @@ class IncomingService {
         def result = []
 
         incomingFolder.eachFile { file ->
-            result << file.absolutePath
+            if (file.isFile()) {
+                result << file.absolutePath
+            }
         }
 
         log.debug("Found ${result.size()} files in incoming folder")
@@ -26,7 +28,11 @@ class IncomingService {
         def file = new File(filename)
         def result = file.renameTo(new File(processedFolder, file.getName()))
 
-        log.debug("Moving file $filename to 'processed' folder: ${result?'SUCCESS':'ERROR'}")
+        if (result) {
+            log.debug("Moved file $filename to 'processed' folder")
+        } else {
+            log.error("Could NOT move file $filename to 'processed' folder")
+        }
         return result
     }
 
@@ -34,7 +40,11 @@ class IncomingService {
         def file = new File(filename)
         def result = file.renameTo(new File(failedFolder, file.getName()))
 
-        log.debug("Moving file $filename to 'failed' folder: ${result?'SUCCESS':'ERROR'}")
+        if (result) {
+            log.debug("Moved file $filename to 'failed' folder")
+        } else {
+            log.error("Could NOT move file $filename to 'failed' folder")
+        }
         return result
     }
 

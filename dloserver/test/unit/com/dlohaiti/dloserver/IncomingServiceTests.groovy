@@ -1,7 +1,8 @@
 package com.dlohaiti.dloserver
 
-import grails.test.mixin.*
-import org.junit.*
+import grails.test.mixin.TestFor
+import org.junit.Before
+import org.junit.Test
 
 @TestFor(IncomingService)
 class IncomingServiceTests {
@@ -34,6 +35,16 @@ class IncomingServiceTests {
     void shouldGetAllIncomingFiles() {
         createIncomingFile("file1")
         createIncomingFile("file2")
+
+        List foundFiles = service.getIncomingFiles()
+        assert foundFiles.size() == 2
+    }
+
+    @Test
+    void shouldSkipDirectoriesInIncomingFolder() {
+        createIncomingFile("file1")
+        createIncomingFile("file2")
+        createIncomingFolder("dir1")
 
         List foundFiles = service.getIncomingFiles()
         assert foundFiles.size() == 2
@@ -98,6 +109,13 @@ class IncomingServiceTests {
         assert new File(failedFile).exists()
     }
 
+
+    private File createIncomingFolder(String folderName) {
+        def dir = new File(grailsApplication.config.dloserver.readings.incoming.toString())
+        def folder = new File(dir, folderName)
+        folder.mkdir()
+        return folder
+    }
 
     private File createIncomingFile(String filename) {
         def dir = new File(grailsApplication.config.dloserver.readings.incoming.toString())

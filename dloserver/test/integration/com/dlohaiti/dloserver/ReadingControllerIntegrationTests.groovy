@@ -1,18 +1,21 @@
 package com.dlohaiti.dloserver
 
+import com.dlohaiti.dloserver.endpoint.ReadingController
+import org.junit.Before
+import org.junit.Test
+
 class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     ReadingController controller = new ReadingController()
 
-    protected void reset() {
-        controller.request.clearAttributes()
-        controller.request.removeAllParameters()
-        controller.response.committed = false
-        controller.response.resetBuffer()
+    @Before
+    void setup() {
+        new Kiosk(name: "k1").save()
     }
 
-    void testValidData() {
-        controller.request.json = '{"timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
+    @Test
+    void shouldSaveValidDataToDb() {
+        controller.request.json = '{"kiosk":"k1", "timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
                 ']}'
@@ -22,13 +25,23 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
         assert 1 == Reading.count()
-        assert 2 == Reading.first().measurements.size()
-        assert "Borehole" == Reading.first().measurements.first().location.name
+
+        Reading savedReading = Reading.first()
+        assert 2 == savedReading.measurements.size()
+
+        def ph = savedReading.measurements.find { it.parameter.name == "pH" }
+        assert ph.location.name == "Borehole"
+        assert ph.timestamp == savedReading.timestamp
+        assert ph.value == 5
+
+        def color = savedReading.measurements.find { it.parameter.name == "Color" }
+        assert color.value == 1
     }
 
-    void testShouldUpdateDataWithTheSameTimeStamp() {
+    @Test
+    void shouldUpdateDataWithTheSameTimeStamp() {
         String timestamp = "2013-04-24 12:00:02 EDT"
-        controller.request.json = '{"timestamp":"' + timestamp +'","measurements":[' +
+        controller.request.json = '{"kiosk":"k1", "timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
                 ']}'
@@ -41,7 +54,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
         reset()
 
-        controller.request.json = '{"timestamp":"' + timestamp +'","measurements":[' +
+        controller.request.json = '{"kiosk":"k1", "timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
                 ']}'
@@ -53,8 +66,9 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert 2 == Reading.first().measurements.size()
     }
 
-    void testInvalidTimestampFormat() {
-        controller.request.json = '{"timestamp":"24/12/12-00:00:01","measurements":[' +
+    @Test
+    void shouldRejectInvalidTimestampFormat() {
+        controller.request.json = '{"kiosk":"k1", "timestamp":"24/12/12-00:00:01","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
                 ']}'
@@ -65,5 +79,27 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
         assert 422 == controller.response.status
         assert 0 == Reading.count()
+    }
+
+    @Test
+    void shouldRejectMissingKiosk() {
+        controller.request.json = '{"timestamp":"2013-04-24 12:00:01 EDT","measurements":[' +
+                '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
+                '{"parameter":"COLOR","location":"BOREHOLE","value":"OK"}' +
+                ']}'
+
+        controller.save()
+
+        println controller.response.contentAsString
+
+        assert 422 == controller.response.status
+        assert 0 == Reading.count()
+    }
+
+    private void reset() {
+        controller.request.clearAttributes()
+        controller.request.removeAllParameters()
+        controller.response.committed = false
+        controller.response.resetBuffer()
     }
 }

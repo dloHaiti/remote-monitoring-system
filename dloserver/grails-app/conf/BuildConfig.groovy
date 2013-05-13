@@ -12,6 +12,7 @@ grails.project.source.level = 1.6
 //]
 
 grails.project.dependency.resolution = {
+    pom true
     // inherit Grails' default dependencies
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
@@ -42,9 +43,12 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         // runtime 'mysql:mysql-connector-java:5.1.22'
+
+//        runtime 'net.sf.opencsv:opencsv:2.3'
     }
 
     plugins {
+/*
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.8.3"
         runtime ":resources:1.1.6"
@@ -62,6 +66,7 @@ grails.project.dependency.resolution = {
 
         compile ":functional-test:2.0.RC1"
 
-        runtime ':jasper:1.6.1'
+        runtime ":quartz2:2.1.6.2"
+*/
     }
 }

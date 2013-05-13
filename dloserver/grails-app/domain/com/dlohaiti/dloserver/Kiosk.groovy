@@ -1,12 +1,15 @@
 package com.dlohaiti.dloserver
 
-class Location {
+class Kiosk {
+
     String name
 
     static constraints = {
         name(blank: false, unique: true)
     }
 
+
+    @Override
     public String toString() {
         name
     }

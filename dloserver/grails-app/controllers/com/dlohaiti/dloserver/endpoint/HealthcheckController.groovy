@@ -1,5 +1,6 @@
-package com.dlohaiti.dloserver
+package com.dlohaiti.dloserver.endpoint
 
+import com.dlohaiti.dloserver.Reading
 import grails.converters.JSON
 import grails.util.Environment
 import groovy.sql.Sql

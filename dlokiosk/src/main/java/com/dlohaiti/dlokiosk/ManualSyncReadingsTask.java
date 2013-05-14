@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
+import com.dlohaiti.dlokiosk.client.SalesClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.domain.Reading;
+import com.dlohaiti.dlokiosk.domain.Sale;
 import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
@@ -13,14 +15,12 @@ import java.util.Collection;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
+    @Inject private MeasurementRepository measurementRepository;
+    @Inject private ReadingClient readingClient;
+    @Inject private SalesClient salesClient;
+    @Inject private SalesRepository salesRepository;
     private Activity activity;
     private ProgressDialog progressDialog;
-
-    @Inject
-    private MeasurementRepository repository;
-    @Inject
-    private ReadingClient readingClient;
-
 
     public ManualSyncReadingsTask(Activity activity) {
         super(activity.getApplicationContext());
@@ -41,16 +41,27 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
     @Override
     public String call() throws Exception {
-        Collection<Reading> readings = repository.getReadings();
-        if (readings.isEmpty()) {
+        Collection<Reading> readings = measurementRepository.getReadings();
+        Collection<Sale> sales = salesRepository.list();
+        if (readings.isEmpty() && sales.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
+        boolean atLeastOneReadingFailed = false;
+        boolean atLeastOneSaleFailed = false;
         for (Reading reading: readings) {
             if (!readingClient.send(reading)) {
-                return activity.getString(R.string.send_error_msg);
+                atLeastOneReadingFailed = true;
             }
         }
-        return activity.getString(R.string.send_success_msg, readings.size());
+        for (Sale sale : sales) {
+            if(!salesClient.send(sale)) {
+                atLeastOneSaleFailed = true;
+            }
+        }
+        if (atLeastOneReadingFailed || atLeastOneSaleFailed) {
+            return activity.getString(R.string.send_error_msg);
+        }
+        return activity.getString(R.string.send_success_msg, readings.size(), sales.size());
     }
 
     private void showMessage(String message) {

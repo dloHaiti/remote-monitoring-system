@@ -35,9 +35,9 @@
     <string name="dlo_server_url">http://10.0.2.2:8080/dloserver</string>
     <string name="server_status_checking_label">Server Status</string>
     <string name="sending_readings_message">Sending readings to server</string>
-    <string name="no_readings_msg">No readings to send</string>
-    <string name="send_error_msg">Error sending readings to server.</string>
-    <string name="send_success_msg">Successfully sent %1$d reading(s) to server.</string>
+    <string name="no_readings_msg">No readings or sales to send</string>
+    <string name="send_error_msg">Error sending readings and/or sales to server.</string>
+    <string name="send_success_msg">Successfully sent %1$d reading(s) and %1$d sale(s) to server.</string>
   <string name="server_status_content_description">Server Status</string>
   <string name="new_sale_button">New Sale</string>
   <string name="title_activity_enter_sale">New Sale</string>

@@ -51,4 +51,42 @@ class EndpointsTests extends APITestCase {
 
         assertStatus 422
     }
+
+    void testPostingAValidSale() {
+        post('/sales') {
+            headers['Content-Type'] = 'application/json'
+            body { """
+                {
+                "kiosk":"k1",
+                "timestamp":"2013-04-24 00:00:01 EDT",
+                "quantity": 1,
+                "sku": "10GAL"
+                }
+            """ }
+        }
+
+        assertStatus 201
+        assertContentStrict '{"msg":"OK"}'
+    }
+
+    void testPostingAnEmptySale() {
+        post('/sales')
+
+        assertStatus 422
+    }
+
+    void testPostingAnInvalidSale() {
+        post('/sales') {
+            headers['Content-Type'] = 'application/json'
+            body { """
+                {
+                "kiosk":"k1",
+                "timestamp":"2013-04-24 00:00:01 EDT",
+                "quantity": 1
+                }
+            """ }
+        }
+
+        assertStatus 422
+    }
 }

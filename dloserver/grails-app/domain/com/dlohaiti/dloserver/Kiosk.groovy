@@ -1,5 +1,8 @@
 package com.dlohaiti.dloserver
 
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode
 class Kiosk {
 
     String name

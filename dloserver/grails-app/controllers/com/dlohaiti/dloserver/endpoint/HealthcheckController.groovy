@@ -7,35 +7,35 @@ import groovy.sql.Sql
 
 class HealthcheckController {
 
-    def dataSource
+  def dataSource
 
-    def index() {
-        def result = [
-                db: isDatabaseConnectionAvailable()
-        ]
-        render(result as JSON)
-    }
+  def index() {
+    def result = [
+        db: isDatabaseConnectionAvailable()
+    ]
+    render(result as JSON)
+  }
 
-    private boolean isDatabaseConnectionAvailable() {
-        try {
-            Reading.count()
-            log.debug("Checking database connectivity: OK")
-            return true
-        } catch (Exception e) {
-            log.error("Error detected during health check", e)
-            return false
-        }
+  private boolean isDatabaseConnectionAvailable() {
+    try {
+      Reading.count()
+      log.debug("Checking database connectivity: OK")
+      return true
+    } catch (Exception e) {
+      log.error("Error detected during health check", e)
+      return false
     }
+  }
 
-    // TODO Remove!! It' here just for manual tests
-    def shutdown() {
-        if (Environment.currentEnvironment != Environment.PRODUCTION) {
-            try {
-                def db = new Sql(dataSource)
-                db.execute("shutdown")
-            } catch (e) {
-            }
-        }
-        render !isDatabaseConnectionAvailable()
+  // TODO Remove!! It' here just for manual tests
+  def shutdown() {
+    if (Environment.currentEnvironment != Environment.PRODUCTION) {
+      try {
+        def db = new Sql(dataSource)
+        db.execute("shutdown")
+      } catch (e) {
+      }
     }
+    render !isDatabaseConnectionAvailable()
+  }
 }

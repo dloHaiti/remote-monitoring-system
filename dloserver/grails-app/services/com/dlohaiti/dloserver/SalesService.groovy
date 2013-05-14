@@ -9,7 +9,6 @@ class SalesService {
         Sale sale = Sale.findByTimestamp(timestamp)
         if (sale) {
             //TODO: return a 409 conflict and log a message instead of deleting
-            sale.delete()
         }
         sale = new Sale(timestamp: timestamp, sku: params.sku, quantity: params.quantity)
         sale.kiosk = Kiosk.findByName(params.kiosk)

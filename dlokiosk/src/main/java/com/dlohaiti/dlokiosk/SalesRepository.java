@@ -8,15 +8,18 @@ import com.dlohaiti.dlokiosk.db.KioskDatabase;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Sale;
 import com.google.inject.Inject;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.ISODateTimeFormat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SalesRepository {
     private final KioskDatabase db;
+    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
+    private final DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 
     @Inject
     public SalesRepository(Context context) {
@@ -25,20 +28,29 @@ public class SalesRepository {
 
     public List<Sale> list() {
         String[] columns = {KioskDatabase.SalesTable.ID, KioskDatabase.SalesTable.SKU, KioskDatabase.SalesTable.QUANTITY, KioskDatabase.SalesTable.CREATED_AT};
-        Cursor cursor = db.getReadableDatabase().query(KioskDatabase.SalesTable.TABLE_NAME, columns, null, null, null, null, null);
+        SQLiteDatabase readableDatabase = db.getReadableDatabase();
+        Cursor cursor = readableDatabase.query(KioskDatabase.SalesTable.TABLE_NAME, columns, null, null, null, null, null);
         List<Sale> sales = new ArrayList<Sale>();
         cursor.moveToFirst();
+
         while (!cursor.isAfterLast()) {
-            sales.add(new Sale(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3)));
+            Date date = null;
+            try {
+                date = df.parse(cursor.getString(3));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            sales.add(new Sale(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), date));
             cursor.moveToNext();
         }
+        readableDatabase.close();
         return sales;
     }
 
     public void add(List<Product> products) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
-        String now = new DateTime(DateTimeZone.UTC).toString(ISODateTimeFormat.basicDateTime());
+        String now = df.format(new Date());
         try {
             for (Product product : products) {
                 ContentValues values = new ContentValues();

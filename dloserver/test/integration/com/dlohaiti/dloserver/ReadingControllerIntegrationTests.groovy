@@ -4,6 +4,8 @@ import com.dlohaiti.dloserver.endpoint.ReadingController
 import org.junit.Before
 import org.junit.Test
 
+import java.text.SimpleDateFormat
+
 class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     ReadingController controller = new ReadingController()
@@ -40,7 +42,9 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
     @Test
     void shouldUpdateDataWithTheSameTimeStamp() {
-        String timestamp = "2013-04-24 12:00:02 EDT"
+      def dateFormatPattern = "yyyy-MM-dd hh:mm:ss z"
+      def dateFormat = new SimpleDateFormat(dateFormatPattern);
+      String timestamp = dateFormat.parse("2013-04-24 12:00:02 EDT").format(dateFormatPattern);
         controller.request.json = '{"kiosk":"k1", "timestamp":"' + timestamp +'","measurements":[' +
                 '{"parameter":"PH","location":"BOREHOLE","value":"5"},' +
                 '{"parameter":"COLOR","location":"WTU_EFF","value":"OK"}' +
@@ -49,7 +53,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
         assert 1 == Reading.count()
-        assert timestamp == Reading.first().timestamp.format("yyyy-MM-dd hh:mm:ss z")
+        assert timestamp == Reading.first().timestamp.format(dateFormatPattern)
         assert 2 == Reading.first().measurements.size()
 
         reset()
@@ -62,7 +66,7 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
         assert 1 == Reading.count()
-        assert timestamp == Reading.first().timestamp.format("yyyy-MM-dd hh:mm:ss z")
+        assert timestamp == Reading.first().timestamp.format(dateFormatPattern)
         assert 2 == Reading.first().measurements.size()
     }
 

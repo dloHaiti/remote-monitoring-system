@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
 import android.content.Context;

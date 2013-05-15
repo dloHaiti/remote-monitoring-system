@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import com.dlohaiti.dlokiosk.db.ProductRepository;
+import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.client.SalesClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
+import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.google.inject.Inject;

@@ -1,10 +1,11 @@
-package com.dlohaiti.dlokiosk;
+package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.db.KioskDatabase;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.google.inject.Inject;

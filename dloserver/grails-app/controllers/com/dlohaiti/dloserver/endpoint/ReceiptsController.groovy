@@ -1,19 +1,19 @@
 package com.dlohaiti.dloserver.endpoint
 
-import com.dlohaiti.dloserver.Sale
+import com.dlohaiti.dloserver.Receipt
 import grails.converters.JSON
 
-class SalesController {
+class ReceiptsController {
 
-  def salesService
+  def receiptsService
 
   def save() {
     log.debug "Received $params"
 
-    Sale sale
+    Receipt sale
 
     try {
-      sale = salesService.saveSale(params)
+      sale = receiptsService.saveSale(params)
 
       if (sale.hasErrors()) {
         // TODO Better formatting of error msgs
@@ -23,7 +23,7 @@ class SalesController {
         render(status: 201, text: [msg: "OK"] as JSON)
       }
     } catch (Exception e) {
-      log.error("Error saving Sale [${params.date('timestamp', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
+      log.error("Error saving Receipt [${params.date('timestamp', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
       render(status: 503, text: [msg: e.message] as JSON)
     }
   }

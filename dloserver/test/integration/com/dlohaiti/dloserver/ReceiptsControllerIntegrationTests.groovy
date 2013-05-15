@@ -1,12 +1,12 @@
 package com.dlohaiti.dloserver
 
-import com.dlohaiti.dloserver.endpoint.SalesController
+import com.dlohaiti.dloserver.endpoint.ReceiptsController
 import org.junit.Before
 import org.junit.Test
 
-class SalesControllerIntegrationTests extends GroovyTestCase {
+class ReceiptsControllerIntegrationTests extends GroovyTestCase {
 
-    SalesController controller = new SalesController()
+    ReceiptsController controller = new ReceiptsController()
 
     @Before
     void setup() {
@@ -21,9 +21,9 @@ class SalesControllerIntegrationTests extends GroovyTestCase {
 
         assert '{"msg":"OK"}' == controller.response.contentAsString
         assert 201 == controller.response.status
-        assert 1 == Sale.count()
+        assert 1 == Receipt.count()
 
-        Sale savedSale = Sale.first()
+        Receipt savedSale = Receipt.first()
         assert savedSale.kiosk == new Kiosk(name: "k1")
         assert savedSale.quantity == 1
         assert savedSale.sku == "10GAL"
@@ -36,7 +36,7 @@ class SalesControllerIntegrationTests extends GroovyTestCase {
         controller.save()
 
         assert 422 == controller.response.status
-        assert 0 == Sale.count()
+        assert 0 == Receipt.count()
     }
 
     @Test
@@ -46,6 +46,6 @@ class SalesControllerIntegrationTests extends GroovyTestCase {
         controller.save()
 
         assert 422 == controller.response.status
-        assert 0 == Sale.count()
+        assert 0 == Receipt.count()
     }
 }

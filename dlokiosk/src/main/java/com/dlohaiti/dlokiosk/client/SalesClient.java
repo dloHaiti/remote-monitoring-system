@@ -1,7 +1,6 @@
 package com.dlohaiti.dlokiosk.client;
 
-import com.dlohaiti.dlokiosk.domain.Reading;
-import com.dlohaiti.dlokiosk.domain.Sale;
+import com.dlohaiti.dlokiosk.domain.ReceiptLineItem;
 import com.google.inject.Inject;
 
 public class SalesClient {
@@ -12,7 +11,7 @@ public class SalesClient {
         this.restClient = restClient;
     }
 
-    public boolean send(Sale sale) {
-        return restClient.post("/sales", sale);
+    public boolean send(ReceiptLineItem receiptLineItem) {
+        return restClient.post("/sales", receiptLineItem);
     }
 }

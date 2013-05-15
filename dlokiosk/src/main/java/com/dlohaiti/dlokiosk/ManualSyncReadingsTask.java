@@ -7,7 +7,7 @@ import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.client.SalesClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.domain.Reading;
-import com.dlohaiti.dlokiosk.domain.Sale;
+import com.dlohaiti.dlokiosk.domain.ReceiptLineItem;
 import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
@@ -42,8 +42,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Override
     public String call() throws Exception {
         Collection<Reading> readings = measurementRepository.getReadings();
-        Collection<Sale> sales = salesRepository.list();
-        if (readings.isEmpty() && sales.isEmpty()) {
+        Collection<ReceiptLineItem> receiptLineItems = salesRepository.list();
+        if (readings.isEmpty() && receiptLineItems.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
         boolean atLeastOneReadingFailed = false;
@@ -53,15 +53,15 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
                 atLeastOneReadingFailed = true;
             }
         }
-        for (Sale sale : sales) {
-            if(!salesClient.send(sale)) {
+        for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+            if(!salesClient.send(receiptLineItem)) {
                 atLeastOneSaleFailed = true;
             }
         }
         if (atLeastOneReadingFailed || atLeastOneSaleFailed) {
             return activity.getString(R.string.send_error_msg);
         }
-        return activity.getString(R.string.send_success_msg, readings.size(), sales.size());
+        return activity.getString(R.string.send_success_msg, readings.size(), receiptLineItems.size());
     }
 
     private void showMessage(String message) {

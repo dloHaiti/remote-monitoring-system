@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.dlohaiti.dlokiosk.db.KioskDatabase;
 import com.dlohaiti.dlokiosk.domain.Product;
-import com.dlohaiti.dlokiosk.domain.Sale;
+import com.dlohaiti.dlokiosk.domain.ReceiptLineItem;
 import com.google.inject.Inject;
 
 import java.text.DateFormat;
@@ -26,11 +26,11 @@ public class SalesRepository {
         this.db = new KioskDatabase(context);
     }
 
-    public List<Sale> list() {
+    public List<ReceiptLineItem> list() {
         String[] columns = {KioskDatabase.SalesTable.ID, KioskDatabase.SalesTable.SKU, KioskDatabase.SalesTable.QUANTITY, KioskDatabase.SalesTable.CREATED_AT};
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         Cursor cursor = readableDatabase.query(KioskDatabase.SalesTable.TABLE_NAME, columns, null, null, null, null, null);
-        List<Sale> sales = new ArrayList<Sale>();
+        List<ReceiptLineItem> receiptLineItems = new ArrayList<ReceiptLineItem>();
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
@@ -40,11 +40,11 @@ public class SalesRepository {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            sales.add(new Sale(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), date));
+            receiptLineItems.add(new ReceiptLineItem(cursor.getLong(0), cursor.getString(1), cursor.getInt(2), date));
             cursor.moveToNext();
         }
         readableDatabase.close();
-        return sales;
+        return receiptLineItems;
     }
 
     public void add(List<Product> products) {

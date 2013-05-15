@@ -2,13 +2,14 @@ package com.dlohaiti.dlokiosk.domain;
 
 import java.util.Date;
 
-public class Sale {
+@Deprecated
+public class ReceiptLineItem {
     private final Long id;
     private final String sku;
     private final Integer quantity;
     private final Date createdAt;
 
-    public Sale(Long id, String sku, Integer quantity, Date createdAt) {
+    public ReceiptLineItem(Long id, String sku, Integer quantity, Date createdAt) {
         this.id = id;
         this.sku = sku;
         this.quantity = quantity;

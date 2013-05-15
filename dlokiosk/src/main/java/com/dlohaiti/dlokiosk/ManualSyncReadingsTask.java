@@ -7,7 +7,7 @@ import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.client.SalesClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.domain.Reading;
-import com.dlohaiti.dlokiosk.domain.ReceiptLineItem;
+import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
@@ -18,7 +18,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Inject private MeasurementRepository measurementRepository;
     @Inject private ReadingClient readingClient;
     @Inject private SalesClient salesClient;
-    @Inject private SalesRepository salesRepository;
+    @Inject private ReceiptsRepository receiptsRepository;
     private Activity activity;
     private ProgressDialog progressDialog;
 
@@ -42,8 +42,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Override
     public String call() throws Exception {
         Collection<Reading> readings = measurementRepository.getReadings();
-        Collection<ReceiptLineItem> receiptLineItems = salesRepository.list();
-        if (readings.isEmpty() && receiptLineItems.isEmpty()) {
+        Collection<Receipt> receipts = receiptsRepository.list();
+        if (readings.isEmpty() && receipts.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
         boolean atLeastOneReadingFailed = false;
@@ -53,15 +53,15 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
                 atLeastOneReadingFailed = true;
             }
         }
-        for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-            if(!salesClient.send(receiptLineItem)) {
+        for (Receipt receipt : receipts) {
+            if(!salesClient.send(receipt)) {
                 atLeastOneSaleFailed = true;
             }
         }
         if (atLeastOneReadingFailed || atLeastOneSaleFailed) {
             return activity.getString(R.string.send_error_msg);
         }
-        return activity.getString(R.string.send_success_msg, readings.size(), receiptLineItems.size());
+        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size());
     }
 
     private void showMessage(String message) {

@@ -17,7 +17,7 @@ public class EnterSaleActivity extends RoboActivity {
     @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
     @InjectView(R.id.shopping_cart_grid) private GridView shoppingCartGrid;
     @Inject private ProductRepository repository;
-    @Inject private SalesRepository salesRepository;
+    @Inject private ReceiptsRepository receiptsRepository;
     private List<Product> shoppingCart = new ArrayList<Product>();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class EnterSaleActivity extends RoboActivity {
     }
 
     public void checkout(View v) {
-        salesRepository.add(shoppingCart);
+        receiptsRepository.add(shoppingCart);
         finish();
     }
 }

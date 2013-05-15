@@ -15,18 +15,29 @@ public class KioskDatabase extends SQLiteOpenHelper {
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
-        String createSales = String.format(
+        String createReceipts = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s INTEGER," +
+                        "%s TEXT" +
+                        ")",
+                ReceiptsTable.TABLE_NAME,
+                ReceiptsTable.ID,
+                ReceiptsTable.KIOSK_ID,
+                ReceiptsTable.CREATED_AT
+        );
+        String createReceiptLineItems = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
                         "%s TEXT," +
-                        "%s TEXT" +
+                        "%s INTEGER" +
                         ")",
-                SalesTable.TABLE_NAME,
-                SalesTable.ID,
-                SalesTable.QUANTITY,
-                SalesTable.SKU,
-                SalesTable.CREATED_AT
+                ReceiptLineItemsTable.TABLE_NAME,
+                ReceiptLineItemsTable.ID,
+                ReceiptLineItemsTable.RECEIPT_ID,
+                ReceiptLineItemsTable.SKU,
+                ReceiptLineItemsTable.QUANTITY
         );
         String createProducts = String.format(
                 "CREATE TABLE %s(" +
@@ -50,7 +61,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.SKU,
                 ProductsTable.ICON
         );
-        db.execSQL(createSales);
+        db.execSQL(createReceipts);
+        db.execSQL(createReceiptLineItems);
         db.execSQL(createProducts);
         db.execSQL(insertProduct10g, new Object[]{"2GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
@@ -307,12 +319,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
         //TODO
     }
 
-    public static class SalesTable {
-        public static String TABLE_NAME = "SALES";
+    public static class ReceiptLineItemsTable {
+        public static String TABLE_NAME = "RECEIPT_LINE_ITEMS";
         public static String ID = "ID";
+        public static String RECEIPT_ID = "RECEIPT_ID";
         public static String QUANTITY = "QUANTITY";
         public static String SKU = "SKU";
-        public static String CREATED_AT = "CREATED_AT";
     }
 
     public static class ProductsTable {
@@ -322,5 +334,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static String ICON = "ICON";
         public static String PRICE_CENTS = "PRICE_CENTS";
         public static String CURRENCY = "CURRENCY";
+    }
+
+    public static class ReceiptsTable {
+        public static String TABLE_NAME = "RECEIPTS";
+        public static String ID = "ID";
+        public static String KIOSK_ID = "KIOSK_ID";
+        public static String CREATED_AT = "CREATED_AT";
     }
 }

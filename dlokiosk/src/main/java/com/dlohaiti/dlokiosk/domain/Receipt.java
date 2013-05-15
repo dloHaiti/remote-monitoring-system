@@ -1,13 +1,11 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Receipt {
-    private final Map<String, Integer> orderedProducts = new HashMap<String, Integer>();
-    private final Date createdAt;
-    private final String kioskId;
+    private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
+    private Date createdAt;
+    private String kioskId = "k1";
 
     public Receipt(Iterable<Product> products) {
         this(products, new Date(), "k1");
@@ -18,21 +16,36 @@ public class Receipt {
     }
 
     public Receipt(Iterable<Product> products, Date createdAt, String kioskId) {
-        for (Product p : products) {
-            if (orderedProducts.containsKey(p.getSku())) {
-                orderedProducts.put(p.getSku(), orderedProducts.get(p.getSku()) + 1);
-            } else {
-                orderedProducts.put(p.getSku(), 1);
+        for (Product product : products) {
+            boolean alreadyAdded = false;
+            for (OrderedProduct ordered : orderedProducts) {
+                if (ordered.getSku().equals(product.getSku())) {
+                    alreadyAdded = true;
+                    ordered.incrementQuantity();
+                    break;
+                }
+            }
+            if (!alreadyAdded) {
+                orderedProducts.add(new OrderedProduct(product.getSku(), 1));
             }
         }
         this.createdAt = createdAt;
         this.kioskId = kioskId;
     }
 
+    public Receipt(List<OrderedProduct> orderedProducts, Date createdAt) {
+        this.orderedProducts = orderedProducts;
+        this.createdAt = createdAt;
+    }
+
+    public List<OrderedProduct> getOrderedProducts() {
+        return orderedProducts;
+    }
+
     public Integer getTotalItems() {
         int total = 0;
-        for (Integer itemTotal : orderedProducts.values()) {
-            total += itemTotal;
+        for (OrderedProduct op : orderedProducts) {
+            total += op.getQuantity();
         }
         return total;
     }

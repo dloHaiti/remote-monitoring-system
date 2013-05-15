@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
-import com.dlohaiti.dlokiosk.client.SalesClient;
+import com.dlohaiti.dlokiosk.client.ReceiptsClient;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.domain.Reading;
@@ -18,7 +18,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
     @Inject private MeasurementRepository measurementRepository;
     @Inject private ReadingClient readingClient;
-    @Inject private SalesClient salesClient;
+    @Inject private ReceiptsClient receiptsClient;
     @Inject private ReceiptsRepository receiptsRepository;
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -55,7 +55,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
             }
         }
         for (Receipt receipt : receipts) {
-            if(!salesClient.send(receipt)) {
+            if(!receiptsClient.send(receipt)) {
                 atLeastOneSaleFailed = true;
             }
         }

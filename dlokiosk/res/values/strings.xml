@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">dloKiosk</string>
-    <string name="action_settings">Configuration</string>
+    <string name="action_configuration">Configuration</string>
     <string name="hello_world">Hello world!</string>
     <string name="record_new_reading_button">New Reading</string>
     <string name="manual_sync_button">Manual Sync</string>

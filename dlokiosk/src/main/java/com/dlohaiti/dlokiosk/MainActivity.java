@@ -72,7 +72,7 @@ public class MainActivity extends RoboActivity implements StatusView {
     }
 
     @Override public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_configuration) {
             startActivity(new Intent(MainActivity.this, ConfigurationActivity.class));
         }
         return super.onMenuItemSelected(featureId, item);

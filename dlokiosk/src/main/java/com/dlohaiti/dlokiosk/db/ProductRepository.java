@@ -2,11 +2,11 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.R;
-import com.dlohaiti.dlokiosk.db.KioskDatabase;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.google.inject.Inject;
 import org.springframework.util.support.Base64;
@@ -28,14 +28,21 @@ public class ProductRepository {
     public List<Product> list() {
         List<Product> products = new ArrayList<Product>();
         String[] columns = {KioskDatabase.ProductsTable.ID, KioskDatabase.ProductsTable.SKU, KioskDatabase.ProductsTable.ICON};
-        Cursor cursor = db.getReadableDatabase().query(KioskDatabase.ProductsTable.TABLE_NAME, columns, null, null, null, null, null);
-        cursor.moveToFirst();
-        //TODO: guard against/fail gracefully when running out of memory
-        while (!cursor.isAfterLast()) {
-            products.add(buildProduct(cursor));
-            cursor.moveToNext();
+        SQLiteDatabase readableDatabase = db.getReadableDatabase();
+        readableDatabase.beginTransaction();
+        try {
+            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, null, null, null, null, null);
+            cursor.moveToFirst();
+            //TODO: guard against/fail gracefully when running out of memory
+            while (!cursor.isAfterLast()) {
+                products.add(buildProduct(cursor));
+                cursor.moveToNext();
+            }
+            readableDatabase.setTransactionSuccessful();
+            return products;
+        } finally {
+            readableDatabase.endTransaction();
         }
-        return products;
     }
 
     private Product buildProduct(Cursor cursor) {
@@ -55,12 +62,20 @@ public class ProductRepository {
         String[] columns = {KioskDatabase.ProductsTable.ID, KioskDatabase.ProductsTable.SKU, KioskDatabase.ProductsTable.ICON};
         String selection = String.format("%s=?", KioskDatabase.ProductsTable.ID);
         String[] args = {String.valueOf(id)};
-        Cursor cursor = db.getReadableDatabase().query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
-        if (cursor.getCount() != 1) {
-            //TODO: make this graceful
-            return new Product(null, null, null);
+        SQLiteDatabase readableDatabase = db.getReadableDatabase();
+        readableDatabase.beginTransaction();
+        try {
+            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
+            if (cursor.getCount() != 1) {
+                //TODO: make this graceful
+                return new Product(null, null, null);
+            }
+            cursor.moveToFirst();
+            Product product = buildProduct(cursor);
+            readableDatabase.setTransactionSuccessful();
+            return product;
+        } finally {
+            readableDatabase.endTransaction();
         }
-        cursor.moveToFirst();
-        return buildProduct(cursor);
     }
 }

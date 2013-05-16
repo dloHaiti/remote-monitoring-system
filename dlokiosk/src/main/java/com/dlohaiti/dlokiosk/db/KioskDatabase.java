@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class KioskDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "kiosk.db";
     private final static int DATABASE_VERSION = 1;

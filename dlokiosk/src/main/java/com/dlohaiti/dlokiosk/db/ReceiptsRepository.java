@@ -1,12 +1,12 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.dlohaiti.dlokiosk.domain.OrderedProduct;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Receipt;
+import com.dlohaiti.dlokiosk.domain.ReceiptFactory;
 import com.google.inject.Inject;
 
 import java.text.DateFormat;
@@ -18,12 +18,14 @@ import java.util.List;
 
 public class ReceiptsRepository {
     private final KioskDatabase db;
+    private final ReceiptFactory receiptFactory;
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
     private final DateFormat df = new SimpleDateFormat(DATE_FORMAT);
 
     @Inject
-    public ReceiptsRepository(Context context) {
-        this.db = new KioskDatabase(context);
+    public ReceiptsRepository(KioskDatabase db, ReceiptFactory receiptFactory) {
+        this.db = db;
+        this.receiptFactory = receiptFactory;
     }
 
     public List<Receipt> list() {
@@ -51,21 +53,20 @@ public class ReceiptsRepository {
                 orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
                 lineItemsCursor.moveToNext();
             }
-            receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, date));
+            receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, "k1", date));
             receiptsCursor.moveToNext();
         }
-        readableDatabase.close();
         return receipts;
     }
 
     public void add(List<Product> products) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
-        Receipt receipt = new Receipt(products);
+        Receipt receipt = receiptFactory.makeReceipt(products);
+        ContentValues receiptValues = new ContentValues();
+        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
+        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, df.format(receipt.getCreatedAt()));
         try {
-            ContentValues receiptValues = new ContentValues();
-            receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
-            receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, df.format(receipt.getCreatedAt()));
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {
                 ContentValues lineItemValues = new ContentValues();
@@ -75,12 +76,11 @@ public class ReceiptsRepository {
                 writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, lineItemValues);
             }
             writableDatabase.setTransactionSuccessful();
-            writableDatabase.endTransaction();
         } catch (Exception e) {
             //TODO: alert this?
             throw new RuntimeException(e);
         } finally {
-            writableDatabase.close();
+            writableDatabase.endTransaction();
         }
     }
 
@@ -96,7 +96,6 @@ public class ReceiptsRepository {
             //TODO: alert? log?
         } finally {
             writableDatabase.endTransaction();
-            writableDatabase.close();
         }
     }
 }

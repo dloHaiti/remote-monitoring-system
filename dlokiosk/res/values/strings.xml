@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">dloKiosk</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuration</string>
     <string name="hello_world">Hello world!</string>
     <string name="record_new_reading_button">New Reading</string>
     <string name="manual_sync_button">Manual Sync</string>
@@ -44,8 +44,9 @@
   <string name="new_sale_button">New Sale</string>
   <string name="title_activity_enter_sale">New Sale</string>
   <string name="checkout">checkout</string>
-  <string name="kioskName">kiosk name</string>
+  <string name="kioskIdHint">kiosk name</string>
   <string name="title_activity_configuration">Kiosk Configuration</string>
+  <string name="kioskPasswordHint">password</string>
 
 
 </resources>

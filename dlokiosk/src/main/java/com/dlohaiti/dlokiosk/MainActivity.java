@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -10,10 +11,8 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class MainActivity extends RoboActivity implements StatusView {
-    @InjectView(R.id.serverStatusProgressBar)
-    ProgressBar serverStatusProgressBar;
-    @InjectView(R.id.statusImage)
-    ImageView statusImage;
+    @InjectView(R.id.serverStatusProgressBar) ProgressBar serverStatusProgressBar;
+    @InjectView(R.id.statusImage) ImageView statusImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,4 +70,12 @@ public class MainActivity extends RoboActivity implements StatusView {
         statusImage.setImageResource(imageResource);
         statusImage.setVisibility(View.VISIBLE);
     }
+
+    @Override public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, ConfigurationActivity.class));
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
+
 }

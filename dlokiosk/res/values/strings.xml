@@ -20,7 +20,9 @@
     <string name="not_ok">Not OK</string>
     <string name="heading_taste">Taste</string>
     <string name="button_save">Save Readings</string>
-    
+    <string name="dialog_save">Save</string>
+    <string name="dialog_cancel">Cancel</string>
+
     <string name="label_calcium_carbonate">mg/L CaCO3</string>
     <string name="label_chlorine_with_units">mg/L Cl2</string>
     <string name="label_milligrams_liter">mg/L</string>
@@ -42,6 +44,8 @@
   <string name="new_sale_button">New Sale</string>
   <string name="title_activity_enter_sale">New Sale</string>
   <string name="checkout">checkout</string>
+  <string name="kioskName">kiosk name</string>
+  <string name="title_activity_configuration">Kiosk Configuration</string>
 
 
 </resources>

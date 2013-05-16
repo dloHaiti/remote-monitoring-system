@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.dlohaiti.dlokiosk.db.KioskDatabase;
 import com.dlohaiti.dlokiosk.domain.OrderedProduct;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Receipt;
@@ -13,7 +12,9 @@ import com.google.inject.Inject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ReceiptsRepository {
     private final KioskDatabase db;
@@ -39,18 +40,18 @@ public class ReceiptsRepository {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String[] lineItemCols = { KioskDatabase.ReceiptLineItemsTable.ID, KioskDatabase.ReceiptLineItemsTable.SKU, KioskDatabase.ReceiptLineItemsTable.QUANTITY, KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID };
+            String[] lineItemCols = {KioskDatabase.ReceiptLineItemsTable.ID, KioskDatabase.ReceiptLineItemsTable.SKU, KioskDatabase.ReceiptLineItemsTable.QUANTITY, KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID};
             String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
             String receiptId = receiptsCursor.getString(0);
-            String[] args = { receiptId };
+            String[] args = {receiptId};
             Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
             lineItemsCursor.moveToFirst();
             List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
-            while(!lineItemsCursor.isAfterLast()) {
+            while (!lineItemsCursor.isAfterLast()) {
                 orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
                 lineItemsCursor.moveToNext();
             }
-            receipts.add(new Receipt(orderedProducts, date));
+            receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, date));
             receiptsCursor.moveToNext();
         }
         readableDatabase.close();
@@ -66,7 +67,7 @@ public class ReceiptsRepository {
             receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
             receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, df.format(receipt.getCreatedAt()));
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
-            for(OrderedProduct orderedItem : receipt.getOrderedProducts()) {
+            for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {
                 ContentValues lineItemValues = new ContentValues();
                 lineItemValues.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
                 lineItemValues.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
@@ -79,6 +80,22 @@ public class ReceiptsRepository {
             //TODO: alert this?
             throw new RuntimeException(e);
         } finally {
+            writableDatabase.close();
+        }
+    }
+
+    public void remove(Receipt receipt) {
+        SQLiteDatabase writableDatabase = db.getWritableDatabase();
+        writableDatabase.beginTransaction();
+        try {
+            String[] whereArgs = {receipt.getId().toString()};
+            writableDatabase.delete(KioskDatabase.ReceiptsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.ReceiptsTable.ID), whereArgs);
+            writableDatabase.delete(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), whereArgs);
+            writableDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            //TODO: alert? log?
+        } finally {
+            writableDatabase.endTransaction();
             writableDatabase.close();
         }
     }

@@ -6,6 +6,7 @@ public class Receipt {
     private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
     private Date createdAt;
     private String kioskId = "k1";
+    private Long id = null;
 
     public Receipt(Iterable<Product> products) {
         this(products, new Date(), "k1");
@@ -33,7 +34,8 @@ public class Receipt {
         this.kioskId = kioskId;
     }
 
-    public Receipt(List<OrderedProduct> orderedProducts, Date createdAt) {
+    public Receipt(Long id, List<OrderedProduct> orderedProducts, Date createdAt) {
+        this.id = id;
         this.orderedProducts = orderedProducts;
         this.createdAt = createdAt;
     }
@@ -60,5 +62,9 @@ public class Receipt {
 
     public String getKioskId() {
         return kioskId;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

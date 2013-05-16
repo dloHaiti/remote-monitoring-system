@@ -55,7 +55,10 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
             }
         }
         for (Receipt receipt : receipts) {
-            if(!receiptsClient.send(receipt)) {
+            boolean sendOk = receiptsClient.send(receipt);
+            if(sendOk) {
+                receiptsRepository.remove(receipt);
+            } else {
                 atLeastOneSaleFailed = true;
             }
         }

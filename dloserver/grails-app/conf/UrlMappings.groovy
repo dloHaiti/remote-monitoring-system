@@ -2,7 +2,7 @@ class UrlMappings {
 
     static mappings = {
         "/reading/$id?"(resource: "reading")
-        "/sales/$id?"(resource: "receipts")
+        "/receipts/$id?"(resource: "receipts")
         "/healthcheck/$id?"(resource: "healthcheck")
 
         "/$controller/$action?/$id?" {

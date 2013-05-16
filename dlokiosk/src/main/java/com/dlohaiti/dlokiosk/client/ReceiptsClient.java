@@ -12,6 +12,6 @@ public class ReceiptsClient {
     }
 
     public boolean send(Receipt receipt) {
-        return restClient.post("/sales", receipt);
+        return restClient.post("/receipts", receipt);
     }
 }

@@ -29,34 +29,41 @@ public class ReceiptsRepository {
     }
 
     public List<Receipt> list() {
-        String[] columns = {KioskDatabase.ReceiptsTable.ID, KioskDatabase.ReceiptsTable.KIOSK_ID, KioskDatabase.ReceiptsTable.CREATED_AT};
-        SQLiteDatabase readableDatabase = db.getReadableDatabase();
-        Cursor receiptsCursor = readableDatabase.query(KioskDatabase.ReceiptsTable.TABLE_NAME, columns, null, null, null, null, null);
         List<Receipt> receipts = new ArrayList<Receipt>();
-        receiptsCursor.moveToFirst();
+        String[] columns = {KioskDatabase.ReceiptsTable.ID, KioskDatabase.ReceiptsTable.KIOSK_ID, KioskDatabase.ReceiptsTable.CREATED_AT};
+        String[] lineItemCols = {KioskDatabase.ReceiptLineItemsTable.ID, KioskDatabase.ReceiptLineItemsTable.SKU, KioskDatabase.ReceiptLineItemsTable.QUANTITY, KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID};
+        String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
 
-        while (!receiptsCursor.isAfterLast()) {
-            Date date = null;
-            try {
-                date = df.parse(receiptsCursor.getString(2));
-            } catch (ParseException e) {
-                e.printStackTrace();
+        SQLiteDatabase readableDatabase = db.getReadableDatabase();
+        readableDatabase.beginTransaction();
+        try {
+            Cursor receiptsCursor = readableDatabase.query(KioskDatabase.ReceiptsTable.TABLE_NAME, columns, null, null, null, null, null);
+            receiptsCursor.moveToFirst();
+
+            while (!receiptsCursor.isAfterLast()) {
+                Date date = null;
+                try {
+                    date = df.parse(receiptsCursor.getString(2));
+                } catch (ParseException e) {
+                    e.printStackTrace(); //TODO: alert? log?
+                }
+                String receiptId = receiptsCursor.getString(0);
+                String[] args = {receiptId};
+                Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
+                lineItemsCursor.moveToFirst();
+                List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
+                while (!lineItemsCursor.isAfterLast()) {
+                    orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
+                    lineItemsCursor.moveToNext();
+                }
+                receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, receiptsCursor.getString(1), date));
+                receiptsCursor.moveToNext();
             }
-            String[] lineItemCols = {KioskDatabase.ReceiptLineItemsTable.ID, KioskDatabase.ReceiptLineItemsTable.SKU, KioskDatabase.ReceiptLineItemsTable.QUANTITY, KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID};
-            String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
-            String receiptId = receiptsCursor.getString(0);
-            String[] args = {receiptId};
-            Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
-            lineItemsCursor.moveToFirst();
-            List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
-            while (!lineItemsCursor.isAfterLast()) {
-                orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
-                lineItemsCursor.moveToNext();
-            }
-            receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, "k1", date));
-            receiptsCursor.moveToNext();
+            readableDatabase.setTransactionSuccessful();
+            return receipts;
+        } finally {
+            readableDatabase.endTransaction();
         }
-        return receipts;
     }
 
     public void add(List<Product> products) {

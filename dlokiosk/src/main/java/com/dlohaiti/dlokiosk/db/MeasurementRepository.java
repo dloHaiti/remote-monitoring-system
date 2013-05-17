@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
+import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.validation.MeasurementsValidator;
@@ -13,17 +14,12 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.util.Collections.emptyList;
 
 public class MeasurementRepository {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
     private static final String MEASUREMENTS_FILE = "dlokiosk.dat";
-
     private static final Logger logger = LoggerFactory.getLogger(MeasurementRepository.class);
 
     private MeasurementsValidator validator;
@@ -31,12 +27,11 @@ public class MeasurementRepository {
     private Context context;
 
     @Inject
-    public MeasurementRepository(Context context, MeasurementsValidator validator, ObjectMapper mapper) {
+    public MeasurementRepository(Context context, MeasurementsValidator validator, ObjectMapper mapper, KioskDate kioskDate) {
         this.context = context;
         this.validator = validator;
         this.mapper = mapper;
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
-        this.mapper.setDateFormat(df);
+        this.mapper.setDateFormat(kioskDate.getFormat());
     }
 
     public Collection<Reading> getReadings() {

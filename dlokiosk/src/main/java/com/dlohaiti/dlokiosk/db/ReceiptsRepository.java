@@ -3,15 +3,14 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.OrderedProduct;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.dlohaiti.dlokiosk.domain.ReceiptFactory;
 import com.google.inject.Inject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,13 +18,13 @@ import java.util.List;
 public class ReceiptsRepository {
     private final KioskDatabase db;
     private final ReceiptFactory receiptFactory;
-    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss z";
-    private final DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+    private final KioskDate kioskDate;
 
     @Inject
-    public ReceiptsRepository(KioskDatabase db, ReceiptFactory receiptFactory) {
+    public ReceiptsRepository(KioskDatabase db, ReceiptFactory receiptFactory, KioskDate kioskDate) {
         this.db = db;
         this.receiptFactory = receiptFactory;
+        this.kioskDate = kioskDate;
     }
 
     public List<Receipt> list() {
@@ -43,7 +42,7 @@ public class ReceiptsRepository {
             while (!receiptsCursor.isAfterLast()) {
                 Date date = null;
                 try {
-                    date = df.parse(receiptsCursor.getString(2));
+                    date = kioskDate.getFormat().parse(receiptsCursor.getString(2));
                 } catch (ParseException e) {
                     e.printStackTrace(); //TODO: alert? log?
                 }
@@ -72,7 +71,7 @@ public class ReceiptsRepository {
         Receipt receipt = receiptFactory.makeReceipt(products);
         ContentValues receiptValues = new ContentValues();
         receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
-        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, df.format(receipt.getCreatedAt()));
+        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedAt()));
         try {
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {

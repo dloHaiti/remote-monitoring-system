@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.Context;
 import com.dlohaiti.dlokiosk.AbstractUnitTest;
+import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.MeasurementLocation;
 import com.dlohaiti.dlokiosk.domain.MeasurementType;
@@ -17,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.hamcrest.core.Is.is;
@@ -45,11 +45,11 @@ public class MeasurementRepositoryTest extends AbstractUnitTest {
         given(context.openFileOutput(anyString(), anyInt())).willReturn(outputStream);
         given(context.openFileInput(anyString())).willReturn(inputStream);
         given(validator.validate(anyList())).willReturn(new ValidationResult(new HashSet<MeasurementType>()));
-        repository = new MeasurementRepository(context, validator, new ObjectMapper());
+        repository = new MeasurementRepository(context, validator, new ObjectMapper(), new KioskDate());
     }
 
     private String formatDate(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z").format(date);
+        return new KioskDate().getFormat().format(date);
     }
 
     @Test

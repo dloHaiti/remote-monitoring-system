@@ -44,6 +44,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
+        <activity
+                android:name="com.dlohaiti.dlokiosk.DeliveryTrackingActivity"
+                android:label="@string/title_activity_delivery_tracking" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -48,6 +48,10 @@ public class MainActivity extends RoboActivity implements StatusView {
         new ManualSyncReadingsTask(this).execute();
     }
 
+    public void moveToDeliveryTrackingScreen(View v) {
+        startActivity(new Intent(this, DeliveryTrackingActivity.class));
+    }
+
     @Override
     public void showProgressBar() {
         statusImage.setVisibility(View.INVISIBLE);

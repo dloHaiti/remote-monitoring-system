@@ -61,6 +61,13 @@
     <Button
       android:layout_width="100dp"
       android:layout_height="fill_parent"
+      android:onClick="moveToDeliveryTrackingScreen"
+      android:text="@string/delivery_tracking_button"
+      android:id="@+id/delivery_tracking_button" />
+
+    <Button
+      android:layout_width="100dp"
+      android:layout_height="fill_parent"
       android:layout_gravity="center"
       android:onClick="moveToNewReadingScreen"
       android:text="@string/record_new_reading_button"

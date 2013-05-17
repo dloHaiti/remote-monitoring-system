@@ -67,6 +67,21 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ConfigurationTable.KIOSK_ID,
                 ConfigurationTable.KIOSK_PASSWORD
         );
+        String createDeliveries = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s INTEGER," +
+                        "%s TEXT" +
+                        ")",
+                DeliveriesTable.TABLE_NAME,
+                DeliveriesTable.ID,
+                DeliveriesTable.KIOSK_ID,
+                DeliveriesTable.DELIVERY_TYPE,
+                DeliveriesTable.QUANTITY,
+                DeliveriesTable.CREATED_AT
+        );
 
         String insertProduct10g = String.format(
                 "INSERT INTO %s(%s, %s) VALUES (?, ?)",
@@ -78,6 +93,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createReceiptLineItems);
         db.execSQL(createProducts);
         db.execSQL(createConfiguration);
+        db.execSQL(createDeliveries);
         db.execSQL(insertProduct10g, new Object[]{"2GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
@@ -362,5 +378,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static String ID = "ID";
         public static String KIOSK_ID = "KIOSK_ID";
         public static String KIOSK_PASSWORD = "KIOSK_PASSWORD";
+    }
+
+    public static class DeliveriesTable {
+        public static String TABLE_NAME = "DELIVERIES";
+        public static String ID = "ID";
+        public static String KIOSK_ID = "KIOSK_ID";
+        public static String QUANTITY = "QUANTITY";
+        public static String DELIVERY_TYPE = "DELIVERY_TYPE";
+        public static String CREATED_AT = "CREATED_AT";
     }
 }

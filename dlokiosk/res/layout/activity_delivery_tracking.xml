@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <EditText
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_gravity="center"
+    android:inputType="number"
+    android:text="@string/delivery_tracking_default"
+    android:id="@+id/delivery_tracking" />
+
+  <Button
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:text="@string/out_for_delivery_button"
+    android:onClick="outForDelivery" />
+
+  <Button
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:text="@string/returned_button"
+    android:onClick="returned" />
+
+</LinearLayout>

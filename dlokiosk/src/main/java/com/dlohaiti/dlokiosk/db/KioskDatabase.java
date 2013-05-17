@@ -83,18 +83,26 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 DeliveriesTable.CREATED_AT
         );
 
-        String insertProduct10g = String.format(
+        String insertProduct = String.format(
                 "INSERT INTO %s(%s, %s) VALUES (?, ?)",
                 ProductsTable.TABLE_NAME,
                 ProductsTable.SKU,
                 ProductsTable.ICON
         );
+
+        String insertKiosk = String.format(
+                "INSERT INTO %s(%s) VALUES (?)",
+                ConfigurationTable.TABLE_NAME,
+                ConfigurationTable.KIOSK_ID
+        );
+
         db.execSQL(createReceipts);
         db.execSQL(createReceiptLineItems);
         db.execSQL(createProducts);
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
-        db.execSQL(insertProduct10g, new Object[]{"2GALLON",
+        db.execSQL(insertKiosk, new Object[]{ "HARDCODED k1" });
+        db.execSQL(insertProduct, new Object[]{"2GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -181,7 +189,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "AkwgJUSsIEOACSRDh9OUCDCBlBCxggwBJpAMHU5TIsAEUkLECjIEmEAydDhNiQATSAkRK8gQYALJ" +
                         "0OE0JQJMICVErCBDgAkkQ4fTlAgwgZQQsYIMASaQDB1OUyLABFJCxAoyBJhAMnQ4TYkAE0gJESvI" +
                         "EGACydDhNCUCTCAlRKwgQ+D/loC4QfTfVX4AAAAASUVORK5CYII="});
-        db.execSQL(insertProduct10g, new Object[]{"5GALLON",
+        db.execSQL(insertProduct, new Object[]{"5GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -263,7 +271,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "dRUBIZCKh6QMERACGQIm6ioCQiAVD0kZIiAEMgRM1FUEhEAqHpIyREAIZAiYqKsICIFUPCRliIAQ" +
                         "yBAwUVcREAKpeEjKEAEhkCFgoq4iIARS8ZCUIQJCIEPARF1FQAik4iEpQwSEQIaAibqKwP8BwI+/" +
                         "Qfxx/mkAAAAASUVORK5CYII="});
-        db.execSQL(insertProduct10g, new Object[]{"10GALLON",
+        db.execSQL(insertProduct, new Object[]{"10GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +

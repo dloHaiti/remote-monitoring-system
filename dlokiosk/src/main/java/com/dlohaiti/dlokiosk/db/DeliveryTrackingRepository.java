@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
@@ -25,18 +26,19 @@ public class DeliveryTrackingRepository {
     }
 
     public boolean save(Delivery delivery) {
-        SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KioskDatabase.DeliveriesTable.QUANTITY, delivery.getQuantity());
         values.put(KioskDatabase.DeliveriesTable.DELIVERY_TYPE, delivery.getType().name());
         values.put(KioskDatabase.DeliveriesTable.KIOSK_ID, delivery.getKioskId());
         values.put(KioskDatabase.DeliveriesTable.CREATED_AT, kioskDate.getFormat().format(delivery.getCreatedAt()));
+        SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         try {
             writableDatabase.insert(KioskDatabase.DeliveriesTable.TABLE_NAME, null, values);
             writableDatabase.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
+            Log.d(getClass().getSimpleName(), e.getMessage());
             return false;
         } finally {
             writableDatabase.endTransaction();

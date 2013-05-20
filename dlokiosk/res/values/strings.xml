@@ -49,11 +49,8 @@
   <string name="kioskPasswordHint">password</string>
   <string name="delivery_tracking_button">Delivery Tracking</string>
   <string name="title_activity_delivery_tracking">Delivery Tracking</string>
-  <string name="delivery_tracking_default">24</string>
   <string name="out_for_delivery_button">Out for Delivery</string>
   <string name="returned_button">Returned</string>
-  <string name="data_save_successful">Data Saved</string>
+  <string name="data_save_successful">Data Saved!</string>
   <string name="data_save_error">Data Failed to Save</string>
-
-
 </resources>

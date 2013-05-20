@@ -52,6 +52,7 @@
   <string name="delivery_tracking_default">24</string>
   <string name="out_for_delivery_button">Out for Delivery</string>
   <string name="returned_button">Returned</string>
+  <string name="data_saved">Data Saved</string>
 
 
 </resources>

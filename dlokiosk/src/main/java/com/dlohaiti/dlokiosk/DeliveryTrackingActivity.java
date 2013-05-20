@@ -33,7 +33,6 @@ public class DeliveryTrackingActivity extends RoboActivity {
         Integer unitsDelivered = Integer.valueOf(deliveryTrackingTextBox.getText().toString());
         Delivery delivery = factory.makeDelivery(unitsDelivered, outForDelivery);
         repository.save(delivery);
-        //TODO: dialog box
-        finish();
+        new DataSavedDialog().show(getFragmentManager(), "dataSavedDialog");
     }
 }

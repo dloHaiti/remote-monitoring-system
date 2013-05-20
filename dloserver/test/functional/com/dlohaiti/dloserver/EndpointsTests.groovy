@@ -57,10 +57,10 @@ class EndpointsTests extends APITestCase {
             headers['Content-Type'] = 'application/json'
             body { """
                 {
-                "kiosk":"k1",
-                "timestamp":"2013-04-24 00:00:01 EDT",
-                "quantity": 1,
-                "sku": "10GAL"
+                "kioskId":"k1",
+                "createdAt":"2013-04-24 00:00:01 EDT",
+                "orderedProducts":[{"quantity": 1,
+                "sku": "10GAL"}]
                 }
             """ }
         }
@@ -80,8 +80,8 @@ class EndpointsTests extends APITestCase {
             headers['Content-Type'] = 'application/json'
             body { """
                 {
-                "kiosk":"k1",
-                "timestamp":"2013-04-24 00:00:01 EDT",
+                "kioskId":"k12341",
+                "createdAt":"2013-04-24 00:00:01 EDT",
                 "quantity": 1
                 }
             """ }

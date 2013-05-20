@@ -72,4 +72,18 @@ public class DeliveryTrackingRepository {
             rdb.endTransaction();
         }
     }
+
+    public boolean remove(Delivery delivery) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            wdb.delete(KioskDatabase.DeliveriesTable.TABLE_NAME, "id=?", new String[]{ String.valueOf(delivery.getId()) });
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            wdb.endTransaction();
+        }
+    }
 }

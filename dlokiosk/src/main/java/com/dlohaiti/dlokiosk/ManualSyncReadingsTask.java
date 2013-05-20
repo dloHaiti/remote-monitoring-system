@@ -78,7 +78,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         for(Delivery delivery: deliveries) {
             boolean sendOk = deliveriesClient.send(delivery);
             if(sendOk) {
-//                deliveriesRepository.remove(delivery);
+                deliveriesRepository.remove(delivery);
             } else {
                 atLeastOneDeliveryFailed = true;
             }

@@ -24,7 +24,7 @@ public class DeliveryTrackingRepository {
         this.kioskDate = kioskDate;
     }
 
-    public void save(Delivery delivery) {
+    public boolean save(Delivery delivery) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KioskDatabase.DeliveriesTable.QUANTITY, delivery.getQuantity());
@@ -35,6 +35,9 @@ public class DeliveryTrackingRepository {
         try {
             writableDatabase.insert(KioskDatabase.DeliveriesTable.TABLE_NAME, null, values);
             writableDatabase.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            return false;
         } finally {
             writableDatabase.endTransaction();
         }

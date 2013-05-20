@@ -32,7 +32,12 @@ public class DeliveryTrackingActivity extends RoboActivity {
     private void createRecord(DeliveryTrackingType outForDelivery) {
         Integer unitsDelivered = Integer.valueOf(deliveryTrackingTextBox.getText().toString());
         Delivery delivery = factory.makeDelivery(unitsDelivered, outForDelivery);
-        repository.save(delivery);
-        new DataSavedDialog().show(getFragmentManager(), "dataSavedDialog");
+        boolean isSuccessful = repository.save(delivery);
+
+        ResultDialog resultDialog = new ResultDialog();
+        Bundle args = new Bundle();
+        args.putBoolean("isSuccessful", isSuccessful);
+        resultDialog.setArguments(args);
+        resultDialog.show(getFragmentManager(), "deliveryResultDialog");
     }
 }

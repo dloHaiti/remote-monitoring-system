@@ -3,10 +3,13 @@ package com.dlohaiti.dlokiosk;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
+import com.dlohaiti.dlokiosk.db.DeliveryTrackingRepository;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
+import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.google.inject.Inject;
@@ -19,7 +22,10 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Inject private MeasurementRepository measurementRepository;
     @Inject private ReadingClient readingClient;
     @Inject private ReceiptsClient receiptsClient;
+    @Inject private DeliveriesClient deliveriesClient;
     @Inject private ReceiptsRepository receiptsRepository;
+    @Inject private DeliveryTrackingRepository deliveriesRepository;
+
     private Activity activity;
     private ProgressDialog progressDialog;
 
@@ -44,16 +50,22 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     public String call() throws Exception {
         Collection<Reading> readings = measurementRepository.getReadings();
         Collection<Receipt> receipts = receiptsRepository.list();
-        if (readings.isEmpty() && receipts.isEmpty()) {
+        Collection<Delivery> deliveries = deliveriesRepository.list();
+
+        if (readings.isEmpty() && receipts.isEmpty() && deliveries.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
+
         boolean atLeastOneReadingFailed = false;
         boolean atLeastOneSaleFailed = false;
+        boolean atLeastOneDeliveryFailed = false;
+
         for (Reading reading: readings) {
             if (!readingClient.send(reading)) {
                 atLeastOneReadingFailed = true;
             }
         }
+
         for (Receipt receipt : receipts) {
             boolean sendOk = receiptsClient.send(receipt);
             if(sendOk) {
@@ -62,10 +74,20 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
                 atLeastOneSaleFailed = true;
             }
         }
-        if (atLeastOneReadingFailed || atLeastOneSaleFailed) {
+
+        for(Delivery delivery: deliveries) {
+            boolean sendOk = deliveriesClient.send(delivery);
+            if(sendOk) {
+//                deliveriesRepository.remove(delivery);
+            } else {
+                atLeastOneDeliveryFailed = true;
+            }
+        }
+
+        if (atLeastOneReadingFailed || atLeastOneSaleFailed || atLeastOneDeliveryFailed) {
             return activity.getString(R.string.send_error_msg);
         }
-        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size());
+        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size(), deliveries.size());
     }
 
     private void showMessage(String message) {

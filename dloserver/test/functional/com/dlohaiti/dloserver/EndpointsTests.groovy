@@ -53,7 +53,7 @@ class EndpointsTests extends APITestCase {
     }
 
     void testPostingAValidSale() {
-        post('/sales') {
+        post('/receipts') {`
             headers['Content-Type'] = 'application/json'
             body { """
                 {
@@ -70,13 +70,13 @@ class EndpointsTests extends APITestCase {
     }
 
     void testPostingAnEmptySale() {
-        post('/sales')
+        post('/receipts')
 
         assertStatus 422
     }
 
     void testPostingAnInvalidSale() {
-        post('/sales') {
+        post('/receipts') {
             headers['Content-Type'] = 'application/json'
             body { """
                 {

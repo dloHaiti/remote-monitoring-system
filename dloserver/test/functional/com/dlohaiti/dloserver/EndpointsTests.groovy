@@ -53,7 +53,7 @@ class EndpointsTests extends APITestCase {
     }
 
     void testPostingAValidSale() {
-        post('/receipts') {`
+        post('/receipts') {
             headers['Content-Type'] = 'application/json'
             body { """
                 {

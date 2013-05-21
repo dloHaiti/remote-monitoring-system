@@ -58,14 +58,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
         );
         String createConfiguration = String.format(
                 "CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY," +
                         "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ConfigurationTable.TABLE_NAME,
-                ConfigurationTable.ID,
-                ConfigurationTable.KIOSK_ID,
-                ConfigurationTable.KIOSK_PASSWORD
+                ConfigurationTable.KEY,
+                ConfigurationTable.VALUE
         );
         String createDeliveries = String.format(
                 "CREATE TABLE %s(" +
@@ -93,7 +91,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         String insertKiosk = String.format(
                 "INSERT INTO %s(%s) VALUES (?)",
                 ConfigurationTable.TABLE_NAME,
-                ConfigurationTable.KIOSK_ID
+                ConfigurationTable.KEY
         );
 
         db.execSQL(createReceipts);
@@ -383,9 +381,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
 
     public static class ConfigurationTable {
         public static String TABLE_NAME = "CONFIGURATION";
-        public static String ID = "ID";
-        public static String KIOSK_ID = "KIOSK_ID";
-        public static String KIOSK_PASSWORD = "KIOSK_PASSWORD";
+        public static String KEY = "KEY";
+        public static String VALUE = "VALUE";
     }
 
     public static class DeliveriesTable {

@@ -1,6 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.DeliveryTrackingType;
+import com.dlohaiti.dlokiosk.DeliveryType;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import org.junit.Before;
@@ -31,13 +31,13 @@ public class DeliveryFactoryTest {
 
     @Test
     public void shouldGetTimeFromClock() {
-        Delivery delivery = factory.makeDelivery(24, DeliveryTrackingType.RETURNED);
+        Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED);
         assertThat(delivery.getCreatedAt(), is(new Date(0)));
     }
 
     @Test
     public void shouldGetKioskIdFromConfiguration() {
-        Delivery delivery = factory.makeDelivery(24, DeliveryTrackingType.RETURNED);
+        Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED);
         assertThat(delivery.getKioskId(), is("k1"));
     }
 }

@@ -49,7 +49,7 @@ public class MainActivity extends RoboActivity implements StatusView {
     }
 
     public void moveToDeliveryTrackingScreen(View v) {
-        startActivity(new Intent(this, DeliveryTrackingActivity.class));
+        startActivity(new Intent(this, DeliveryActivity.class));
     }
 
     @Override

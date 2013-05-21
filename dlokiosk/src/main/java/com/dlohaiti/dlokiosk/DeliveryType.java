@@ -1,5 +1,5 @@
 package com.dlohaiti.dlokiosk;
 
-public enum DeliveryTrackingType {
+public enum DeliveryType {
     OUT_FOR_DELIVERY, RETURNED
 }

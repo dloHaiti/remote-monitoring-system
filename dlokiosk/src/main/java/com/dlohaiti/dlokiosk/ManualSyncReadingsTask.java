@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
 import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.ReadingClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
-import com.dlohaiti.dlokiosk.db.DeliveryTrackingRepository;
+import com.dlohaiti.dlokiosk.db.DeliveryRepository;
 import com.dlohaiti.dlokiosk.db.MeasurementRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.domain.Delivery;
@@ -24,7 +24,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Inject private ReceiptsClient receiptsClient;
     @Inject private DeliveriesClient deliveriesClient;
     @Inject private ReceiptsRepository receiptsRepository;
-    @Inject private DeliveryTrackingRepository deliveriesRepository;
+    @Inject private DeliveryRepository deliveriesRepository;
 
     private Activity activity;
     private ProgressDialog progressDialog;

@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DeliveryTrackingRepository {
+public class DeliveryRepository {
     private final DeliveryFactory factory;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
 
     @Inject
-    public DeliveryTrackingRepository(KioskDatabase db, DeliveryFactory factory, KioskDate kioskDate) {
+    public DeliveryRepository(KioskDatabase db, DeliveryFactory factory, KioskDate kioskDate) {
         this.factory = factory;
         this.db = db;
         this.kioskDate = kioskDate;

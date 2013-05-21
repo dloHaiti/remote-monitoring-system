@@ -1,6 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.DeliveryTrackingType;
+import com.dlohaiti.dlokiosk.DeliveryType;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.google.inject.Inject;
@@ -20,13 +20,13 @@ public class DeliveryFactory {
         this.kioskDate = kioskDate;
     }
 
-    public Delivery makeDelivery(int quantity, DeliveryTrackingType type) {
+    public Delivery makeDelivery(int quantity, DeliveryType type) {
         String kioskId = configurationRepository.getKiosk().getId();
         return new Delivery(quantity, type, clock.now(), kioskId);
     }
 
-    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryTrackingType, String kioskId, String createdAtDate) {
-        DeliveryTrackingType type = DeliveryTrackingType.valueOf(deliveryTrackingType);
+    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String kioskId, String createdAtDate) {
+        DeliveryType type = DeliveryType.valueOf(deliveryType);
         Date createdAt = null;
         try {
             createdAt = kioskDate.getFormat().parse(createdAtDate);

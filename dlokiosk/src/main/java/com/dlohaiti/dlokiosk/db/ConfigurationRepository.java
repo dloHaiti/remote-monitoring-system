@@ -17,15 +17,15 @@ public class ConfigurationRepository {
     public void save(String kioskId, String kioskPassword) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues id = new ContentValues();
-        id.put(KioskDatabase.ConfigurationTable.KEY, "kioskId");
+        id.put(KioskDatabase.ConfigurationTable.KEY, ConfigurationKey.KIOSK_ID.name());
         id.put(KioskDatabase.ConfigurationTable.VALUE, kioskId);
         ContentValues pw = new ContentValues();
-        pw.put(KioskDatabase.ConfigurationTable.KEY, "kioskPassword");
+        pw.put(KioskDatabase.ConfigurationTable.KEY, ConfigurationKey.KIOSK_PASSWORD.name());
         pw.put(KioskDatabase.ConfigurationTable.VALUE, kioskPassword);
         writableDatabase.beginTransaction();
         try {
-            writableDatabase.insert(KioskDatabase.ConfigurationTable.TABLE_NAME, null, id);
-            writableDatabase.insert(KioskDatabase.ConfigurationTable.TABLE_NAME, null, pw);
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, id, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{ConfigurationKey.KIOSK_ID.name()});
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, pw, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{ConfigurationKey.KIOSK_PASSWORD.name()});
             writableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             //TODO: log? alert?
@@ -41,14 +41,16 @@ public class ConfigurationRepository {
         String kioskPassword = "";
         readableDatabase.beginTransaction();
         try {
-            Cursor cursor = readableDatabase.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, String.format("%s=? OR %s=?", KioskDatabase.ConfigurationTable.KEY, KioskDatabase.ConfigurationTable.KEY), new String[]{"kioskId", "kioskPassword"}, null, null, null);
+            String selection = String.format("%s=? OR %s=?", KioskDatabase.ConfigurationTable.KEY, KioskDatabase.ConfigurationTable.KEY);
+            String[] selectionArgs = {ConfigurationKey.KIOSK_ID.name(), ConfigurationKey.KIOSK_PASSWORD.name()};
+            Cursor cursor = readableDatabase.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, selection, selectionArgs, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
-                if ("kioskId".equals(key)) {
+                if (ConfigurationKey.KIOSK_ID.name().equals(key)) {
                     kioskId = value;
-                } else if ("kioskPassword".equals(key)) {
+                } else if (ConfigurationKey.KIOSK_PASSWORD.name().equals(key)) {
                     kioskPassword = value;
                 }
                 cursor.moveToNext();

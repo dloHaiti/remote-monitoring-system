@@ -88,10 +88,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.ICON
         );
 
-        String insertKiosk = String.format(
-                "INSERT INTO %s(%s) VALUES (?)",
+        String insertConfig = String.format(
+                "INSERT INTO %s(%s, %s) VALUES (?, ?)",
                 ConfigurationTable.TABLE_NAME,
-                ConfigurationTable.KEY
+                ConfigurationTable.KEY,
+                ConfigurationTable.VALUE
         );
 
         db.execSQL(createReceipts);
@@ -99,7 +100,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createProducts);
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
-        db.execSQL(insertKiosk, new Object[]{ "HARDCODED k1" });
+        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_ID.name(), "HARDCODED K1" });
+        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_PASSWORD.name(), "pw" });
         db.execSQL(insertProduct, new Object[]{"2GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +

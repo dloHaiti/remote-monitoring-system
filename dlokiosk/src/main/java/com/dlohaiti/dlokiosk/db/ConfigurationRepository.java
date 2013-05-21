@@ -77,4 +77,12 @@ public class ConfigurationRepository {
             rdb.endTransaction();
         }
     }
+
+    public Integer getInt(ConfigurationKey key) {
+        try {
+            return Integer.valueOf(get(key));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 }

@@ -23,9 +23,9 @@ public class DeliveryActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tracking);
         //TODO: guard against integer failing to parse
-        deliveryPicker.setMinValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_MIN)));
-        deliveryPicker.setMaxValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_MAX)));
-        deliveryPicker.setValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_DEFAULT)));
+        deliveryPicker.setMinValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_MIN));
+        deliveryPicker.setMaxValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_MAX));
+        deliveryPicker.setValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_DEFAULT));
         deliveryPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
 

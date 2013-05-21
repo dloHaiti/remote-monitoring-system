@@ -102,6 +102,9 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createDeliveries);
         db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_ID.name(), "HARDCODED K1" });
         db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_PASSWORD.name(), "pw" });
+        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0" });
+        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24" });
+        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24" });
         db.execSQL(insertProduct, new Object[]{"2GALLON",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +

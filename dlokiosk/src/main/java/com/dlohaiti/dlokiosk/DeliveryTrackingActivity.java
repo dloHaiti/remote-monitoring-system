@@ -3,6 +3,8 @@ package com.dlohaiti.dlokiosk;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
+import com.dlohaiti.dlokiosk.db.ConfigurationKey;
+import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.db.DeliveryTrackingRepository;
 import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
@@ -15,14 +17,14 @@ public class DeliveryTrackingActivity extends RoboActivity {
     @InjectView(R.id.delivery_tracking) private NumberPicker deliveryTrackingPicker;
     @Inject private DeliveryFactory factory;
     @Inject private DeliveryTrackingRepository repository;
+    @Inject private ConfigurationRepository config;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tracking);
-        //TODO: pull these from configuration repository
-        deliveryTrackingPicker.setMinValue(0);
-        deliveryTrackingPicker.setMaxValue(24);
-        deliveryTrackingPicker.setValue(24);
+        deliveryTrackingPicker.setMinValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_MIN)));
+        deliveryTrackingPicker.setMaxValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_MAX)));
+        deliveryTrackingPicker.setValue(Integer.valueOf(config.get(ConfigurationKey.DELIVERY_TRACKING_DEFAULT)));
         deliveryTrackingPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
     }
 

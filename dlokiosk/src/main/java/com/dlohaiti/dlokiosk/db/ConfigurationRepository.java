@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 
 public class ConfigurationRepository {
     private final KioskDatabase db;
+    private final String[] columns = new String[]{KioskDatabase.ConfigurationTable.KEY, KioskDatabase.ConfigurationTable.VALUE};
 
     @Inject
     public ConfigurationRepository(KioskDatabase db) {
@@ -36,7 +37,6 @@ public class ConfigurationRepository {
 
     public Kiosk getKiosk() {
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
-        String[] columns = {KioskDatabase.ConfigurationTable.KEY, KioskDatabase.ConfigurationTable.VALUE};
         String kioskId = "";
         String kioskPassword = "";
         readableDatabase.beginTransaction();
@@ -62,5 +62,19 @@ public class ConfigurationRepository {
             readableDatabase.endTransaction();
         }
         return new Kiosk(kioskId, kioskPassword);
+    }
+
+    public String get(ConfigurationKey key) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        try {
+            Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{key.name()}, null, null, null);
+            cursor.moveToFirst();
+            //TODO: more than one result
+            rdb.setTransactionSuccessful();
+            return cursor.getString(1);
+        } finally {
+            rdb.endTransaction();
+        }
     }
 }

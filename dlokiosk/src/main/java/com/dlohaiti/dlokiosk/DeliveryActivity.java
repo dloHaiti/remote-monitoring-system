@@ -22,7 +22,6 @@ public class DeliveryActivity extends RoboActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tracking);
-        //TODO: guard against integer failing to parse
         deliveryPicker.setMinValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_MIN));
         deliveryPicker.setMaxValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_MAX));
         deliveryPicker.setValue(config.getInt(ConfigurationKey.DELIVERY_TRACKING_DEFAULT));

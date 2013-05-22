@@ -21,18 +21,26 @@ public class EnterSaleActivity extends RoboActivity {
     @Inject private ProductRepository repository;
     @Inject private ReceiptsRepository receiptsRepository;
     private List<Product> shoppingCart = new ArrayList<Product>();
+    private ImageAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_sale);
         inventoryGrid.setAdapter(new ImageAdapter(this, repository.list()));
-        final ImageAdapter adapter = new ImageAdapter(this, shoppingCart);
+        adapter = new ImageAdapter(this, shoppingCart);
         shoppingCartGrid.setAdapter(adapter);
+
+
 
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                shoppingCart.add(repository.findById(id));
-                adapter.notifyDataSetChanged();
+                Product product = repository.findById(id);
+                if (product.requiresQuantity()) {
+                    NumberPickerDialog numberPickerDialog = new NumberPickerDialog(product);
+                    numberPickerDialog.show(getFragmentManager(), "numberPickerDialog");
+                } else {
+                    addToShoppingCart(product);
+                }
             }
         });
 
@@ -47,5 +55,10 @@ public class EnterSaleActivity extends RoboActivity {
     public void checkout(View v) {
         receiptsRepository.add(shoppingCart);
         finish();
+    }
+
+    public void addToShoppingCart(Product product) {
+        shoppingCart.add(product);
+        adapter.notifyDataSetChanged();
     }
 }

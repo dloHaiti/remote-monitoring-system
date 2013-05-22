@@ -27,7 +27,12 @@ public class ProductRepository {
 
     public List<Product> list() {
         List<Product> products = new ArrayList<Product>();
-        String[] columns = {KioskDatabase.ProductsTable.ID, KioskDatabase.ProductsTable.SKU, KioskDatabase.ProductsTable.ICON};
+        String[] columns = {
+                KioskDatabase.ProductsTable.ID,
+                KioskDatabase.ProductsTable.SKU,
+                KioskDatabase.ProductsTable.ICON,
+                KioskDatabase.ProductsTable.REQUIRES_QUANTITY
+        };
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
         try {
@@ -47,6 +52,7 @@ public class ProductRepository {
 
     private Product buildProduct(Cursor cursor) {
         String sku = cursor.getString(1);
+        boolean requiresQuantity = cursor.getInt(3) == 1;
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
         try {
             byte[] imageData = Base64.decode(cursor.getString(2));
@@ -55,11 +61,16 @@ public class ProductRepository {
             Log.e(getClass().getSimpleName(), String.format("image for product(%s) could not be decoded", sku));
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
-        return new Product(cursor.getLong(0), sku, resource);
+        return new Product(cursor.getLong(0), sku, resource, requiresQuantity);
     }
 
     public Product findById(Long id) {
-        String[] columns = {KioskDatabase.ProductsTable.ID, KioskDatabase.ProductsTable.SKU, KioskDatabase.ProductsTable.ICON};
+        String[] columns = {
+                KioskDatabase.ProductsTable.ID,
+                KioskDatabase.ProductsTable.SKU,
+                KioskDatabase.ProductsTable.ICON,
+                KioskDatabase.ProductsTable.REQUIRES_QUANTITY
+        };
         String selection = String.format("%s=?", KioskDatabase.ProductsTable.ID);
         String[] args = {String.valueOf(id)};
         SQLiteDatabase readableDatabase = db.getReadableDatabase();

@@ -47,7 +47,7 @@
       android:layout_alignParentRight="true"
       android:layout_alignParentBottom="true"
       android:padding="30dp"
-      android:onClick="checkout"
-      android:text="@string/checkout" />
+      android:onClick="moveToPromotions"
+      android:text="@string/next" />
   </RelativeLayout>
 </LinearLayout>

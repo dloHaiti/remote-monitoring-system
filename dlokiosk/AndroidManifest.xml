@@ -51,6 +51,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
+        <activity
+                android:name=".EnterPromotionActivity"
+                android:label="@string/title_activity_enter_promotion" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.EnterSaleActivity" />
+        </activity>
     </application>
 
 </manifest>

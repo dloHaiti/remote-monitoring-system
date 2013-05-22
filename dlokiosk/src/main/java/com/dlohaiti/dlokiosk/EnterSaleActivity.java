@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -60,5 +61,16 @@ public class EnterSaleActivity extends RoboActivity {
     public void addToShoppingCart(Product product) {
         shoppingCart.add(product);
         adapter.notifyDataSetChanged();
+    }
+
+    public void moveToPromotions(View v) {
+        startActivityForResult(new Intent(this, EnterPromotionActivity.class), 777);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 777) {
+            finish();
+        }
     }
 }

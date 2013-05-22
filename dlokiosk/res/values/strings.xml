@@ -54,4 +54,6 @@
   <string name="data_save_successful">Data Saved!</string>
   <string name="data_save_error">Data Failed to Save</string>
   <string name="add_to_cart">Add to Cart</string>
+  <string name="next"><![CDATA[Next >]]></string>
+  <string name="title_activity_enter_promotion">Promotions</string>
 </resources>

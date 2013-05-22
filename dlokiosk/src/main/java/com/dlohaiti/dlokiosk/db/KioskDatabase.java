@@ -3,6 +3,8 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.dlohaiti.dlokiosk.domain.PromotionApplicationType;
+import com.dlohaiti.dlokiosk.domain.PromotionType;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -86,6 +88,27 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 DeliveriesTable.QUANTITY,
                 DeliveriesTable.CREATED_AT
         );
+        String createPromotions = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                        ")",
+                PromotionsTable.TABLE_NAME,
+                PromotionsTable.ID,
+                PromotionsTable.APPLIES_TO,
+                PromotionsTable.SKU,
+                PromotionsTable.START_DATE,
+                PromotionsTable.END_DATE,
+                PromotionsTable.AMOUNT,
+                PromotionsTable.TYPE,
+                PromotionsTable.ICON
+        );
 
         String insertProduct = String.format(
                 "INSERT INTO %s(%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)",
@@ -104,16 +127,30 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ConfigurationTable.VALUE
         );
 
+        String insertPromo = String.format(
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                PromotionsTable.TABLE_NAME,
+                PromotionsTable.APPLIES_TO,
+                PromotionsTable.SKU,
+                PromotionsTable.START_DATE,
+                PromotionsTable.END_DATE,
+                PromotionsTable.AMOUNT,
+                PromotionsTable.TYPE,
+                PromotionsTable.ICON
+        );
+
         db.execSQL(createReceipts);
         db.execSQL(createReceiptLineItems);
         db.execSQL(createProducts);
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
-        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_ID.name(), "HARDCODED K1" });
-        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.KIOSK_PASSWORD.name(), "pw" });
-        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0" });
-        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24" });
-        db.execSQL(insertConfig, new Object[]{ ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24" });
+        db.execSQL(createPromotions);
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "HARDCODED K1"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
+        db.execSQL(insertPromo, new Object[]{PromotionApplicationType.BASKET.name(), "", "2013-01-01 00:00:00 EDT", "2013-12-01 00:00:00 EDT", "10", PromotionType.PERCENT.name(), ""});
         db.execSQL(insertProduct, new Object[]{"2GALLON", "0", "", "",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
@@ -409,5 +446,17 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static String QUANTITY = "QUANTITY";
         public static String DELIVERY_TYPE = "DELIVERY_TYPE";
         public static String CREATED_AT = "CREATED_AT";
+    }
+
+    public static class PromotionsTable {
+        public static final String TABLE_NAME = "PROMOTIONS";
+        public static final String ID = "ID";
+        public static final String APPLIES_TO = "APPLIES_TO";
+        public static final String SKU = "SKU";
+        public static final String START_DATE = "START_DATE";
+        public static final String END_DATE = "END_DATE";
+        public static final String AMOUNT = "AMOUNT";
+        public static final String TYPE = "TYPE";
+        public static final String ICON = "ICON";
     }
 }

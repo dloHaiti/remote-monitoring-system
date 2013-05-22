@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import android.graphics.Bitmap;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -11,14 +13,16 @@ public class Promotion {
     private final Date endDate;
     private final BigDecimal amount;
     private final PromotionType type;
+    private final Bitmap resource;
 
-    public Promotion(PromotionApplicationType sku, String xyz, Date startDate, Date endDate, String amount, PromotionType percent) {
+    public Promotion(PromotionApplicationType sku, String xyz, Date startDate, Date endDate, String amount, PromotionType percent, Bitmap resource) {
         this.appliesTo = sku;
         this.sku = xyz;
         this.startDate = startDate;
         this.endDate = endDate;
         this.amount = new BigDecimal(amount);
         this.type = percent;
+        this.resource = resource;
     }
 
     public boolean appliesTo(List<OrderedProduct> products) {
@@ -43,5 +47,17 @@ public class Promotion {
 
     public PromotionType getType() {
         return type;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public Bitmap getResource() {
+        return resource;
     }
 }

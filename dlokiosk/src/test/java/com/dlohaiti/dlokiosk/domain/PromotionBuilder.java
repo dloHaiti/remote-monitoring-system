@@ -49,6 +49,6 @@ public class PromotionBuilder {
     }
 
     public Promotion build() {
-        return new Promotion(appliesTo, sku, startDate, endDate, amount.toString(), type);
+        return new Promotion(appliesTo, sku, startDate, endDate, amount.toString(), type, null);
     }
 }

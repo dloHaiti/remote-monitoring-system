@@ -24,9 +24,9 @@ public class NumberPickerDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final View view = inflater.inflate(R.layout.number_picker_dialog, null);
         final NumberPicker numberPicker = (NumberPicker) view.findViewById(R.id.quantity_picker);
-        numberPicker.setMinValue(0);
-        numberPicker.setValue(2);
-        numberPicker.setMaxValue(10);
+        numberPicker.setMinValue(product.getMinimumQuantity());
+        numberPicker.setValue(product.getMinimumQuantity());
+        numberPicker.setMaxValue(product.getMaximumQuantity());
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         builder.setView(view);
         builder.setPositiveButton(R.string.add_to_cart, new DialogInterface.OnClickListener() {

@@ -31,7 +31,9 @@ public class ProductRepository {
                 KioskDatabase.ProductsTable.ID,
                 KioskDatabase.ProductsTable.SKU,
                 KioskDatabase.ProductsTable.ICON,
-                KioskDatabase.ProductsTable.REQUIRES_QUANTITY
+                KioskDatabase.ProductsTable.REQUIRES_QUANTITY,
+                KioskDatabase.ProductsTable.MINIMUM_QUANTITY,
+                KioskDatabase.ProductsTable.MAXIMUM_QUANTITY
         };
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
@@ -53,6 +55,8 @@ public class ProductRepository {
     private Product buildProduct(Cursor cursor) {
         String sku = cursor.getString(1);
         boolean requiresQuantity = cursor.getInt(3) == 1;
+        Integer minimum = cursor.getInt(4);
+        Integer maximum = cursor.getInt(5);
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
         try {
             byte[] imageData = Base64.decode(cursor.getString(2));
@@ -61,7 +65,8 @@ public class ProductRepository {
             Log.e(getClass().getSimpleName(), String.format("image for product(%s) could not be decoded", sku));
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
-        return new Product(cursor.getLong(0), sku, resource, requiresQuantity);
+        //FIXME: default quantity of 1
+        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum);
     }
 
     public Product findById(Long id) {
@@ -69,7 +74,9 @@ public class ProductRepository {
                 KioskDatabase.ProductsTable.ID,
                 KioskDatabase.ProductsTable.SKU,
                 KioskDatabase.ProductsTable.ICON,
-                KioskDatabase.ProductsTable.REQUIRES_QUANTITY
+                KioskDatabase.ProductsTable.REQUIRES_QUANTITY,
+                KioskDatabase.ProductsTable.MINIMUM_QUANTITY,
+                KioskDatabase.ProductsTable.MAXIMUM_QUANTITY
         };
         String selection = String.format("%s=?", KioskDatabase.ProductsTable.ID);
         String[] args = {String.valueOf(id)};

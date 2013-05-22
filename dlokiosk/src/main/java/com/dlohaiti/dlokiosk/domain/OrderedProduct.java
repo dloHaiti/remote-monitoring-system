@@ -2,7 +2,7 @@ package com.dlohaiti.dlokiosk.domain;
 
 public class OrderedProduct {
     private final String sku;
-    private Integer quantity;
+    private final Integer quantity;
 
     public OrderedProduct(String sku, Integer quantity) {
         this.sku = sku;
@@ -15,10 +15,6 @@ public class OrderedProduct {
 
     public Integer getQuantity() {
         return quantity;
-    }
-
-    public void incrementQuantity() {
-        quantity++;
     }
 
     @Override

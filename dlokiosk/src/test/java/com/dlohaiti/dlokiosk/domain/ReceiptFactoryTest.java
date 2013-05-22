@@ -53,8 +53,7 @@ public class ReceiptFactoryTest {
 
         Receipt receipt = factory.makeReceipt(products);
 
-        assertThat(receipt.getTotalItems(), is(2));
-        assertThat(receipt.getTotalProducts(), is(2));
+        assertThat(receipt.getLineItems(), is(2));
     }
 
     @Test
@@ -68,8 +67,7 @@ public class ReceiptFactoryTest {
 
         Receipt receipt = factory.makeReceipt(products);
 
-        assertThat(receipt.getTotalItems(), is(4));
-        assertThat(receipt.getTotalProducts(), is(2));
+        assertThat(receipt.getLineItems(), is(4));
     }
 
 }

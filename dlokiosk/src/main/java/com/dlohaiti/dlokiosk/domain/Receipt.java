@@ -23,7 +23,7 @@ public class Receipt {
         return orderedProducts;
     }
 
-    public Integer getTotalItems() {
+    public Integer getLineItems() {
         int total = 0;
         for (OrderedProduct op : orderedProducts) {
             total += op.getQuantity();

@@ -12,7 +12,9 @@ public class ReceiptFactory {
 
     @Inject
     public ReceiptFactory(ConfigurationRepository configurationRepository, Clock clock) {
+        //TODO: this leaves when auth comes into the picture
         this.configurationRepository = configurationRepository;
+        //TODO: move this to receipt when auth comes into picture
         this.clock = clock;
     }
 
@@ -25,17 +27,7 @@ public class ReceiptFactory {
     private List<OrderedProduct> buildOrderedProducts(List<Product> products) {
         List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
         for (Product product : products) {
-            boolean alreadyAdded = false;
-            for (OrderedProduct ordered : orderedProducts) {
-                if (ordered.getSku().equals(product.getSku())) {
-                    alreadyAdded = true;
-                    ordered.incrementQuantity();
-                    break;
-                }
-            }
-            if (!alreadyAdded) {
-                orderedProducts.add(new OrderedProduct(product.getSku(), 1));
-            }
+            orderedProducts.add(new OrderedProduct(product.getSku(), product.getQuantity()));
         }
         return orderedProducts;
     }

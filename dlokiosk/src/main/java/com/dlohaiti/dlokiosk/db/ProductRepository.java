@@ -86,7 +86,7 @@ public class ProductRepository {
             Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
             if (cursor.getCount() != 1) {
                 //TODO: make this graceful
-                return new Product(null, null, null);
+                return new Product(null, null, null, false, null, null, null);
             }
             cursor.moveToFirst();
             Product product = buildProduct(cursor);

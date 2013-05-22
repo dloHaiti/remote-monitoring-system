@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.domain.ProductBuilder.productBuilder;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -30,7 +31,7 @@ public class ReceiptFactoryTest {
 
     @Test
     public void shouldUseKioskInformationFromConfiguration() {
-        List<Product> products = asList(new Product(1L, "5GAL", null));
+        List<Product> products = asList(productBuilder().build());
 
         Receipt receipt = factory.makeReceipt(products);
 
@@ -39,7 +40,7 @@ public class ReceiptFactoryTest {
 
     @Test
     public void shouldUseTimeInformationFromClock() {
-        List<Product> products = asList(new Product(1L, "5GAL", null));
+        List<Product> products = asList(productBuilder().build());
 
         Receipt receipt = factory.makeReceipt(products);
 
@@ -48,26 +49,29 @@ public class ReceiptFactoryTest {
 
 
     @Test
-    public void shouldGenerateReceiptForMultipleProductsWith1Quantity() {
-        List<Product> products = asList(new Product(1L, "5GAL", null), new Product(2L, "10GAL", null));
-
-        Receipt receipt = factory.makeReceipt(products);
-
-        assertThat(receipt.getLineItems(), is(2));
-    }
-
-    @Test
-    public void shouldGenerateReceiptForMultipleProductsWithMultipleQuantities() {
+    public void shouldGenerateLineItemsForDifferentProducts() {
         List<Product> products = asList(
-                new Product(1L, "5GAL", null),
-                new Product(1L, "5GAL", null),
-                new Product(1L, "5GAL", null),
-                new Product(2L, "10GAL", null)
+                productBuilder().withSku("2GAL").build(),
+                productBuilder().withSku("5GAL").build()
         );
 
         Receipt receipt = factory.makeReceipt(products);
 
-        assertThat(receipt.getLineItems(), is(4));
+        assertThat(receipt.getLineItemsCount(), is(2));
+    }
+
+    @Test
+    public void shouldGenerateLineItemsForEachQuantityOfSameItem() {
+        List<Product> products = asList(
+                productBuilder().withSku("5GAL").build(),
+                productBuilder().withSku("5GAL").build(),
+                productBuilder().withSku("5GAL").build(),
+                productBuilder().withSku("10GAL").build()
+        );
+
+        Receipt receipt = factory.makeReceipt(products);
+
+        assertThat(receipt.getLineItemsCount(), is(4));
     }
 
 }

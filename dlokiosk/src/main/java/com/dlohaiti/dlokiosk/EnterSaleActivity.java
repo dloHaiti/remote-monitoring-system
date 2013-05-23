@@ -18,7 +18,7 @@ import java.util.List;
 public class EnterSaleActivity extends RoboActivity {
 
     @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
-    @InjectView(R.id.shopping_cart_grid) private GridView shoppingCartGrid;
+    @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @Inject private ProductRepository repository;
     @Inject private ReceiptsRepository receiptsRepository;
     private List<Product> shoppingCart = new ArrayList<Product>();
@@ -30,8 +30,6 @@ public class EnterSaleActivity extends RoboActivity {
         inventoryGrid.setAdapter(new ImageAdapter(this, repository.list()));
         adapter = new ImageAdapter(this, shoppingCart);
         shoppingCartGrid.setAdapter(adapter);
-
-
 
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

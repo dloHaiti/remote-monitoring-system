@@ -6,29 +6,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import com.dlohaiti.dlokiosk.domain.Product;
 
 import java.util.List;
 
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter<T extends VisibleGridItem> extends BaseAdapter {
     private final Context mContext;
-    private final List<Product> products;
+    private final List<T> items;
 
-    public ImageAdapter(Context c, List<Product> products) {
+    public ImageAdapter(Context c, List<T> items) {
         this.mContext = c;
-        this.products = products;
+        this.items = items;
     }
 
     public int getCount() {
-        return products.size();
+        return items.size();
     }
 
     public Object getItem(int position) {
-        return products.get(position);
+        return items.get(position);
     }
 
     public long getItemId(int position) {
-        return products.get(position).getId();
+        return items.get(position).getId();
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -41,7 +40,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageBitmap(products.get(position).getImageResource());
+        imageView.setImageBitmap(items.get(position).getImageResource());
         return imageView;
     }
 }

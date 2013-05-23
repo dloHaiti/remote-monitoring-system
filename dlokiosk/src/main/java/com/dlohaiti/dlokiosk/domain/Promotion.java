@@ -1,12 +1,14 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
+import com.dlohaiti.dlokiosk.VisibleGridItem;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class Promotion {
+public class Promotion implements VisibleGridItem {
+    private final Long id;
     private final PromotionApplicationType appliesTo;
     private final String sku;
     private final Date startDate;
@@ -15,9 +17,10 @@ public class Promotion {
     private final PromotionType type;
     private final Bitmap resource;
 
-    public Promotion(PromotionApplicationType sku, String xyz, Date startDate, Date endDate, String amount, PromotionType percent, Bitmap resource) {
-        this.appliesTo = sku;
-        this.sku = xyz;
+    public Promotion(Long id, PromotionApplicationType appliesTo, String sku, Date startDate, Date endDate, String amount, PromotionType percent, Bitmap resource) {
+        this.id = id;
+        this.appliesTo = appliesTo;
+        this.sku = sku;
         this.startDate = startDate;
         this.endDate = endDate;
         this.amount = new BigDecimal(amount);
@@ -41,6 +44,11 @@ public class Promotion {
         return false;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -57,7 +65,8 @@ public class Promotion {
         return endDate;
     }
 
-    public Bitmap getResource() {
+    @Override
+    public Bitmap getImageResource() {
         return resource;
     }
 }

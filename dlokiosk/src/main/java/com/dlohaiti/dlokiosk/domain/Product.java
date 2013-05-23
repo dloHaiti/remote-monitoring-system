@@ -1,8 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
+import com.dlohaiti.dlokiosk.VisibleGridItem;
 
-public class Product {
+public class Product implements VisibleGridItem {
     private final Long id;
     private final String sku;
     private final Bitmap imageResource;
@@ -25,7 +26,7 @@ public class Product {
         return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity);
     }
 
-    public Long getId() {
+    @Override public Long getId() {
         return id;
     }
 
@@ -33,7 +34,7 @@ public class Product {
         return sku;
     }
 
-    public Bitmap getImageResource() {
+    @Override public Bitmap getImageResource() {
         return imageResource;
     }
 

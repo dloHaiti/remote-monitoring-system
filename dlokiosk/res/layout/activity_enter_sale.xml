@@ -28,7 +28,7 @@
     android:layout_height="match_parent">
 
     <GridView
-      android:id="@+id/shopping_cart_grid"
+      android:id="@+id/right_grid"
       android:layout_width="match_parent"
       android:layout_height="300dp"
       android:paddingTop="30dp"
@@ -42,6 +42,7 @@
       android:gravity="center" />
 
     <Button
+      android:id="@+id/action_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentRight="true"

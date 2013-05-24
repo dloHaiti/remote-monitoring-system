@@ -4,6 +4,7 @@ import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ReceiptFactoryTest {
     public void shouldUseKioskInformationFromConfiguration() {
         List<Product> products = asList(productBuilder().build());
 
-        Receipt receipt = factory.makeReceipt(products);
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
 
         assertThat(receipt.getKioskId(), is("k1"));
     }
@@ -42,7 +43,7 @@ public class ReceiptFactoryTest {
     public void shouldUseTimeInformationFromClock() {
         List<Product> products = asList(productBuilder().build());
 
-        Receipt receipt = factory.makeReceipt(products);
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
 
         assertThat(receipt.getCreatedAt(), is(new Date(0)));
     }
@@ -55,7 +56,7 @@ public class ReceiptFactoryTest {
                 productBuilder().withSku("5GAL").build()
         );
 
-        Receipt receipt = factory.makeReceipt(products);
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
 
         assertThat(receipt.getLineItemsCount(), is(2));
     }
@@ -69,7 +70,7 @@ public class ReceiptFactoryTest {
                 productBuilder().withSku("10GAL").build()
         );
 
-        Receipt receipt = factory.makeReceipt(products);
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
 
         assertThat(receipt.getLineItemsCount(), is(4));
     }

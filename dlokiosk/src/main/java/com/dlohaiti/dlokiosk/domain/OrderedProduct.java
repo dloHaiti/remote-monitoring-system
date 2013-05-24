@@ -1,6 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
-public class OrderedProduct {
+public class OrderedProduct implements Orderable {
     private final String sku;
     private final Integer quantity;
 
@@ -9,11 +9,11 @@ public class OrderedProduct {
         this.quantity = quantity;
     }
 
-    public String getSku() {
+    @Override public String getSku() {
         return sku;
     }
 
-    public Integer getQuantity() {
+    @Override public Integer getQuantity() {
         return quantity;
     }
 

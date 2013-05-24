@@ -35,13 +35,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
                         "%s TEXT," +
-                        "%s INTEGER" +
+                        "%s INTEGER," +
+                        "%s TEXT" +
                         ")",
                 ReceiptLineItemsTable.TABLE_NAME,
                 ReceiptLineItemsTable.ID,
                 ReceiptLineItemsTable.RECEIPT_ID,
                 ReceiptLineItemsTable.SKU,
-                ReceiptLineItemsTable.QUANTITY
+                ReceiptLineItemsTable.QUANTITY,
+                ReceiptLineItemsTable.TYPE
         );
         String createProducts = String.format(
                 "CREATE TABLE %s(" +
@@ -97,16 +99,18 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 PromotionsTable.TABLE_NAME,
                 PromotionsTable.ID,
                 PromotionsTable.APPLIES_TO,
-                PromotionsTable.SKU,
+                PromotionsTable.PRODUCT_SKU,
                 PromotionsTable.START_DATE,
                 PromotionsTable.END_DATE,
                 PromotionsTable.AMOUNT,
                 PromotionsTable.TYPE,
+                PromotionsTable.SKU,
                 PromotionsTable.ICON
         );
 
@@ -128,14 +132,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
         );
 
         String insertPromo = String.format(
-                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                 PromotionsTable.TABLE_NAME,
                 PromotionsTable.APPLIES_TO,
-                PromotionsTable.SKU,
+                PromotionsTable.PRODUCT_SKU,
                 PromotionsTable.START_DATE,
                 PromotionsTable.END_DATE,
                 PromotionsTable.AMOUNT,
                 PromotionsTable.TYPE,
+                PromotionsTable.SKU,
                 PromotionsTable.ICON
         );
 
@@ -150,7 +155,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
-        db.execSQL(insertPromo, new Object[]{PromotionApplicationType.BASKET.name(), "", "2013-01-01 00:00:00 EDT", "2013-12-01 00:00:00 EDT", "10", PromotionType.PERCENT.name(), ""});
+        db.execSQL(insertPromo, new Object[]{PromotionApplicationType.BASKET.name(), "", "2013-01-01 00:00:00 EDT", "2013-12-01 00:00:00 EDT", "10", PromotionType.PERCENT.name(), "10PEROFF", ""});
         db.execSQL(insertProduct, new Object[]{"2GALLON", "0", "", "",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
@@ -412,6 +417,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static String RECEIPT_ID = "RECEIPT_ID";
         public static String QUANTITY = "QUANTITY";
         public static String SKU = "SKU";
+        public static String TYPE = "TYPE";
     }
 
     public static class ProductsTable {
@@ -452,11 +458,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "PROMOTIONS";
         public static final String ID = "ID";
         public static final String APPLIES_TO = "APPLIES_TO";
-        public static final String SKU = "SKU";
+        public static final String PRODUCT_SKU = "PRODUCT_SKU";
         public static final String START_DATE = "START_DATE";
         public static final String END_DATE = "END_DATE";
         public static final String AMOUNT = "AMOUNT";
         public static final String TYPE = "TYPE";
         public static final String ICON = "ICON";
+        public static final String SKU = "SKU";
     }
 }

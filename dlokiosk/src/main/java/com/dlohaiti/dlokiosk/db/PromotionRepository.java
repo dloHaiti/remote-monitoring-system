@@ -24,12 +24,13 @@ public class PromotionRepository {
     private final static String[] columns = {
             KioskDatabase.PromotionsTable.ID,
             KioskDatabase.PromotionsTable.APPLIES_TO,
-            KioskDatabase.PromotionsTable.SKU,
+            KioskDatabase.PromotionsTable.PRODUCT_SKU,
             KioskDatabase.PromotionsTable.AMOUNT,
             KioskDatabase.PromotionsTable.TYPE,
             KioskDatabase.PromotionsTable.START_DATE,
             KioskDatabase.PromotionsTable.END_DATE,
-            KioskDatabase.PromotionsTable.ICON
+            KioskDatabase.PromotionsTable.ICON,
+            KioskDatabase.PromotionsTable.SKU
     };
 
     @Inject
@@ -74,7 +75,7 @@ public class PromotionRepository {
             return promotion;
         } catch (Exception e) {
             //TODO: log? alert?
-            return new Promotion(null, null, null, null, null, null, null, null);
+            return new Promotion(null, null, null, null, null, null, null, null, null);
         } finally {
             rdb.endTransaction();
         }
@@ -83,11 +84,12 @@ public class PromotionRepository {
     private Promotion buildPromotion(Cursor c) throws ParseException {
         long id = c.getLong(0);
         PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(c.getString(1));
-        String sku = c.getString(2);
+        String productSku = c.getString(2);
         Date startDate = kioskDate.getFormat().parse(c.getString(5));
         Date endDate = kioskDate.getFormat().parse(c.getString(6));
         String amount = c.getString(3);
         PromotionType type = PromotionType.valueOf(c.getString(4));
+        String sku = c.getString(8);
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
 //                try {
 //                    byte[] imageData = Base64.decode(c.getString(7));
@@ -96,6 +98,6 @@ public class PromotionRepository {
 //                    Log.e(getClass().getSimpleName(), String.format("image for promo(%s) could not be decoded", sku));
         resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
 //                }
-        return new Promotion(id, appliesTo, sku, startDate, endDate, amount, type, resource);
+        return new Promotion(id, sku, appliesTo, productSku, startDate, endDate, amount, type, resource);
     }
 }

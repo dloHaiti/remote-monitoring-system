@@ -4,10 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.domain.OrderedProduct;
-import com.dlohaiti.dlokiosk.domain.Product;
-import com.dlohaiti.dlokiosk.domain.Receipt;
-import com.dlohaiti.dlokiosk.domain.ReceiptFactory;
+import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 
 import java.text.ParseException;
@@ -55,38 +52,13 @@ public class ReceiptsRepository {
                     orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
                     lineItemsCursor.moveToNext();
                 }
-                receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, receiptsCursor.getString(1), date));
+                receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, new ArrayList<Promotion>(), receiptsCursor.getString(1), date));
                 receiptsCursor.moveToNext();
             }
             readableDatabase.setTransactionSuccessful();
             return receipts;
         } finally {
             readableDatabase.endTransaction();
-        }
-    }
-
-    public void add(List<Product> products) {
-        SQLiteDatabase writableDatabase = db.getWritableDatabase();
-        writableDatabase.beginTransaction();
-        Receipt receipt = receiptFactory.makeReceipt(products);
-        ContentValues receiptValues = new ContentValues();
-        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
-        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedAt()));
-        try {
-            long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
-            for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {
-                ContentValues lineItemValues = new ContentValues();
-                lineItemValues.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
-                lineItemValues.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
-                lineItemValues.put(KioskDatabase.ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());
-                writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, lineItemValues);
-            }
-            writableDatabase.setTransactionSuccessful();
-        } catch (Exception e) {
-            //TODO: alert this?
-            throw new RuntimeException(e);
-        } finally {
-            writableDatabase.endTransaction();
         }
     }
 
@@ -103,5 +75,40 @@ public class ReceiptsRepository {
         } finally {
             writableDatabase.endTransaction();
         }
+    }
+
+    public void add(List<Product> products, List<Promotion> promotions) {
+        SQLiteDatabase writableDatabase = db.getWritableDatabase();
+        writableDatabase.beginTransaction();
+        Receipt receipt = receiptFactory.makeReceipt(products, promotions);
+        ContentValues receiptValues = new ContentValues();
+        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
+        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedAt()));
+        try {
+            long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
+            for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {
+                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem, ReceiptLineItemType.PRODUCT);
+                writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
+            }
+            for (Promotion promotion : promotions) {
+                ContentValues promotionLineItemValue = buildContentValues(receiptId, promotion, ReceiptLineItemType.PROMOTION);
+                writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, promotionLineItemValue);
+            }
+            writableDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            //TODO: alert this?
+            throw new RuntimeException(e);
+        } finally {
+            writableDatabase.endTransaction();
+        }
+    }
+
+    private ContentValues buildContentValues(long receiptId, Orderable orderedItem, ReceiptLineItemType type) {
+        ContentValues productLineItemValue = new ContentValues();
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.TYPE, type.name());
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());
+        return productLineItemValue;
     }
 }

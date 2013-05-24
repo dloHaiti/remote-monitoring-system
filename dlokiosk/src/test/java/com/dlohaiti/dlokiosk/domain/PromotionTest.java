@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.domain.ProductBuilder.productBuilder;
 import static com.dlohaiti.dlokiosk.domain.PromotionApplicationType.BASKET;
 import static com.dlohaiti.dlokiosk.domain.PromotionApplicationType.SKU;
 import static com.dlohaiti.dlokiosk.domain.PromotionBuilder.promotionBuilder;
@@ -18,7 +19,7 @@ public class PromotionTest {
 
     @Test
     public void shouldAlwaysApplyBasketPromotions() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
+        List<Product> shoppingCart = asList(productBuilder().build());
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(true));
@@ -26,23 +27,23 @@ public class PromotionTest {
 
     @Test
     public void shouldOnlyApplySkuPromotionToMatchingSku() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
-        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").build();
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
+        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withProductSku("ABC").build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(true));
     }
 
     @Test
     public void shouldNotApplySkuPromotionToMismatchedSku() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
-        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("XYZ").build();
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
+        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withProductSku("XYZ").build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(false));
     }
 
     @Test
     public void shouldNotApplyToBasketIfBeforeStartDate() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withStartDate(tomorrow()).build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(false));
@@ -50,15 +51,15 @@ public class PromotionTest {
 
     @Test
     public void shouldNotApplyToSkuIfBeforeStartDate() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
-        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withStartDate(tomorrow()).build();
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
+        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withProductSku("ABC").withStartDate(tomorrow()).build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(false));
     }
 
     @Test
     public void shouldNotApplyToBasketIfAfterEndDate() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withEndDate(yesterday()).build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(false));
@@ -66,8 +67,8 @@ public class PromotionTest {
 
     @Test
     public void shouldNotApplyToSkuIfAfterEndDate() {
-        List<OrderedProduct> shoppingCart = asList(new OrderedProduct("ABC", 2));
-        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withEndDate(yesterday()).build();
+        List<Product> shoppingCart = asList(productBuilder().withSku("ABC").build());
+        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withProductSku("ABC").withEndDate(yesterday()).build();
         boolean applicable = promo.appliesTo(shoppingCart);
         assertThat(applicable, is(false));
     }

@@ -6,11 +6,12 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public class PromotionBuilder {
     private PromotionApplicationType appliesTo = PromotionApplicationType.BASKET;
-    private String sku = "ABC";
+    private String productSku = "ABC";
     private Date startDate = new Date(0);
     private Date endDate = new Date(Long.MAX_VALUE);
     private BigDecimal amount = BigDecimal.TEN;
     private PromotionType type = PromotionType.PERCENT;
+    private String sku = "PROMO10";
 
     private PromotionBuilder() {}
 
@@ -18,13 +19,18 @@ public class PromotionBuilder {
         return new PromotionBuilder();
     }
 
+    public PromotionBuilder withSku(String sku) {
+        this.sku = sku;
+        return this;
+    }
+
     public PromotionBuilder thatAppliesTo(PromotionApplicationType type) {
         this.appliesTo = type;
         return this;
     }
 
-    public PromotionBuilder withSku(String sku) {
-        this.sku = sku;
+    public PromotionBuilder withProductSku(String productSku) {
+        this.productSku = productSku;
         return this;
     }
 
@@ -49,6 +55,6 @@ public class PromotionBuilder {
     }
 
     public Promotion build() {
-        return new Promotion(null, appliesTo, sku, startDate, endDate, amount.toString(), type, null);
+        return new Promotion(null, sku, appliesTo, productSku, startDate, endDate, amount.toString(), type, null);
     }
 }

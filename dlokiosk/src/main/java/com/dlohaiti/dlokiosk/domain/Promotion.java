@@ -7,20 +7,30 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class Promotion implements VisibleGridItem {
+public class Promotion implements VisibleGridItem, Orderable {
     private final Long id;
-    private final PromotionApplicationType appliesTo;
     private final String sku;
+    private final PromotionApplicationType appliesTo;
+    private final String productSku;
     private final Date startDate;
     private final Date endDate;
     private final BigDecimal amount;
     private final PromotionType type;
     private final Bitmap resource;
 
-    public Promotion(Long id, PromotionApplicationType appliesTo, String sku, Date startDate, Date endDate, String amount, PromotionType percent, Bitmap resource) {
+    public Promotion(Long id,
+                     String sku,
+                     PromotionApplicationType appliesTo,
+                     String productSku,
+                     Date startDate,
+                     Date endDate,
+                     String amount,
+                     PromotionType percent,
+                     Bitmap resource) {
         this.id = id;
-        this.appliesTo = appliesTo;
         this.sku = sku;
+        this.appliesTo = appliesTo;
+        this.productSku = productSku;
         this.startDate = startDate;
         this.endDate = endDate;
         this.amount = new BigDecimal(amount);
@@ -28,7 +38,7 @@ public class Promotion implements VisibleGridItem {
         this.resource = resource;
     }
 
-    public boolean appliesTo(List<OrderedProduct> products) {
+    public boolean appliesTo(List<Product> products) {
         Date now = new Date();
         if (now.before(startDate) || now.after(endDate)) {
             return false;
@@ -36,8 +46,8 @@ public class Promotion implements VisibleGridItem {
         if (appliesTo == PromotionApplicationType.BASKET) {
             return true;
         }
-        for (OrderedProduct product : products) {
-            if (sku.equals(product.getSku())) {
+        for (Product product : products) {
+            if (productSku.equals(product.getSku())) {
                 return true;
             }
         }
@@ -68,5 +78,13 @@ public class Promotion implements VisibleGridItem {
     @Override
     public Bitmap getImageResource() {
         return resource;
+    }
+
+    @Override public String getSku() {
+        return sku;
+    }
+
+    @Override public Integer getQuantity() {
+        return 1;
     }
 }

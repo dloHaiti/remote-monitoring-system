@@ -6,29 +6,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
-import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.domain.Product;
+import com.dlohaiti.dlokiosk.domain.ShoppingCart;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EnterSaleActivity extends RoboActivity {
+    private final static int ENTER_PROMOTION_ACTIVITY_CODE = 777;
 
     @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @Inject private ProductRepository repository;
-    @Inject private ReceiptsRepository receiptsRepository;
-    private List<Product> shoppingCart = new ArrayList<Product>();
+    @Inject private ShoppingCart sc;
     private ImageAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_sale);
         inventoryGrid.setAdapter(new ImageAdapter(this, repository.list()));
-        adapter = new ImageAdapter(this, shoppingCart);
+        adapter = new ImageAdapter(this, sc.getProducts());
         shoppingCartGrid.setAdapter(adapter);
 
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -45,29 +42,25 @@ public class EnterSaleActivity extends RoboActivity {
 
         shoppingCartGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                shoppingCart.remove(position);
+                sc.remove(position);
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
-    public void checkout(View v) {
-        receiptsRepository.add(shoppingCart);
-        finish();
-    }
-
     public void addToShoppingCart(Product product) {
-        shoppingCart.add(product);
+        sc.addProduct(product);
         adapter.notifyDataSetChanged();
     }
 
     public void moveToPromotions(View v) {
-        startActivityForResult(new Intent(this, EnterPromotionActivity.class), 777);
+        Intent intent = new Intent(this, EnterPromotionActivity.class);
+        startActivityForResult(intent, ENTER_PROMOTION_ACTIVITY_CODE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 777) {
+        if(requestCode == ENTER_PROMOTION_ACTIVITY_CODE) {
             finish();
         }
     }

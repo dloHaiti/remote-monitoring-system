@@ -18,10 +18,10 @@ public class ReceiptFactory {
         this.clock = clock;
     }
 
-    public Receipt makeReceipt(List<Product> products) {
+    public Receipt makeReceipt(List<Product> products, List<Promotion> promotions) {
         Kiosk kiosk = configurationRepository.getKiosk();
         List<OrderedProduct> orderedProducts = buildOrderedProducts(products);
-        return new Receipt(orderedProducts, kiosk.getId(), clock.now());
+        return new Receipt(orderedProducts, promotions, kiosk.getId(), clock.now());
     }
 
     private List<OrderedProduct> buildOrderedProducts(List<Product> products) {

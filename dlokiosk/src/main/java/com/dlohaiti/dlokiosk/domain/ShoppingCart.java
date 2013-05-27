@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 @Singleton
@@ -80,36 +81,29 @@ public class ShoppingCart {
     }
 
     public BigDecimal getTotal() {
-        Collections.sort(promotions);
+        List<Promotion> promotionsCopy = new ArrayList<Promotion>(promotions);
+        Collections.sort(promotionsCopy);
         BigDecimal total = getSubtotal().getAmount();
-        for (Promotion promo : promotions) {
+        for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
+            Promotion promo = it.next();
             if (promo.appliesToBasket()) {
-                if (promo.isPercentOff()) {
-                    BigDecimal amount = promo.getAmount().divide(new BigDecimal(100));
-                    total = total.multiply(BigDecimal.ONE.subtract(amount));
-                } else if (promo.isAmountOff()) {
-                    total = total.subtract(promo.getAmount());
-                }
+                total = total.subtract(promo.discountCart(total));
+                it.remove();
             }
         }
         for (Product product : products) {
-            for (Promotion promo : promotions) {
-                if (promo.isFor(product) && promo.isNotUsed()) {
-                    if (promo.isPercentOff()) {
-                        BigDecimal amount = promo.getAmount().divide(new BigDecimal(100));
-                        BigDecimal discount = product.getPrice().getAmount().multiply(amount);
-                        total = total.subtract(discount);
-                    } else if (promo.isAmountOff()) {
-                        total = total.subtract(promo.getAmount());
-                    }
-                    promo.use();
+            for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
+                Promotion promo = it.next();
+                if (promo.isFor(product)) {
+                    total = total.subtract(promo.discountFor(product));
+                    it.remove();
                 }
             }
         }
         if (total.compareTo(BigDecimal.ZERO) < 0) {
             return BigDecimal.ZERO;
         }
-        return total;
+        return total.setScale(2);
     }
 
     public void removePromotion(int id) {

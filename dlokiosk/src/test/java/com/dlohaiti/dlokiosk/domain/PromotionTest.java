@@ -77,7 +77,7 @@ public class PromotionTest {
     public void shouldKnowAmountAndTypeOfDiscount() {
         Promotion tenPercent = promotionBuilder().withAmount("10").withPromotionType(PromotionType.PERCENT).build();
 
-        assertThat(tenPercent.getAmount(), is(BigDecimal.TEN));
+        assertThat(tenPercent.getAmount(), is(new BigDecimal("0.1")));
         assertThat(tenPercent.getType(), is(PromotionType.PERCENT));
     }
 

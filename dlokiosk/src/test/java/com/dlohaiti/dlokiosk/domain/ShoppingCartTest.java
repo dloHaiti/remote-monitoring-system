@@ -219,6 +219,20 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void shouldGetSameResultEveryTime() {
+        Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product2 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("4").withPromotionType(AMOUNT).build();
+
+        cart.addProduct(product1);
+        cart.addProduct(product2);
+        cart.addPromotion(promo);
+
+        assertThat(cart.getTotal().compareTo(new BigDecimal("16")), is(0));
+        assertThat(cart.getTotal().compareTo(new BigDecimal("16")), is(0));
+    }
+
+    @Test
     public void shouldDiscountPercentagesBeforeAmounts() {
         Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
         Product product2 = productBuilder().withSku("DEF").withPrice(5d, "HTG").build();

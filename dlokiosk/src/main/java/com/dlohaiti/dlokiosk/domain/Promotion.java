@@ -17,7 +17,6 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
     private final BigDecimal amount;
     private final PromotionType type;
     private final Bitmap resource;
-    private boolean used = false;
 
     public Promotion(Long id,
                      String sku,
@@ -61,7 +60,11 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        if (type == PromotionType.AMOUNT)
+            return amount;
+        if (type == PromotionType.PERCENT)
+            return amount.divide(new BigDecimal(100));
+        return BigDecimal.ZERO;
     }
 
     public PromotionType getType() {
@@ -93,11 +96,11 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return appliesTo == PromotionApplicationType.BASKET;
     }
 
-    public boolean isPercentOff() {
+    private boolean isPercentOff() {
         return type == PromotionType.PERCENT;
     }
 
-    public boolean isAmountOff() {
+    private boolean isAmountOff() {
         return type == PromotionType.AMOUNT;
     }
 
@@ -105,19 +108,11 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return appliesTo == PromotionApplicationType.SKU && productSku.equals(product.getSku());
     }
 
-    public void use() {
-        used = true;
-    }
-
-    public boolean isNotUsed() {
-        return !used;
-    }
-
     @Override public int compareTo(Promotion another) {
-        if(type == another.type) {
+        if (type == another.type) {
             return another.amount.compareTo(amount);
         }
-        if(type == PromotionType.PERCENT) {
+        if (type == PromotionType.PERCENT) {
             return -1;
         }
         return 1;
@@ -130,7 +125,6 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
 
         Promotion promotion = (Promotion) o;
 
-        if (used != promotion.used) return false;
         if (amount != null ? !amount.equals(promotion.amount) : promotion.amount != null) return false;
         if (appliesTo != promotion.appliesTo) return false;
         if (endDate != null ? !endDate.equals(promotion.endDate) : promotion.endDate != null) return false;
@@ -155,7 +149,22 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (resource != null ? resource.hashCode() : 0);
-        result = 31 * result + (used ? 1 : 0);
         return result;
+    }
+
+    public BigDecimal discountFor(Product product) {
+        if (isPercentOff())
+            return this.getAmount().multiply(product.getPrice().getAmount());
+        if (isAmountOff())
+            return this.getAmount();
+        return BigDecimal.ZERO;
+    }
+
+    public BigDecimal discountCart(BigDecimal total) {
+        if(isPercentOff())
+            return this.getAmount().multiply(total);
+        if(isAmountOff())
+            return this.getAmount();
+        return BigDecimal.ZERO;
     }
 }

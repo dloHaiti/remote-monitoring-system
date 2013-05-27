@@ -11,8 +11,9 @@ public class Product implements VisibleGridItem {
     private final Integer quantity;
     private final Integer minimumQuantity;
     private final Integer maximumQuantity;
+    private final Money price;
 
-    public Product(Long id, String sku, Bitmap imageResource, boolean requiresQuantity, Integer quantity, Integer minimumQuantity, Integer maximumQuantity) {
+    public Product(Long id, String sku, Bitmap imageResource, boolean requiresQuantity, Integer quantity, Integer minimumQuantity, Integer maximumQuantity, Money price) {
         this.id = id;
         this.sku = sku;
         this.imageResource = imageResource;
@@ -20,10 +21,11 @@ public class Product implements VisibleGridItem {
         this.quantity = quantity;
         this.minimumQuantity = minimumQuantity;
         this.maximumQuantity = maximumQuantity;
+        this.price = price;
     }
 
     public Product withQuantity(int quantity) {
-        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity);
+        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity, price);
     }
 
     @Override public Long getId() {
@@ -54,6 +56,10 @@ public class Product implements VisibleGridItem {
         return maximumQuantity;
     }
 
+    public Money getPrice() {
+        return price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,6 +75,7 @@ public class Product implements VisibleGridItem {
             return false;
         if (minimumQuantity != null ? !minimumQuantity.equals(product.minimumQuantity) : product.minimumQuantity != null)
             return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
         if (quantity != null ? !quantity.equals(product.quantity) : product.quantity != null) return false;
         if (sku != null ? !sku.equals(product.sku) : product.sku != null) return false;
 
@@ -84,6 +91,7 @@ public class Product implements VisibleGridItem {
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         result = 31 * result + (minimumQuantity != null ? minimumQuantity.hashCode() : 0);
         result = 31 * result + (maximumQuantity != null ? maximumQuantity.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
     }
 }

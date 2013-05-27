@@ -4,6 +4,8 @@ import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static com.dlohaiti.dlokiosk.domain.ProductBuilder.productBuilder;
 import static com.dlohaiti.dlokiosk.domain.PromotionBuilder.promotionBuilder;
 import static org.hamcrest.core.Is.is;
@@ -61,5 +63,17 @@ public class ShoppingCartTest {
         cart.addPromotion(promotion);
         cart.removePromotion(promotion);
         assertThat(cart.isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldKnowSubtotal() {
+        Product product1 = productBuilder().withPrice(10d, "HTG").build();
+        Product product2 = productBuilder().withPrice(15d, "HTG").build();
+        cart.addProduct(product1);
+        cart.addProduct(product2);
+        Money subtotal = cart.getSubtotal();
+
+        assertThat(subtotal.getAmount().compareTo(new BigDecimal("25")), is(0));
+        assertThat(subtotal.getCurrencyCode(), is("HTG"));
     }
 }

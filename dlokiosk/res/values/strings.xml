@@ -56,4 +56,5 @@
   <string name="add_to_cart">Add to Cart</string>
   <string name="next"><![CDATA[Next >]]></string>
   <string name="title_activity_enter_promotion">Promotions</string>
+  <string name="order_total">Order Total:</string>
 </resources>

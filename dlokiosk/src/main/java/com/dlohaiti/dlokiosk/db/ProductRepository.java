@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.R;
+import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.google.inject.Inject;
 import org.springframework.util.support.Base64;
@@ -18,6 +19,16 @@ import java.util.List;
 public class ProductRepository {
     private final KioskDatabase db;
     private final Context context;
+    private final static String[] columns = new String[]{
+            KioskDatabase.ProductsTable.ID,
+            KioskDatabase.ProductsTable.SKU,
+            KioskDatabase.ProductsTable.ICON,
+            KioskDatabase.ProductsTable.REQUIRES_QUANTITY,
+            KioskDatabase.ProductsTable.MINIMUM_QUANTITY,
+            KioskDatabase.ProductsTable.MAXIMUM_QUANTITY,
+            KioskDatabase.ProductsTable.PRICE,
+            KioskDatabase.ProductsTable.CURRENCY
+    };
 
     @Inject
     public ProductRepository(Context context, KioskDatabase db) {
@@ -27,14 +38,6 @@ public class ProductRepository {
 
     public List<Product> list() {
         List<Product> products = new ArrayList<Product>();
-        String[] columns = {
-                KioskDatabase.ProductsTable.ID,
-                KioskDatabase.ProductsTable.SKU,
-                KioskDatabase.ProductsTable.ICON,
-                KioskDatabase.ProductsTable.REQUIRES_QUANTITY,
-                KioskDatabase.ProductsTable.MINIMUM_QUANTITY,
-                KioskDatabase.ProductsTable.MAXIMUM_QUANTITY
-        };
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
         try {
@@ -57,6 +60,7 @@ public class ProductRepository {
         boolean requiresQuantity = cursor.getInt(3) == 1;
         Integer minimum = cursor.getInt(4);
         Integer maximum = cursor.getInt(5);
+        Money price = new Money(cursor.getDouble(6), cursor.getString(7));
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
         try {
             byte[] imageData = Base64.decode(cursor.getString(2));
@@ -66,18 +70,10 @@ public class ProductRepository {
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
         //FIXME: default quantity of 1
-        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum);
+        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum, price);
     }
 
     public Product findById(Long id) {
-        String[] columns = {
-                KioskDatabase.ProductsTable.ID,
-                KioskDatabase.ProductsTable.SKU,
-                KioskDatabase.ProductsTable.ICON,
-                KioskDatabase.ProductsTable.REQUIRES_QUANTITY,
-                KioskDatabase.ProductsTable.MINIMUM_QUANTITY,
-                KioskDatabase.ProductsTable.MAXIMUM_QUANTITY
-        };
         String selection = String.format("%s=?", KioskDatabase.ProductsTable.ID);
         String[] args = {String.valueOf(id)};
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
@@ -86,7 +82,7 @@ public class ProductRepository {
             Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
             if (cursor.getCount() != 1) {
                 //TODO: make this graceful
-                return new Product(null, null, null, false, null, null, null);
+                return new Product(null, null, null, false, null, null, null, null);
             }
             cursor.moveToFirst();
             Product product = buildProduct(cursor);

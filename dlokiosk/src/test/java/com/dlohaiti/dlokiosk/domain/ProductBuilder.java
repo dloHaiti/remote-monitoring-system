@@ -11,6 +11,7 @@ public class ProductBuilder {
     private Integer quantity = 1;
     private Integer minimum = null;
     private Integer maximum = null;
+    private Money price = new Money(1.0, "HTG");
 
     private ProductBuilder(){}
 
@@ -58,7 +59,12 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withPrice(Double amount, String currencyCode) {
+        this.price = new Money(amount, currencyCode);
+        return this;
+    }
+
     public Product build() {
-        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum);
+        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum, price);
     }
 }

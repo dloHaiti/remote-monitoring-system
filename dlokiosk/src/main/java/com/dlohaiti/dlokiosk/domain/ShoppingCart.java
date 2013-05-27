@@ -4,6 +4,7 @@ import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,5 +51,15 @@ public class ShoppingCart {
 
     public void removePromotion(Promotion promotion) {
         promotions.remove(promotion);
+    }
+
+    public Money getSubtotal() {
+        BigDecimal subtotal = BigDecimal.ZERO;
+        String currencyCode = "";
+        for(Product p : products) {
+            subtotal = subtotal.add(p.getPrice().getAmount());
+            currencyCode = p.getPrice().getCurrencyCode();
+        }
+        return new Money(subtotal, currencyCode);
     }
 }

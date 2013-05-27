@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
 import com.dlohaiti.dlokiosk.domain.Promotion;
 import com.dlohaiti.dlokiosk.domain.ShoppingCart;
@@ -20,13 +21,15 @@ public class EnterPromotionActivity extends RoboActivity {
     @InjectView(R.id.action_button) private Button actionButton;
     @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
+    @InjectView(R.id.subtotal) private TextView subtotalTextBox;
+    @InjectView(R.id.subtotal_currency) private TextView subtotalCurrencyTextBox;
     @Inject private PromotionRepository promotionRepository;
     @Inject private ShoppingCart shoppingCart;
     private ImageAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enter_sale);
+        setContentView(R.layout.activity_enter_promotions);
 
         List<Promotion> promotions = new ArrayList<Promotion>();
         for(Promotion p : promotionRepository.list()) {
@@ -56,5 +59,7 @@ public class EnterPromotionActivity extends RoboActivity {
                 finish();
             }
         });
+        subtotalTextBox.setText(String.valueOf(shoppingCart.getSubtotal().getAmount()));
+        subtotalCurrencyTextBox.setText(shoppingCart.getSubtotal().getCurrencyCode());
     }
 }

@@ -57,4 +57,7 @@
   <string name="next"><![CDATA[Next >]]></string>
   <string name="title_activity_enter_promotion">Promotions</string>
   <string name="order_total">Order Total:</string>
+  <string name="new_total">New Total:</string>
+  <string name="zero">0</string>
+  <string name="default_currency">HTG</string>
 </resources>

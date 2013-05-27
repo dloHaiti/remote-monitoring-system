@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
-  android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
   <RelativeLayout
     android:layout_marginTop="20dp"
     android:layout_gravity="center_horizontal"
     android:gravity="center"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
+
     <TextView
       android:id="@+id/order_subtotal_label"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
       android:text="@string/order_total"
       style="@android:style/TextAppearance.DeviceDefault.Large" />
+
     <TextView
       android:id="@+id/subtotal"
       android:layout_toRightOf="@+id/order_subtotal_label"
@@ -21,13 +26,46 @@
       android:layout_width="wrap_content"
       android:paddingLeft="20dp"
       android:paddingRight="10dp"
-      style="@android:style/TextAppearance.DeviceDefault.Large"/>
+      style="@android:style/TextAppearance.DeviceDefault.Large" />
+
     <TextView
       android:id="@+id/subtotal_currency"
       android:layout_toRightOf="@+id/subtotal"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
-      style="@android:style/TextAppearance.DeviceDefault.Large"/>
+      style="@android:style/TextAppearance.DeviceDefault.Large" />
   </RelativeLayout>
-  <include layout="@layout/activity_enter_sale"/>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right">
+
+    <TextView
+      android:id="@+id/order_total_label"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="@string/new_total"
+      style="@android:style/TextAppearance.DeviceDefault.Large" />
+
+    <TextView
+      android:id="@+id/total"
+      android:layout_toRightOf="@+id/order_total_label"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:paddingLeft="20dp"
+      android:paddingRight="10dp"
+      android:text="@string/zero"
+      style="@android:style/TextAppearance.DeviceDefault.Large" />
+
+    <TextView
+      android:id="@+id/total_currency"
+      android:layout_toRightOf="@+id/total"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="@string/default_currency"
+      style="@android:style/TextAppearance.DeviceDefault.Large" />
+  </RelativeLayout>
+
+  <include layout="@layout/activity_enter_sale" />
 </LinearLayout>

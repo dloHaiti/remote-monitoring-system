@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Singleton
@@ -56,10 +57,62 @@ public class ShoppingCart {
     public Money getSubtotal() {
         BigDecimal subtotal = BigDecimal.ZERO;
         String currencyCode = "";
-        for(Product p : products) {
+        for (Product p : products) {
             subtotal = subtotal.add(p.getPrice().getAmount());
             currencyCode = p.getPrice().getCurrencyCode();
         }
         return new Money(subtotal, currencyCode);
+    }
+
+    public String getCurrencyCode() {
+        String currencyCode = "";
+        if (products.isEmpty()) {
+            return currencyCode;
+        } else {
+            currencyCode = products.get(0).getPrice().getCurrencyCode();
+        }
+        for (Product p : products) {
+            if (!currencyCode.equals(p.getPrice().getCurrencyCode())) {
+                currencyCode = "MISMATCHED CURRENCIES";
+            }
+        }
+        return currencyCode;
+    }
+
+    public BigDecimal getTotal() {
+        Collections.sort(promotions);
+        BigDecimal total = getSubtotal().getAmount();
+        for (Promotion promo : promotions) {
+            if (promo.appliesToBasket()) {
+                if (promo.isPercentOff()) {
+                    BigDecimal amount = promo.getAmount().divide(new BigDecimal(100));
+                    total = total.multiply(BigDecimal.ONE.subtract(amount));
+                } else if (promo.isAmountOff()) {
+                    total = total.subtract(promo.getAmount());
+                }
+            }
+        }
+        for (Product product : products) {
+            for (Promotion promo : promotions) {
+                if (promo.isFor(product) && promo.isNotUsed()) {
+                    if (promo.isPercentOff()) {
+                        BigDecimal amount = promo.getAmount().divide(new BigDecimal(100));
+                        BigDecimal discount = product.getPrice().getAmount().multiply(amount);
+                        total = total.subtract(discount);
+                    } else if (promo.isAmountOff()) {
+                        total = total.subtract(promo.getAmount());
+                    }
+                    promo.use();
+                }
+            }
+        }
+        if (total.compareTo(BigDecimal.ZERO) < 0) {
+            return BigDecimal.ZERO;
+        }
+        return total;
+    }
+
+    public void removePromotion(long id) {
+        promotions.remove(id);
     }
 }

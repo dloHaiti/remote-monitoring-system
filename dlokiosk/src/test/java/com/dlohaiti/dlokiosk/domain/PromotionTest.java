@@ -81,6 +81,22 @@ public class PromotionTest {
         assertThat(tenPercent.getType(), is(PromotionType.PERCENT));
     }
 
+    @Test
+    public void shouldOrderPercentagePromotionsBeforeAmountPromotions() {
+        Promotion percent = promotionBuilder().withPromotionType(PromotionType.PERCENT).build();
+        Promotion amount = promotionBuilder().withPromotionType(PromotionType.AMOUNT).build();
+
+        assertThat(percent.compareTo(amount), is(-1));
+    }
+
+    @Test
+    public void shouldOrderPercentagePromotionsWithHigherValueBeforeLowerValuePercentage() {
+        Promotion lowPercent = promotionBuilder().withAmount("10").withPromotionType(PromotionType.PERCENT).build();
+        Promotion highPercent = promotionBuilder().withAmount("30").withPromotionType(PromotionType.PERCENT).build();
+
+        assertThat(lowPercent.compareTo(highPercent), is(1));
+    }
+
     private Date yesterday() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);

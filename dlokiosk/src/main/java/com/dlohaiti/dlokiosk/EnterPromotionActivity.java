@@ -23,6 +23,8 @@ public class EnterPromotionActivity extends RoboActivity {
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @InjectView(R.id.subtotal) private TextView subtotalTextBox;
     @InjectView(R.id.subtotal_currency) private TextView subtotalCurrencyTextBox;
+    @InjectView(R.id.total) private TextView totalTextBox;
+    @InjectView(R.id.total_currency) private TextView totalCurrencyTextBox;
     @Inject private PromotionRepository promotionRepository;
     @Inject private ShoppingCart shoppingCart;
     private ImageAdapter adapter;
@@ -32,8 +34,8 @@ public class EnterPromotionActivity extends RoboActivity {
         setContentView(R.layout.activity_enter_promotions);
 
         List<Promotion> promotions = new ArrayList<Promotion>();
-        for(Promotion p : promotionRepository.list()) {
-            if(p.appliesTo(shoppingCart.getProducts())) {
+        for (Promotion p : promotionRepository.list()) {
+            if (p.appliesTo(shoppingCart.getProducts())) {
                 promotions.add(p);
             }
         }
@@ -44,12 +46,14 @@ public class EnterPromotionActivity extends RoboActivity {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 shoppingCart.addPromotion(promotionRepository.findById(id));
                 adapter.notifyDataSetChanged();
+                updateNewTotal();
             }
         });
         shoppingCartGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                shoppingCart.removePromotion(promotionRepository.findById(id));
+                shoppingCart.removePromotion(position);
                 adapter.notifyDataSetChanged();
+                updateNewTotal();
             }
         });
         actionButton.setText(R.string.checkout);
@@ -60,6 +64,13 @@ public class EnterPromotionActivity extends RoboActivity {
             }
         });
         subtotalTextBox.setText(String.valueOf(shoppingCart.getSubtotal().getAmount()));
-        subtotalCurrencyTextBox.setText(shoppingCart.getSubtotal().getCurrencyCode());
+        String currencyCode = shoppingCart.getCurrencyCode();
+        subtotalCurrencyTextBox.setText(currencyCode);
+        totalCurrencyTextBox.setText(currencyCode);
+        updateNewTotal();
+    }
+
+    private void updateNewTotal() {
+        totalTextBox.setText(String.valueOf(shoppingCart.getTotal()));
     }
 }

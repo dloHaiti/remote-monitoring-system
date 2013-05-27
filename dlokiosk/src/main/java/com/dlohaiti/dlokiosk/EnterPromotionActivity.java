@@ -39,8 +39,8 @@ public class EnterPromotionActivity extends RoboActivity {
                 promotions.add(p);
             }
         }
-        inventoryGrid.setAdapter(new ImageAdapter(this, promotions));
-        adapter = new ImageAdapter(this, shoppingCart.getPromotions());
+        inventoryGrid.setAdapter(new ImageAdapter<Promotion>(this, promotions));
+        adapter = new ImageAdapter<Promotion>(this, shoppingCart.getPromotions());
         shoppingCartGrid.setAdapter(adapter);
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

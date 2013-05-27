@@ -24,8 +24,8 @@ public class EnterSaleActivity extends RoboActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_sale);
-        inventoryGrid.setAdapter(new ImageAdapter(this, repository.list()));
-        adapter = new ImageAdapter(this, sc.getProducts());
+        inventoryGrid.setAdapter(new ImageAdapter<Product>(this, repository.list()));
+        adapter = new ImageAdapter<Product>(this, sc.getProducts());
         shoppingCartGrid.setAdapter(adapter);
 
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,7 +42,7 @@ public class EnterSaleActivity extends RoboActivity {
 
         shoppingCartGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sc.remove(position);
+                sc.removeProduct(position);
                 adapter.notifyDataSetChanged();
             }
         });

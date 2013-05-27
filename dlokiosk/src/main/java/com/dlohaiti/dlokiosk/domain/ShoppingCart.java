@@ -24,7 +24,7 @@ public class ShoppingCart {
         products.add(product);
     }
 
-    public void remove(int position) {
+    public void removeProduct(int position) {
         products.remove(position);
     }
 
@@ -112,7 +112,7 @@ public class ShoppingCart {
         return total;
     }
 
-    public void removePromotion(long id) {
+    public void removePromotion(int id) {
         promotions.remove(id);
     }
 }

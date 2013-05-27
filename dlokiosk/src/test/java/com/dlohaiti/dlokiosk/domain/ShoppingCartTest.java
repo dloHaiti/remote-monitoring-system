@@ -57,7 +57,7 @@ public class ShoppingCartTest {
     public void shouldBeClearAfterRemovingOnlyProduct() {
         Product product = productBuilder().build();
         cart.addProduct(product);
-        cart.remove(0);
+        cart.removeProduct(0);
         assertThat(cart.isEmpty(), is(true));
     }
 

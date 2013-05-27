@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
   <RelativeLayout
-    android:layout_marginTop="20dp"
+    android:id="@+id/order_total_row"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="10dp"
     android:layout_gravity="center_horizontal"
     android:gravity="center"
     android:layout_height="wrap_content"
@@ -17,7 +18,7 @@
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
       android:text="@string/order_total"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
 
     <TextView
       android:id="@+id/subtotal"
@@ -26,19 +27,31 @@
       android:layout_width="wrap_content"
       android:paddingLeft="20dp"
       android:paddingRight="10dp"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
 
     <TextView
       android:id="@+id/subtotal_currency"
       android:layout_toRightOf="@+id/subtotal"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
   </RelativeLayout>
 
   <RelativeLayout
+    android:id="@+id/promo_grid"
+    android:layout_below="@+id/order_total_row"
+    android:layout_above="@+id/new_total_row"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <include layout="@layout/two_rectangle_grid"/>
+    </RelativeLayout>
+
+  <RelativeLayout
+    android:id="@+id/new_total_row"
+    android:layout_above="@+id/checkout_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginRight="25dp"
     android:gravity="right">
 
     <TextView
@@ -46,7 +59,7 @@
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
       android:text="@string/new_total"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
 
     <TextView
       android:id="@+id/total"
@@ -56,7 +69,7 @@
       android:paddingLeft="20dp"
       android:paddingRight="10dp"
       android:text="@string/zero"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
 
     <TextView
       android:id="@+id/total_currency"
@@ -64,8 +77,18 @@
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
       android:text="@string/default_currency"
-      style="@android:style/TextAppearance.DeviceDefault.Large" />
+      android:textSize="24sp" />
   </RelativeLayout>
 
-  <include layout="@layout/activity_enter_sale" />
-</LinearLayout>
+  <Button
+      android:id="@+id/checkout_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:layout_marginRight="20dp"
+      android:layout_marginBottom="20dp"
+      android:padding="30dp"
+      android:onClick="checkout"
+      android:text="@string/checkout" />
+</RelativeLayout>

@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk.domain;
 import java.util.*;
 
 public class Receipt {
+    //TODO: consider total price
     private final Long id;
     private final List<OrderedProduct> orderedProducts;
     private final List<Promotion> promotions;

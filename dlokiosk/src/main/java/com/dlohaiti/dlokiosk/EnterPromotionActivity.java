@@ -3,7 +3,6 @@ package com.dlohaiti.dlokiosk;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
@@ -18,8 +17,7 @@ import java.util.List;
 
 public class EnterPromotionActivity extends RoboActivity {
 
-    @InjectView(R.id.action_button) private Button actionButton;
-    @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
+    @InjectView(R.id.left_grid) private GridView inventoryGrid;
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @InjectView(R.id.subtotal) private TextView subtotalTextBox;
     @InjectView(R.id.subtotal_currency) private TextView subtotalCurrencyTextBox;
@@ -56,18 +54,16 @@ public class EnterPromotionActivity extends RoboActivity {
                 updateNewTotal();
             }
         });
-        actionButton.setText(R.string.checkout);
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                shoppingCart.checkout();
-                finish();
-            }
-        });
         subtotalTextBox.setText(String.valueOf(shoppingCart.getSubtotal().getAmount()));
         String currencyCode = shoppingCart.getCurrencyCode();
         subtotalCurrencyTextBox.setText(currencyCode);
         totalCurrencyTextBox.setText(currencyCode);
         updateNewTotal();
+    }
+
+    public void checkout(View v) {
+        shoppingCart.checkout();
+        finish();
     }
 
     private void updateNewTotal() {

@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import com.dlohaiti.dlokiosk.VisibleGridItem;
 
 public class Product implements VisibleGridItem {
+    //TODO: needs description
+    //TODO: needs gallons
     private final Long id;
     private final String sku;
     private final Bitmap imageResource;

@@ -1,6 +1,8 @@
 package com.dlohaiti.dlokiosk.domain;
 
 public class OrderedProduct implements Orderable {
+    //TODO: needs gallons
+    //TODO: needs total price
     private final String sku;
     private final Integer quantity;
 

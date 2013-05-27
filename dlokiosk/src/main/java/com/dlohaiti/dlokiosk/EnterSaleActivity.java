@@ -15,7 +15,7 @@ import roboguice.inject.InjectView;
 public class EnterSaleActivity extends RoboActivity {
     private final static int ENTER_PROMOTION_ACTIVITY_CODE = 777;
 
-    @InjectView(R.id.inventory_grid) private GridView inventoryGrid;
+    @InjectView(R.id.left_grid) private GridView inventoryGrid;
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @Inject private ProductRepository repository;
     @Inject private ShoppingCart sc;

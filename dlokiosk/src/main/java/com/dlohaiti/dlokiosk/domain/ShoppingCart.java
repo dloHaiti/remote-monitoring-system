@@ -36,6 +36,10 @@ public class ShoppingCart {
 
     public void checkout() {
         repository.add(products, promotions);
+        clear();
+    }
+
+    public void clear() {
         products.clear();
         promotions.clear();
     }

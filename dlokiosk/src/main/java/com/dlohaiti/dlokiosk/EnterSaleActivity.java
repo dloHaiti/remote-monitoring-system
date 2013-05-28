@@ -13,8 +13,6 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class EnterSaleActivity extends RoboActivity {
-    private final static int ENTER_PROMOTION_ACTIVITY_CODE = 777;
-
     @InjectView(R.id.left_grid) private GridView inventoryGrid;
     @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
     @Inject private ProductRepository repository;
@@ -54,14 +52,12 @@ public class EnterSaleActivity extends RoboActivity {
     }
 
     public void moveToPromotions(View v) {
-        Intent intent = new Intent(this, EnterPromotionActivity.class);
-        startActivityForResult(intent, ENTER_PROMOTION_ACTIVITY_CODE);
+        startActivity(new Intent(this, EnterPromotionActivity.class));
+        finish();
     }
 
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ENTER_PROMOTION_ACTIVITY_CODE) {
-            finish();
-        }
+    @Override public void onBackPressed() {
+        sc.clear();
+        finish();
     }
 }

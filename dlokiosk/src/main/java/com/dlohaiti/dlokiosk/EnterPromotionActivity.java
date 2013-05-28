@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,6 +60,11 @@ public class EnterPromotionActivity extends RoboActivity {
         subtotalCurrencyTextBox.setText(currencyCode);
         totalCurrencyTextBox.setText(currencyCode);
         updateNewTotal();
+    }
+
+    @Override public void onBackPressed() {
+        startActivity(new Intent(this, EnterSaleActivity.class));
+        finish();
     }
 
     public void checkout(View v) {

@@ -58,7 +58,7 @@ public class ProductRepository {
 
     private Product buildProduct(Cursor cursor) {
         String sku = cursor.getString(1);
-        boolean requiresQuantity = cursor.getInt(3) == 1;
+        boolean requiresQuantity = Boolean.parseBoolean(cursor.getString(3));
         Integer minimum = cursor.getInt(4);
         Integer maximum = cursor.getInt(5);
         Money price = new Money(cursor.getDouble(6), cursor.getString(7));

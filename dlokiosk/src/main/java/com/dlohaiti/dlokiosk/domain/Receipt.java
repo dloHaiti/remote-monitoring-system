@@ -32,8 +32,7 @@ public class Receipt {
         return promotions;
     }
 
-    @JsonIgnore
-    public Integer getLineItemsCount() {
+    @JsonIgnore public Integer getLineItemsCount() {
         int total = 0;
         for (OrderedProduct op : orderedProducts) {
             total += op.getQuantity();
@@ -50,12 +49,11 @@ public class Receipt {
         return kioskId;
     }
 
-    public Long getId() {
+    @JsonIgnore public Long getId() {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -71,8 +69,7 @@ public class Receipt {
         return true;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (orderedProducts != null ? orderedProducts.hashCode() : 0);
         result = 31 * result + (promotions != null ? promotions.hashCode() : 0);

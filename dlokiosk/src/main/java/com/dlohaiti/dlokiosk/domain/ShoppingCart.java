@@ -39,7 +39,7 @@ public class ShoppingCart {
         for(Product product: products) {
             totalGallons += (product.getGallons() * product.getQuantity());
         }
-        repository.add(products, promotions, totalGallons);
+        repository.add(products, promotions, totalGallons, new Money(getTotal()));
         clear();
     }
 

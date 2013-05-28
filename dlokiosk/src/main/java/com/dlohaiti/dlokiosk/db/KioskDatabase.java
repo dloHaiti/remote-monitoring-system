@@ -24,12 +24,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
                         "%s INTEGER," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ReceiptsTable.TABLE_NAME,
                 ReceiptsTable.ID,
                 ReceiptsTable.KIOSK_ID,
                 ReceiptsTable.TOTAL_GALLONS,
+                ReceiptsTable.TOTAL,
                 ReceiptsTable.CREATED_AT
         );
         String createReceiptLineItems = String.format(
@@ -460,6 +462,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String KIOSK_ID = "KIOSK_ID";
         public static final String CREATED_AT = "CREATED_AT";
         public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
+        public static final String TOTAL = "TOTAL";
     }
 
     public static class ConfigurationTable {

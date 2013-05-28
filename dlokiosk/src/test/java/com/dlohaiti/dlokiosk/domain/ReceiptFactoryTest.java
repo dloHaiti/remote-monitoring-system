@@ -4,6 +4,7 @@ import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ReceiptFactoryTest {
     public void shouldUseKioskInformationFromConfiguration() {
         List<Product> products = asList(productBuilder().build());
 
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
 
         assertThat(receipt.getKioskId(), is("k1"));
     }
@@ -43,7 +44,7 @@ public class ReceiptFactoryTest {
     public void shouldUseTimeInformationFromClock() {
         List<Product> products = asList(productBuilder().build());
 
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
 
         assertThat(receipt.getCreatedDate(), is(new Date(0)));
     }
@@ -56,7 +57,7 @@ public class ReceiptFactoryTest {
                 productBuilder().withSku("5GAL").build()
         );
 
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
 
         assertThat(receipt.getLineItemsCount(), is(2));
     }
@@ -70,7 +71,7 @@ public class ReceiptFactoryTest {
                 productBuilder().withSku("10GAL").build()
         );
 
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
 
         assertThat(receipt.getLineItemsCount(), is(4));
     }
@@ -82,7 +83,7 @@ public class ReceiptFactoryTest {
                 productBuilder().withGallons(5).withQuantity(1).build(),
                 productBuilder().withGallons(10).withQuantity(2).build()
         );
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
         assertThat(receipt.getTotalGallons(), is(30));
     }
 

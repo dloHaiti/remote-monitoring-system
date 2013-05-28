@@ -23,14 +23,14 @@ public class ReceiptFactory {
         this.clock = clock;
     }
 
-    public Receipt makeReceipt(List<Product> products, List<Promotion> promotions) {
+    public Receipt makeReceipt(List<Product> products, List<Promotion> promotions, Money total) {
         Kiosk kiosk = configurationRepository.getKiosk();
         List<LineItem> lineItems = buildLineItems(products, promotions);
         int totalGallons = 0;
         for(Product product: products) {
             totalGallons += (product.getGallons() * product.getQuantity());
         }
-        return new Receipt(lineItems, kiosk.getId(), clock.now(), totalGallons);
+        return new Receipt(lineItems, kiosk.getId(), clock.now(), totalGallons, total);
     }
 
     private List<LineItem> buildLineItems(List<Product> products, List<Promotion> promotions) {
@@ -44,8 +44,8 @@ public class ReceiptFactory {
         return lineItems;
     }
 
-    public Receipt makeReceipt(long id, List<LineItem> lineItems, String kioskId, Date date, Integer totalGallons) {
-        return new Receipt(id, lineItems, kioskId, date, totalGallons);
+    public Receipt makeReceipt(long id, List<LineItem> lineItems, String kioskId, Date date, Integer totalGallons, Money total) {
+        return new Receipt(id, lineItems, kioskId, date, totalGallons, total);
     }
 
 }

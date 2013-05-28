@@ -8,12 +8,16 @@ public class Money {
     private final Currency currency;
 
     public Money(BigDecimal amount, String currencyCode) {
-        this.amount = amount;
-        this.currency = Currency.getInstance(currencyCode);
+        this(amount, Currency.getInstance(currencyCode));
     }
 
     public Money(Double amount, String currencyCode) {
         this(new BigDecimal(amount), currencyCode);
+    }
+
+    private Money(BigDecimal amount, Currency currency) {
+        this.amount = amount;
+        this.currency = currency;
     }
 
     public BigDecimal getAmount() {
@@ -42,5 +46,9 @@ public class Money {
         int result = amount != null ? amount.hashCode() : 0;
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
+    }
+
+    public Money times(int quantity) {
+        return new Money(amount.multiply(new BigDecimal(quantity)).setScale(2), currency);
     }
 }

@@ -7,6 +7,7 @@ import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,14 @@ public class ReceiptsRepository {
     private final KioskDatabase db;
     private final ReceiptFactory receiptFactory;
     private final KioskDate kioskDate;
+    private final static String[] lineItemCols = new String[] {
+            KioskDatabase.ReceiptLineItemsTable.ID,
+            KioskDatabase.ReceiptLineItemsTable.SKU,
+            KioskDatabase.ReceiptLineItemsTable.QUANTITY,
+            KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID,
+            KioskDatabase.ReceiptLineItemsTable.PRICE,
+            KioskDatabase.ReceiptLineItemsTable.TYPE
+    };
 
     @Inject
     public ReceiptsRepository(KioskDatabase db, ReceiptFactory receiptFactory, KioskDate kioskDate) {
@@ -27,7 +36,6 @@ public class ReceiptsRepository {
     public List<Receipt> list() {
         List<Receipt> receipts = new ArrayList<Receipt>();
         String[] columns = {KioskDatabase.ReceiptsTable.ID, KioskDatabase.ReceiptsTable.KIOSK_ID, KioskDatabase.ReceiptsTable.CREATED_AT};
-        String[] lineItemCols = {KioskDatabase.ReceiptLineItemsTable.ID, KioskDatabase.ReceiptLineItemsTable.SKU, KioskDatabase.ReceiptLineItemsTable.QUANTITY, KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID};
         String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
 
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
@@ -48,8 +56,19 @@ public class ReceiptsRepository {
                 Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
                 lineItemsCursor.moveToFirst();
                 List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
+                List<AppliedPromotion> appliedPromotions = new ArrayList<AppliedPromotion>();
                 while (!lineItemsCursor.isAfterLast()) {
-                    orderedProducts.add(new OrderedProduct(lineItemsCursor.getString(1), lineItemsCursor.getInt(2)));
+                    String sku = lineItemsCursor.getString(1);
+                    int quantity = lineItemsCursor.getInt(2);
+                    String price = lineItemsCursor.getString(4);
+                    String currencyCode = lineItemsCursor.getString(6);
+                    ReceiptLineItemType type = ReceiptLineItemType.valueOf(lineItemsCursor.getString(5));
+                    Money money = new Money(new BigDecimal(price), currencyCode);
+                    if(type == ReceiptLineItemType.PRODUCT) {
+                        orderedProducts.add(new OrderedProduct(sku, quantity, money));
+                    } else if(type == ReceiptLineItemType.PROMOTION) {
+                        appliedPromotions.add(new AppliedPromotion(sku, quantity, money));
+                    }
                     lineItemsCursor.moveToNext();
                 }
                 receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, new ArrayList<Promotion>(), receiptsCursor.getString(1), date));

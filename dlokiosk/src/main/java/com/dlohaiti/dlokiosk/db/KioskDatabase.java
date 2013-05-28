@@ -36,6 +36,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER," +
                         "%s TEXT," +
                         "%s INTEGER," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ReceiptLineItemsTable.TABLE_NAME,
@@ -43,7 +44,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ReceiptLineItemsTable.RECEIPT_ID,
                 ReceiptLineItemsTable.SKU,
                 ReceiptLineItemsTable.QUANTITY,
-                ReceiptLineItemsTable.TYPE
+                ReceiptLineItemsTable.TYPE,
+                ReceiptLineItemsTable.PRICE
         );
         String createProducts = String.format(
                 "CREATE TABLE %s(" +
@@ -417,12 +419,13 @@ public class KioskDatabase extends SQLiteOpenHelper {
     }
 
     public static class ReceiptLineItemsTable {
-        public static String TABLE_NAME = "RECEIPT_LINE_ITEMS";
-        public static String ID = "ID";
-        public static String RECEIPT_ID = "RECEIPT_ID";
-        public static String QUANTITY = "QUANTITY";
-        public static String SKU = "SKU";
-        public static String TYPE = "TYPE";
+        public static final String TABLE_NAME = "RECEIPT_LINE_ITEMS";
+        public static final String ID = "ID";
+        public static final String RECEIPT_ID = "RECEIPT_ID";
+        public static final String QUANTITY = "QUANTITY";
+        public static final String SKU = "SKU";
+        public static final String TYPE = "TYPE";
+        public static final String PRICE = "PRICE";
     }
 
     public static class ProductsTable {

@@ -27,7 +27,7 @@ public class ReceiptFactory {
     private List<OrderedProduct> buildOrderedProducts(List<Product> products) {
         List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
         for (Product product : products) {
-            orderedProducts.add(new OrderedProduct(product.getSku(), product.getQuantity()));
+            orderedProducts.add(new OrderedProduct(product.getSku(), product.getQuantity(), product.getPrice().times(product.getQuantity())));
         }
         return orderedProducts;
     }

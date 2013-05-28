@@ -23,11 +23,13 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
+                        "%s INTEGER," +
                         "%s TEXT" +
                         ")",
                 ReceiptsTable.TABLE_NAME,
                 ReceiptsTable.ID,
                 ReceiptsTable.KIOSK_ID,
+                ReceiptsTable.TOTAL_GALLONS,
                 ReceiptsTable.CREATED_AT
         );
         String createReceiptLineItems = String.format(
@@ -57,6 +59,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s INTEGER," +
                         "%s INTEGER," +
+                        "%s INTEGER," +
                         "%s INTEGER" +
                         ")",
                 ProductsTable.TABLE_NAME,
@@ -68,7 +71,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.CURRENCY,
                 ProductsTable.REQUIRES_QUANTITY,
                 ProductsTable.MINIMUM_QUANTITY,
-                ProductsTable.MAXIMUM_QUANTITY
+                ProductsTable.MAXIMUM_QUANTITY,
+                ProductsTable.GALLONS
         );
         String createConfiguration = String.format(
                 "CREATE TABLE %s(" +
@@ -119,7 +123,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         );
 
         String insertProduct = String.format(
-                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 ProductsTable.TABLE_NAME,
                 ProductsTable.SKU,
                 ProductsTable.REQUIRES_QUANTITY,
@@ -128,6 +132,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.PRICE,
                 ProductsTable.CURRENCY,
                 ProductsTable.DESCRIPTION,
+                ProductsTable.GALLONS,
                 ProductsTable.ICON
         );
 
@@ -170,7 +175,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "2013-12-01 00:00:00 EDT", "1", PromotionType.AMOUNT.name(), "1HTG_OFF_2GALLON", "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"});
         db.execSQL(insertPromo, new Object[]{PromotionApplicationType.SKU.name(), "5GALLON", "2013-01-01 00:00:00 EDT",
                 "2013-12-01 00:00:00 EDT", "10", PromotionType.PERCENT.name(), "10P_OFF_5GALLON", "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"});
-        db.execSQL(insertProduct, new Object[]{"2GALLON", "false", "", "", 5.00, "HTG", "2 Gallon Jug",
+        db.execSQL(insertProduct, new Object[]{"2GALLON", "false", "", "", 5.00, "HTG", "2 Gallon Jug", 2,
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -257,7 +262,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "AkwgJUSsIEOACSRDh9OUCDCBlBCxggwBJpAMHU5TIsAEUkLECjIEmEAydDhNiQATSAkRK8gQYALJ" +
                         "0OE0JQJMICVErCBDgAkkQ4fTlAgwgZQQsYIMASaQDB1OUyLABFJCxAoyBJhAMnQ4TYkAE0gJESvI" +
                         "EGACydDhNCUCTCAlRKwgQ+D/loC4QfTfVX4AAAAASUVORK5CYII="});
-        db.execSQL(insertProduct, new Object[]{"5GALLON", "true", "1", "10", 7.50, "HTG", "5 Gallon Jug",
+        db.execSQL(insertProduct, new Object[]{"5GALLON", "true", "1", "10", 7.50, "HTG", "5 Gallon Jug", 5,
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -339,7 +344,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "dRUBIZCKh6QMERACGQIm6ioCQiAVD0kZIiAEMgRM1FUEhEAqHpIyREAIZAiYqKsICIFUPCRliIAQ" +
                         "yBAwUVcREAKpeEjKEAEhkCFgoq4iIARS8ZCUIQJCIEPARF1FQAik4iEpQwSEQIaAibqKwP8BwI+/" +
                         "Qfxx/mkAAAAASUVORK5CYII="});
-        db.execSQL(insertProduct, new Object[]{"10GALLON", "false", "", "", 8.00, "HTG", "10 Gallon Jug",
+        db.execSQL(insertProduct, new Object[]{"10GALLON", "false", "", "", 8.00, "HTG", "10 Gallon Jug", 10,
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -446,13 +451,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String MINIMUM_QUANTITY = "MINIMUM_QUANTITY";
         public static final String MAXIMUM_QUANTITY = "MAXIMUM_QUANTITY";
         public static final String DESCRIPTION = "DESCRIPTION";
+        public static final String GALLONS = "GALLONS";
     }
 
     public static class ReceiptsTable {
-        public static String TABLE_NAME = "RECEIPTS";
-        public static String ID = "ID";
-        public static String KIOSK_ID = "KIOSK_ID";
-        public static String CREATED_AT = "CREATED_AT";
+        public static final String TABLE_NAME = "RECEIPTS";
+        public static final String ID = "ID";
+        public static final String KIOSK_ID = "KIOSK_ID";
+        public static final String CREATED_AT = "CREATED_AT";
+        public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
     }
 
     public static class ConfigurationTable {

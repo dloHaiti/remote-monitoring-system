@@ -10,16 +10,18 @@ public class Receipt {
     private final List<LineItem> lineItems;
     private final String kioskId;
     private final Date createdAt;
+    private final Integer totalGallons;
 
-    public Receipt(List<LineItem> lineItems, String kioskId, Date createdAt) {
-        this(null, lineItems, kioskId, createdAt);
+    public Receipt(List<LineItem> lineItems, String kioskId, Date createdAt, Integer totalGallons) {
+        this(null, lineItems, kioskId, createdAt, totalGallons);
     }
 
-    public Receipt(Long id, List<LineItem> lineItems, String kioskId, Date createdAt) {
+    public Receipt(Long id, List<LineItem> lineItems, String kioskId, Date createdAt, Integer totalGallons) {
         this.id = id;
         this.lineItems = lineItems;
         this.kioskId = kioskId;
         this.createdAt = createdAt;
+        this.totalGallons = totalGallons;
     }
 
     public List<LineItem> getLineItems() {
@@ -45,6 +47,10 @@ public class Receipt {
 
     @JsonIgnore public Long getId() {
         return id;
+    }
+
+    public Integer getTotalGallons() {
+        return totalGallons;
     }
 
     @Override

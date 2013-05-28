@@ -28,7 +28,8 @@ public class ProductRepository {
             KioskDatabase.ProductsTable.MAXIMUM_QUANTITY,
             KioskDatabase.ProductsTable.PRICE,
             KioskDatabase.ProductsTable.CURRENCY,
-            KioskDatabase.ProductsTable.DESCRIPTION
+            KioskDatabase.ProductsTable.DESCRIPTION,
+            KioskDatabase.ProductsTable.GALLONS
     };
 
     @Inject
@@ -63,6 +64,7 @@ public class ProductRepository {
         Integer maximum = cursor.getInt(5);
         Money price = new Money(cursor.getDouble(6), cursor.getString(7));
         String description = cursor.getString(8);
+        Integer gallons = cursor.getInt(9);
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
         try {
             byte[] imageData = Base64.decode(cursor.getString(2));
@@ -72,7 +74,7 @@ public class ProductRepository {
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
         //FIXME: default quantity of 1
-        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum, price, description);
+        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum, price, description, gallons);
     }
 
     public Product findById(Long id) {
@@ -84,7 +86,7 @@ public class ProductRepository {
             Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
             if (cursor.getCount() != 1) {
                 //TODO: make this graceful
-                return new Product(null, null, null, false, null, null, null, null, null);
+                return new Product(null, null, null, false, null, null, null, null, null, null);
             }
             cursor.moveToFirst();
             Product product = buildProduct(cursor);

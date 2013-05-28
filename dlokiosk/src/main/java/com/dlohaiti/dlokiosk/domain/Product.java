@@ -13,6 +13,7 @@ public class Product implements VisibleGridItem {
     private final Integer maximumQuantity;
     private final Money price;
     private final String description;
+    private final Integer gallons;
 
     public Product(Long id,
                    String sku,
@@ -22,7 +23,8 @@ public class Product implements VisibleGridItem {
                    Integer minimumQuantity,
                    Integer maximumQuantity,
                    Money price,
-                   String description) {
+                   String description,
+                   Integer gallons) {
         this.id = id;
         this.sku = sku;
         this.imageResource = imageResource;
@@ -32,10 +34,11 @@ public class Product implements VisibleGridItem {
         this.maximumQuantity = maximumQuantity;
         this.price = price;
         this.description = description;
+        this.gallons = gallons;
     }
 
     public Product withQuantity(int quantity) {
-        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity, price, description);
+        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity, price, description, gallons);
     }
 
     @Override public Long getId() {
@@ -74,7 +77,12 @@ public class Product implements VisibleGridItem {
         return description;
     }
 
-    @Override public boolean equals(Object o) {
+    public Integer getGallons() {
+        return gallons;
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -82,6 +90,7 @@ public class Product implements VisibleGridItem {
 
         if (requiresQuantity != product.requiresQuantity) return false;
         if (description != null ? !description.equals(product.description) : product.description != null) return false;
+        if (gallons != null ? !gallons.equals(product.gallons) : product.gallons != null) return false;
         if (id != null ? !id.equals(product.id) : product.id != null) return false;
         if (imageResource != null ? !imageResource.equals(product.imageResource) : product.imageResource != null)
             return false;
@@ -96,7 +105,8 @@ public class Product implements VisibleGridItem {
         return true;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sku != null ? sku.hashCode() : 0);
         result = 31 * result + (imageResource != null ? imageResource.hashCode() : 0);
@@ -106,6 +116,7 @@ public class Product implements VisibleGridItem {
         result = 31 * result + (maximumQuantity != null ? maximumQuantity.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (gallons != null ? gallons.hashCode() : 0);
         return result;
     }
 }

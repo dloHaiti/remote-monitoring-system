@@ -75,4 +75,15 @@ public class ReceiptFactoryTest {
         assertThat(receipt.getLineItemsCount(), is(4));
     }
 
+    @Test
+    public void shouldCalculateTotalGallonsFromProducts() {
+        List<Product> products = asList(
+                productBuilder().withGallons(5).withQuantity(1).build(),
+                productBuilder().withGallons(5).withQuantity(1).build(),
+                productBuilder().withGallons(10).withQuantity(2).build()
+        );
+        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
+        assertThat(receipt.getTotalGallons(), is(30));
+    }
+
 }

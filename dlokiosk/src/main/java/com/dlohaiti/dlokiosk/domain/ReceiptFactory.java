@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.dlohaiti.dlokiosk.db.ReceiptLineItemType.PRODUCT;
@@ -25,7 +26,11 @@ public class ReceiptFactory {
     public Receipt makeReceipt(List<Product> products, List<Promotion> promotions) {
         Kiosk kiosk = configurationRepository.getKiosk();
         List<LineItem> lineItems = buildLineItems(products, promotions);
-        return new Receipt(lineItems, kiosk.getId(), clock.now());
+        int totalGallons = 0;
+        for(Product product: products) {
+            totalGallons += (product.getGallons() * product.getQuantity());
+        }
+        return new Receipt(lineItems, kiosk.getId(), clock.now(), totalGallons);
     }
 
     private List<LineItem> buildLineItems(List<Product> products, List<Promotion> promotions) {
@@ -38,4 +43,9 @@ public class ReceiptFactory {
         }
         return lineItems;
     }
+
+    public Receipt makeReceipt(long id, List<LineItem> lineItems, String kioskId, Date date, Integer totalGallons) {
+        return new Receipt(id, lineItems, kioskId, date, totalGallons);
+    }
+
 }

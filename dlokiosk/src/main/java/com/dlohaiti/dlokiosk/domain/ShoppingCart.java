@@ -35,7 +35,11 @@ public class ShoppingCart {
     }
 
     public void checkout() {
-        repository.add(products, promotions);
+        int totalGallons = 0;
+        for(Product product: products) {
+            totalGallons += (product.getGallons() * product.getQuantity());
+        }
+        repository.add(products, promotions, totalGallons);
         clear();
     }
 

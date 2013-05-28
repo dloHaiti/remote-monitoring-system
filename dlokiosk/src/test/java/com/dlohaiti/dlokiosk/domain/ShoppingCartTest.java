@@ -30,7 +30,7 @@ public class ShoppingCartTest {
     public void shouldSaveToReceiptsRepositoryOnCheckout() {
         cart.addProduct(productBuilder().build());
         cart.checkout();
-        verify(receiptsRepository, only()).add(anyListOf(Product.class), anyListOf(Promotion.class));
+        verify(receiptsRepository, only()).add(anyListOf(Product.class), anyListOf(Promotion.class), anyInt());
     }
 
     @Test

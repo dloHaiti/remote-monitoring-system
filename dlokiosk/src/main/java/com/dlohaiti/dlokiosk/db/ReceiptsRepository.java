@@ -35,7 +35,7 @@ public class ReceiptsRepository {
 
     public List<Receipt> list() {
         List<Receipt> receipts = new ArrayList<Receipt>();
-        String[] columns = {KioskDatabase.ReceiptsTable.ID, KioskDatabase.ReceiptsTable.KIOSK_ID, KioskDatabase.ReceiptsTable.CREATED_AT};
+        String[] columns = {KioskDatabase.ReceiptsTable.ID, KioskDatabase.ReceiptsTable.KIOSK_ID, KioskDatabase.ReceiptsTable.CREATED_AT, KioskDatabase.ReceiptsTable.TOTAL_GALLONS};
         String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
 
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
@@ -65,7 +65,9 @@ public class ReceiptsRepository {
                     lineItems.add(new LineItem(sku, quantity, money, type));
                     lineItemsCursor.moveToNext();
                 }
-                receipts.add(new Receipt(receiptsCursor.getLong(0), lineItems, receiptsCursor.getString(1), date));
+                long id = receiptsCursor.getLong(0);
+                String kioskId = receiptsCursor.getString(1);
+                receipts.add(receiptFactory.makeReceipt(id, lineItems, kioskId, date, receiptsCursor.getInt(3)));
                 receiptsCursor.moveToNext();
             }
             readableDatabase.setTransactionSuccessful();
@@ -90,13 +92,14 @@ public class ReceiptsRepository {
         }
     }
 
-    public void add(List<Product> products, List<Promotion> promotions) {
+    public void add(List<Product> products, List<Promotion> promotions, Integer totalGallons) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         Receipt receipt = receiptFactory.makeReceipt(products, promotions);
         ContentValues receiptValues = new ContentValues();
         receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
         receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
+        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, totalGallons);
         try {
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (LineItem orderedItem : receipt.getLineItems()) {

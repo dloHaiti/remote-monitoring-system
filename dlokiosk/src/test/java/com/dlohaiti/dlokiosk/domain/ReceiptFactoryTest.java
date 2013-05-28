@@ -45,7 +45,7 @@ public class ReceiptFactoryTest {
 
         Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>());
 
-        assertThat(receipt.getCreatedAt(), is(new Date(0)));
+        assertThat(receipt.getCreatedDate(), is(new Date(0)));
     }
 
 

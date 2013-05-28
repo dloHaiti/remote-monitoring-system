@@ -83,7 +83,7 @@ public class ReceiptsRepository {
         Receipt receipt = receiptFactory.makeReceipt(products, promotions);
         ContentValues receiptValues = new ContentValues();
         receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
-        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedAt()));
+        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
         try {
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {

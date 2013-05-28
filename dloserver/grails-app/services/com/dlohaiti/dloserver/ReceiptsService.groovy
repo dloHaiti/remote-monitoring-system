@@ -4,13 +4,13 @@ class ReceiptsService {
 
   def grailsApplication
 
-  public saveSale(params) {
-    Date timestamp = params.date("createdAt", grailsApplication.config.dloserver.measurement.timeformat.toString())
-    Receipt receipt = Receipt.findByTimestamp(timestamp)
+  public saveReceipt(params) {
+    Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
+    Receipt receipt = Receipt.findByTimestamp(createdDate)
     if (receipt) {
       //TODO: return a 409 conflict and log a message instead of deleting
     }
-    receipt = new Receipt(timestamp: timestamp)
+    receipt = new Receipt(createdDate: createdDate)
 
     params.orderedProducts?.each { op ->
       ReceiptLineItem lineItem = new ReceiptLineItem()

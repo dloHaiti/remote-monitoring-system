@@ -1,7 +1,7 @@
 package com.dlohaiti.dloserver
 
 class Receipt {
-  Date timestamp
+  Date createdDate
   Kiosk kiosk
 
   static hasMany = [receiptLineItems: ReceiptLineItem]

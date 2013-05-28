@@ -10,15 +10,15 @@ class ReceiptsController {
   def save() {
     log.debug "Received $params"
 
-    Receipt sale
+    Receipt receipt
 
     try {
-      sale = receiptsService.saveSale(params)
+      receipt = receiptsService.saveReceipt(params)
 
-      if (sale.hasErrors()) {
+      if (receipt.hasErrors()) {
         // TODO Better formatting of error msgs
-        log.debug(sale.errors)
-        render(status: 422, text: [msg: sale.errors] as JSON)
+        log.debug(receipt.errors)
+        render(status: 422, text: [msg: receipt.errors] as JSON)
       } else {
         render(status: 201, text: [msg: "OK"] as JSON)
       }

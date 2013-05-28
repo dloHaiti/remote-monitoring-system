@@ -12,6 +12,7 @@ public class ProductBuilder {
     private Integer minimum = null;
     private Integer maximum = null;
     private Money price = new Money(1.0, "HTG");
+    private String description = "10 Gallon";
 
     private ProductBuilder(){}
 
@@ -64,7 +65,12 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public Product build() {
-        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum, price);
+        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum, price, description);
     }
 }

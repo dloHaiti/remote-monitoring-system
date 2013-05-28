@@ -50,6 +50,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s REAL," +
                         "%s TEXT," +
                         "%s INTEGER," +
@@ -59,6 +60,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.TABLE_NAME,
                 ProductsTable.ID,
                 ProductsTable.SKU,
+                ProductsTable.DESCRIPTION,
                 ProductsTable.ICON,
                 ProductsTable.PRICE,
                 ProductsTable.CURRENCY,
@@ -115,7 +117,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         );
 
         String insertProduct = String.format(
-                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 ProductsTable.TABLE_NAME,
                 ProductsTable.SKU,
                 ProductsTable.REQUIRES_QUANTITY,
@@ -123,6 +125,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.MAXIMUM_QUANTITY,
                 ProductsTable.PRICE,
                 ProductsTable.CURRENCY,
+                ProductsTable.DESCRIPTION,
                 ProductsTable.ICON
         );
 
@@ -158,7 +161,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
         db.execSQL(insertPromo, new Object[]{PromotionApplicationType.BASKET.name(), "", "2013-01-01 00:00:00 EDT", "2013-12-01 00:00:00 EDT", "10", PromotionType.PERCENT.name(), "10PEROFF", ""});
-        db.execSQL(insertProduct, new Object[]{"2GALLON", "0", "", "", 5.00, "HTG",
+        db.execSQL(insertProduct, new Object[]{"2GALLON", "0", "", "", 5.00, "HTG", "2 Gallon Jug",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -245,7 +248,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "AkwgJUSsIEOACSRDh9OUCDCBlBCxggwBJpAMHU5TIsAEUkLECjIEmEAydDhNiQATSAkRK8gQYALJ" +
                         "0OE0JQJMICVErCBDgAkkQ4fTlAgwgZQQsYIMASaQDB1OUyLABFJCxAoyBJhAMnQ4TYkAE0gJESvI" +
                         "EGACydDhNCUCTCAlRKwgQ+D/loC4QfTfVX4AAAAASUVORK5CYII="});
-        db.execSQL(insertProduct, new Object[]{"5GALLON", "1", "1", "10", 7.50, "HTG",
+        db.execSQL(insertProduct, new Object[]{"5GALLON", "1", "1", "10", 7.50, "HTG", "5 Gallon Jug",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -327,7 +330,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "dRUBIZCKh6QMERACGQIm6ioCQiAVD0kZIiAEMgRM1FUEhEAqHpIyREAIZAiYqKsICIFUPCRliIAQ" +
                         "yBAwUVcREAKpeEjKEAEhkCFgoq4iIARS8ZCUIQJCIEPARF1FQAik4iEpQwSEQIaAibqKwP8BwI+/" +
                         "Qfxx/mkAAAAASUVORK5CYII="});
-        db.execSQL(insertProduct, new Object[]{"10GALLON", "0", "", "", 8.00, "HTG",
+        db.execSQL(insertProduct, new Object[]{"10GALLON", "0", "", "", 8.00, "HTG", "10 Gallon Jug",
                 "iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAYAAADnRuK4AAAEJGlDQ1BJQ0MgUHJvZmlsZQAAOBGF" +
                         "Vd9v21QUPolvUqQWPyBYR4eKxa9VU1u5GxqtxgZJk6XtShal6dgqJOQ6N4mpGwfb6baqT3uBNwb8" +
                         "AUDZAw9IPCENBmJ72fbAtElThyqqSUh76MQPISbtBVXhu3ZiJ1PEXPX6yznfOec7517bRD1fabWa" +
@@ -423,15 +426,16 @@ public class KioskDatabase extends SQLiteOpenHelper {
     }
 
     public static class ProductsTable {
-        public static String TABLE_NAME = "PRODUCTS";
-        public static String ID = "ID";
-        public static String SKU = "SKU";
-        public static String ICON = "ICON";
-        public static String PRICE = "PRICE";
-        public static String CURRENCY = "CURRENCY";
-        public static String REQUIRES_QUANTITY = "REQUIRES_QUANTITY";
-        public static String MINIMUM_QUANTITY = "MINIMUM_QUANTITY";
-        public static String MAXIMUM_QUANTITY = "MAXIMUM_QUANTITY";
+        public static final String TABLE_NAME = "PRODUCTS";
+        public static final String ID = "ID";
+        public static final String SKU = "SKU";
+        public static final String ICON = "ICON";
+        public static final String PRICE = "PRICE";
+        public static final String CURRENCY = "CURRENCY";
+        public static final String REQUIRES_QUANTITY = "REQUIRES_QUANTITY";
+        public static final String MINIMUM_QUANTITY = "MINIMUM_QUANTITY";
+        public static final String MAXIMUM_QUANTITY = "MAXIMUM_QUANTITY";
+        public static final String DESCRIPTION = "DESCRIPTION";
     }
 
     public static class ReceiptsTable {

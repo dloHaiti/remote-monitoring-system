@@ -59,7 +59,7 @@ public class ShoppingCart {
         BigDecimal subtotal = BigDecimal.ZERO;
         String currencyCode = "";
         for (Product p : products) {
-            subtotal = subtotal.add(p.getPrice().getAmount());
+            subtotal = subtotal.add(p.getPrice().getAmount().multiply(new BigDecimal(p.getQuantity())));
             currencyCode = p.getPrice().getCurrencyCode();
         }
         return new Money(subtotal, currencyCode);

@@ -70,13 +70,22 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void shouldKnowSubtotal() {
+    public void shouldKnowSubtotalForSingleQuantity() {
         Product product1 = productBuilder().withPrice(10d, "HTG").build();
         Product product2 = productBuilder().withPrice(15d, "HTG").build();
         cart.addProduct(product1);
         cart.addProduct(product2);
         Money subtotal = cart.getSubtotal();
 
+        assertThat(subtotal.getAmount().compareTo(new BigDecimal("25")), is(0));
+    }
+
+    @Test
+    public void shouldKnowSubtotalForMultipleQuantities() {
+        Product product = productBuilder().withPrice(5d, "HTG").withQuantity(5).build();
+        cart.addProduct(product);
+
+        Money subtotal = cart.getSubtotal();
         assertThat(subtotal.getAmount().compareTo(new BigDecimal("25")), is(0));
     }
 

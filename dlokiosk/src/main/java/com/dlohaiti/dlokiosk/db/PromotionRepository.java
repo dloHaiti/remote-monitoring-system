@@ -5,13 +5,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.Promotion;
 import com.dlohaiti.dlokiosk.domain.PromotionApplicationType;
 import com.dlohaiti.dlokiosk.domain.PromotionType;
 import com.google.inject.Inject;
+import org.springframework.util.support.Base64;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +70,7 @@ public class PromotionRepository {
         rdb.beginTransaction();
         try {
             String whereId = String.format("%s=?", KioskDatabase.PromotionsTable.ID);
-            Cursor c = rdb.query(KioskDatabase.PromotionsTable.TABLE_NAME, columns, whereId, new String[]{ String.valueOf(id) }, null, null, null);
+            Cursor c = rdb.query(KioskDatabase.PromotionsTable.TABLE_NAME, columns, whereId, new String[]{String.valueOf(id)}, null, null, null);
             c.moveToFirst();
             //TODO: more than one result? throw exception?
             Promotion promotion = buildPromotion(c);
@@ -91,13 +94,13 @@ public class PromotionRepository {
         PromotionType type = PromotionType.valueOf(c.getString(4));
         String sku = c.getString(8);
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
-//                try {
-//                    byte[] imageData = Base64.decode(c.getString(7));
-//                    resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-//                } catch (IOException e) {
-//                    Log.e(getClass().getSimpleName(), String.format("image for promo(%s) could not be decoded", sku));
-        resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
-//                }
+        try {
+            byte[] imageData = Base64.decode(c.getString(7));
+            resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), String.format("image for promo(%s) could not be decoded", sku));
+            resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
+        }
         return new Promotion(id, sku, appliesTo, productSku, startDate, endDate, amount, type, resource);
     }
 }

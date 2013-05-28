@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -101,9 +102,9 @@ public class ShoppingCart {
             }
         }
         if (total.compareTo(BigDecimal.ZERO) < 0) {
-            return BigDecimal.ZERO;
+            return BigDecimal.ZERO.setScale(2);
         }
-        return total.setScale(2);
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void removePromotion(int id) {

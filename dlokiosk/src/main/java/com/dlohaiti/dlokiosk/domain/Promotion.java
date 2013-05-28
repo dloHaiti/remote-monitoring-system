@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
 import com.dlohaiti.dlokiosk.VisibleGridItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -54,33 +55,25 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return false;
     }
 
-    @Override
-    public Long getId() {
+    @JsonIgnore @Override public Long getId() {
         return id;
     }
 
-    public BigDecimal getAmount() {
-        if (type == PromotionType.AMOUNT)
+    @JsonIgnore public BigDecimal getAmount() {
+        if (type == PromotionType.AMOUNT) {
             return amount;
-        if (type == PromotionType.PERCENT)
+        }
+        if (type == PromotionType.PERCENT) {
             return amount.divide(new BigDecimal(100));
+        }
         return BigDecimal.ZERO;
     }
 
-    public PromotionType getType() {
+    @JsonIgnore public PromotionType getType() {
         return type;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    @Override
-    public Bitmap getImageResource() {
+    @JsonIgnore @Override public Bitmap getImageResource() {
         return resource;
     }
 
@@ -118,8 +111,7 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return 1;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -138,8 +130,7 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return true;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sku != null ? sku.hashCode() : 0);
         result = 31 * result + (appliesTo != null ? appliesTo.hashCode() : 0);

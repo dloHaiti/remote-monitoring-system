@@ -7,6 +7,10 @@ public class Money {
     private final BigDecimal amount;
     private final Currency currency;
 
+    public Money(BigDecimal amount) {
+        this(amount, "HTG");
+    }
+
     public Money(BigDecimal amount, String currencyCode) {
         this(amount, Currency.getInstance(currencyCode));
     }
@@ -16,7 +20,7 @@ public class Money {
     }
 
     private Money(BigDecimal amount, Currency currency) {
-        this.amount = amount;
+        this.amount = amount.setScale(2);
         this.currency = currency;
     }
 
@@ -49,6 +53,6 @@ public class Money {
     }
 
     public Money times(int quantity) {
-        return new Money(amount.multiply(new BigDecimal(quantity)).setScale(2), currency);
+        return new Money(amount.multiply(new BigDecimal(quantity)), currency);
     }
 }

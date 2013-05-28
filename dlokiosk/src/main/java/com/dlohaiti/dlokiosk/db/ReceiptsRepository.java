@@ -17,7 +17,7 @@ public class ReceiptsRepository {
     private final KioskDatabase db;
     private final ReceiptFactory receiptFactory;
     private final KioskDate kioskDate;
-    private final static String[] lineItemCols = new String[] {
+    private final static String[] lineItemCols = new String[]{
             KioskDatabase.ReceiptLineItemsTable.ID,
             KioskDatabase.ReceiptLineItemsTable.SKU,
             KioskDatabase.ReceiptLineItemsTable.QUANTITY,
@@ -55,23 +55,17 @@ public class ReceiptsRepository {
                 String[] args = {receiptId};
                 Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
                 lineItemsCursor.moveToFirst();
-                List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
-                List<AppliedPromotion> appliedPromotions = new ArrayList<AppliedPromotion>();
+                List<LineItem> lineItems = new ArrayList<LineItem>();
                 while (!lineItemsCursor.isAfterLast()) {
                     String sku = lineItemsCursor.getString(1);
                     int quantity = lineItemsCursor.getInt(2);
                     String price = lineItemsCursor.getString(4);
-                    String currencyCode = lineItemsCursor.getString(6);
                     ReceiptLineItemType type = ReceiptLineItemType.valueOf(lineItemsCursor.getString(5));
-                    Money money = new Money(new BigDecimal(price), currencyCode);
-                    if(type == ReceiptLineItemType.PRODUCT) {
-                        orderedProducts.add(new OrderedProduct(sku, quantity, money));
-                    } else if(type == ReceiptLineItemType.PROMOTION) {
-                        appliedPromotions.add(new AppliedPromotion(sku, quantity, money));
-                    }
+                    Money money = new Money(new BigDecimal(price));
+                    lineItems.add(new LineItem(sku, quantity, money, type));
                     lineItemsCursor.moveToNext();
                 }
-                receipts.add(new Receipt(receiptsCursor.getLong(0), orderedProducts, new ArrayList<Promotion>(), receiptsCursor.getString(1), date));
+                receipts.add(new Receipt(receiptsCursor.getLong(0), lineItems, receiptsCursor.getString(1), date));
                 receiptsCursor.moveToNext();
             }
             readableDatabase.setTransactionSuccessful();
@@ -105,13 +99,9 @@ public class ReceiptsRepository {
         receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
         try {
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
-            for (OrderedProduct orderedItem : receipt.getOrderedProducts()) {
+            for (LineItem orderedItem : receipt.getLineItems()) {
                 ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem, ReceiptLineItemType.PRODUCT);
                 writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
-            }
-            for (Promotion promotion : promotions) {
-                ContentValues promotionLineItemValue = buildContentValues(receiptId, promotion, ReceiptLineItemType.PROMOTION);
-                writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, promotionLineItemValue);
             }
             writableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
@@ -128,6 +118,7 @@ public class ReceiptsRepository {
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.PRICE, orderedItem.getPrice().getAmount().toString());
         return productLineItemValue;
     }
 }

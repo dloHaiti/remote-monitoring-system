@@ -9,13 +9,8 @@ class ReceiptsService {
     Receipt receipt = new Receipt(createdDate: createdDate)
     String currencyCode = "HTG"
 
-
-    params.orderedProducts?.each { op ->
-      def lineItem = new ReceiptLineItem([sku: op.sku, quantity: op.quantity, type: "PRODUCT", price: op.price.amount, currencyCode: currencyCode])
-      receipt.addToReceiptLineItems(lineItem)
-    }
-    params.appliedPromotions?.each { ap ->
-      def lineItem = new ReceiptLineItem([sku: ap.sku, quantity: ap.quantity, type: "PROMOTION", price: ap.amount, currencyCode: currencyCode])
+    params.lineItems?.each { item ->
+      def lineItem = new ReceiptLineItem([sku: item.sku, quantity: item.quantity, type: item.type, price: item.price.amount, currencyCode: currencyCode])
       receipt.addToReceiptLineItems(lineItem)
     }
     receipt.kiosk = Kiosk.findByName(params.kioskId)

@@ -3,8 +3,12 @@ package com.dlohaiti.dlokiosk.domain;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.google.inject.Inject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dlohaiti.dlokiosk.db.ReceiptLineItemType.PRODUCT;
+import static com.dlohaiti.dlokiosk.db.ReceiptLineItemType.PROMOTION;
 
 public class ReceiptFactory {
     private final ConfigurationRepository configurationRepository;
@@ -20,15 +24,18 @@ public class ReceiptFactory {
 
     public Receipt makeReceipt(List<Product> products, List<Promotion> promotions) {
         Kiosk kiosk = configurationRepository.getKiosk();
-        List<OrderedProduct> orderedProducts = buildOrderedProducts(products);
-        return new Receipt(orderedProducts, promotions, kiosk.getId(), clock.now());
+        List<LineItem> lineItems = buildLineItems(products, promotions);
+        return new Receipt(lineItems, kiosk.getId(), clock.now());
     }
 
-    private List<OrderedProduct> buildOrderedProducts(List<Product> products) {
-        List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
+    private List<LineItem> buildLineItems(List<Product> products, List<Promotion> promotions) {
+        List<LineItem> lineItems = new ArrayList<LineItem>();
         for (Product product : products) {
-            orderedProducts.add(new OrderedProduct(product.getSku(), product.getQuantity(), product.getPrice().times(product.getQuantity())));
+            lineItems.add(new LineItem(product.getSku(), product.getQuantity(), product.getPrice().times(product.getQuantity()), PRODUCT));
         }
-        return orderedProducts;
+        for (Promotion promotion : promotions) {
+            lineItems.add(new LineItem(promotion.getSku(), promotion.getQuantity(), new Money(BigDecimal.ZERO), PROMOTION));
+        }
+        return lineItems;
     }
 }

@@ -143,6 +143,10 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return result;
     }
 
+    @Override public Money getPrice() {
+        return new Money(BigDecimal.ZERO);
+    }
+
     public BigDecimal discountFor(Product product) {
         if (isPercentOff())
             return this.getAmount().multiply(product.getPrice().getAmount());

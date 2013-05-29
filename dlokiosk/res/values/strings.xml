@@ -60,4 +60,5 @@
   <string name="new_total">New Total:</string>
   <string name="zero">0</string>
   <string name="default_currency">HTG</string>
+  <string name="title_activity_select_sample_site">Select Sample Site</string>
 </resources>

@@ -58,6 +58,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.EnterSaleActivity" />
         </activity>
+        <activity
+                android:name=".SelectSampleSiteActivity"
+                android:label="@string/title_activity_select_sample_site" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -5,6 +5,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.upperCase;
+
 public class Parameter implements Comparable<Parameter> {
     private final String name;
     private final String unitOfMeasure;
@@ -13,7 +16,7 @@ public class Parameter implements Comparable<Parameter> {
     private final boolean hasRange;
 
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum) {
-        this.name = name;
+        this.name = defaultString(name);
         this.unitOfMeasure = unitOfMeasure;
         this.minimum = parseBigDecimal(minimum, BigDecimal.ZERO).setScale(2);
         this.maximum = parseBigDecimal(maximum, BigDecimal.ZERO).setScale(2);
@@ -48,7 +51,7 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     @Override public int compareTo(Parameter parameter) {
-        return name.compareTo(parameter.name);
+        return upperCase(name).compareTo(upperCase(parameter.name));
     }
 
     @Override

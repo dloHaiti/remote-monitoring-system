@@ -82,4 +82,20 @@ public class Parameter implements Comparable<Parameter> {
     public CharSequence getRange() {
         return minimum.toString() + " - " + maximum.toString();
     }
+
+    public boolean considersInvalid(String value) {
+        if(!NumberUtils.isNumber(value)) {
+            return true;
+        }
+        BigDecimal val = new BigDecimal(value);
+        return lessThan(val, BigDecimal.ZERO) || hasRange() && (lessThan(val, minimum) || greaterThan(val, maximum));
+    }
+
+    private static boolean lessThan(BigDecimal left, BigDecimal right) {
+        return left.compareTo(right) < 0;
+    }
+
+    private static boolean greaterThan(BigDecimal left, BigDecimal right) {
+        return left.compareTo(right) > 0;
+    }
 }

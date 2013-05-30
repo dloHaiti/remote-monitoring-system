@@ -8,13 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.domain.Parameter;
+import com.dlohaiti.dlokiosk.domain.SampleSite;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParameterAdapter extends ArrayAdapter<Parameter> {
 
     private final Context context;
     private final List<Parameter> parameters;
+    private final Map<SampleSite, BigDecimal> values = new HashMap<SampleSite, BigDecimal>();
 
     public ParameterAdapter(Context context, int textViewResourceId, List<Parameter> parameters) {
         super(context, textViewResourceId, parameters);
@@ -31,7 +36,6 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         Parameter parameter = parameters.get(position);
         if(parameter != null) {
             TextView label = (TextView)view.findViewById(R.id.parameter_label);
-            EditText value = (EditText)view.findViewById(R.id.parameter_input);
             TextView units = (TextView)view.findViewById(R.id.parameter_units);
             TextView range = (TextView)view.findViewById(R.id.parameter_range);
 
@@ -42,5 +46,20 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
             }
         }
         return view;
+    }
+
+    public boolean hasInvalidParameters() {
+        View row;
+        String value;
+        Parameter parameter;
+        for(int i = 0; i < this.getCount(); i++) {
+            row = getView(i, null, null);
+            value = ((EditText)row.findViewById(R.id.parameter_input)).getText().toString();
+            parameter = parameters.get(0);
+            if(parameter.considersInvalid(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

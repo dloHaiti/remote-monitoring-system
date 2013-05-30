@@ -1,11 +1,11 @@
 package com.dlohaiti.dlokiosk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.SampleSiteRepository;
 import com.dlohaiti.dlokiosk.domain.SampleSite;
 import com.google.inject.Inject;
@@ -40,7 +40,10 @@ public class SelectSampleSiteActivity extends RoboActivity {
                 if(!isRealSelection) {
                     isRealSelection = true;
                 } else {
-                    Toast.makeText(SelectSampleSiteActivity.this, String.format("selected %s", sites.get(position)), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SelectSampleSiteActivity.this, NewEnterReadingActivity.class);
+                    intent.putExtra("sampleSiteName", sites.get(position));
+                    startActivity(intent);
+                    finish();
                 }
             }
 

@@ -65,6 +65,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
+        <activity
+                android:name=".NewEnterReadingActivity"
+                android:label="@string/title_activity_enter_reading" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.SelectSampleSiteActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -151,7 +151,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
-                        "%s INTEGER," +
+                        "%s INTEGER" +
                         ")",
                 SamplingSitesParametersTable.TABLE_NAME,
                 SamplingSitesParametersTable.ID,

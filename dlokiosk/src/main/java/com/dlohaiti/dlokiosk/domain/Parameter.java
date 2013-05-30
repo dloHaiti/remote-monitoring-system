@@ -1,5 +1,8 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.math.BigDecimal;
 
 public class Parameter implements Comparable<Parameter> {
@@ -7,12 +10,41 @@ public class Parameter implements Comparable<Parameter> {
     private final String unitOfMeasure;
     private final BigDecimal minimum;
     private final BigDecimal maximum;
+    private final boolean hasRange;
 
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum) {
         this.name = name;
         this.unitOfMeasure = unitOfMeasure;
-        this.minimum = new BigDecimal(minimum);
-        this.maximum = new BigDecimal(maximum);
+        this.minimum = parseBigDecimal(minimum, BigDecimal.ZERO).setScale(2);
+        this.maximum = parseBigDecimal(maximum, BigDecimal.ZERO).setScale(2);
+        this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
+    }
+
+    private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
+        if(NumberUtils.isNumber(candidate)) {
+            return new BigDecimal(candidate);
+        }
+        return defaultValue;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUnitOfMeasure() {
+        return unitOfMeasure;
+    }
+
+    public BigDecimal getMinimum() {
+        return minimum;
+    }
+
+    public BigDecimal getMaximum() {
+        return maximum;
+    }
+
+    public boolean hasRange() {
+        return hasRange;
     }
 
     @Override public int compareTo(Parameter parameter) {
@@ -42,5 +74,9 @@ public class Parameter implements Comparable<Parameter> {
         result = 31 * result + (minimum != null ? minimum.hashCode() : 0);
         result = 31 * result + (maximum != null ? maximum.hashCode() : 0);
         return result;
+    }
+
+    public CharSequence getRange() {
+        return minimum.toString() + " - " + maximum.toString();
     }
 }

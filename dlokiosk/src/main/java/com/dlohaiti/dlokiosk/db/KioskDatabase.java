@@ -158,6 +158,32 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 SamplingSitesParametersTable.PARAMETER_ID,
                 SamplingSitesParametersTable.SITE_ID
         );
+        String createMeasurements = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s INTEGER," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                ")",
+                MeasurementsTable.TABLE_NAME,
+                MeasurementsTable.ID,
+                MeasurementsTable.SAMPLING_SITE_NAME,
+                MeasurementsTable.CREATED_DATE,
+                MeasurementsTable.KIOSK_ID
+        );
+        String createMeasurementLineItems = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s INTEGER," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                        ")",
+                MeasurementLineItemsTable.TABLE_NAME,
+                MeasurementLineItemsTable.ID,
+                MeasurementLineItemsTable.MEASUREMENT_ID,
+                MeasurementLineItemsTable.PARAMETER_NAME,
+                MeasurementLineItemsTable.VALUE
+        );
 
         String insertProduct = String.format(
                 "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -217,6 +243,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 SamplingSitesParametersTable.PARAMETER_ID
         );
 
+        db.execSQL(createMeasurements);
+        db.execSQL(createMeasurementLineItems);
         db.execSQL(createSampleSites);
         int BOREHOLE_EARLY = 1;
         int BOREHOLE_LATE = 2;
@@ -642,18 +670,18 @@ public class KioskDatabase extends SQLiteOpenHelper {
     }
 
     public static class ConfigurationTable {
-        public static String TABLE_NAME = "CONFIGURATION";
-        public static String KEY = "KEY";
-        public static String VALUE = "VALUE";
+        public static final String TABLE_NAME = "CONFIGURATION";
+        public static final String KEY = "KEY";
+        public static final String VALUE = "VALUE";
     }
 
     public static class DeliveriesTable {
-        public static String TABLE_NAME = "DELIVERIES";
-        public static String ID = "ID";
-        public static String KIOSK_ID = "KIOSK_ID";
-        public static String QUANTITY = "QUANTITY";
-        public static String DELIVERY_TYPE = "DELIVERY_TYPE";
-        public static String CREATED_AT = "CREATED_AT";
+        public static final String TABLE_NAME = "DELIVERIES";
+        public static final String ID = "ID";
+        public static final String KIOSK_ID = "KIOSK_ID";
+        public static final String QUANTITY = "QUANTITY";
+        public static final String DELIVERY_TYPE = "DELIVERY_TYPE";
+        public static final String CREATED_AT = "CREATED_AT";
     }
 
     public static class PromotionsTable {
@@ -689,5 +717,21 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String ID = "ID";
         public static final String SITE_ID = "SITE_ID";
         public static final String PARAMETER_ID = "PARAMETER_ID";
+    }
+
+    public static class MeasurementsTable {
+        public static final String TABLE_NAME = "MEASUREMENTS";
+        public static final String ID = "ID";
+        public static final String SAMPLING_SITE_NAME = "SAMPLING_SITE_NAME";
+        public static final String CREATED_DATE = "CREATED_DATE";
+        public static final String KIOSK_ID = "KIOSK_ID";
+    }
+
+    public static class MeasurementLineItemsTable {
+        public static final String TABLE_NAME = "MEASUREMENT_LINE_ITEMS";
+        public static final String ID = "ID";
+        public static final String PARAMETER_NAME = "PARAMETER_NAME";
+        public static final String VALUE = "VALUE";
+        public static final String MEASUREMENT_ID = "MEASUREMENT_ID";
     }
 }

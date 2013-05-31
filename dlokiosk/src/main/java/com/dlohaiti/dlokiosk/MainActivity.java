@@ -35,11 +35,6 @@ public class MainActivity extends RoboActivity implements StatusView {
         return true;
     }
 
-    public void moveToNewReadingScreen(View view) {
-        Intent intent = new Intent(this, EnterReadingActivity.class);
-        startActivity(intent);
-    }
-
     public void moveToNewSaleScreen(View view) {
         startActivity(new Intent(this, EnterSaleActivity.class));
     }

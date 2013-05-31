@@ -9,12 +9,12 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SampleSiteTest {
+public class SamplingSiteTest {
     @Test
     public void shouldHaveNaturalSortOrderOfAlphabeticalByName() {
-        SampleSite a = new SampleSite("a");
-        SampleSite b = new SampleSite("b");
-        List<SampleSite> sites = Arrays.asList(b, a);
+        SamplingSite a = new SamplingSite("a");
+        SamplingSite b = new SamplingSite("b");
+        List<SamplingSite> sites = Arrays.asList(b, a);
 
         int comparisonResult = a.compareTo(b);
         Collections.sort(sites);

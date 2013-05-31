@@ -1,9 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
-public class SampleSite implements Comparable<SampleSite> {
+public class SamplingSite implements Comparable<SamplingSite> {
     private final String name;
 
-    public SampleSite(String name) {
+    public SamplingSite(String name) {
         this.name = name;
     }
 
@@ -15,7 +15,7 @@ public class SampleSite implements Comparable<SampleSite> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SampleSite that = (SampleSite) o;
+        SamplingSite that = (SamplingSite) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
@@ -26,7 +26,7 @@ public class SampleSite implements Comparable<SampleSite> {
         return name != null ? name.hashCode() : 0;
     }
 
-    @Override public int compareTo(SampleSite another) {
+    @Override public int compareTo(SamplingSite another) {
         return name.compareTo(another.name);
     }
 }

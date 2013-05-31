@@ -12,7 +12,7 @@ import com.dlohaiti.dlokiosk.db.MeasurementsRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.Parameter;
-import com.dlohaiti.dlokiosk.domain.SampleSite;
+import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -27,15 +27,15 @@ public class NewEnterReadingActivity extends RoboActivity {
     @Inject private SamplingSiteParametersRepository repository;
     @Inject private MeasurementsRepository measurementsRepository;
     private final Map<Parameter, EditText> values = new HashMap<Parameter, EditText>();
-    private SampleSite sampleSite;
+    private SamplingSite samplingSite;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
         Bundle extras = this.getIntent().getExtras();
-        sampleSite = new SampleSite(extras.getString("sampleSiteName"));
-        heading.setText(sampleSite.getName());
-        SortedSet<Parameter> parameters = repository.findBySampleSite(sampleSite);
+        samplingSite = new SamplingSite(extras.getString("samplingSiteName"));
+        heading.setText(samplingSite.getName());
+        SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         for(Parameter p : parameters) {
             View row = inflater.inflate(R.layout.parameter_row, null);
@@ -72,7 +72,7 @@ public class NewEnterReadingActivity extends RoboActivity {
         if(errors) {
             Toast.makeText(this, "Please correct!", Toast.LENGTH_SHORT).show();
         } else {
-            boolean successful = measurementsRepository.save(measurements, sampleSite);
+            boolean successful = measurementsRepository.save(measurements, samplingSite);
             Toast.makeText(this, "Submitted soon! (Not Yet Implemented)", Toast.LENGTH_SHORT).show();
         }
     }

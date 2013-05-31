@@ -6,7 +6,7 @@ import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Clock;
 import com.dlohaiti.dlokiosk.domain.Measurement;
-import com.dlohaiti.dlokiosk.domain.SampleSite;
+import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 
 public class MeasurementsRepository {
@@ -22,10 +22,10 @@ public class MeasurementsRepository {
         this.clock = clock;
     }
 
-    public boolean save(Iterable<Measurement> measurements, SampleSite sampleSite) {
+    public boolean save(Iterable<Measurement> measurements, SamplingSite samplingSite) {
         SQLiteDatabase wdb = db.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KioskDatabase.MeasurementsTable.SAMPLING_SITE_NAME, sampleSite.getName());
+        values.put(KioskDatabase.MeasurementsTable.SAMPLING_SITE_NAME, samplingSite.getName());
         values.put(KioskDatabase.MeasurementsTable.CREATED_DATE, kioskDate.getFormat().format(clock.now()));
         values.put(KioskDatabase.MeasurementsTable.KIOSK_ID, "HARDCODED K1");
         wdb.beginTransaction();

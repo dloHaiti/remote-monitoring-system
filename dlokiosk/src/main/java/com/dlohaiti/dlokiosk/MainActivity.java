@@ -47,8 +47,8 @@ public class MainActivity extends RoboActivity implements StatusView {
         startActivity(new Intent(this, DeliveryActivity.class));
     }
 
-    public void moveToSelectSampleSite(View v) {
-        startActivity(new Intent(this, SelectSampleSiteActivity.class));
+    public void moveToSelectSamplingSite(View v) {
+        startActivity(new Intent(this, SelectSamplingSiteActivity.class));
     }
 
     @Override

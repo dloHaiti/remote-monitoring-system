@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import com.dlohaiti.dlokiosk.db.SampleSiteRepository;
-import com.dlohaiti.dlokiosk.domain.SampleSite;
+import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
+import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -15,10 +15,10 @@ import roboguice.inject.InjectView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectSampleSiteActivity extends RoboActivity {
+public class SelectSamplingSiteActivity extends RoboActivity {
 
-    @InjectView(R.id.sample_site_spinner) private Spinner sampleSiteSpinner;
-    @Inject private SampleSiteRepository repository;
+    @InjectView(R.id.sampling_site_spinner) private Spinner samplingSiteSpinner;
+    @Inject private SamplingSiteRepository repository;
     private boolean isRealSelection = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +26,22 @@ public class SelectSampleSiteActivity extends RoboActivity {
         setContentView(R.layout.activity_select_sample_site);
         final List<CharSequence> sites = new ArrayList<CharSequence>();
         sites.add("Select a Location");
-        for(SampleSite site : repository.list()) {
+        for(SamplingSite site : repository.list()) {
             sites.add(site.getName());
         }
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.addAll(sites);
-        sampleSiteSpinner.setAdapter(adapter);
-        sampleSiteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        samplingSiteSpinner.setAdapter(adapter);
+        samplingSiteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //HACK: populating the spinner fires onItemSelected for the first value in the spinner
-                if(!isRealSelection) {
+                if (!isRealSelection) {
                     isRealSelection = true;
                 } else {
-                    Intent intent = new Intent(SelectSampleSiteActivity.this, NewEnterReadingActivity.class);
-                    intent.putExtra("sampleSiteName", sites.get(position));
+                    Intent intent = new Intent(SelectSamplingSiteActivity.this, NewEnterReadingActivity.class);
+                    intent.putExtra("samplingSiteName", sites.get(position));
                     startActivity(intent);
                     finish();
                 }

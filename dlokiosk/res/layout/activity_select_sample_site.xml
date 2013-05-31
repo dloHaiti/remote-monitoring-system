@@ -5,7 +5,7 @@
   android:layout_height="match_parent">
 
   <Spinner
-    android:id="@+id/sample_site_spinner"
+    android:id="@+id/sampling_site_spinner"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"/>

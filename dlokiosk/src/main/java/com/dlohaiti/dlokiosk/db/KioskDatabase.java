@@ -123,7 +123,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 PromotionsTable.SKU,
                 PromotionsTable.ICON
         );
-        String createSampleSites = String.format(
+        String createSamplingSites = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s TEXT" +
@@ -219,7 +219,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 PromotionsTable.ICON
         );
 
-        String insertSampleSite = String.format(
+        String insertSamplingSite = String.format(
                 "INSERT INTO %s(%s, %s) VALUES(?, ?)",
                 SamplingSitesTable.TABLE_NAME,
                 SamplingSitesTable.ID,
@@ -245,7 +245,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createMeasurements);
         db.execSQL(createMeasurementLineItems);
-        db.execSQL(createSampleSites);
+        db.execSQL(createSamplingSites);
         int BOREHOLE_EARLY = 1;
         int BOREHOLE_LATE = 2;
         int FILL_STATION_EARLY = 3;
@@ -257,17 +257,17 @@ public class KioskDatabase extends SQLiteOpenHelper {
         int CLEANING_STATION_EARLY = 9;
         int CLEANING_STATION_LATE = 10;
         int WTU = 11;
-        db.execSQL(insertSampleSite, new Object[]{BOREHOLE_EARLY, "Borehole - Early Day"});
-        db.execSQL(insertSampleSite, new Object[]{BOREHOLE_LATE, "Borehole - Late Day"});
-        db.execSQL(insertSampleSite, new Object[]{FILL_STATION_EARLY, "Fill Station - Early Day"});
-        db.execSQL(insertSampleSite, new Object[]{FILL_STATION_LATE, "Fill Station - Late Day"});
-        db.execSQL(insertSampleSite, new Object[]{KIOSK_COUNTER_EARLY, "Kiosk Counter - Early Day"});
-        db.execSQL(insertSampleSite, new Object[]{KIOSK_COUNTER_LATE, "Kiosk Counter - Late Day"});
-        db.execSQL(insertSampleSite, new Object[]{BULK_FILL_EARLY, "Bulk Fill - Early Day"});
-        db.execSQL(insertSampleSite, new Object[]{BULK_FILL_LATE, "Bulk Fill - Late Day"});
-        db.execSQL(insertSampleSite, new Object[]{CLEANING_STATION_EARLY, "Cleaning Station - Early Day"});
-        db.execSQL(insertSampleSite, new Object[]{CLEANING_STATION_LATE, "Cleaning Station - Late Day"});
-        db.execSQL(insertSampleSite, new Object[]{WTU, "WTU"});
+        db.execSQL(insertSamplingSite, new Object[]{BOREHOLE_EARLY, "Borehole - Early Day"});
+        db.execSQL(insertSamplingSite, new Object[]{BOREHOLE_LATE, "Borehole - Late Day"});
+        db.execSQL(insertSamplingSite, new Object[]{FILL_STATION_EARLY, "Fill Station - Early Day"});
+        db.execSQL(insertSamplingSite, new Object[]{FILL_STATION_LATE, "Fill Station - Late Day"});
+        db.execSQL(insertSamplingSite, new Object[]{KIOSK_COUNTER_EARLY, "Kiosk Counter - Early Day"});
+        db.execSQL(insertSamplingSite, new Object[]{KIOSK_COUNTER_LATE, "Kiosk Counter - Late Day"});
+        db.execSQL(insertSamplingSite, new Object[]{BULK_FILL_EARLY, "Bulk Fill - Early Day"});
+        db.execSQL(insertSamplingSite, new Object[]{BULK_FILL_LATE, "Bulk Fill - Late Day"});
+        db.execSQL(insertSamplingSite, new Object[]{CLEANING_STATION_EARLY, "Cleaning Station - Early Day"});
+        db.execSQL(insertSamplingSite, new Object[]{CLEANING_STATION_LATE, "Cleaning Station - Late Day"});
+        db.execSQL(insertSamplingSite, new Object[]{WTU, "WTU"});
 
         db.execSQL(createParameters);
         int TEMPERATURE_ID = 1;

@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.Parameter;
-import com.dlohaiti.dlokiosk.domain.SampleSite;
+import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,13 +20,13 @@ public class SamplingSiteParametersRepository {
         this.db = db;
     }
 
-    public SortedSet<Parameter> findBySampleSite(SampleSite sampleSite) {
+    public SortedSet<Parameter> findBySamplingSite(SamplingSite samplingSite) {
         SortedSet<Parameter> parameters = new TreeSet<Parameter>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            int sampleSiteId = fetchSamplingSiteId(sampleSite, rdb);
-            String[] parameterIds = fetchParameterIds(rdb, sampleSiteId);
+            int samplingSiteId = fetchSamplingSiteId(samplingSite, rdb);
+            String[] parameterIds = fetchParameterIds(rdb, samplingSiteId);
             Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, new String[]{KioskDatabase.ParametersTable.NAME, KioskDatabase.ParametersTable.UNIT_OF_MEASURE, KioskDatabase.ParametersTable.MINIMUM, KioskDatabase.ParametersTable.MAXIMUM}, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
             if(query.getCount() < 1) {
                 throw new RuntimeException(String.format("No parameters found with ids: %s", StringUtils.join(parameterIds, ",")));
@@ -40,15 +40,15 @@ public class SamplingSiteParametersRepository {
             rdb.setTransactionSuccessful();
             return parameters;
         } catch (Exception e) {
-            Log.e(tag, String.format("Problem loading parameters for sample site %s", sampleSite.getName()), e);
+            Log.e(tag, String.format("Problem loading parameters for sampling site %s", samplingSite.getName()), e);
             return new TreeSet<Parameter>();
         } finally {
             rdb.endTransaction();
         }
     }
 
-    private String[] fetchParameterIds(SQLiteDatabase rdb, int sampleSiteId) {
-        Cursor sp = rdb.query(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID}, where(KioskDatabase.SamplingSitesParametersTable.SITE_ID), matches(sampleSiteId), null, null, null);
+    private String[] fetchParameterIds(SQLiteDatabase rdb, int samplingSiteId) {
+        Cursor sp = rdb.query(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID}, where(KioskDatabase.SamplingSitesParametersTable.SITE_ID), matches(samplingSiteId), null, null, null);
         if(sp.getCount() < 1) {
             throw new RuntimeException(String.format("Expected at least 1 parameter for Sampling Site; got %d", sp.getCount()));
         }
@@ -65,15 +65,15 @@ public class SamplingSiteParametersRepository {
         return parameterIds;
     }
 
-    private int fetchSamplingSiteId(SampleSite sampleSite, SQLiteDatabase rdb) {
-        Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesTable.ID}, where(KioskDatabase.SamplingSitesTable.NAME), matches(sampleSite.getName()), null, null, null);
+    private int fetchSamplingSiteId(SamplingSite samplingSite, SQLiteDatabase rdb) {
+        Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesTable.ID}, where(KioskDatabase.SamplingSitesTable.NAME), matches(samplingSite.getName()), null, null, null);
         if(c.getCount() != 1) {
             throw new RuntimeException(String.format("Expected 1 result; got %d.", c.getCount()));
         }
         c.moveToFirst();
-        int sampleSiteId = c.getInt(0);
+        int samplingSiteId = c.getInt(0);
         c.close();
-        return sampleSiteId;
+        return samplingSiteId;
     }
 
     private static String[] matches(int match) {

@@ -27,11 +27,16 @@
             android:onClick="saveParameters"/>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/parameters"
+    <ScrollView
         android:layout_below="@+id/parameters_header"
         android:padding="16dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent">
+        <LinearLayout
+            android:id="@+id/parameters"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+        </ScrollView>
 
 </RelativeLayout>

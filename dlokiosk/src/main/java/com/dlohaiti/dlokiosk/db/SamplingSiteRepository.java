@@ -10,7 +10,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class SamplingSiteRepository {
-    private final static String[] columns = new String[]{KioskDatabase.SamplingSitesTable.NAME};
+    private final static String[] columns = new String[]{
+            KioskDatabase.SamplingSitesTable.ID,
+            KioskDatabase.SamplingSitesTable.NAME
+    };
     private final String tag = getClass().getSimpleName();
     private final KioskDatabase db;
 
@@ -26,15 +29,58 @@ public class SamplingSiteRepository {
         try {
             Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, null, null, null, null, null);
             c.moveToFirst();
-            while(!c.isAfterLast()) {
-                sites.add(new SamplingSite(c.getString(0)));
+            while (!c.isAfterLast()) {
+                sites.add(new SamplingSite(c.getInt(0), c.getString(1)));
                 c.moveToNext();
             }
+            c.close();
             rdb.setTransactionSuccessful();
             return sites;
         } catch (Exception e) {
-            Log.e(tag, "Problem loading sample sites.", e);
+            Log.e(tag, "Problem loading sampling sites.", e);
             return new TreeSet<SamplingSite>();
+        } finally {
+            rdb.endTransaction();
+        }
+    }
+
+    public SamplingSite findById(int id) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        try {
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.SamplingSitesTable.ID), new String[]{String.valueOf(id)}, null, null, null);
+            if (c.getCount() != 1) {
+                throw new RecordNotFoundException();
+            }
+            c.moveToFirst();
+            SamplingSite samplingSite = new SamplingSite(c.getInt(0), c.getString(1));
+            c.close();
+            rdb.setTransactionSuccessful();
+            return samplingSite;
+        } catch (Exception e) {
+            Log.e(tag, String.format("Could not find Sampling Site with id %d.", id), e);
+            return new SamplingSite(id, "");
+        } finally {
+            rdb.endTransaction();
+        }
+    }
+
+    public SamplingSite findByName(String name) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        try {
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.SamplingSitesTable.NAME), new String[]{name}, null, null, null);
+            if (c.getCount() != 1) {
+                throw new RecordNotFoundException();
+            }
+            c.moveToFirst();
+            SamplingSite samplingSite = new SamplingSite(c.getInt(0), c.getString(1));
+            c.close();
+            rdb.setTransactionSuccessful();
+            return samplingSite;
+        } catch (Exception e) {
+            Log.e(tag, String.format("Could not find Sampling Site with name %s.", name), e);
+            return new SamplingSite("");
         } finally {
             rdb.endTransaction();
         }

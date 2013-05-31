@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.MeasurementsRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
+import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.Parameter;
 import com.dlohaiti.dlokiosk.domain.SamplingSite;
@@ -26,6 +27,7 @@ public class NewEnterReadingActivity extends RoboActivity {
     @InjectView(R.id.parameters) private LinearLayout parametersList;
     @Inject private SamplingSiteParametersRepository repository;
     @Inject private MeasurementsRepository measurementsRepository;
+    @Inject private SamplingSiteRepository samplingSiteRepository;
     private final Map<Parameter, EditText> values = new HashMap<Parameter, EditText>();
     private SamplingSite samplingSite;
 
@@ -33,7 +35,7 @@ public class NewEnterReadingActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
         Bundle extras = this.getIntent().getExtras();
-        samplingSite = new SamplingSite(extras.getString("samplingSiteName"));
+        SamplingSite samplingSite = samplingSiteRepository.findById(extras.getInt("samplingSiteId"));
         heading.setText(samplingSite.getName());
         SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);

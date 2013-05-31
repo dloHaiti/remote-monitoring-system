@@ -2,10 +2,6 @@ package com.dlohaiti.dlokiosk.domain;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -14,12 +10,24 @@ public class SamplingSiteTest {
     public void shouldHaveNaturalSortOrderOfAlphabeticalByName() {
         SamplingSite a = new SamplingSite("a");
         SamplingSite b = new SamplingSite("b");
-        List<SamplingSite> sites = Arrays.asList(b, a);
 
-        int comparisonResult = a.compareTo(b);
-        Collections.sort(sites);
+        assertThat(a.compareTo(b), is(-1));
+    }
 
-        assertThat(comparisonResult, is(-1));
-        assertThat(sites.get(0), is(a));
+    @Test
+    public void shouldHaveNaturalAlphabeticalSortOrderIgnoringCase() {
+        SamplingSite a = new SamplingSite("a");
+        SamplingSite b = new SamplingSite("B");
+
+        assertThat(a.compareTo(b), is(-1));
+    }
+
+    @Test
+    public void shouldHandleNullsGracefullyWhenSorting() {
+        SamplingSite a = new SamplingSite("a");
+        SamplingSite n = new SamplingSite(null);
+
+        assertThat(a.compareTo(n), is(1));
+        assertThat(n.compareTo(a), is(-1));
     }
 }

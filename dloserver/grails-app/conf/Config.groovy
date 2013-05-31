@@ -92,6 +92,16 @@ log4j = {
     debug 'grails.app'
 }
 
+security.shiro.authc.required = false
+security.shiro.filter.config = """
+[filters]
+authcBasic = org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter
+authcBasic.applicationName = DLO Server
+
+[urls]
+/** = authcBasic
+"""
+
 dloserver {
     readings.incoming  = '/tmp/incoming'
     readings.processed = '/tmp/processed'
@@ -109,3 +119,5 @@ environments {
         }
     }
 }
+
+

@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,11 @@ public class NewEnterReadingActivity extends RoboActivity {
             }
             parametersList.addView(row);
         }
+    }
+
+    @Override public void onBackPressed() {
+        startActivity(new Intent(this, SelectSamplingSiteActivity.class));
+        finish();
     }
 
     public void saveParameters(View v) {

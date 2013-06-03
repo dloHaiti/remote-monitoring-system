@@ -4,18 +4,28 @@ import java.util.Date;
 import java.util.Set;
 
 public class Reading {
-    private final String sampleSiteName;
+    private final Long id;
+    private final String samplingSiteName;
     private final Date createdDate;
     private final Set<Measurement> measurements;
 
     public Reading(SamplingSite samplingSite, Set<Measurement> measurements, Date createdDate) {
-        this.sampleSiteName = samplingSite.getName();
+        this(null, samplingSite.getName(), measurements, createdDate);
+    }
+
+    public Reading(Long id, String samplingSiteName, Set<Measurement> measurements, Date createdDate) {
+        this.id = id;
+        this.samplingSiteName = samplingSiteName;
         this.measurements = measurements;
         this.createdDate = createdDate;
     }
 
-    public String getSampleSiteName() {
-        return sampleSiteName;
+    public Long getId() {
+        return id;
+    }
+
+    public String getSamplingSiteName() {
+        return samplingSiteName;
     }
 
     public Date getCreatedDate() {
@@ -34,9 +44,10 @@ public class Reading {
         Reading reading = (Reading) o;
 
         if (createdDate != null ? !createdDate.equals(reading.createdDate) : reading.createdDate != null) return false;
+        if (id != null ? !id.equals(reading.id) : reading.id != null) return false;
         if (measurements != null ? !measurements.equals(reading.measurements) : reading.measurements != null)
             return false;
-        if (sampleSiteName != null ? !sampleSiteName.equals(reading.sampleSiteName) : reading.sampleSiteName != null)
+        if (samplingSiteName != null ? !samplingSiteName.equals(reading.samplingSiteName) : reading.samplingSiteName != null)
             return false;
 
         return true;
@@ -44,7 +55,8 @@ public class Reading {
 
     @Override
     public int hashCode() {
-        int result = sampleSiteName != null ? sampleSiteName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (samplingSiteName != null ? samplingSiteName.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (measurements != null ? measurements.hashCode() : 0);
         return result;

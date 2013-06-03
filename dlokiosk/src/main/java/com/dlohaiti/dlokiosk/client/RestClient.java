@@ -56,13 +56,13 @@ public class RestClient {
     }
 
     public <T> T get(String uri, Class<T> responseType) {
-        return restTemplate.exchange(this.baseUrl + uri, HttpMethod.GET, new HttpEntity<Object>(requestHeaders()), responseType, null).getBody();
+        return restTemplate.exchange(this.baseUrl + uri, HttpMethod.GET, new HttpEntity<Object>(requestHeaders()), responseType, new Object()).getBody();
     }
 
     public boolean post(String uri, Object data) {
         String url = this.baseUrl + uri;
         try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), String.class, null);
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), String.class, new Object());
             return true;
         } catch (HttpClientErrorException e) {
             logger.error("Error " + e.getStatusCode() + " while posting data to url " + url, e);

@@ -16,7 +16,7 @@ class ReadingsService {
         params.measurements?.each {
             Measurement measurement = new Measurement()
             measurement.parameter = Parameter.findByNameIlike(it.parameterName)
-            measurement.value = new BigDecimal(it.value)
+            measurement.value = new BigDecimal(it.value as Double)
             reading.addToMeasurements(measurement)
         }
 
@@ -56,7 +56,7 @@ class ReadingsService {
     private boolean importFile(String filename) {
         log.info("Started importing file '$filename'")
         CSVReader reader = new CSVReader(new StringReader(incomingService.getFileContent(filename)))
-        Reading reading = new Reading(timestamp: new Date())
+        Reading reading = new Reading(createdDate: new Date())
 
         String[] nextLine
         while ((nextLine = reader.readNext()) != null) {
@@ -103,9 +103,7 @@ class ReadingsService {
         def sensor = Sensor.findBySensorIdIlike(sensorId)
         def measurement = new Measurement()
         measurement.parameter = sensor?.measurementType
-        measurement.location = sensor?.location
         measurement.value = parseValue(value)
-        measurement.timestamp = Date.parse(grailsApplication.config.dloserver.measurement.timeformat.toString(), timestamp)
         return measurement
     }
 }

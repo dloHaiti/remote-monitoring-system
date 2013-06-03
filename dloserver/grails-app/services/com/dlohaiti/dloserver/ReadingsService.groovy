@@ -11,7 +11,7 @@ class ReadingsService {
     public saveReading(params) {
         Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
         SamplingSite samplingSite = SamplingSite.findByName(params.samplingSiteName)
-        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite])
+        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite, username: params.kioskName])
 
         params.measurements?.each {
             Measurement measurement = new Measurement()

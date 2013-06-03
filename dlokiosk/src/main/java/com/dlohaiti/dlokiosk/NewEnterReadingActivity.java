@@ -75,7 +75,12 @@ public class NewEnterReadingActivity extends RoboActivity {
             Toast.makeText(this, "Please correct!", Toast.LENGTH_SHORT).show();
         } else {
             boolean successful = measurementsRepository.save(measurements, samplingSite);
-            Toast.makeText(this, "Submitted soon!", Toast.LENGTH_SHORT).show();
+            if(successful) {
+                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(this, "There was an error. Data not saved!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

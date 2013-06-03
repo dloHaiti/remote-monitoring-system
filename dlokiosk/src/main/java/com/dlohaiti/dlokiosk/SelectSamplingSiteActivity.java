@@ -24,7 +24,7 @@ public class SelectSamplingSiteActivity extends RoboActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_sample_site);
-        final List<CharSequence> sites = new ArrayList<CharSequence>();
+        final List<String> sites = new ArrayList<String>();
         sites.add("Select a Location");
         for(SamplingSite site : repository.list()) {
             sites.add(site.getName());
@@ -41,7 +41,7 @@ public class SelectSamplingSiteActivity extends RoboActivity {
                     isRealSelection = true;
                 } else {
                     Intent intent = new Intent(SelectSamplingSiteActivity.this, NewEnterReadingActivity.class);
-                    intent.putExtra("samplingSiteName", repository.findByName(sites.get(position)).getId());
+                    intent.putExtra("samplingSiteId", repository.findByName(sites.get(position)).getId());
                     startActivity(intent);
                     finish();
                 }

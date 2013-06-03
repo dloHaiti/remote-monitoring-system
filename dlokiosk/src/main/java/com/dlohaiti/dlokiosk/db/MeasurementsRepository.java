@@ -10,7 +10,7 @@ import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 
 public class MeasurementsRepository {
-    private final String tag = getClass().getSimpleName();
+    private final static String TAG = MeasurementsRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final KioskDate kioskDate;
     private final Clock clock;
@@ -41,7 +41,7 @@ public class MeasurementsRepository {
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
-            Log.e(tag, "Failed to save measurements.", e);
+            Log.e(TAG, "Failed to save measurements.", e);
             return false;
         } finally {
             wdb.endTransaction();

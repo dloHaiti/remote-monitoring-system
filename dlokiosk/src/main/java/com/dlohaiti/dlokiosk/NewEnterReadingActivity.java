@@ -35,7 +35,7 @@ public class NewEnterReadingActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
         Bundle extras = this.getIntent().getExtras();
-        SamplingSite samplingSite = samplingSiteRepository.findById(extras.getInt("samplingSiteId"));
+        samplingSite = samplingSiteRepository.findById(extras.getInt("samplingSiteId"));
         heading.setText(samplingSite.getName());
         SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,7 +75,7 @@ public class NewEnterReadingActivity extends RoboActivity {
             Toast.makeText(this, "Please correct!", Toast.LENGTH_SHORT).show();
         } else {
             boolean successful = measurementsRepository.save(measurements, samplingSite);
-            Toast.makeText(this, "Submitted soon! (Not Yet Implemented)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Submitted soon!", Toast.LENGTH_SHORT).show();
         }
     }
 }

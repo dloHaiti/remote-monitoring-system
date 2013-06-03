@@ -9,12 +9,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dlohaiti.dlokiosk.db.MeasurementsRepository;
+import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
-import com.dlohaiti.dlokiosk.domain.Measurement;
-import com.dlohaiti.dlokiosk.domain.Parameter;
-import com.dlohaiti.dlokiosk.domain.SamplingSite;
+import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -27,8 +25,9 @@ public class NewEnterReadingActivity extends RoboActivity {
     @InjectView(R.id.heading) private TextView heading;
     @InjectView(R.id.parameters) private LinearLayout parametersList;
     @Inject private SamplingSiteParametersRepository repository;
-    @Inject private MeasurementsRepository measurementsRepository;
+    @Inject private ReadingsRepository readingsRepository;
     @Inject private SamplingSiteRepository samplingSiteRepository;
+    @Inject private Clock clock;
     private final Map<Parameter, EditText> values = new HashMap<Parameter, EditText>();
     private SamplingSite samplingSite;
 
@@ -64,7 +63,7 @@ public class NewEnterReadingActivity extends RoboActivity {
 
     public void saveParameters(View v) {
         boolean errors = false;
-        List<Measurement> measurements = new ArrayList<Measurement>();
+        Set<Measurement> measurements = new HashSet<Measurement>();
         for(Map.Entry<Parameter, EditText> entry : values.entrySet()) {
             EditText input = entry.getValue();
             Parameter parameter = entry.getKey();
@@ -80,7 +79,7 @@ public class NewEnterReadingActivity extends RoboActivity {
         if(errors) {
             Toast.makeText(this, "Please correct!", Toast.LENGTH_SHORT).show();
         } else {
-            boolean successful = measurementsRepository.save(measurements, samplingSite);
+            boolean successful = readingsRepository.save(new Reading(samplingSite, measurements, clock.now()));
             if(successful) {
                 Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
                 finish();

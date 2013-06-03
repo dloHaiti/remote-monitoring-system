@@ -162,14 +162,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
-                        "%s TEXT," +
                         "%s TEXT" +
                 ")",
-                MeasurementsTable.TABLE_NAME,
-                MeasurementsTable.ID,
-                MeasurementsTable.SAMPLING_SITE_NAME,
-                MeasurementsTable.CREATED_DATE,
-                MeasurementsTable.KIOSK_ID
+                ReadingsTable.TABLE_NAME,
+                ReadingsTable.ID,
+                ReadingsTable.SAMPLING_SITE_NAME,
+                ReadingsTable.CREATED_DATE
         );
         String createMeasurementLineItems = String.format(
                 "CREATE TABLE %s(" +
@@ -178,11 +176,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT" +
                         ")",
-                MeasurementLineItemsTable.TABLE_NAME,
-                MeasurementLineItemsTable.ID,
-                MeasurementLineItemsTable.MEASUREMENT_ID,
-                MeasurementLineItemsTable.PARAMETER_NAME,
-                MeasurementLineItemsTable.VALUE
+                MeasurementsTable.TABLE_NAME,
+                MeasurementsTable.ID,
+                MeasurementsTable.READING_ID,
+                MeasurementsTable.PARAMETER_NAME,
+                MeasurementsTable.VALUE
         );
 
         String insertProduct = String.format(
@@ -719,19 +717,18 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String PARAMETER_ID = "PARAMETER_ID";
     }
 
-    public static class MeasurementsTable {
-        public static final String TABLE_NAME = "MEASUREMENTS";
+    public static class ReadingsTable {
+        public static final String TABLE_NAME = "READINGS";
         public static final String ID = "ID";
         public static final String SAMPLING_SITE_NAME = "SAMPLING_SITE_NAME";
         public static final String CREATED_DATE = "CREATED_DATE";
-        public static final String KIOSK_ID = "KIOSK_ID";
     }
 
-    public static class MeasurementLineItemsTable {
-        public static final String TABLE_NAME = "MEASUREMENT_LINE_ITEMS";
+    public static class MeasurementsTable {
+        public static final String TABLE_NAME = "MEASUREMENTS";
         public static final String ID = "ID";
         public static final String PARAMETER_NAME = "PARAMETER_NAME";
         public static final String VALUE = "VALUE";
-        public static final String MEASUREMENT_ID = "MEASUREMENT_ID";
+        public static final String READING_ID = "READING_ID";
     }
 }

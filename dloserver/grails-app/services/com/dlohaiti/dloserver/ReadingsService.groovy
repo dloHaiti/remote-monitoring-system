@@ -9,23 +9,18 @@ class ReadingsService {
     def messageSource
 
     public saveReading(params) {
-        Date timestamp = params.date("timestamp", grailsApplication.config.dloserver.measurement.timeformat.toString())
-        Reading reading = Reading.findByTimestamp(timestamp)
-        if (reading) {
-            reading.delete()
-        }
-        reading = new Reading(timestamp: timestamp)
+        Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
+        SamplingSite samplingSite = SamplingSite.findByName(params.samplingSiteName)
+        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite])
 
         params.measurements?.each {
             Measurement measurement = new Measurement()
-            measurement.location = Location.findByNameIlike(it.location)
-            measurement.parameter = MeasurementType.findByNameIlike(it.parameter)
-            measurement.value = parseValue(it.value)
-            measurement.timestamp = timestamp
+            measurement.parameter = Parameter.findByNameIlike(it.parameterName)
+            measurement.value = new BigDecimal(it.value)
             reading.addToMeasurements(measurement)
         }
 
-        reading.kiosk = Kiosk.findByName(params.kiosk)
+        reading.kiosk = Kiosk.findByName(params.kioskName)
         reading.save(flush: true)
         return reading
     }

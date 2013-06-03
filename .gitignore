@@ -20,5 +20,6 @@ tmp
 gen
 plugins
 *.h2.db
+*.trace.db
 *.lock.db
 

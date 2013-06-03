@@ -1,7 +1,7 @@
 class UrlMappings {
 
     static mappings = {
-        "/reading/$id?"(resource: "reading")
+        "/readings/$id?"(resource: "readings")
         "/receipts/$id?"(resource: "receipts")
         "/deliveries/$id?"(resource: "deliveries")
         "/healthcheck/$id?"(resource: "healthcheck")

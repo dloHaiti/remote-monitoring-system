@@ -12,8 +12,8 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
 
     private SimpleDateFormat sdf
 
-    private MeasurementType temperature = MeasurementType.findByName("Temperature")
-    private MeasurementType ph = MeasurementType.findByName("pH")
+    private Parameter temperature = Parameter.findByName("Temperature")
+    private Parameter ph = Parameter.findByName("pH")
     private Location location = Location.first()
 
     @Before

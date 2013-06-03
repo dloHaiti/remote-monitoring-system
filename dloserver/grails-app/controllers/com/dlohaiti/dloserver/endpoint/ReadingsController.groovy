@@ -3,7 +3,7 @@ package com.dlohaiti.dloserver.endpoint
 import com.dlohaiti.dloserver.Reading
 import grails.converters.JSON
 
-class ReadingController {
+class ReadingsController {
 
   def readingsService
 
@@ -13,6 +13,7 @@ class ReadingController {
     Reading reading
 
     try {
+      params.kioskName = request.kioskName
       reading = readingsService.saveReading(params)
 
       if (reading.hasErrors()) {

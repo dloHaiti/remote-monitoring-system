@@ -1,7 +1,7 @@
 package com.dlohaiti.dloserver
 
 class Reading {
-    Date timestamp
+    Date createdDate
     Kiosk kiosk
     String username
 

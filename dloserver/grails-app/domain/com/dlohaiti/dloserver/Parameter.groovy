@@ -1,6 +1,6 @@
 package com.dlohaiti.dloserver
 
-class MeasurementType {
+class Parameter {
 
     String name
     String unit

@@ -3,11 +3,11 @@ package com.dlohaiti.dloserver
 class Sensor {
 
     String sensorId
-    MeasurementType measurementType
+    Parameter measurementType
     String displayName
     Location location
 
-    static belongsTo = [kiosk: Kiosk]
+    static belongsTo = [kiosk: Kiosk, parameter: Parameter]
 
     static constraints = {
         sensorId(blank: false, unique: true)

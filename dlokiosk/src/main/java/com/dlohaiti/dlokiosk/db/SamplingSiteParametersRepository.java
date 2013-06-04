@@ -15,7 +15,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class SamplingSiteParametersRepository {
-    private final String tag = getClass().getSimpleName();
+    private final static String TAG = SamplingSiteParametersRepository.class.getSimpleName();
     private final KioskDatabase db;
 
     @Inject
@@ -43,7 +43,7 @@ public class SamplingSiteParametersRepository {
             rdb.setTransactionSuccessful();
             return parameters;
         } catch (Exception e) {
-            Log.e(tag, String.format("Problem loading parameters for sampling site %s", samplingSite.getName()), e);
+            Log.e(TAG, String.format("Problem loading parameters for sampling site %s", samplingSite.getName()), e);
             return new TreeSet<Parameter>();
         } finally {
             rdb.endTransaction();

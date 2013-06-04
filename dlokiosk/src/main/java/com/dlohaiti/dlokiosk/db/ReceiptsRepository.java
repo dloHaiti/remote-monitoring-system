@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
@@ -17,6 +18,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class ReceiptsRepository {
+    private final static String TAG = ReceiptsRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final ReceiptFactory receiptFactory;
     private final KioskDate kioskDate;
@@ -57,7 +59,7 @@ public class ReceiptsRepository {
                 try {
                     date = kioskDate.getFormat().parse(receiptsCursor.getString(2));
                 } catch (ParseException e) {
-                    e.printStackTrace(); //TODO: alert? log?
+                    Log.e(TAG, String.format("Invalid date format for receipt with id %d", receiptsCursor.getLong(0)), e);
                 }
                 String receiptId = receiptsCursor.getString(0);
                 Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receiptId), null, null, null);
@@ -72,33 +74,40 @@ public class ReceiptsRepository {
                     lineItems.add(new LineItem(sku, quantity, money, type));
                     lineItemsCursor.moveToNext();
                 }
+                lineItemsCursor.close();
                 long id = receiptsCursor.getLong(0);
                 String kioskId = receiptsCursor.getString(1);
                 receipts.add(receiptFactory.makeReceipt(id, lineItems, kioskId, date, receiptsCursor.getInt(3), new Money(new BigDecimal(receiptsCursor.getString(4)))));
                 receiptsCursor.moveToNext();
             }
+            receiptsCursor.close();
             readableDatabase.setTransactionSuccessful();
             return receipts;
+        } catch(Exception e) {
+            Log.e(TAG, "Failed to load all receipts from the database.", e);
+            return new ArrayList<Receipt>();
         } finally {
             readableDatabase.endTransaction();
         }
     }
 
-    public void remove(Receipt receipt) {
+    public boolean remove(Receipt receipt) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         try {
             writableDatabase.delete(KioskDatabase.ReceiptsTable.TABLE_NAME, where(KioskDatabase.ReceiptsTable.ID), matches(receipt.getId()));
             writableDatabase.delete(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receipt.getId()));
             writableDatabase.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
-            //TODO: alert? log?
+            Log.e(TAG, String.format("Failed to remove receipt with id %d from the database.", receipt.getId()), e);
+            return false;
         } finally {
             writableDatabase.endTransaction();
         }
     }
 
-    public void add(List<Product> products, List<Promotion> promotions, Integer totalGallons, Money total) {
+    public boolean add(List<Product> products, List<Promotion> promotions, Integer totalGallons, Money total) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         Receipt receipt = receiptFactory.makeReceipt(products, promotions, total);
@@ -114,9 +123,10 @@ public class ReceiptsRepository {
                 writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
             }
             writableDatabase.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
-            //TODO: alert this?
-            throw new RuntimeException(e);
+            Log.e(TAG, "Failed to save receipt to database.", e);
+            return false;
         } finally {
             writableDatabase.endTransaction();
         }

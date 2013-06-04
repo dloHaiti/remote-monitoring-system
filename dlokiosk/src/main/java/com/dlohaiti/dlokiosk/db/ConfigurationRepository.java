@@ -20,7 +20,7 @@ public class ConfigurationRepository {
         this.db = db;
     }
 
-    public void save(String kioskId, String kioskPassword) {
+    public boolean save(String kioskId, String kioskPassword) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues id = new ContentValues();
         id.put(KioskDatabase.ConfigurationTable.KEY, ConfigurationKey.KIOSK_ID.name());
@@ -33,8 +33,10 @@ public class ConfigurationRepository {
             writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, id, where(KioskDatabase.ConfigurationTable.KEY), matches(ConfigurationKey.KIOSK_ID.name()));
             writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, pw, where(KioskDatabase.ConfigurationTable.KEY), matches(ConfigurationKey.KIOSK_PASSWORD.name()));
             writableDatabase.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
-            //TODO: log? alert?
+            Log.e(TAG, "Failed to save Kiosk and Password.", e);
+            return false;
         } finally {
             writableDatabase.endTransaction();
         }
@@ -60,9 +62,10 @@ public class ConfigurationRepository {
                 }
                 cursor.moveToNext();
             }
+            cursor.close();
             readableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
-            //TODO: log? alert?
+            Log.e(TAG, "Failed to get Kiosk from database.", e);
         } finally {
             readableDatabase.endTransaction();
         }
@@ -77,7 +80,12 @@ public class ConfigurationRepository {
             cursor.moveToFirst();
             //TODO: more than one result
             rdb.setTransactionSuccessful();
-            return cursor.getString(1);
+            String value = cursor.getString(1);
+            cursor.close();
+            return value;
+        } catch (Exception e) {
+            Log.e(TAG, String.format("Failed to get value for %s from database.", key.name()), e);
+            return "";
         } finally {
             rdb.endTransaction();
         }
@@ -91,7 +99,7 @@ public class ConfigurationRepository {
         }
     }
 
-    public void save(ConfigurationKey key, String value) {
+    public boolean save(ConfigurationKey key, String value) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues val = new ContentValues();
         val.put(KioskDatabase.ConfigurationTable.KEY, key.name());
@@ -100,8 +108,10 @@ public class ConfigurationRepository {
         try {
             writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, val, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()));
             writableDatabase.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
-            Log.e(TAG, "Could not save configuration key " + key.name(), e);
+            Log.e(TAG, String.format("Failed to save value for configuration key %s to database.", key.name()), e);
+            return false;
         } finally {
             writableDatabase.endTransaction();
         }

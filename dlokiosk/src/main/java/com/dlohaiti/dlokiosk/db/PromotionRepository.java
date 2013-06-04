@@ -24,6 +24,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class PromotionRepository {
+    private final static String TAG = PromotionRepository.class.getSimpleName();
     private final Context context;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
@@ -58,10 +59,11 @@ public class PromotionRepository {
                 promos.add(buildPromotion(c));
                 c.moveToNext();
             }
+            c.close();
             rdb.setTransactionSuccessful();
             return promos;
         } catch (Exception e) {
-            //TODO: log? alert?
+            Log.e(TAG, "Failed to load promotions from the database.", e);
             return new ArrayList<Promotion>();
         } finally {
             rdb.endTransaction();
@@ -76,10 +78,11 @@ public class PromotionRepository {
             c.moveToFirst();
             //TODO: more than one result? throw exception?
             Promotion promotion = buildPromotion(c);
+            c.close();
             rdb.setTransactionSuccessful();
             return promotion;
         } catch (Exception e) {
-            //TODO: log? alert?
+            Log.e(TAG, String.format("Failed to find promotion with id %d in the database.", id), e);
             return new Promotion(null, null, null, null, null, null, null, null, null);
         } finally {
             rdb.endTransaction();
@@ -100,7 +103,7 @@ public class PromotionRepository {
             byte[] imageData = Base64.decode(c.getString(7));
             resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), String.format("image for promo(%s) could not be decoded", sku));
+            Log.e(TAG, String.format("image for promo(%s) could not be decoded", sku), e);
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
         return new Promotion(id, sku, appliesTo, productSku, startDate, endDate, amount, type, resource);

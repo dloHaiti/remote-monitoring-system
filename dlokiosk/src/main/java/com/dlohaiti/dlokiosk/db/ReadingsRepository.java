@@ -59,7 +59,7 @@ public class ReadingsRepository {
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
-            Log.e(TAG, "Failed to save reading.", e);
+            Log.e(TAG, "Failed to save reading to database.", e);
             return false;
         } finally {
             wdb.endTransaction();
@@ -93,23 +93,24 @@ public class ReadingsRepository {
             rdb.setTransactionSuccessful();
             return readings;
         } catch (Exception e) {
-            Log.e(TAG, "Failed to load readings.", e);
+            Log.e(TAG, "Failed to load readings from database.", e);
             return new ArrayList<Reading>();
         } finally {
             rdb.endTransaction();
         }
     }
 
-    public void remove(Reading reading) {
+    public boolean remove(Reading reading) {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
             wdb.delete(KioskDatabase.MeasurementsTable.TABLE_NAME, where(KioskDatabase.MeasurementsTable.READING_ID), matches(reading.getId()));
             wdb.delete(KioskDatabase.ReadingsTable.TABLE_NAME, where(KioskDatabase.ReadingsTable.ID), matches(reading.getId()));
             wdb.setTransactionSuccessful();
+            return true;
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to remove reading for Sampling Site %s on %s.", reading.getSamplingSiteName(), kioskDate.getFormat().format(reading.getCreatedDate())), e);
-            //FIXME: alert the receiver this failed somehow
+            return false;
         } finally {
             wdb.endTransaction();
         }

@@ -17,6 +17,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class DeliveryRepository {
+    private final static String TAG = DeliveryRepository.class.getSimpleName();
     private final DeliveryFactory factory;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
@@ -41,7 +42,7 @@ public class DeliveryRepository {
             writableDatabase.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
-            Log.d(getClass().getSimpleName(), e.getMessage());
+            Log.e(TAG, "Failed to save delivery to database.", e);
             return false;
         } finally {
             writableDatabase.endTransaction();
@@ -71,8 +72,12 @@ public class DeliveryRepository {
                 deliveries.add(factory.makeDelivery(id, quantity, type, kioskId, createdAt));
                 cursor.moveToNext();
             }
+            cursor.close();
             rdb.setTransactionSuccessful();
             return deliveries;
+        } catch(Exception e) {
+            Log.e(TAG, "Failed to load all deliveries from database.", e);
+            return new ArrayList<Delivery>();
         } finally {
             rdb.endTransaction();
         }
@@ -86,6 +91,7 @@ public class DeliveryRepository {
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
+            Log.e(TAG, "Failed to delete delivery from the database", e);
             return false;
         } finally {
             wdb.endTransaction();

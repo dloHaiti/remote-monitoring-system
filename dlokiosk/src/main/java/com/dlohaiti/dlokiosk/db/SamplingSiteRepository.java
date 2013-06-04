@@ -13,11 +13,11 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class SamplingSiteRepository {
+    private final static String TAG = SamplingSiteRepository.class.getSimpleName();
     private final static String[] columns = new String[]{
             KioskDatabase.SamplingSitesTable.ID,
             KioskDatabase.SamplingSitesTable.NAME
     };
-    private final String tag = getClass().getSimpleName();
     private final KioskDatabase db;
 
     @Inject
@@ -40,7 +40,7 @@ public class SamplingSiteRepository {
             rdb.setTransactionSuccessful();
             return sites;
         } catch (Exception e) {
-            Log.e(tag, "Problem loading sampling sites.", e);
+            Log.e(TAG, "Failed to load sampling sites from database.", e);
             return new TreeSet<SamplingSite>();
         } finally {
             rdb.endTransaction();
@@ -61,8 +61,8 @@ public class SamplingSiteRepository {
             rdb.setTransactionSuccessful();
             return samplingSite;
         } catch (Exception e) {
-            Log.e(tag, String.format("Could not find Sampling Site with id %d.", id), e);
-            return new SamplingSite(id, "");
+            Log.e(TAG, String.format("Could not find Sampling Site with id %d in database.", id), e);
+            return new SamplingSite(null);
         } finally {
             rdb.endTransaction();
         }
@@ -82,8 +82,8 @@ public class SamplingSiteRepository {
             rdb.setTransactionSuccessful();
             return samplingSite;
         } catch (Exception e) {
-            Log.e(tag, String.format("Could not find Sampling Site with name %s.", name), e);
-            return new SamplingSite("");
+            Log.e(TAG, String.format("Could not find Sampling Site with name %s.", name), e);
+            return new SamplingSite(null);
         } finally {
             rdb.endTransaction();
         }

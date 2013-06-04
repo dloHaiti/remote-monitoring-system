@@ -20,6 +20,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class ProductRepository {
+    private final static String TAG = ProductRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final Context context;
     private final static String[] columns = new String[]{
@@ -53,8 +54,12 @@ public class ProductRepository {
                 products.add(buildProduct(cursor));
                 cursor.moveToNext();
             }
+            cursor.close();
             readableDatabase.setTransactionSuccessful();
             return products;
+        } catch(Exception e) {
+            Log.e(TAG, "Failed to load all products from the database.", e);
+            return new ArrayList<Product>();
         } finally {
             readableDatabase.endTransaction();
         }
@@ -73,11 +78,11 @@ public class ProductRepository {
             byte[] imageData = Base64.decode(cursor.getString(2));
             resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), String.format("image for product(%s) could not be decoded", sku));
+            Log.e(TAG, String.format("image for product(%s) could not be decoded", sku), e);
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
-        //FIXME: default quantity of 1
-        return new Product(cursor.getLong(0), sku, resource, requiresQuantity, 1, minimum, maximum, price, description, gallons);
+        long id = cursor.getLong(0);
+        return new Product(id, sku, resource, requiresQuantity, 1, minimum, maximum, price, description, gallons);
     }
 
     public Product findById(Long id) {
@@ -86,13 +91,16 @@ public class ProductRepository {
         try {
             Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, where(KioskDatabase.ProductsTable.ID), matches(id), null, null, null);
             if (cursor.getCount() != 1) {
-                //TODO: make this graceful
                 return new Product(null, null, null, false, null, null, null, null, null, null);
             }
             cursor.moveToFirst();
             Product product = buildProduct(cursor);
+            cursor.close();
             readableDatabase.setTransactionSuccessful();
             return product;
+        } catch(Exception e) {
+            Log.e(TAG, String.format("Failed to find product with id %d in the database.", id), e);
+            return new Product(null, null, null, false, null, null, null, null, null, null);
         } finally {
             readableDatabase.endTransaction();
         }

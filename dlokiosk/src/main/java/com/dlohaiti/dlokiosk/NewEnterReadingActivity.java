@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
@@ -44,12 +42,29 @@ public class NewEnterReadingActivity extends RoboActivity {
             TextView label = (TextView)row.findViewById(R.id.parameter_label);
             TextView units = (TextView)row.findViewById(R.id.parameter_units);
             TextView range = (TextView)row.findViewById(R.id.parameter_range);
-            EditText input = (EditText)row.findViewById(R.id.parameter_input);
+            final EditText input = (EditText)row.findViewById(R.id.parameter_input);
             values.put(p, input);
+
+            if(p.isOkNotOk()) {
+                input.setVisibility(View.GONE);
+                RadioGroup okGroup = (RadioGroup)row.findViewById(R.id.ok_group);
+                okGroup.setVisibility(View.VISIBLE);
+                okGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        if(R.id.radio_ok == checkedId) {
+                            input.setText("1");
+                        } else if(R.id.radio_not_ok == checkedId) {
+                            input.setText("0");
+                        } else {
+                            input.setText("");
+                        }
+                    }
+                });
+            }
 
             label.setText(p.getName());
             units.setText(p.getUnitOfMeasure());
-            if(p.hasRange()) {
+            if(p.hasRange() && !p.isOkNotOk()) {
                 range.setText(p.getRange());
             }
             parametersList.addView(row);

@@ -138,6 +138,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ParametersTable.TABLE_NAME,
@@ -145,7 +146,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ParametersTable.NAME,
                 ParametersTable.UNIT_OF_MEASURE,
                 ParametersTable.MINIMUM,
-                ParametersTable.MAXIMUM
+                ParametersTable.MAXIMUM,
+                ParametersTable.IS_OK_NOT_OK
         );
         String createSamplingSiteParameters = String.format(
                 "CREATE TABLE %s(" +
@@ -225,13 +227,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
         );
 
         String insertParameter = String.format(
-                "INSERT INTO %s(%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO %s(%s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?)",
                 ParametersTable.TABLE_NAME,
                 ParametersTable.ID,
                 ParametersTable.NAME,
                 ParametersTable.UNIT_OF_MEASURE,
                 ParametersTable.MINIMUM,
-                ParametersTable.MAXIMUM
+                ParametersTable.MAXIMUM,
+                ParametersTable.IS_OK_NOT_OK
         );
 
         String insertSamplingSiteParameter = String.format(
@@ -287,25 +290,31 @@ public class KioskDatabase extends SQLiteOpenHelper {
         int PRODUCT_FLOW_RATE = 17;
         int RO_PRODUCT_FLOW_RATE = 18;
         int GALLONS_DISTRIBUTED = 19;
-        db.execSQL(insertParameter, new Object[]{TEMPERATURE_ID, "Temperature", "°C", "10", "30"});
-        db.execSQL(insertParameter, new Object[]{PH_ID, "pH", "", "5", "9"});
-        db.execSQL(insertParameter, new Object[]{TURBIDITY_ID, "Turbidity", "NTU", "0", "10"});
-        db.execSQL(insertParameter, new Object[]{ALKALINITY_ID, "Alkalinity", "mg/L CaCO3 (ppm)", "100", "500"});
-        db.execSQL(insertParameter, new Object[]{HARDNESS_ID, "Hardness", "mg/L CaCO3 (ppm)", "100", "500"});
-        db.execSQL(insertParameter, new Object[]{TDS_FEED_RO_ROUF_ID, "TDS (Feed, RO, RO/UF)", "mg/L (ppm)", "0", "800"});
-        db.execSQL(insertParameter, new Object[]{FREE_CL_RESIDUAL_ID, "Free chlorine residual", "mg/L Cl2 (ppm)", "0", "1"});
-        db.execSQL(insertParameter, new Object[]{TOTAL_CL_RESIDUAL_ID, "Total chlorine residual", "mg/L Cl2 (ppm)", "0", "1"});
-        db.execSQL(insertParameter, new Object[]{TDS_FEED, "TDS Feed", "mg/L (ppm)", "0", "800"});
-        db.execSQL(insertParameter, new Object[]{TDS_RO, "TDS RO", "mg/L (ppm)", "0", "800"});
-        db.execSQL(insertParameter, new Object[]{TDS_ROUF, "TDS RO/UF", "mg/L (ppm)", "0", "800"});
-        db.execSQL(insertParameter, new Object[]{PRESSURE_PREFILTER, "Pressure Pre-Filter", "PSI", "0", "100"});
-        db.execSQL(insertParameter, new Object[]{PRESSURE_POSTFILTER, "Pressure Post-Filter", "PSI", "0", "100"});
-        db.execSQL(insertParameter, new Object[]{PRESSURE_PRERO, "Pressure Pre-RO", "PSI", "0", "300"});
-        db.execSQL(insertParameter, new Object[]{PRESSURE_POSTRO, "Pressure Post-RO", "PSI", "0", "300"});
-        db.execSQL(insertParameter, new Object[]{FEED_FLOW_RATE, "Feed Flow Rate", "gpm", "0", ""});
-        db.execSQL(insertParameter, new Object[]{PRODUCT_FLOW_RATE, "Product Flow Rate", "gpm", "0", ""});
-        db.execSQL(insertParameter, new Object[]{RO_PRODUCT_FLOW_RATE, "R/O Product Flow Rate", "Gallons", "0", ""});
-        db.execSQL(insertParameter, new Object[]{GALLONS_DISTRIBUTED, "Gallons distributed", "Gallons", "0", ""});
+        int COLOR = 20;
+        int ODOR = 21;
+        int TASTE = 22;
+        db.execSQL(insertParameter, new Object[]{TEMPERATURE_ID, "Temperature", "°C", "10", "30", "false"});
+        db.execSQL(insertParameter, new Object[]{PH_ID, "pH", "", "5", "9", "false"});
+        db.execSQL(insertParameter, new Object[]{TURBIDITY_ID, "Turbidity", "NTU", "0", "10", "false"});
+        db.execSQL(insertParameter, new Object[]{ALKALINITY_ID, "Alkalinity", "mg/L CaCO3 (ppm)", "100", "500", "false"});
+        db.execSQL(insertParameter, new Object[]{HARDNESS_ID, "Hardness", "mg/L CaCO3 (ppm)", "100", "500", "false"});
+        db.execSQL(insertParameter, new Object[]{TDS_FEED_RO_ROUF_ID, "TDS (Feed, RO, RO/UF)", "mg/L (ppm)", "0", "800", "false"});
+        db.execSQL(insertParameter, new Object[]{FREE_CL_RESIDUAL_ID, "Free chlorine residual", "mg/L Cl2 (ppm)", "0", "1", "false"});
+        db.execSQL(insertParameter, new Object[]{TOTAL_CL_RESIDUAL_ID, "Total chlorine residual", "mg/L Cl2 (ppm)", "0", "1", "false"});
+        db.execSQL(insertParameter, new Object[]{TDS_FEED, "TDS Feed", "mg/L (ppm)", "0", "800", "false"});
+        db.execSQL(insertParameter, new Object[]{TDS_RO, "TDS RO", "mg/L (ppm)", "0", "800", "false"});
+        db.execSQL(insertParameter, new Object[]{TDS_ROUF, "TDS RO/UF", "mg/L (ppm)", "0", "800", "false"});
+        db.execSQL(insertParameter, new Object[]{PRESSURE_PREFILTER, "Pressure Pre-Filter", "PSI", "0", "100", "false"});
+        db.execSQL(insertParameter, new Object[]{PRESSURE_POSTFILTER, "Pressure Post-Filter", "PSI", "0", "100", "false"});
+        db.execSQL(insertParameter, new Object[]{PRESSURE_PRERO, "Pressure Pre-RO", "PSI", "0", "300", "false"});
+        db.execSQL(insertParameter, new Object[]{PRESSURE_POSTRO, "Pressure Post-RO", "PSI", "0", "300", "false"});
+        db.execSQL(insertParameter, new Object[]{FEED_FLOW_RATE, "Feed Flow Rate", "gpm", "0", "", "false"});
+        db.execSQL(insertParameter, new Object[]{PRODUCT_FLOW_RATE, "Product Flow Rate", "gpm", "0", "", "false"});
+        db.execSQL(insertParameter, new Object[]{RO_PRODUCT_FLOW_RATE, "R/O Product Flow Rate", "Gallons", "0", "", "false"});
+        db.execSQL(insertParameter, new Object[]{GALLONS_DISTRIBUTED, "Gallons distributed", "Gallons", "0", "", "false"});
+        db.execSQL(insertParameter, new Object[]{COLOR, "Color", "", "0", "1", "true"});
+        db.execSQL(insertParameter, new Object[]{ODOR, "Odor", "", "0", "1", "true"});
+        db.execSQL(insertParameter, new Object[]{TASTE, "Taste", "", "0", "1", "true"});
 
         db.execSQL(createSamplingSiteParameters);
         db.execSQL(insertSamplingSiteParameter, new Object[]{BOREHOLE_EARLY, TEMPERATURE_ID});
@@ -325,6 +334,9 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, HARDNESS_ID});
         db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, TDS_FEED_RO_ROUF_ID});
         db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, GALLONS_DISTRIBUTED});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, COLOR});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, ODOR});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_EARLY, TASTE});
         db.execSQL(insertSamplingSiteParameter, new Object[]{FILL_STATION_LATE, GALLONS_DISTRIBUTED});
 
         db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, PH_ID});
@@ -335,6 +347,9 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, HARDNESS_ID});
         db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, TDS_FEED_RO_ROUF_ID});
         db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, GALLONS_DISTRIBUTED});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, COLOR});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, ODOR});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_EARLY, TASTE});
         db.execSQL(insertSamplingSiteParameter, new Object[]{KIOSK_COUNTER_LATE, GALLONS_DISTRIBUTED});
 
         db.execSQL(insertSamplingSiteParameter, new Object[]{BULK_FILL_EARLY, GALLONS_DISTRIBUTED});
@@ -359,6 +374,9 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, FEED_FLOW_RATE});
         db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, PRODUCT_FLOW_RATE});
         db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, RO_PRODUCT_FLOW_RATE});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, COLOR});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, TASTE});
+        db.execSQL(insertSamplingSiteParameter, new Object[]{WTU, ODOR});
 
         db.execSQL(createReceipts);
         db.execSQL(createReceiptLineItems);
@@ -708,6 +726,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String UNIT_OF_MEASURE = "UNIT_OF_MEASURE";
         public static final String MINIMUM = "MINIMUM";
         public static final String MAXIMUM = "MAXIMUM";
+        public static final String IS_OK_NOT_OK = "IS_OK_NOT_OK";
     }
 
     public static class SamplingSitesParametersTable {

@@ -14,11 +14,26 @@
 
     <EditText
         android:id="@+id/parameter_input"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:inputType="numberDecimal"/>
+
+    <RadioGroup android:id="@+id/ok_group"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+        <RadioButton android:id="@+id/radio_ok"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/ok"/>
+        <RadioButton android:id="@+id/radio_not_ok"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/not_ok"/>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/parameter_units"

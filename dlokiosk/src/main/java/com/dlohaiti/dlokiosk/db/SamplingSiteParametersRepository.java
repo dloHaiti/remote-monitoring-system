@@ -27,13 +27,13 @@ public class SamplingSiteParametersRepository {
         try {
             int samplingSiteId = fetchSamplingSiteId(samplingSite, rdb);
             String[] parameterIds = fetchParameterIds(rdb, samplingSiteId);
-            Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, new String[]{KioskDatabase.ParametersTable.NAME, KioskDatabase.ParametersTable.UNIT_OF_MEASURE, KioskDatabase.ParametersTable.MINIMUM, KioskDatabase.ParametersTable.MAXIMUM}, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
+            Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, new String[]{KioskDatabase.ParametersTable.NAME, KioskDatabase.ParametersTable.UNIT_OF_MEASURE, KioskDatabase.ParametersTable.MINIMUM, KioskDatabase.ParametersTable.MAXIMUM, KioskDatabase.ParametersTable.IS_OK_NOT_OK}, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
             if(query.getCount() < 1) {
                 throw new RuntimeException(String.format("No parameters found with ids: %s", StringUtils.join(parameterIds, ",")));
             }
             query.moveToFirst();
             while(!query.isAfterLast()) {
-                parameters.add(new Parameter(query.getString(0), query.getString(1), query.getString(2), query.getString(3)));
+                parameters.add(new Parameter(query.getString(0), query.getString(1), query.getString(2), query.getString(3), Boolean.parseBoolean(query.getString(4))));
                 query.moveToNext();
             }
             query.close();

@@ -62,4 +62,6 @@
   <string name="default_currency">HTG</string>
   <string name="title_activity_select_sampling_site">Select Sample Site</string>
     <string name="reportsHomeUrlHint">example: http://server/reports</string>
+    <string name="view_reports_button">View Reports</string>
+    <string name="title_activity_view_reports">View Reports</string>
 </resources>

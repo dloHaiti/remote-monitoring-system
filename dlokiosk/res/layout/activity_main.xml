@@ -76,6 +76,14 @@
     <Button
       android:layout_width="100dp"
       android:layout_height="fill_parent"
+      android:layout_gravity="center"
+      android:onClick="moveToViewReports"
+      android:text="@string/view_reports_button"
+      android:id="@+id/view_reports" />
+
+    <Button
+      android:layout_width="100dp"
+      android:layout_height="fill_parent"
       android:onClick="doManualSync"
       android:text="@string/manual_sync_button"
       android:id="@+id/manualSyncButton" />

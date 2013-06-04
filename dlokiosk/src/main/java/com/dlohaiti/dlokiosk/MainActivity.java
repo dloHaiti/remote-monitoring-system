@@ -51,6 +51,10 @@ public class MainActivity extends RoboActivity implements StatusView {
         startActivity(new Intent(this, SelectSamplingSiteActivity.class));
     }
 
+    public void moveToViewReports(View v) {
+        startActivity(new Intent(this, ViewReportsActivity.class));
+    }
+
     @Override
     public void showProgressBar() {
         statusImage.setVisibility(View.INVISIBLE);

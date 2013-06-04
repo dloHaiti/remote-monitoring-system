@@ -6,14 +6,18 @@ import com.dlohaiti.dloserver.Parameter
 class BootStrap {
 
     def init = { servletContext ->
-        new Kiosk(name: "HARDCODED K1", apiKey: 'pw').save()
+        new Kiosk(name: "kiosk01", apiKey: 'pw').save()
+        new Kiosk(name: "kiosk02", apiKey: 'pw').save()
 
         if (Measurement.count() == 0) {
             new Parameter(name: "Temperature", unit: "°C", min: 10, max: 30).save()
             new Parameter(name: "Gallons distributed", unit: "gallons", min: 0, max: 10000).save()
             new Parameter(name: "pH", unit: "", min: 5, max: 9).save()
             new Parameter(name: "Turbidity", unit: "NTU", min: 0, max: 10).save()
-            new Parameter(name: "TDS", unit: "mg/L", min: 100, max: 800).save()
+            new Parameter(name: "TDS Feed", unit: "mg/L", min: 0, max: 800).save()
+            new Parameter(name: "TDS RO", unit: "mg/L", min: 0, max: 800).save()
+            new Parameter(name: "TDS RO/UF", unit: "mg/L", min: 0, max: 800).save()
+            new Parameter(name: "TDS (Feed, RO, RO/UF)", unit: "mg/L", min: 0, max: 800).save()
             new Parameter(name: "Free Chlorine Concentration", unit: "mg/L Cl2", min: 5000, max: 9000).save()
             new Parameter(name: "Total Chlorine Concentration", unit: "mg/L Cl2", min: 5000, max: 9000).save()
             new Parameter(name: "Free Chlorine Residual", unit: "mg/L Cl2", min: 0, max: 1).save()

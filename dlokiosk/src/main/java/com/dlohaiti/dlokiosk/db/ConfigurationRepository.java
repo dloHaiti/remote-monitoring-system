@@ -3,10 +3,12 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.Kiosk;
 import com.google.inject.Inject;
 
 public class ConfigurationRepository {
+    private final static String TAG = ConfigurationRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final String[] columns = new String[]{KioskDatabase.ConfigurationTable.KEY, KioskDatabase.ConfigurationTable.VALUE};
 
@@ -83,6 +85,22 @@ public class ConfigurationRepository {
             return Integer.valueOf(get(key));
         } catch (NumberFormatException e) {
             return null;
+        }
+    }
+
+    public void save(ConfigurationKey key, String value) {
+        SQLiteDatabase writableDatabase = db.getWritableDatabase();
+        ContentValues val = new ContentValues();
+        val.put(KioskDatabase.ConfigurationTable.KEY, key.name());
+        val.put(KioskDatabase.ConfigurationTable.VALUE, value);
+        writableDatabase.beginTransaction();
+        try {
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, val, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{key.name()});
+            writableDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Could not save configuration key " + key.name(), e);
+        } finally {
+            writableDatabase.endTransaction();
         }
     }
 }

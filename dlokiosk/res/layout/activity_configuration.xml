@@ -39,5 +39,13 @@
     android:inputType="textPassword"
     android:hint="@string/kioskPasswordHint" />
 
+  <EditText
+      android:id="@+id/reports_home_url"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:inputType="textUri"
+      android:hint="@string/reportsHomeUrlHint"/>
+
 
 </LinearLayout>

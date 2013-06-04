@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class SamplingSiteParametersRepository {
     private final String tag = getClass().getSimpleName();
     private final KioskDatabase db;
@@ -74,18 +77,6 @@ public class SamplingSiteParametersRepository {
         int samplingSiteId = c.getInt(0);
         c.close();
         return samplingSiteId;
-    }
-
-    private static String[] matches(int match) {
-        return matches(String.valueOf(match));
-    }
-
-    private static String[] matches(String match) {
-        return new String[] {match};
-    }
-
-    private static String where(String columnName) {
-        return String.format("%s=?", columnName);
     }
 
     private static String whereIn(String columnName, int numberOfItems) {

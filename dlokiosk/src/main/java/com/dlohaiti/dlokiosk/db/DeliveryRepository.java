@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class DeliveryRepository {
     private final DeliveryFactory factory;
     private final KioskDatabase db;
@@ -79,7 +82,7 @@ public class DeliveryRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(KioskDatabase.DeliveriesTable.TABLE_NAME, "id=?", new String[]{ String.valueOf(delivery.getId()) });
+            wdb.delete(KioskDatabase.DeliveriesTable.TABLE_NAME, where(KioskDatabase.DeliveriesTable.ID), matches(delivery.getId()));
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {

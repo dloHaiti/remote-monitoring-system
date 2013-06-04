@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class PromotionRepository {
     private final Context context;
     private final KioskDatabase db;
@@ -69,8 +72,7 @@ public class PromotionRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            String whereId = String.format("%s=?", KioskDatabase.PromotionsTable.ID);
-            Cursor c = rdb.query(KioskDatabase.PromotionsTable.TABLE_NAME, columns, whereId, new String[]{String.valueOf(id)}, null, null, null);
+            Cursor c = rdb.query(KioskDatabase.PromotionsTable.TABLE_NAME, columns, where(KioskDatabase.PromotionsTable.ID), matches(id), null, null, null);
             c.moveToFirst();
             //TODO: more than one result? throw exception?
             Promotion promotion = buildPromotion(c);

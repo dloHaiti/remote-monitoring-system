@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class ReceiptsRepository {
     private final KioskDatabase db;
     private final ReceiptFactory receiptFactory;
@@ -42,7 +45,6 @@ public class ReceiptsRepository {
                 KioskDatabase.ReceiptsTable.TOTAL_GALLONS,
                 KioskDatabase.ReceiptsTable.TOTAL
         };
-        String selection = String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID);
 
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
@@ -58,8 +60,7 @@ public class ReceiptsRepository {
                     e.printStackTrace(); //TODO: alert? log?
                 }
                 String receiptId = receiptsCursor.getString(0);
-                String[] args = {receiptId};
-                Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, selection, args, null, null, null);
+                Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receiptId), null, null, null);
                 lineItemsCursor.moveToFirst();
                 List<LineItem> lineItems = new ArrayList<LineItem>();
                 while (!lineItemsCursor.isAfterLast()) {
@@ -87,9 +88,8 @@ public class ReceiptsRepository {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         try {
-            String[] whereArgs = {receipt.getId().toString()};
-            writableDatabase.delete(KioskDatabase.ReceiptsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.ReceiptsTable.ID), whereArgs);
-            writableDatabase.delete(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), whereArgs);
+            writableDatabase.delete(KioskDatabase.ReceiptsTable.TABLE_NAME, where(KioskDatabase.ReceiptsTable.ID), matches(receipt.getId()));
+            writableDatabase.delete(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receipt.getId()));
             writableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             //TODO: alert? log?
@@ -110,7 +110,7 @@ public class ReceiptsRepository {
         try {
             long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (LineItem orderedItem : receipt.getLineItems()) {
-                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem, ReceiptLineItemType.PRODUCT);
+                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem);
                 writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
             }
             writableDatabase.setTransactionSuccessful();
@@ -122,9 +122,9 @@ public class ReceiptsRepository {
         }
     }
 
-    private ContentValues buildContentValues(long receiptId, Orderable orderedItem, ReceiptLineItemType type) {
+    private ContentValues buildContentValues(long receiptId, LineItem orderedItem) {
         ContentValues productLineItemValue = new ContentValues();
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.TYPE, type.name());
+        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.TYPE, orderedItem.getType().name());
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());

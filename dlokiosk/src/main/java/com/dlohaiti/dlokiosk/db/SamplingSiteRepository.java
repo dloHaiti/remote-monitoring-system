@@ -9,6 +9,9 @@ import com.google.inject.Inject;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class SamplingSiteRepository {
     private final static String[] columns = new String[]{
             KioskDatabase.SamplingSitesTable.ID,
@@ -48,7 +51,7 @@ public class SamplingSiteRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.SamplingSitesTable.ID), new String[]{String.valueOf(id)}, null, null, null);
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, where(KioskDatabase.SamplingSitesTable.ID), matches(id), null, null, null);
             if (c.getCount() != 1) {
                 throw new RecordNotFoundException();
             }
@@ -69,7 +72,7 @@ public class SamplingSiteRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.SamplingSitesTable.NAME), new String[]{name}, null, null, null);
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, where(KioskDatabase.SamplingSitesTable.NAME), matches(name), null, null, null);
             if (c.getCount() != 1) {
                 throw new RecordNotFoundException();
             }
@@ -85,6 +88,4 @@ public class SamplingSiteRepository {
             rdb.endTransaction();
         }
     }
-
-    //TODO: update client to read from DB
 }

@@ -16,6 +16,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class ReadingsRepository {
     private final static String TAG = ReadingsRepository.class.getSimpleName();
     private final static String[] READINGS_COLUMNS = new String[] {
@@ -74,7 +77,7 @@ public class ReadingsRepository {
                 Set<Measurement> measurements = new HashSet<Measurement>();
                 while(!rc.isAfterLast()) {
                     long readingId = rc.getLong(0);
-                    Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, String.format("%s=?", KioskDatabase.MeasurementsTable.READING_ID), new String[] {String.valueOf(readingId)}, null, null, null);
+                    Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
                     if(mc.moveToFirst()) {
                         while(!mc.isAfterLast()) {
                             measurements.add(new Measurement(mc.getString(0), new BigDecimal(mc.getString(1))));
@@ -101,8 +104,8 @@ public class ReadingsRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(KioskDatabase.MeasurementsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.MeasurementsTable.READING_ID), new String[] { String.valueOf(reading.getId()) });
-            wdb.delete(KioskDatabase.ReadingsTable.TABLE_NAME, String.format("%s=?", KioskDatabase.ReadingsTable.ID), new String[] { String.valueOf(reading.getId()) });
+            wdb.delete(KioskDatabase.MeasurementsTable.TABLE_NAME, where(KioskDatabase.MeasurementsTable.READING_ID), matches(reading.getId()));
+            wdb.delete(KioskDatabase.ReadingsTable.TABLE_NAME, where(KioskDatabase.ReadingsTable.ID), matches(reading.getId()));
             wdb.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to remove reading for Sampling Site %s on %s.", reading.getSamplingSiteName(), kioskDate.getFormat().format(reading.getCreatedDate())), e);

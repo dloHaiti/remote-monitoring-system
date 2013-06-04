@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class ProductRepository {
     private final KioskDatabase db;
     private final Context context;
@@ -78,12 +81,10 @@ public class ProductRepository {
     }
 
     public Product findById(Long id) {
-        String selection = String.format("%s=?", KioskDatabase.ProductsTable.ID);
-        String[] args = {String.valueOf(id)};
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
         try {
-            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, selection, args, null, null, null);
+            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, where(KioskDatabase.ProductsTable.ID), matches(id), null, null, null);
             if (cursor.getCount() != 1) {
                 //TODO: make this graceful
                 return new Product(null, null, null, false, null, null, null, null, null, null);

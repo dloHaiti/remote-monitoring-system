@@ -7,6 +7,9 @@ import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.Kiosk;
 import com.google.inject.Inject;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+
 public class ConfigurationRepository {
     private final static String TAG = ConfigurationRepository.class.getSimpleName();
     private final KioskDatabase db;
@@ -27,8 +30,8 @@ public class ConfigurationRepository {
         pw.put(KioskDatabase.ConfigurationTable.VALUE, kioskPassword);
         writableDatabase.beginTransaction();
         try {
-            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, id, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{ConfigurationKey.KIOSK_ID.name()});
-            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, pw, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{ConfigurationKey.KIOSK_PASSWORD.name()});
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, id, where(KioskDatabase.ConfigurationTable.KEY), matches(ConfigurationKey.KIOSK_ID.name()));
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, pw, where(KioskDatabase.ConfigurationTable.KEY), matches(ConfigurationKey.KIOSK_PASSWORD.name()));
             writableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             //TODO: log? alert?
@@ -70,7 +73,7 @@ public class ConfigurationRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{key.name()}, null, null, null);
+            Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()), null, null, null);
             cursor.moveToFirst();
             //TODO: more than one result
             rdb.setTransactionSuccessful();
@@ -95,7 +98,7 @@ public class ConfigurationRepository {
         val.put(KioskDatabase.ConfigurationTable.VALUE, value);
         writableDatabase.beginTransaction();
         try {
-            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, val, String.format("%s=?", KioskDatabase.ConfigurationTable.KEY), new String[]{key.name()});
+            writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, val, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()));
             writableDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, "Could not save configuration key " + key.name(), e);

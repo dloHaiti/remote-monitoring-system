@@ -1,13 +1,21 @@
 import com.dlohaiti.dloserver.Kiosk
 import com.dlohaiti.dloserver.Location
 import com.dlohaiti.dloserver.Measurement
+import com.dlohaiti.dloserver.Money
 import com.dlohaiti.dloserver.Parameter
+import com.dlohaiti.dloserver.Product
 
 class BootStrap {
 
     def init = { servletContext ->
         new Kiosk(name: "kiosk01", apiKey: 'pw').save()
         new Kiosk(name: "kiosk02", apiKey: 'pw').save()
+
+        new Product(sku: '2GALLON', price: new Money(amount: 5), description: "2 Gallon Jug", gallons: 2, reportingCategory: "NEWJUG").save()
+        new Product(sku: '5GALLON', price: new Money(amount: 7.5), description: "5 Gallon Jug", gallons: 5, reportingCategory: "NEWJUG").save()
+        new Product(sku: '10GALLON', price: new Money(amount: 5), description: "10 Gallon Jug", gallons: 10, reportingCategory: "NEWJUG").save()
+        new Product(sku: '1GALLONFYO', price: new Money(amount: 2), description: "1 Gallon FYO", gallons: 1, reportingCategory: "FYO", minimumQuantity: 1, maximumQuantity: 10).save()
+        new Product(sku: '1GALLONX', price: new Money(amount: 3), description: "1 Gallon X", gallons: 1, reportingCategory: "EXCHANGE").save()
 
         if (Measurement.count() == 0) {
             new Parameter(name: "Temperature", unit: "°C", min: 10, max: 30).save()

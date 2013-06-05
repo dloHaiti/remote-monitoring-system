@@ -1,8 +1,6 @@
 package com.dlohaiti.dloserver
 
-import grails.test.mixin.*
-import org.junit.*
-
+import grails.test.mixin.TestFor
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
@@ -18,13 +16,11 @@ class ProductTests {
     assert 'nullable' == nullProduct.errors['description']
     assert 'nullable' == nullProduct.errors['gallons']
     assert 'nullable' == nullProduct.errors['price']
-    assert 'nullable' == nullProduct.errors['reportingCategory']
 
     def blankProduct = new ProductBuilder(sku: '', description: '', reportingCategory: '').build()
     assert !blankProduct.validate()
     assert 'blank' == blankProduct.errors['sku']
     assert 'blank' == blankProduct.errors['description']
-    assert 'blank' == blankProduct.errors['reportingCategory']
 
     def negativePriceProduct = new ProductBuilder(price: new Money(amount: -1)).build()
     assert !negativePriceProduct.validate()

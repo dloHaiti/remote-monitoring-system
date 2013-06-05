@@ -4,6 +4,6 @@
   <title>A Report!</title>
 </head>
 <body>
-You're on the report page!
+You're on the report page! ${params.kioskName}
 </body>
 </html>

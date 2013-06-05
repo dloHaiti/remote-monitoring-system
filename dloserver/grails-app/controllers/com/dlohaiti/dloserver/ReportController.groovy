@@ -6,15 +6,12 @@ class ReportController {
         [reports: Report.all]
     }
 
-    def show(Long id) {
-        def reportInstance = Report.get(id)
-        if (!reportInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'report.label', default: 'Report'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [reportInstance: reportInstance]
+    def moose() {
+      Kiosk kiosk = Kiosk.findByName(params.kioskName)
+      Calendar now = Calendar.getInstance()
+      now.add(-7, Calendar.DATE)
+      new Date()
+      List<Delivery> deliveries = Delivery.findAllByKioskAndTimestamp(kiosk)
+      List<Receipt> receipts = Receipt.findAllByKiosk(kiosk)
     }
-
 }

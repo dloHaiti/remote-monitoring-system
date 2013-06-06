@@ -10,7 +10,7 @@
     google.load("visualization", "1", {packages: ["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(<%= rows as JSON %>);
+        var data = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
 
         var options = {
             title: 'Volume by Day',
@@ -26,15 +26,8 @@
 <div id="chart" style="width:900px;height:500px"></div>
 
 <table>
-    <thead>
-    <tr>
-        <g:each in="${days}">
-            <th><g:formatDate format="MM/dd/yy" date="${it}"/></th>
-        </g:each>
-    </tr>
-    </thead>
     <tbody>
-    <g:each var="row" in="${rows}">
+    <g:each var="row" in="${tableData}">
         <tr>
             <g:each in="${0..(row.size() - 1)}">
                 <td>${row[it]}</td>

@@ -21,29 +21,52 @@ class ReportController {
         days.add(new LocalDate().minusDays(i))
       }
 
-      println days
+      def daysAsDates = days.collect { d -> d.toDateMidnight().toDate()}
 
       def rows = []
       for(Product product in products) {
-        println "==============="
-        println product.sku
         def row = []
         row.add(product.sku)
         for(LocalDate day in days) {
-          println "----------------"
-          println day
-          println receipts
           def relevantReceipts = receipts.findAll { r -> r.isOnDate(day) }
-          println relevantReceipts
           def dayTotal = relevantReceipts.inject 0, { acc, val -> val.totalGallons + acc }
-
           row.add(dayTotal)
-
         }
         rows.add(row)
       }
-      println rows
 
-      [days: days.collect { d -> d.toDateMidnight().toDate()}, rows: rows]
+      def tableHeader = ['']
+      for(day in days) {
+        tableHeader.add(day.toString('MM/dd/yy'))
+      }
+      def tableData = [tableHeader]
+      for(product in products) {
+        def row = [product.sku]
+        for(day in days) {
+          def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
+          def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku)})
+          row.add(totalForSku)
+        }
+        tableData.add(row)
+      }
+
+      def chartHeader = ['Date']
+      for(product in products) {
+        chartHeader.add(product.sku)
+      }
+      def chartData = [chartHeader]
+      for(LocalDate day in days) {
+        def row = [day.toString('MM/dd/yy')]
+        for(product in products) {
+          def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
+          def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku)})
+          row.add(totalForSku)
+        }
+        chartData.add(row)
+      }
+
+
+
+      [days: daysAsDates, rows: rows, chartData: chartData, tableData: tableData]
     }
 }

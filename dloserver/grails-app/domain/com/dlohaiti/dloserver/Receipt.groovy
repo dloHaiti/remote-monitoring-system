@@ -12,16 +12,20 @@ class Receipt {
   Integer totalGallons
   BigDecimal total
   String currencyCode
+  List receiptLineItems
 
   static hasMany = [receiptLineItems: ReceiptLineItem]
 
   boolean isOnDate(LocalDate date) {
-    def date1 = new LocalDate(createdDate.getYear() + 1900, createdDate.getMonth() + 1, createdDate.getDate())
-    println date1
-    return date == date1
+    return date == new LocalDate(createdDate.getYear() + 1900, createdDate.getMonth() + 1, createdDate.getDate())
   }
 
   boolean hasSku(String sku) {
     return receiptLineItems.any { item -> item.sku == sku }
+  }
+
+  Integer totalGallonsForSku(String sku) {
+    List<ReceiptLineItem> itemsWithSku = receiptLineItems.findAll({ item -> item.sku == sku })
+    return itemsWithSku.inject(0, { acc, val -> acc + val.gallons })
   }
 }

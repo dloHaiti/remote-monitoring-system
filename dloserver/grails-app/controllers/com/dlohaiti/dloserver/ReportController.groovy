@@ -75,6 +75,12 @@ class ReportController {
       deliveryRow.add(deliveryTotal)
     }
     tableData.add(deliveryRow)
+
+    def totalRow = ['TOTAL']
+    for (LocalDate day in days) {
+      totalRow.add(receipts.findAll({r -> r.isOnDate(day)}).inject(0, { acc, val -> acc + val.totalGallons }))
+    }
+    tableData.add(totalRow)
     return tableData
   }
 }

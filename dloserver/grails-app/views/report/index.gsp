@@ -5,12 +5,6 @@
 </head>
 <body>
     <h1>DLO Haiti Kiosk Reports</h1>
-    <ul>
-    <g:each in="${reports}">
-      <g:link controller="report" action="show" params="[id: it.id]">
-          <li>${it.name}</li>
-      </g:link>
-    </g:each>
-    </ul>
+    <p><g:link action="volumeByDay" params="[kioskName: kioskName]">Volume by Day</g:link></p>
 </body>
 </html>

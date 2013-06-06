@@ -5,7 +5,7 @@ import org.joda.time.LocalDate
 class ReportController {
 
     def index() {
-        [reports: Report.all]
+        [kioskName: request.kioskName]
     }
 
     def volumeByDay() {

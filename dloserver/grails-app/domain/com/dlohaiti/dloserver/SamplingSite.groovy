@@ -1,7 +1,21 @@
 package com.dlohaiti.dloserver
 
-class SamplingSite {
-    String name
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
-    static belongsTo = [reading: Reading]
+@ToString
+@EqualsAndHashCode
+class SamplingSite {
+  String name
+  boolean isUsedForTotalizer
+  SamplingSite followupToSite
+
+  static hasMany = [readings: Reading]
+  static constraints = {
+    followupToSite(nullable: true)
+  }
+
+  boolean isFollowup() {
+    return followupToSite != null
+  }
 }

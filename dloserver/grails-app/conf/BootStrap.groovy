@@ -1,10 +1,4 @@
-import com.dlohaiti.dloserver.Kiosk
-import com.dlohaiti.dloserver.Location
-import com.dlohaiti.dloserver.Measurement
-import com.dlohaiti.dloserver.Money
-import com.dlohaiti.dloserver.Parameter
-import com.dlohaiti.dloserver.Product
-import com.dlohaiti.dloserver.Report
+import com.dlohaiti.dloserver.*
 
 class BootStrap {
 
@@ -15,11 +9,6 @@ class BootStrap {
         new Product(sku: '2GALLON', price: new Money(amount: 5), description: "2 Gallon Jug", gallons: 2, reportingCategory: "NEWJUG").save()
         new Product(sku: '5GALLON', price: new Money(amount: 7.5), description: "5 Gallon Jug", gallons: 5, reportingCategory: "NEWJUG").save()
         new Product(sku: '10GALLON', price: new Money(amount: 5), description: "10 Gallon Jug", gallons: 10, reportingCategory: "NEWJUG").save()
-        new Product(sku: '1GALLONFYO', price: new Money(amount: 2), description: "1 Gallon FYO", gallons: 1, reportingCategory: "FYO", minimumQuantity: 1, maximumQuantity: 10).save()
-        new Product(sku: '1GALLONX', price: new Money(amount: 3), description: "1 Gallon X", gallons: 1, reportingCategory: "EXCHANGE").save()
-
-        new Report(name: "Volume by Day").save()
-        new Report(name: "Sales by Day").save()
 
         if (Measurement.count() == 0) {
             new Parameter(name: "Temperature", unit: "°C", min: 10, max: 30).save()

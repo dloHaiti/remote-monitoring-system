@@ -1,6 +1,6 @@
 package com.dlohaiti.dloserver
 
-import com.dlohaiti.dloserver.endpoint.ReadingController
+import com.dlohaiti.dloserver.endpoint.ReadingsController
 import org.junit.Before
 import org.junit.Test
 
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 
 class ReadingControllerIntegrationTests extends GroovyTestCase {
 
-    ReadingController controller = new ReadingController()
+    ReadingsController controller = new ReadingsController()
 
     @Before
     void setup() {

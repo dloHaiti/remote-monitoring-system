@@ -19,7 +19,6 @@ public class ViewReportsActivity extends RoboActivity {
         setContentView(R.layout.activity_view_reports);
         viewReportsWebView.setWebViewClient(webViewClient);
         viewReportsWebView.getSettings().setJavaScriptEnabled(true);
-//        viewReportsWebView.setHttpAuthUsernamePassword("http://10.0.2.2:8080", "DLO Server", config.get(ConfigurationKey.KIOSK_ID), config.get(ConfigurationKey.KIOSK_PASSWORD));
         viewReportsWebView.loadUrl(config.get(ConfigurationKey.REPORTS_HOME_URL));
     }
 }

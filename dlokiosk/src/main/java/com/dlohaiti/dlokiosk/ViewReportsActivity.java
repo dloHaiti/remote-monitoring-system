@@ -21,4 +21,12 @@ public class ViewReportsActivity extends RoboActivity {
         viewReportsWebView.getSettings().setJavaScriptEnabled(true);
         viewReportsWebView.loadUrl(config.get(ConfigurationKey.REPORTS_HOME_URL));
     }
+
+    @Override public void onBackPressed() {
+        if(viewReportsWebView.canGoBack()) {
+            viewReportsWebView.goBack();
+        } else {
+            finish();
+        }
+    }
 }

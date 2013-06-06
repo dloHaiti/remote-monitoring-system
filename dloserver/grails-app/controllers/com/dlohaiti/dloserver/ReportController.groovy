@@ -17,22 +17,8 @@ class ReportController {
 
 
       def days = []
-      for(int i = 7; i >= 0; i--) {
+      for(int i = 6; i >= 0; i--) {
         days.add(new LocalDate().minusDays(i))
-      }
-
-      def daysAsDates = days.collect { d -> d.toDateMidnight().toDate()}
-
-      def rows = []
-      for(Product product in products) {
-        def row = []
-        row.add(product.sku)
-        for(LocalDate day in days) {
-          def relevantReceipts = receipts.findAll { r -> r.isOnDate(day) }
-          def dayTotal = relevantReceipts.inject 0, { acc, val -> val.totalGallons + acc }
-          row.add(dayTotal)
-        }
-        rows.add(row)
       }
 
       def tableHeader = ['']
@@ -49,6 +35,15 @@ class ReportController {
         }
         tableData.add(row)
       }
+      def deliveryRow = ['Delivery']
+      for(day in days) {
+        def positiveDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() })
+        def positiveDeliveryCount = positiveDeliveries.inject(0, { acc, val -> acc + val.quantity })
+        def negativeDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isReturned() })
+        def deliveryTotal = negativeDeliveries.inject(positiveDeliveryCount, { acc, val -> acc - val.quantity })
+        deliveryRow.add(deliveryTotal)
+      }
+      tableData.add(deliveryRow)
 
       def chartHeader = ['Date']
       for(product in products) {
@@ -66,7 +61,6 @@ class ReportController {
       }
 
 
-
-      [days: daysAsDates, rows: rows, chartData: chartData, tableData: tableData]
+      [chartData: chartData, tableData: tableData]
     }
 }

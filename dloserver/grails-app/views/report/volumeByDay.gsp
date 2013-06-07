@@ -16,7 +16,7 @@
             title: 'Volume by Day',
             vAxis: {title: 'Gallons', minValue: 0},
             seriesType: 'bars',
-            series: { 4: { type: 'line' } },
+            series: {<%= skusPresent + 1 %>: { type: 'line' } },
             isStacked: true
         };
 

@@ -27,7 +27,7 @@ class ReportController {
     def chartData = buildChartData(products, days, receipts, deliveries, readings)
 
 
-    [chartData: chartData, tableData: tableData]
+    [chartData: chartData, tableData: tableData, skusPresent: products.size()]
   }
 
   private buildChartData(List<Product> products, ArrayList days, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {

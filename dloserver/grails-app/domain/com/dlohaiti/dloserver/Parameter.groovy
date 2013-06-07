@@ -7,8 +7,10 @@ class Parameter {
   BigDecimal min
   BigDecimal max
   boolean isUsedInTotalizer
+  boolean isOkNotOk
 
   static hasOne = [sensor: Sensor]
+  static hasMany = [samplingSites: SamplingSite]
 
   static constraints = {
     name(blank: false, unique: true)

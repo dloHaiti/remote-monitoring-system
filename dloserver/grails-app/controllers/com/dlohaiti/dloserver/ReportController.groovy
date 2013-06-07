@@ -2,6 +2,8 @@ package com.dlohaiti.dloserver
 
 import org.joda.time.LocalDate
 
+import java.math.RoundingMode
+
 class ReportController {
 
   def index() {
@@ -82,7 +84,10 @@ class ReportController {
 
     def totalRow = ['TOTAL']
     for (LocalDate day in days) {
-      totalRow.add(receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.totalGallons }))
+      def sales = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.totalGallons })
+      def deliveryPositives = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity })
+      def deliveryTotal = deliveries.findAll({d -> d.isOnDate(day) && d.isReturned() }).inject(deliveryPositives, { acc, val -> acc - val.quantity })
+      totalRow.add(sales + deliveryTotal)
     }
     tableData.add(totalRow)
 
@@ -94,6 +99,24 @@ class ReportController {
       totalizerRow.add(gallonsFor)
     }
     tableData.add(totalizerRow)
+
+    def percentDiffRow = ['DIFFERENCE']
+    for(int i = 1; i < totalizerRow.size(); i++) {
+      def total = new BigDecimal(totalizerRow[i])
+      def difference
+      if(total > 0) {
+        def subtract = total.subtract(new BigDecimal(totalRow[i]))
+        println subtract + " subtraction"
+        println total + " is the total"
+        difference = subtract.divide(total, 2, RoundingMode.HALF_UP)
+        println difference + " total difference"
+      } else {
+        difference = 0
+      }
+      percentDiffRow.add(difference.multiply(new BigDecimal(100)).setScale(0) + '%')
+    }
+    tableData.add(percentDiffRow)
+
     return tableData
   }
 }

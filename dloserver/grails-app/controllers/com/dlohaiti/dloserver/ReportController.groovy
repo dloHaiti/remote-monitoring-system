@@ -95,7 +95,6 @@ class ReportController {
     Readings readingsObj = new Readings(readings: readings)
     for (LocalDate day in days) {
       def gallonsFor = readingsObj.totalizeGallonsFor(day)
-      println "${gallonsFor} on ${day}"
       totalizerRow.add(gallonsFor)
     }
     tableData.add(totalizerRow)
@@ -106,10 +105,7 @@ class ReportController {
       def difference
       if(total > 0) {
         def subtract = total.subtract(new BigDecimal(totalRow[i]))
-        println subtract + " subtraction"
-        println total + " is the total"
         difference = subtract.divide(total, 2, RoundingMode.HALF_UP)
-        println difference + " total difference"
       } else {
         difference = 0
       }

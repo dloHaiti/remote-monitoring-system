@@ -30,10 +30,6 @@ class ReceiptTest {
     ]
     def receipt = new ReceiptBuilder(receiptLineItems: lineItems).build()
 
-    println "----------------------------"
-    println receipt
-    println "----------------------------"
-
     assert 20 == receipt.totalGallonsForSku("AAA")
     assert 30 == receipt.totalGallonsForSku("ZZZ")
   }

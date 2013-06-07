@@ -9,9 +9,7 @@ class Readings {
 
   Integer totalizeGallonsFor(LocalDate date) {
     Integer total = 0
-    println readings.size()
     List<Reading> totalizerReadings = readings.findAll({ r -> r.isUsedForTotalizer() && r.isOnDate(date) })
-    println totalizerReadings.size()
     def seenLateSamplingSites = []
     def readingsWithUniqueSampleSites = []
     def lateDay = totalizerReadings.findAll({ rd -> rd.isFollowupSite() })
@@ -23,7 +21,6 @@ class Readings {
       }
     }
     for(firstLateDay in readingsWithUniqueSampleSites) {
-    println firstLateDay
       def relevantMeasurements = firstLateDay.measurements.findAll({ m -> m.parameter.isUsedInTotalizer })
       for(m in relevantMeasurements) {
         total += m.value
@@ -41,7 +38,6 @@ class Readings {
       }
     }
     for(oneEarlyDay in uniqueEarlyDaysBySampleSite) {
-      println oneEarlyDay
       def relevantMeasurementsEarly = oneEarlyDay.measurements.findAll({ m -> m.parameter.isUsedInTotalizer })
       for(m in relevantMeasurementsEarly) {
         total -= m.value

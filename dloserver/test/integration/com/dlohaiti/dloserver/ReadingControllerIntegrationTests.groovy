@@ -79,8 +79,6 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
 
         controller.save()
 
-        println controller.response.contentAsString
-
         assert 422 == controller.response.status
         assert 0 == Reading.count()
     }
@@ -93,8 +91,6 @@ class ReadingControllerIntegrationTests extends GroovyTestCase {
                 ']}'
 
         controller.save()
-
-        println controller.response.contentAsString
 
         assert 422 == controller.response.status
         assert 0 == Reading.count()

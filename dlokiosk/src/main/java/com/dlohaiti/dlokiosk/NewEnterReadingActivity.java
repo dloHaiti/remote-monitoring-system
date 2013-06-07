@@ -30,6 +30,7 @@ public class NewEnterReadingActivity extends RoboActivity {
     private SamplingSite samplingSite;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+        values.clear();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
         Bundle extras = this.getIntent().getExtras();

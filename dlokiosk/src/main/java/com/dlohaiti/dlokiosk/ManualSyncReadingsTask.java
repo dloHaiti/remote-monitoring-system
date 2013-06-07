@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;

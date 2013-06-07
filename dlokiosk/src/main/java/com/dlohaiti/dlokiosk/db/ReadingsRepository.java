@@ -74,9 +74,9 @@ public class ReadingsRepository {
             Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, null, null, null, null, null);
             Log.i(TAG, "Found readings: " + rc.getCount());
             if(rc.moveToFirst()) {
-                Set<Measurement> measurements = new HashSet<Measurement>();
                 while(!rc.isAfterLast()) {
                     long readingId = rc.getLong(0);
+                    Set<Measurement> measurements = new HashSet<Measurement>();
                     Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
                     if(mc.moveToFirst()) {
                         while(!mc.isAfterLast()) {

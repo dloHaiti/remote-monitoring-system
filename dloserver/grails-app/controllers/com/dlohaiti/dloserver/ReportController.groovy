@@ -24,18 +24,19 @@ class ReportController {
 
     def tableData = buildTableData(days, products, receipts, deliveries, readings)
 
-    def chartData = buildChartData(products, days, receipts, deliveries)
+    def chartData = buildChartData(products, days, receipts, deliveries, readings)
 
 
     [chartData: chartData, tableData: tableData]
   }
 
-  private buildChartData(List<Product> products, ArrayList days, List<Receipt> receipts, List<Delivery> deliveries) {
+  private buildChartData(List<Product> products, ArrayList days, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {
     def chartHeader = ['Date']
     for (product in products) {
       chartHeader.add(product.sku)
     }
     chartHeader.add('Delivery')
+    chartHeader.add('Totalizer')
     def chartData = [chartHeader]
     for (LocalDate day in days) {
       def row = [day.toString('MM/dd/yy')]
@@ -47,6 +48,8 @@ class ReportController {
       def positiveDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity })
       def totalDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - val.quantity })
       row.add(totalDeliveries)
+      def readingsObj = new Readings(readings: readings)
+      row.add(readingsObj.totalizeGallonsFor(day))
       chartData.add(row)
     }
     return chartData
@@ -81,6 +84,7 @@ class ReportController {
     for (LocalDate day in days) {
       totalRow.add(receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.totalGallons }))
     }
+    tableData.add(totalRow)
 
     def totalizerRow = ['TOTALIZER']
     Readings readingsObj = new Readings(readings: readings)

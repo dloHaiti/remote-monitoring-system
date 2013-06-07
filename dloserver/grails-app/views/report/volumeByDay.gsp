@@ -15,10 +15,12 @@
         var options = {
             title: 'Volume by Day',
             vAxis: {title: 'Gallons', minValue: 0},
+            seriesType: 'bars',
+            series: { 4: { type: 'line' } },
             isStacked: true
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+        var chart = new google.visualization.ComboChart(document.getElementById('chart'));
         chart.draw(data, options);
     }
 </script>

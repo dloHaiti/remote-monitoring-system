@@ -71,8 +71,8 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldKnowSubtotalForSingleQuantity() {
-        Product product1 = productBuilder().withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withPrice(15d, "HTG").build();
+        Product product1 = productBuilder().withPrice(10d).build();
+        Product product2 = productBuilder().withPrice(15d).build();
         cart.addProduct(product1);
         cart.addProduct(product2);
         Money subtotal = cart.getSubtotal();
@@ -82,7 +82,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldKnowSubtotalForMultipleQuantities() {
-        Product product = productBuilder().withPrice(5d, "HTG").withQuantity(5).build();
+        Product product = productBuilder().withPrice(5d).withQuantity(5).build();
         cart.addProduct(product);
 
         Money subtotal = cart.getSubtotal();
@@ -91,8 +91,8 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldHaveOneCurrencyForShoppingCart() {
-        Product product1 = productBuilder().withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withPrice(15d, "HTG").build();
+        Product product1 = productBuilder().withPrice(10d).build();
+        Product product2 = productBuilder().withPrice(15d).build();
         cart.addProduct(product1);
         cart.addProduct(product2);
 
@@ -105,18 +105,8 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void shouldReturnMISMATCHED_CURRENCIESForMultipleCurrenciesInCart() {
-        Product product1 = productBuilder().withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withPrice(15d, "USD").build();
-        cart.addProduct(product1);
-        cart.addProduct(product2);
-
-        assertThat(cart.getCurrencyCode(), is("MISMATCHED CURRENCIES"));
-    }
-
-    @Test
     public void shouldTotalCart_happy_basketPercent() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withAmount("10").withPromotionType(PERCENT).build();
         cart.addProduct(product);
         cart.addPromotion(promo);
@@ -126,7 +116,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_basketPercentMultiple() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo1 = promotionBuilder().thatAppliesTo(BASKET).withAmount("10").withPromotionType(PERCENT).build();
         Promotion promo2 = promotionBuilder().thatAppliesTo(BASKET).withAmount("10").withPromotionType(PERCENT).build();
         cart.addProduct(product);
@@ -138,7 +128,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_basketAmount() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withAmount("10").withPromotionType(AMOUNT).build();
         cart.addProduct(product);
         cart.addPromotion(promo);
@@ -148,7 +138,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_basketAmountMultiple() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo1 = promotionBuilder().thatAppliesTo(BASKET).withAmount("5").withPromotionType(AMOUNT).build();
         Promotion promo2 = promotionBuilder().thatAppliesTo(BASKET).withAmount("1").withPromotionType(AMOUNT).build();
         cart.addProduct(product);
@@ -160,7 +150,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_sad_basketPercentOver100() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withAmount("120").withPromotionType(PERCENT).build();
         cart.addProduct(product);
         cart.addPromotion(promo);
@@ -170,7 +160,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_sad_basketAmountUnderPromoAmount() {
-        Product product = productBuilder().withPrice(10d, "HTG").build();
+        Product product = productBuilder().withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(BASKET).withAmount("10.50").withPromotionType(AMOUNT).build();
         cart.addProduct(product);
         cart.addPromotion(promo);
@@ -180,7 +170,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_skuPercentage() {
-        Product product = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product = productBuilder().withSku("ABC").withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("20").withPromotionType(PERCENT).build();
         cart.addProduct(product);
         cart.addPromotion(promo);
@@ -190,7 +180,7 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_skuAmount() {
-        Product product = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product = productBuilder().withSku("ABC").withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("5.5").withPromotionType(AMOUNT).build();
 
         cart.addProduct(product);
@@ -201,8 +191,8 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_skuPercentageJustOnce() {
-        Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product1 = productBuilder().withSku("ABC").withPrice(10d).build();
+        Product product2 = productBuilder().withSku("ABC").withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("10").withPromotionType(PERCENT).build();
 
         cart.addProduct(product1);
@@ -215,8 +205,8 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldTotalCart_happy_skuAmountJustOnce() {
-        Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product1 = productBuilder().withSku("ABC").withPrice(10d).build();
+        Product product2 = productBuilder().withSku("ABC").withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("4").withPromotionType(AMOUNT).build();
 
         cart.addProduct(product1);
@@ -229,8 +219,8 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldGetSameResultEveryTime() {
-        Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
+        Product product1 = productBuilder().withSku("ABC").withPrice(10d).build();
+        Product product2 = productBuilder().withSku("ABC").withPrice(10d).build();
         Promotion promo = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("4").withPromotionType(AMOUNT).build();
 
         cart.addProduct(product1);
@@ -243,9 +233,9 @@ public class ShoppingCartTest {
 
     @Test
     public void shouldDiscountPercentagesBeforeAmounts() {
-        Product product1 = productBuilder().withSku("ABC").withPrice(10d, "HTG").build();
-        Product product2 = productBuilder().withSku("DEF").withPrice(5d, "HTG").build();
-        Product product3 = productBuilder().withSku("GHI").withPrice(15d, "HTG").build();
+        Product product1 = productBuilder().withSku("ABC").withPrice(10d).build();
+        Product product2 = productBuilder().withSku("DEF").withPrice(5d).build();
+        Product product3 = productBuilder().withSku("GHI").withPrice(15d).build();
         Promotion promo1 = promotionBuilder().thatAppliesTo(SKU).withSku("ABC").withAmount("2").withPromotionType(AMOUNT).build(); // $2 off ABC
         Promotion promo2 = promotionBuilder().thatAppliesTo(BASKET).withAmount("5").withPromotionType(AMOUNT).build();             // $5 off cart
         Promotion promo3 = promotionBuilder().thatAppliesTo(BASKET).withAmount("10").withPromotionType(PERCENT).build();           // 10% off cart

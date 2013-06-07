@@ -5,23 +5,11 @@ import java.util.Currency;
 
 public class Money {
     private final BigDecimal amount;
-    private final Currency currency;
+    // Money without currency feels wrong, but this app is only used with HTG
+    private final Currency currency = Currency.getInstance("HTG");
 
     public Money(BigDecimal amount) {
-        this(amount, "HTG");
-    }
-
-    public Money(BigDecimal amount, String currencyCode) {
-        this(amount, Currency.getInstance(currencyCode));
-    }
-
-    public Money(Double amount, String currencyCode) {
-        this(new BigDecimal(amount), currencyCode);
-    }
-
-    private Money(BigDecimal amount, Currency currency) {
         this.amount = amount.setScale(2);
-        this.currency = currency;
     }
 
     public BigDecimal getAmount() {
@@ -32,6 +20,10 @@ public class Money {
         return currency.getCurrencyCode();
     }
 
+    public Money times(int quantity) {
+        return new Money(amount.multiply(new BigDecimal(quantity)));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,7 +32,7 @@ public class Money {
         Money money = (Money) o;
 
         if (amount != null ? !amount.equals(money.amount) : money.amount != null) return false;
-        if (currency != null ? !currency.equals(money.currency) : money.currency != null) return false;
+        if (!currency.equals(money.currency)) return false;
 
         return true;
     }
@@ -48,11 +40,7 @@ public class Money {
     @Override
     public int hashCode() {
         int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + currency.hashCode();
         return result;
-    }
-
-    public Money times(int quantity) {
-        return new Money(amount.multiply(new BigDecimal(quantity)), currency);
     }
 }

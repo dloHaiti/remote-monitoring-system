@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import org.springframework.util.support.Base64;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class ProductRepository {
         boolean requiresQuantity = Boolean.parseBoolean(cursor.getString(3));
         Integer minimum = cursor.getInt(4);
         Integer maximum = cursor.getInt(5);
-        Money price = new Money(cursor.getDouble(6), cursor.getString(7));
+        Money price = new Money(new BigDecimal(cursor.getDouble(6)));
         String description = cursor.getString(8);
         Integer gallons = cursor.getInt(9);
         Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?

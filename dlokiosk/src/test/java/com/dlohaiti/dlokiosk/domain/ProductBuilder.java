@@ -2,6 +2,8 @@ package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
 
+import java.math.BigDecimal;
+
 @SuppressWarnings("unused")
 public class ProductBuilder {
     private Long id = 1L;
@@ -11,7 +13,7 @@ public class ProductBuilder {
     private Integer quantity = 1;
     private Integer minimum = null;
     private Integer maximum = null;
-    private Money price = new Money(1.0, "HTG");
+    private Money price = new Money(BigDecimal.ONE);
     private String description = "10 Gallon";
     private Integer gallons = 0;
 
@@ -61,8 +63,8 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder withPrice(Double amount, String currencyCode) {
-        this.price = new Money(amount, currencyCode);
+    public ProductBuilder withPrice(Double amount) {
+        this.price = new Money(new BigDecimal(amount));
         return this;
     }
 

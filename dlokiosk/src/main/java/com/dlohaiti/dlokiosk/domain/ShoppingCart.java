@@ -66,12 +66,10 @@ public class ShoppingCart {
 
     public Money getSubtotal() {
         BigDecimal subtotal = BigDecimal.ZERO;
-        String currencyCode = "";
         for (Product p : products) {
             subtotal = subtotal.add(p.getPrice().getAmount().multiply(new BigDecimal(p.getQuantity())));
-            currencyCode = p.getPrice().getCurrencyCode();
         }
-        return new Money(subtotal, currencyCode);
+        return new Money(subtotal);
     }
 
     public String getCurrencyCode() {
@@ -80,11 +78,6 @@ public class ShoppingCart {
             return currencyCode;
         } else {
             currencyCode = products.get(0).getPrice().getCurrencyCode();
-        }
-        for (Product p : products) {
-            if (!currencyCode.equals(p.getPrice().getCurrencyCode())) {
-                currencyCode = "MISMATCHED CURRENCIES";
-            }
         }
         return currencyCode;
     }

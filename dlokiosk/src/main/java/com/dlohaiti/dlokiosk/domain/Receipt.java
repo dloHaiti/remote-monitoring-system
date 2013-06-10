@@ -1,7 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.db.ReceiptLineItemType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,5 +88,25 @@ public class Receipt {
         result = 31 * result + (totalGallons != null ? totalGallons.hashCode() : 0);
         result = 31 * result + (total != null ? total.hashCode() : 0);
         return result;
+    }
+
+    @JsonIgnore public Integer getProductLineItemsCount() {
+        int total = 0;
+        for (LineItem op : lineItems) {
+            if(op.getType() == ReceiptLineItemType.PRODUCT) {
+                total += op.getQuantity();
+            }
+        }
+        return total;
+    }
+
+    public List<LineItem> getProductLineItems() {
+        List<LineItem> items = new ArrayList<LineItem>();
+        for(LineItem item : lineItems) {
+            if(item.getType() == ReceiptLineItemType.PRODUCT) {
+                items.add(item);
+            }
+        }
+        return items;
     }
 }

@@ -43,4 +43,15 @@ public class Money {
         result = 31 * result + currency.hashCode();
         return result;
     }
+
+    @Override public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                ", currency=" + currency +
+                '}';
+    }
+
+    public Money minus(BigDecimal amount) {
+        return new Money(this.amount.subtract(amount));
+    }
 }

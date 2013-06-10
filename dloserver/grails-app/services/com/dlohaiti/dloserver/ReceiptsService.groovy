@@ -10,18 +10,21 @@ class ReceiptsService {
     Receipt receipt = new Receipt([createdDate: createdDate, totalGallons: params.totalGallons, total: params.total.amount, currencyCode: currencyCode])
 
     params.lineItems?.each { item ->
-      Product product = Product.findBySku(item.sku)
+      def gallons = 0
+      if(item.type == "PRODUCT") {
+        gallons = Product.findBySku(item.sku).gallons * item.quantity
+      }
       def lineItem = new ReceiptLineItem(
           sku: item.sku,
           quantity: item.quantity,
           type: item.type,
           price: item.price.amount,
           currencyCode: currencyCode,
-          gallons: product.gallons * item.quantity
+          gallons: gallons
       )
       receipt.addToReceiptLineItems(lineItem)
     }
-    receipt.kiosk = Kiosk.findByName(params.kioskId)
+    receipt.kiosk = Kiosk.findByName(params.kioskName)
     receipt.save(flush: true)
     return receipt
   }

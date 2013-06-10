@@ -107,6 +107,31 @@ public class ReceiptsRepository {
         }
     }
 
+    public boolean add(Receipt receipt) {
+        ContentValues receiptValues = new ContentValues();
+        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
+        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
+        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, receipt.getTotalGallons());
+        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL, String.valueOf(receipt.getTotal().getAmount()));
+
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            long receiptId = wdb.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
+            for (LineItem orderedItem : receipt.getLineItems()) {
+                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem);
+                wdb.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
+            }
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to save receipt to database.", e);
+            return false;
+        } finally {
+            wdb.endTransaction();
+        }
+    }
+
     public boolean add(List<Product> products, List<Promotion> promotions, Integer totalGallons, Money total) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();

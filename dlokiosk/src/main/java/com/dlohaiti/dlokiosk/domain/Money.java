@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 
 public class Money {
@@ -9,11 +10,11 @@ public class Money {
     private final Currency currency = Currency.getInstance("HTG");
 
     public Money(BigDecimal amount) {
-        this.amount = amount.setScale(2);
+        this.amount = amount;
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        return amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     public String getCurrencyCode() {

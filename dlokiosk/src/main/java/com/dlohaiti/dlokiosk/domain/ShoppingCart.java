@@ -1,25 +1,21 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 @Singleton
 public class ShoppingCart {
     private final List<Product> products = new ArrayList<Product>();
     private final List<Promotion> promotions = new ArrayList<Promotion>();
-    private final ReceiptsRepository repository;
+    private final Register register;
 
     @Inject
-    public ShoppingCart(ReceiptsRepository repository) {
-        this.repository = repository;
+    public ShoppingCart(Register register) {
+        this.register = register;
     }
 
     public void addProduct(Product product) {
@@ -35,11 +31,7 @@ public class ShoppingCart {
     }
 
     public void checkout() {
-        int totalGallons = 0;
-        for(Product product: products) {
-            totalGallons += (product.getGallons() * product.getQuantity());
-        }
-        repository.add(products, promotions, totalGallons, new Money(getTotal()));
+        register.checkout(this);
         clear();
     }
 
@@ -65,11 +57,7 @@ public class ShoppingCart {
     }
 
     public Money getSubtotal() {
-        BigDecimal subtotal = BigDecimal.ZERO;
-        for (Product p : products) {
-            subtotal = subtotal.add(p.getPrice().getAmount().multiply(new BigDecimal(p.getQuantity())));
-        }
-        return new Money(subtotal);
+        return register.subtotal(this);
     }
 
     public String getCurrencyCode() {
@@ -83,29 +71,7 @@ public class ShoppingCart {
     }
 
     public BigDecimal getTotal() {
-        List<Promotion> promotionsCopy = new ArrayList<Promotion>(promotions);
-        Collections.sort(promotionsCopy);
-        BigDecimal total = getSubtotal().getAmount();
-        for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
-            Promotion promo = it.next();
-            if (promo.appliesToBasket()) {
-                total = total.subtract(promo.discountCart(total));
-                it.remove();
-            }
-        }
-        for (Product product : products) {
-            for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
-                Promotion promo = it.next();
-                if (promo.isFor(product)) {
-                    total = total.subtract(promo.discountFor(product));
-                    it.remove();
-                }
-            }
-        }
-        if (total.compareTo(BigDecimal.ZERO) < 0) {
-            return BigDecimal.ZERO.setScale(2);
-        }
-        return total.setScale(2, RoundingMode.HALF_UP);
+        return register.total(this).getAmount();
     }
 
     public void removePromotion(int id) {

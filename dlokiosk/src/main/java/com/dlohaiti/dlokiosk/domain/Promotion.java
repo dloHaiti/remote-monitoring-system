@@ -5,6 +5,8 @@ import com.dlohaiti.dlokiosk.VisibleGridItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -149,7 +151,7 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
 
     public BigDecimal discountFor(Product product) {
         if (isPercentOff())
-            return this.getAmount().multiply(product.getPrice().getAmount());
+            return this.getAmount().multiply(product.getPrice().getAmount(), new MathContext(4, RoundingMode.HALF_UP));
         if (isAmountOff())
             return this.getAmount();
         return BigDecimal.ZERO;
@@ -157,7 +159,7 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
 
     public BigDecimal discountCart(BigDecimal total) {
         if(isPercentOff())
-            return this.getAmount().multiply(total);
+            return this.getAmount().multiply(total, new MathContext(4, RoundingMode.HALF_UP));
         if(isAmountOff())
             return this.getAmount();
         return BigDecimal.ZERO;

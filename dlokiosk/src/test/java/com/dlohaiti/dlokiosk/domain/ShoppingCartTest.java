@@ -14,23 +14,16 @@ import static com.dlohaiti.dlokiosk.domain.PromotionType.AMOUNT;
 import static com.dlohaiti.dlokiosk.domain.PromotionType.PERCENT;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class ShoppingCartTest {
-    private ReceiptsRepository receiptsRepository;
     private ShoppingCart cart;
+    private Register register;
 
     @Before
     public void setUp() {
-        receiptsRepository = mock(ReceiptsRepository.class);
-        cart = new ShoppingCart(receiptsRepository);
-    }
-
-    @Test
-    public void shouldSaveToReceiptsRepositoryOnCheckout() {
-        cart.addProduct(productBuilder().build());
-        cart.checkout();
-        verify(receiptsRepository, only()).add(anyListOf(Product.class), anyListOf(Promotion.class), anyInt(), any(Money.class));
+        register = new Register(mock(Clock.class), mock(ReceiptsRepository.class));
+        cart = new ShoppingCart(register);
     }
 
     @Test
@@ -123,7 +116,8 @@ public class ShoppingCartTest {
         cart.addPromotion(promo1);
         cart.addPromotion(promo2);
 
-        assertThat(cart.getTotal().compareTo(new BigDecimal("8.10")), is(0));
+        BigDecimal total = cart.getTotal();
+        assertThat(total.compareTo(new BigDecimal("8.10")), is(0));
     }
 
     @Test
@@ -247,7 +241,8 @@ public class ShoppingCartTest {
         cart.addPromotion(promo2);
         cart.addPromotion(promo3);
 
-        assertThat(cart.getTotal().compareTo(new BigDecimal("20")), is(0));
+        BigDecimal total = cart.getTotal();
+        assertThat(total.compareTo(new BigDecimal("19.99")), is(0));
     }
 
 }

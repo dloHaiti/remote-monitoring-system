@@ -20,6 +20,12 @@ class Parameter {
     sensor(nullable: true, unique: true, display: false)
   }
 
+  // eager loading of the sampling sites, for serializing to JSON in configuration controller
+  // http://blog.springsource.org/2010/07/28/gorm-gotchas-part-3/
+  static mapping = {
+    samplingSites lazy: false
+  }
+
   public String toString() {
     name
   }

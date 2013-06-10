@@ -42,4 +42,18 @@ class ProductTests {
     assert !product.validate()
     assert 'unique' == product.errors['sku']
   }
+
+  void testShouldKnowIfItRequiresQuantity() {
+    def noQuantitiesProduct = new ProductBuilder(minimumQuantity: null, maximumQuantity: null).build()
+    assert !noQuantitiesProduct.requiresQuantity()
+
+    def quantitiesProduct = new ProductBuilder(minimumQuantity: 1, maximumQuantity: 10).build()
+    assert quantitiesProduct.requiresQuantity()
+
+    def justMinimum = new ProductBuilder(minimumQuantity: 1, maximumQuantity: null).build()
+    assert justMinimum.requiresQuantity()
+
+    def justMaximum = new ProductBuilder(minimumQuantity: null, maximumQuantity: 10).build()
+    assert justMaximum.requiresQuantity()
+  }
 }

@@ -1,8 +1,46 @@
 import com.dlohaiti.dloserver.*
+import grails.converters.JSON
 
 class BootStrap {
 
   def init = { servletContext ->
+
+
+    JSON.registerObjectMarshaller(Parameter) { Parameter p ->
+      return [
+          isOkNotOk: p.isOkNotOk,
+          isUsedInTotalizer: p.isUsedInTotalizer,
+          minimum: p.min,
+          maximum: p.max,
+          name: p.name,
+          unit: p.unit,
+          samplingSites: p.samplingSites
+      ]
+    }
+
+    JSON.registerObjectMarshaller(SamplingSite) { SamplingSite s ->
+      return [
+          isUsedInTotalizer: s.isUsedForTotalizer,
+          name:  s.name,
+          followupToSite: s.followupToSite?.name
+      ]
+    }
+
+    JSON.registerObjectMarshaller(Product) { Product p ->
+      return [
+          sku: p.sku,
+          description: p.description,
+          gallons: p.gallons,
+          maximumQuantity: p.maximumQuantity,
+          minimumQuantity: p.minimumQuantity,
+          requiresQuantity: p.requiresQuantity,
+          price: [
+              amount: p.price.amount,
+              currencyCode: p.price.currency.currencyCode
+          ]
+      ]
+    }
+
     if (Kiosk.count() == 0) {
       new Kiosk(name: "kiosk01", apiKey: 'pw').save()
       new Kiosk(name: "kiosk02", apiKey: 'pw').save()

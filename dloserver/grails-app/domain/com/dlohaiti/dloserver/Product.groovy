@@ -21,4 +21,8 @@ class Product {
       (obj.maximumQuantity == null || obj.minimumQuantity < obj.maximumQuantity)
     })
   }
+
+  boolean requiresQuantity() {
+    return minimumQuantity != null || maximumQuantity != null
+  }
 }

@@ -9,29 +9,26 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class DeliveryFactory {
-    private final ConfigurationRepository configurationRepository;
     private final Clock clock;
     private final KioskDate kioskDate;
 
     @Inject
-    public DeliveryFactory(ConfigurationRepository configurationRepository, Clock clock, KioskDate kioskDate) {
-        this.configurationRepository = configurationRepository;
+    public DeliveryFactory(Clock clock, KioskDate kioskDate) {
         this.clock = clock;
         this.kioskDate = kioskDate;
     }
 
     public Delivery makeDelivery(int quantity, DeliveryType type) {
-        String kioskId = configurationRepository.getKiosk().getId();
-        return new Delivery(quantity, type, clock.now(), kioskId);
+        return new Delivery(quantity, type, clock.now());
     }
 
-    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String kioskId, String createdAtDate) {
+    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String createdAtDate) {
         DeliveryType type = DeliveryType.valueOf(deliveryType);
         Date createdAt = null;
         try {
             createdAt = kioskDate.getFormat().parse(createdAtDate);
         } catch (ParseException e) {
         }
-        return new Delivery(id, quantity, type, createdAt, kioskId);
+        return new Delivery(id, quantity, type, createdAt);
     }
 }

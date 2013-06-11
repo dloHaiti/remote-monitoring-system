@@ -23,7 +23,7 @@ public class DeliveryFactoryTest {
     public void setUp() {
         clock = mock(Clock.class);
         configurationRepository = mock(ConfigurationRepository.class);
-        factory = new DeliveryFactory(configurationRepository, clock, new KioskDate());
+        factory = new DeliveryFactory(clock, new KioskDate());
 
         given(clock.now()).willReturn(new Date(0));
         given(configurationRepository.getKiosk()).willReturn(new Kiosk("k1", "pw"));
@@ -33,11 +33,5 @@ public class DeliveryFactoryTest {
     public void shouldGetTimeFromClock() {
         Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED);
         assertThat(delivery.getCreatedAt(), is(new Date(0)));
-    }
-
-    @Test
-    public void shouldGetKioskIdFromConfiguration() {
-        Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED);
-        assertThat(delivery.getKioskId(), is("k1"));
     }
 }

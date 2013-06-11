@@ -33,7 +33,6 @@ public class DeliveryRepository {
         ContentValues values = new ContentValues();
         values.put(KioskDatabase.DeliveriesTable.QUANTITY, delivery.getQuantity());
         values.put(KioskDatabase.DeliveriesTable.DELIVERY_TYPE, delivery.getType().name());
-        values.put(KioskDatabase.DeliveriesTable.KIOSK_ID, delivery.getKioskId());
         values.put(KioskDatabase.DeliveriesTable.CREATED_AT, kioskDate.getFormat().format(delivery.getCreatedAt()));
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
@@ -55,7 +54,6 @@ public class DeliveryRepository {
                 KioskDatabase.DeliveriesTable.ID,
                 KioskDatabase.DeliveriesTable.QUANTITY,
                 KioskDatabase.DeliveriesTable.DELIVERY_TYPE,
-                KioskDatabase.DeliveriesTable.KIOSK_ID,
                 KioskDatabase.DeliveriesTable.CREATED_AT
         };
         SQLiteDatabase rdb = db.getReadableDatabase();
@@ -67,9 +65,8 @@ public class DeliveryRepository {
                 Integer id = cursor.getInt(0);
                 Integer quantity = cursor.getInt(1);
                 String type = cursor.getString(2);
-                String kioskId = cursor.getString(3);
-                String createdAt = cursor.getString(4);
-                deliveries.add(factory.makeDelivery(id, quantity, type, kioskId, createdAt));
+                String createdAt = cursor.getString(3);
+                deliveries.add(factory.makeDelivery(id, quantity, type, createdAt));
                 cursor.moveToNext();
             }
             cursor.close();

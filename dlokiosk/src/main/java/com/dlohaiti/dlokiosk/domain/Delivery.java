@@ -9,18 +9,16 @@ public class Delivery {
     private final int quantity;
     private final DeliveryType type;
     private final Date createdAt;
-    private final String kioskId;
 
-    public Delivery(int quantity, DeliveryType type, Date createdAt, String kioskId) {
-        this(null, quantity, type, createdAt, kioskId);
+    public Delivery(int quantity, DeliveryType type, Date createdAt) {
+        this(null, quantity, type, createdAt);
     }
 
-    public Delivery(Integer id, Integer quantity, DeliveryType type, Date createdAt, String kioskId) {
+    public Delivery(Integer id, Integer quantity, DeliveryType type, Date createdAt) {
         this.id = id;
         this.quantity = quantity;
         this.type = type;
         this.createdAt = createdAt;
-        this.kioskId = kioskId;
     }
 
     public Integer getId() {
@@ -29,10 +27,6 @@ public class Delivery {
 
     public Date getCreatedAt() {
         return createdAt;
-    }
-
-    public String getKioskId() {
-        return kioskId;
     }
 
     public int getQuantity() {

@@ -87,6 +87,26 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return 1;
     }
 
+    public PromotionApplicationType getAppliesTo() {
+        return appliesTo;
+    }
+
+    public String getProductSku() {
+        return productSku;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public Bitmap getResource() {
+        return resource;
+    }
+
     public boolean appliesToBasket() {
         return appliesTo == PromotionApplicationType.BASKET;
     }

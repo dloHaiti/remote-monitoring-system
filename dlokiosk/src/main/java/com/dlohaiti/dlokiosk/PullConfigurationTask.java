@@ -4,17 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-import com.dlohaiti.dlokiosk.client.Configuration;
-import com.dlohaiti.dlokiosk.client.ConfigurationClient;
-import com.dlohaiti.dlokiosk.client.ProductJson;
+import com.dlohaiti.dlokiosk.client.*;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
-import com.dlohaiti.dlokiosk.domain.Money;
-import com.dlohaiti.dlokiosk.domain.Product;
+import com.dlohaiti.dlokiosk.db.PromotionRepository;
+import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import roboguice.inject.InjectResource;
 import roboguice.util.RoboAsyncTask;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PullConfigurationTask extends RoboAsyncTask<String> {
@@ -22,6 +21,8 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
     private ProgressDialog dialog;
     @Inject private ConfigurationClient client;
     @Inject private ProductRepository productRepository;
+    @Inject private PromotionRepository promotionRepository;
+    @Inject private KioskDate kioskDate;
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
     @InjectResource(R.string.fetch_configuration_succeeded) private String fetchConfigurationSucceededMessage;
     private Context context;
@@ -44,8 +45,22 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
             Money price = new Money(p.getPrice().getAmount());
             products.add(new Product(null, p.getSku(), null, p.isRequiresQuantity(), 1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons()));
         }
+        List<Promotion> promotions = new ArrayList<Promotion>();
+        for(PromotionJson p : c.getPromotions()) {
+            PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(p.getAppliesTo());
+            Date start = kioskDate.getFormat().parse(p.getStartDate());
+            Date end = kioskDate.getFormat().parse(p.getEndDate());
+            promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), null));
+        }
+//        List<Parameter> parameters = new ArrayList<Parameter>();
+//        for(ParameterJson p : c.getParameters()) {
+//            parameters.a
+//        }
         if(productRepository.replaceAll(products)) {
             Log.i(TAG, "products successfully replaced");
+        }
+        if(promotionRepository.replaceAll(promotions)) {
+            Log.i(TAG, "promotions successfully replaced");
         }
         return "";
     }

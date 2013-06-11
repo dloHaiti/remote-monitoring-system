@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -107,5 +108,32 @@ public class PromotionRepository {
             resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
         }
         return new Promotion(id, sku, appliesTo, productSku, startDate, endDate, amount, type, resource);
+    }
+
+    public boolean replaceAll(List<Promotion> promotions) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            wdb.delete(KioskDatabase.PromotionsTable.TABLE_NAME, null, null);
+            for(Promotion p : promotions) {
+                ContentValues values = new ContentValues();
+                values.put(KioskDatabase.PromotionsTable.SKU, p.getSku());
+                values.put(KioskDatabase.PromotionsTable.AMOUNT, p.getAmount().toString());
+                values.put(KioskDatabase.PromotionsTable.APPLIES_TO, p.getAppliesTo().name());
+                values.put(KioskDatabase.PromotionsTable.PRODUCT_SKU, p.getProductSku());
+                values.put(KioskDatabase.PromotionsTable.START_DATE, kioskDate.getFormat().format(p.getStartDate()));
+                values.put(KioskDatabase.PromotionsTable.END_DATE, kioskDate.getFormat().format(p.getEndDate()));
+                values.put(KioskDatabase.PromotionsTable.TYPE, p.getType().name());
+//TODO: icon                values.put(KioskDatabase.PromotionsTable.ICON, null);
+                wdb.insert(KioskDatabase.PromotionsTable.TABLE_NAME, null, values);
+            }
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to replace all promotions", e);
+            return false;
+        } finally {
+            wdb.endTransaction();
+        }
     }
 }

@@ -13,6 +13,7 @@ class DeliveriesController {
     Delivery delivery
 
     try {
+      params.kioskName = request.kioskName
       delivery = deliveriesService.saveDelivery(params)
 
       if (delivery.hasErrors()) {

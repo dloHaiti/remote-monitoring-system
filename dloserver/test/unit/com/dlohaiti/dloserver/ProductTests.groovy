@@ -28,7 +28,7 @@ class ProductTests {
 
     def negativeMinimumQuantityProduct = new ProductBuilder(minimumQuantity: -10).build()
     assert !negativeMinimumQuantityProduct.validate()
-    assert 'min' == negativeMinimumQuantityProduct.errors['minimumQuantity']
+    assert 'minimum' == negativeMinimumQuantityProduct.errors['minimumQuantity']
 
     def maxLessThanMinProduct = new ProductBuilder(minimumQuantity: 10, maximumQuantity: 5).build()
     assert !maxLessThanMinProduct.validate()

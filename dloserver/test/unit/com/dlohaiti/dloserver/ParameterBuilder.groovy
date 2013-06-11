@@ -8,6 +8,6 @@ class ParameterBuilder {
   boolean isUsedInTotalizer = false
 
   Parameter build() {
-    return new Parameter(name: name, unit: unit, min: min, max: max, isUsedInTotalizer: isUsedInTotalizer)
+    return new Parameter(name: name, unit: unit, minimum: min, maximum: max, isUsedInTotalizer: isUsedInTotalizer)
   }
 }

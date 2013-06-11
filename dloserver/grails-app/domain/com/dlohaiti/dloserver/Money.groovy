@@ -8,4 +8,6 @@ import groovy.transform.ToString
 class Money {
   BigDecimal amount;
   Currency currency = Currency.getInstance("HTG")
+
+  static mapWith = "none"
 }

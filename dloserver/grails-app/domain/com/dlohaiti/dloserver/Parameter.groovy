@@ -1,11 +1,16 @@
 package com.dlohaiti.dloserver
 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+@ToString
+@EqualsAndHashCode
 class Parameter {
 
   String name
   String unit
-  BigDecimal min
-  BigDecimal max
+  BigDecimal minimum
+  BigDecimal maximum
   boolean isUsedInTotalizer
   boolean isOkNotOk
 
@@ -15,8 +20,8 @@ class Parameter {
   static constraints = {
     name(blank: false, unique: true)
     unit(nullable: true)
-    min(nullable: true)
-    max(nullable: true, validator: { val, obj -> ((val == null) || (obj.min < val)) })
+    minimum(nullable: true)
+    maximum(nullable: true, validator: { val, obj -> ((val == null) || (obj.minimum < val)) })
     sensor(nullable: true, unique: true, display: false)
   }
 
@@ -28,5 +33,9 @@ class Parameter {
 
   public String toString() {
     name
+  }
+
+  boolean hasRange() {
+    return minimum != null || maximum != null;
   }
 }

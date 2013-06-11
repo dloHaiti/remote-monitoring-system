@@ -28,16 +28,7 @@ public class ReceiptFactoryTest {
         configurationRepository = mock(ConfigurationRepository.class);
         given(configurationRepository.getKiosk()).willReturn(new Kiosk("k1", "pw"));
         given(clock.now()).willReturn(new Date(0));
-        factory = new ReceiptFactory(configurationRepository, clock);
-    }
-
-    @Test
-    public void shouldUseKioskInformationFromConfiguration() {
-        List<Product> products = asList(productBuilder().build());
-
-        Receipt receipt = factory.makeReceipt(products, new ArrayList<Promotion>(), new Money(BigDecimal.ZERO));
-
-        assertThat(receipt.getKioskId(), is("k1"));
+        factory = new ReceiptFactory(clock);
     }
 
     @Test

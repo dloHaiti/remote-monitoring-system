@@ -42,7 +42,6 @@ public class ReceiptsRepository {
         List<Receipt> receipts = new ArrayList<Receipt>();
         String[] columns = {
                 KioskDatabase.ReceiptsTable.ID,
-                KioskDatabase.ReceiptsTable.KIOSK_ID,
                 KioskDatabase.ReceiptsTable.CREATED_AT,
                 KioskDatabase.ReceiptsTable.TOTAL_GALLONS,
                 KioskDatabase.ReceiptsTable.TOTAL
@@ -57,7 +56,7 @@ public class ReceiptsRepository {
             while (!receiptsCursor.isAfterLast()) {
                 Date date = null;
                 try {
-                    date = kioskDate.getFormat().parse(receiptsCursor.getString(2));
+                    date = kioskDate.getFormat().parse(receiptsCursor.getString(1));
                 } catch (ParseException e) {
                     Log.e(TAG, String.format("Invalid date format for receipt with id %d", receiptsCursor.getLong(0)), e);
                 }
@@ -76,8 +75,9 @@ public class ReceiptsRepository {
                 }
                 lineItemsCursor.close();
                 long id = receiptsCursor.getLong(0);
-                String kioskId = receiptsCursor.getString(1);
-                receipts.add(receiptFactory.makeReceipt(id, lineItems, kioskId, date, receiptsCursor.getInt(3), new Money(new BigDecimal(receiptsCursor.getString(4)))));
+                int totalGallons = receiptsCursor.getInt(2);
+                Money total = new Money(new BigDecimal(receiptsCursor.getString(3)));
+                receipts.add(receiptFactory.makeReceipt(id, lineItems, date, totalGallons, total));
                 receiptsCursor.moveToNext();
             }
             receiptsCursor.close();
@@ -109,7 +109,6 @@ public class ReceiptsRepository {
 
     public boolean add(Receipt receipt) {
         ContentValues receiptValues = new ContentValues();
-        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
         receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
         receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, receipt.getTotalGallons());
         receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL, String.valueOf(receipt.getTotal().getAmount()));
@@ -137,7 +136,6 @@ public class ReceiptsRepository {
         writableDatabase.beginTransaction();
         Receipt receipt = receiptFactory.makeReceipt(products, promotions, total);
         ContentValues receiptValues = new ContentValues();
-        receiptValues.put(KioskDatabase.ReceiptsTable.KIOSK_ID, receipt.getKioskId());
         receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
         receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, totalGallons);
         receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL, total.getAmount().toString());

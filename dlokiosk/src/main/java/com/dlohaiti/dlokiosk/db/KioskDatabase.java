@@ -23,13 +23,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
-                        "%s INTEGER," +
                         "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ReceiptsTable.TABLE_NAME,
                 ReceiptsTable.ID,
-                ReceiptsTable.KIOSK_ID,
                 ReceiptsTable.TOTAL_GALLONS,
                 ReceiptsTable.TOTAL,
                 ReceiptsTable.CREATED_AT
@@ -680,7 +678,6 @@ public class KioskDatabase extends SQLiteOpenHelper {
     public static class ReceiptsTable {
         public static final String TABLE_NAME = "RECEIPTS";
         public static final String ID = "ID";
-        public static final String KIOSK_ID = "KIOSK_ID";
         public static final String CREATED_AT = "CREATED_AT";
         public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
         public static final String TOTAL = "TOTAL";

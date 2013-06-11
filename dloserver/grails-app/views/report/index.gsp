@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>DLO Haiti Kiosk Reports</h1>
-    <p><g:link action="volumeByDay" params="[kioskName: kioskName]">Volume by Day</g:link></p>
+    <h2 style="text-align: center;"><g:link action="volumeByDay" params="[kioskName: kioskName]">Volume by Day</g:link></h2>
+    <h2 style="text-align: center;"><g:link action="salesByDay" params="[kioskName: kioskName]">Sales by Day</g:link></h2>
 </body>
 </html>

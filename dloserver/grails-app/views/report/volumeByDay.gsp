@@ -7,10 +7,11 @@
 <body>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-    google.load("visualization", "1", {packages: ["corechart"]});
+    google.load("visualization", "1", {packages: ["corechart", "table"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
-        var data = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
+        var chartData = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
+        var tableData = google.visualization.arrayToDataTable(<%= tableData as JSON %>);
 
         var options = {
             title: 'Volume by Day',
@@ -20,23 +21,13 @@
             isStacked: true
         };
 
-        var chart = new google.visualization.ComboChart(document.getElementById('chart'));
-        chart.draw(data, options);
+        new google.visualization.ComboChart(document.getElementById('chart')).draw(chartData, options);
+        new google.visualization.Table(document.getElementById('table')).draw(tableData, {});
     }
 </script>
 
-<div id="chart" style="width:900px;height:500px"></div>
+<div id="chart" style="width:800px;height:400px; margin-left:auto;margin-right:auto;"></div>
+<div id="table" style="width:800px; margin-left:auto;margin-right:auto;"></div>
 
-<table>
-    <tbody>
-    <g:each var="row" in="${tableData}">
-        <tr>
-            <g:each in="${0..(row.size() - 1)}">
-                <td>${row[it]}</td>
-            </g:each>
-        </tr>
-    </g:each>
-    </tbody>
-</table>
 </body>
 </html>

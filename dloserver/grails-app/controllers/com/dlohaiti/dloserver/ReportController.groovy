@@ -60,7 +60,7 @@ class ReportController {
 
     def tableData = buildTableData(previousWeek(), products, receipts, deliveries, readings)
 
-    [chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE']), tableData: tableData, skusPresent: products.size()]
+    [chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
   }
 
   private Date oneWeekAgoMidnight() {
@@ -117,7 +117,7 @@ class ReportController {
     }
     tableData.add(totalizerRow)
 
-    def percentDiffRow = ['DIFFERENCE']
+    def percentDiffRow = ['DIFFERENCE %']
     for(int i = 1; i < totalizerRow.size(); i++) {
       def total = new BigDecimal(totalizerRow[i])
       def difference
@@ -127,7 +127,7 @@ class ReportController {
       } else {
         difference = 0
       }
-      percentDiffRow.add(difference.multiply(new BigDecimal(100)).setScale(0) + '%')
+      percentDiffRow.add(difference.multiply(new BigDecimal(100)).setScale(0))
     }
     tableData.add(percentDiffRow)
 

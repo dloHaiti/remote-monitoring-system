@@ -13,8 +13,8 @@
         var data = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
 
         var options = {
-            title: 'Sales Quantity by Day',
-            vAxis: {title: 'Quantity', minValue: 0},
+            title: 'Sales by Day',
+            vAxis: {title: 'Gourdes', minValue: 0},
             isStacked: true
         };
 

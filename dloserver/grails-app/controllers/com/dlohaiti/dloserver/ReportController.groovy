@@ -10,10 +10,11 @@ class ReportController {
     [kioskName: request.kioskName]
   }
 
-  def salesQuantityByDay() {
+  def salesByDay() {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
     List<Product> products = Product.findAll()
     List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
+    List<Delivery> deliveries = Delivery.findAllByKioskAndTimestampGreaterThanEquals(kiosk, oneWeekAgoMidnight())
 
     def tableHeader = ['']
     for(day in previousWeek()) {
@@ -24,14 +25,32 @@ class ReportController {
       def row = [product.sku]
       for(day in previousWeek()) {
         def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) })
-        def lineItemsWithSku = dayReceipts.collect({ dr -> dr.receiptLineItems }).findAll({ ReceiptLineItem item -> item.sku == product.sku })
-        def skuCount = lineItemsWithSku.inject(0, { Integer acc, ReceiptLineItem val -> acc + val.quantity })
-        row.add(skuCount)
+        def lineItemsWithSku = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.sku == product.sku })
+        def skuTotal = lineItemsWithSku.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
+        row.add(skuTotal)
       }
       tableData.add(row)
     }
 
-    [tableData: tableData, chartData: tableData]
+    def deliveriesRow = ['DELIVERY']
+    for(day in previousWeek()) {
+      def dayDeliveries = deliveries.findAll({ d -> d.isOnDate(day) })
+      def positiveDeliveries = dayDeliveries.findAll({ Delivery d -> d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity }) //TODO: * price
+      def totalDeliveries = dayDeliveries.findAll({ Delivery d -> d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - val.quantity })
+      deliveriesRow.add(totalDeliveries)
+    }
+    tableData.add(deliveriesRow)
+
+    def totalRow = ['TOTAL']
+    previousWeek().eachWithIndex { LocalDate day, int i ->
+      def total = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.total })
+      totalRow.add(total + deliveriesRow[i+1])
+    }
+    tableData.add(totalRow)
+
+    println(tableData)
+
+    [tableData: tableData, chartData: new TableToChart().convertWithoutLastRow(tableData)]
   }
 
   def volumeByDay() {

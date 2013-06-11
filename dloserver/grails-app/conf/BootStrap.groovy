@@ -1,10 +1,14 @@
 import com.dlohaiti.dloserver.*
 import grails.converters.JSON
 
+import java.text.SimpleDateFormat
+
 class BootStrap {
+  def grailsApplication
 
   def init = { servletContext ->
 
+    def dateFormatter = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
 
     JSON.registerObjectMarshaller(Parameter) { Parameter p ->
       return [
@@ -42,8 +46,8 @@ class BootStrap {
     JSON.registerObjectMarshaller(Promotion) { Promotion p ->
       return [
           appliesTo: p.appliesTo,
-          startDate: p.startDate,
-          endDate: p.endDate,
+          startDate: dateFormatter.format(p.startDate),
+          endDate: dateFormatter.format(p.endDate),
           productSku: p.productSku,
           amount: p.amount,
           type: p.type,

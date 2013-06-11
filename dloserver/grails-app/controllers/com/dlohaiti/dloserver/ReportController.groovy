@@ -48,9 +48,7 @@ class ReportController {
     }
     tableData.add(totalRow)
 
-    println(tableData)
-
-    [tableData: tableData, chartData: new TableToChart().convertWithoutLastRow(tableData)]
+    [tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
   }
 
   def volumeByDay() {
@@ -62,10 +60,7 @@ class ReportController {
 
     def tableData = buildTableData(previousWeek(), products, receipts, deliveries, readings)
 
-    def chartData = buildChartData(products, previousWeek(), receipts, deliveries, readings)
-
-
-    [chartData: chartData, tableData: tableData, skusPresent: products.size()]
+    [chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE']), tableData: tableData, skusPresent: products.size()]
   }
 
   private Date oneWeekAgoMidnight() {
@@ -78,31 +73,6 @@ class ReportController {
       days.add(new LocalDate().minusDays(i))
     }
     return days
-  }
-
-  private buildChartData(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {
-    def chartHeader = ['Date']
-    for (product in products) {
-      chartHeader.add(product.sku)
-    }
-    chartHeader.add('Delivery')
-    chartHeader.add('Totalizer')
-    def chartData = [chartHeader]
-    for (LocalDate day in previousWeek) {
-      def row = [day.toString('MM/dd/yy')]
-      for (product in products) {
-        def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
-        def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku) })
-        row.add(totalForSku)
-      }
-      def positiveDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity })
-      def totalDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - val.quantity })
-      row.add(totalDeliveries)
-      def readingsObj = new Readings(readings: readings)
-      row.add(readingsObj.totalizeGallonsFor(day))
-      chartData.add(row)
-    }
-    return chartData
   }
 
   private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {

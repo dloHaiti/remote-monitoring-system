@@ -2,9 +2,14 @@ package com.dlohaiti.dloserver
 
 class TableToChart {
 
-  List<List<Object>> convertWithoutLastRow(List<List<Object>> lists) {
-    def copy = new ArrayList<List<Object>>(lists)
-    copy.remove(lists.size()-1)
-    return copy.transpose()
+  List<List<Object>> convertWithoutRowsTitled(List<List<Object>> lists, List<String> rowTitles) {
+    def defensiveCopy = new ArrayList<List<Object>>(lists)
+    for(Iterator<List<Object>> i = defensiveCopy.iterator(); i.hasNext(); ) {
+      def row = i.next()
+      if(rowTitles.contains(row.first())) {
+        i.remove()
+      }
+    }
+    return defensiveCopy.transpose()
   }
 }

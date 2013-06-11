@@ -4,6 +4,8 @@ import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ public class RestClient {
 
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.getObjectMapper().setDateFormat(format);
+        converter.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         restTemplate.getMessageConverters().add(converter);
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());

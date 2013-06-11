@@ -12,7 +12,11 @@ class ConfigurationController {
     List<Parameter> parameters = Parameter.all
     List<Promotion> promotions = Promotion.all
 
-    render(status: 200, text: [
+    render(
+        status: 200,
+        contentType: 'application/json',
+        encoding: 'UTF-8',
+        text: [
         products: products,
         promotions: promotions,
         parameters: parameters

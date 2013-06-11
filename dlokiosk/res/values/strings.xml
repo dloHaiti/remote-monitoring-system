@@ -64,4 +64,7 @@
     <string name="reportsHomeUrlHint">example: http://server/reports</string>
     <string name="view_reports_button">View Reports</string>
     <string name="title_activity_view_reports">View Reports</string>
+    <string name="update_configuration">Update Configuration</string>
+    <string name="fetch_configuration_failed">Error Fetching Configuration</string>
+    <string name="fetch_configuration_succeeded">Configuration Successfully Updated</string>
 </resources>

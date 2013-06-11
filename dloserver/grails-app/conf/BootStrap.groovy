@@ -9,7 +9,6 @@ class BootStrap {
     JSON.registerObjectMarshaller(Parameter) { Parameter p ->
       return [
           isOkNotOk: p.isOkNotOk,
-          isUsedInTotalizer: p.isUsedInTotalizer,
           minimum: p.minimum,
           maximum: p.maximum,
           name: p.name,
@@ -20,7 +19,6 @@ class BootStrap {
 
     JSON.registerObjectMarshaller(SamplingSite) { SamplingSite s ->
       return [
-          isUsedInTotalizer: s.isUsedForTotalizer,
           name:  s.name,
           followupToSite: s.followupToSite?.name
       ]

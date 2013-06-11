@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -104,6 +105,34 @@ public class ProductRepository {
             return new Product(null, null, null, false, null, null, null, null, null, null);
         } finally {
             readableDatabase.endTransaction();
+        }
+    }
+
+    public boolean replaceAll(List<Product> products) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            wdb.delete(KioskDatabase.ProductsTable.TABLE_NAME, null, null);
+            for(Product p : products) {
+                ContentValues values = new ContentValues();
+                values.put(KioskDatabase.ProductsTable.SKU, p.getSku());
+                values.put(KioskDatabase.ProductsTable.PRICE, p.getPrice().getAmount().toString());
+                values.put(KioskDatabase.ProductsTable.DESCRIPTION, p.getDescription());
+                values.put(KioskDatabase.ProductsTable.GALLONS, p.getGallons());
+//                values.put(KioskDatabase.ProductsTable.ICON, null)
+                values.put(KioskDatabase.ProductsTable.MINIMUM_QUANTITY, p.getMinimumQuantity());
+                values.put(KioskDatabase.ProductsTable.MAXIMUM_QUANTITY, p.getMaximumQuantity());
+                values.put(KioskDatabase.ProductsTable.REQUIRES_QUANTITY, p.requiresQuantity());
+                values.put(KioskDatabase.ProductsTable.CURRENCY, p.getPrice().getCurrencyCode());
+                wdb.insert(KioskDatabase.ProductsTable.TABLE_NAME, null, values);
+            }
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to replace all products.", e);
+            return false;
+        } finally {
+            wdb.endTransaction();
         }
     }
 }

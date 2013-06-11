@@ -35,8 +35,8 @@ class ReportController {
     def deliveriesRow = ['DELIVERY']
     for(day in previousWeek()) {
       def dayDeliveries = deliveries.findAll({ d -> d.isOnDate(day) })
-      def positiveDeliveries = dayDeliveries.findAll({ Delivery d -> d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity }) //TODO: * price
-      def totalDeliveries = dayDeliveries.findAll({ Delivery d -> d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - val.quantity })
+      def positiveDeliveries = dayDeliveries.findAll({ Delivery d -> d.isOutForDelivery() }).inject(0, { acc, val -> acc + (val.quantity * val.price.amount) })
+      def totalDeliveries = dayDeliveries.findAll({ Delivery d -> d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - (val.quantity * val.price.amount) })
       deliveriesRow.add(totalDeliveries)
     }
     tableData.add(deliveriesRow)
@@ -93,9 +93,9 @@ class ReportController {
     def deliveryRow = ['Delivery']
     for (day in previousWeek) {
       def positiveDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() })
-      def positiveDeliveryCount = positiveDeliveries.inject(0, { acc, val -> acc + val.quantity })
+      def positiveDeliveryCount = positiveDeliveries.inject(0, { acc, val -> acc + (val.quantity * val.gallons) })
       def negativeDeliveries = deliveries.findAll({ d -> d.isOnDate(day) && d.isReturned() })
-      def deliveryTotal = negativeDeliveries.inject(positiveDeliveryCount, { acc, val -> acc - val.quantity })
+      def deliveryTotal = negativeDeliveries.inject(positiveDeliveryCount, { acc, val -> acc - (val.quantity * val.gallons) })
       deliveryRow.add(deliveryTotal)
     }
     tableData.add(deliveryRow)
@@ -103,8 +103,8 @@ class ReportController {
     def totalRow = ['TOTAL']
     for (LocalDate day in previousWeek) {
       def sales = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.totalGallons })
-      def deliveryPositives = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() }).inject(0, { acc, val -> acc + val.quantity })
-      def deliveryTotal = deliveries.findAll({d -> d.isOnDate(day) && d.isReturned() }).inject(deliveryPositives, { acc, val -> acc - val.quantity })
+      def deliveryPositives = deliveries.findAll({ d -> d.isOnDate(day) && d.isOutForDelivery() }).inject(0, { acc, val -> acc + (val.quantity * val.gallons) })
+      def deliveryTotal = deliveries.findAll({d -> d.isOnDate(day) && d.isReturned() }).inject(deliveryPositives, { acc, val -> acc - (val.quantity * val.gallons) })
       totalRow.add(sales + deliveryTotal)
     }
     tableData.add(totalRow)

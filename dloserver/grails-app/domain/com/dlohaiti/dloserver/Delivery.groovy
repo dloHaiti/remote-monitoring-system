@@ -2,6 +2,7 @@ package com.dlohaiti.dloserver
 
 import org.joda.time.LocalDate
 
+//TODO: make this whole class a type of product or otherwise get it in the database
 class Delivery {
     Date timestamp
     Integer quantity
@@ -19,5 +20,13 @@ class Delivery {
 
   boolean isReturned() {
     return 'RETURNED' == type
+  }
+
+  Integer getGallons() {
+    return 4
+  }
+
+  Money getPrice() {
+    return new Money(amount: 5G)
   }
 }

@@ -4,19 +4,19 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
 public class SamplingSite implements Comparable<SamplingSite> {
-    private final Integer id;
+    private final Long id;
     private final String name;
 
     public SamplingSite(String name) {
         this(null, name);
     }
 
-    public SamplingSite(Integer id, String name) {
+    public SamplingSite(Long id, String name) {
         this.id = id;
         this.name = defaultString(name);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

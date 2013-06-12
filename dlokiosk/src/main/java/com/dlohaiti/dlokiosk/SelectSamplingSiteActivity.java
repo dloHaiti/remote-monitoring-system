@@ -41,7 +41,7 @@ public class SelectSamplingSiteActivity extends RoboActivity {
                     isRealSelection = true;
                 } else {
                     Intent intent = new Intent(SelectSamplingSiteActivity.this, NewEnterReadingActivity.class);
-                    intent.putExtra("samplingSiteId", repository.findByName(sites.get(position)).getId());
+                    intent.putExtra("samplingSiteName", sites.get(position));
                     startActivity(intent);
                     finish();
                 }

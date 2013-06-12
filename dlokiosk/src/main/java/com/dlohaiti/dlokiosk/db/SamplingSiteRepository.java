@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -14,7 +15,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class SamplingSiteRepository {
     private final static String TAG = SamplingSiteRepository.class.getSimpleName();
-    private final static String[] columns = new String[]{
+    private final static String[] COLUMNS = new String[]{
             KioskDatabase.SamplingSitesTable.ID,
             KioskDatabase.SamplingSitesTable.NAME
     };
@@ -30,10 +31,10 @@ public class SamplingSiteRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, null, null, null, null, null);
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
             c.moveToFirst();
             while (!c.isAfterLast()) {
-                sites.add(new SamplingSite(c.getInt(0), c.getString(1)));
+                sites.add(new SamplingSite(c.getLong(0), c.getString(1)));
                 c.moveToNext();
             }
             c.close();
@@ -47,37 +48,16 @@ public class SamplingSiteRepository {
         }
     }
 
-    public SamplingSite findById(int id) {
-        SQLiteDatabase rdb = db.getReadableDatabase();
-        rdb.beginTransaction();
-        try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, where(KioskDatabase.SamplingSitesTable.ID), matches(id), null, null, null);
-            if (c.getCount() != 1) {
-                throw new RecordNotFoundException();
-            }
-            c.moveToFirst();
-            SamplingSite samplingSite = new SamplingSite(c.getInt(0), c.getString(1));
-            c.close();
-            rdb.setTransactionSuccessful();
-            return samplingSite;
-        } catch (Exception e) {
-            Log.e(TAG, String.format("Could not find Sampling Site with id %d in database.", id), e);
-            return new SamplingSite(null);
-        } finally {
-            rdb.endTransaction();
-        }
-    }
-
     public SamplingSite findByName(String name) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, columns, where(KioskDatabase.SamplingSitesTable.NAME), matches(name), null, null, null);
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, where(KioskDatabase.SamplingSitesTable.NAME), matches(name), null, null, null);
             if (c.getCount() != 1) {
                 throw new RecordNotFoundException();
             }
             c.moveToFirst();
-            SamplingSite samplingSite = new SamplingSite(c.getInt(0), c.getString(1));
+            SamplingSite samplingSite = new SamplingSite(c.getLong(0), c.getString(1));
             c.close();
             rdb.setTransactionSuccessful();
             return samplingSite;
@@ -86,6 +66,29 @@ public class SamplingSiteRepository {
             return new SamplingSite(null);
         } finally {
             rdb.endTransaction();
+        }
+    }
+
+    public SamplingSite findOrCreateByName(String name) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        Cursor c = wdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, where(KioskDatabase.SamplingSitesTable.NAME), matches(name), null, null, null);
+        try {
+            if(c.moveToFirst()) {
+                wdb.setTransactionSuccessful();
+                return new SamplingSite(c.getLong(0), c.getString(1));
+            }
+            ContentValues values = new ContentValues();
+            values.put(KioskDatabase.SamplingSitesTable.NAME, name);
+            long samplingSiteId = wdb.insert(KioskDatabase.SamplingSitesTable.TABLE_NAME, null, values);
+            wdb.setTransactionSuccessful();
+            return new SamplingSite(samplingSiteId, name);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to find or create sampling site with name " + name, e);
+            return new SamplingSite(null);
+        } finally {
+            c.close();
+            wdb.endTransaction();
         }
     }
 }

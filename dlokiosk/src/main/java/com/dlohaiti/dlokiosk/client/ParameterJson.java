@@ -5,8 +5,8 @@ import java.util.List;
 
 public class ParameterJson {
     private boolean isOkNotOk;
-    private BigDecimal minimum;
-    private BigDecimal maximum;
+    private String minimum;
+    private String maximum;
     private String name;
     private String unit;
     private List<SamplingSiteJson> samplingSites;
@@ -19,19 +19,19 @@ public class ParameterJson {
         isOkNotOk = okNotOk;
     }
 
-    public BigDecimal getMinimum() {
+    public String getMinimum() {
         return minimum;
     }
 
-    public void setMinimum(BigDecimal minimum) {
+    public void setMinimum(String minimum) {
         this.minimum = minimum;
     }
 
-    public BigDecimal getMaximum() {
+    public String getMaximum() {
         return maximum;
     }
 
-    public void setMaximum(BigDecimal maximum) {
+    public void setMaximum(String maximum) {
         this.maximum = maximum;
     }
 

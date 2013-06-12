@@ -20,15 +20,15 @@ public class Parameter implements Comparable<Parameter> {
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk) {
         this.name = defaultString(name);
         this.unitOfMeasure = unitOfMeasure;
-        this.minimum = parseBigDecimal(minimum, BigDecimal.ZERO).setScale(2);
-        this.maximum = parseBigDecimal(maximum, BigDecimal.ZERO).setScale(2);
+        this.minimum = parseBigDecimal(minimum, null);
+        this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
         if(NumberUtils.isNumber(candidate)) {
-            return new BigDecimal(candidate);
+            return new BigDecimal(candidate).setScale(2);
         }
         return defaultValue;
     }

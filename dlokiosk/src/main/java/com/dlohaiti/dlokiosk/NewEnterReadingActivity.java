@@ -34,7 +34,7 @@ public class NewEnterReadingActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
         Bundle extras = this.getIntent().getExtras();
-        samplingSite = samplingSiteRepository.findById(extras.getInt("samplingSiteId"));
+        samplingSite = samplingSiteRepository.findByName(extras.getString("samplingSiteName"));
         heading.setText(samplingSite.getName());
         SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);

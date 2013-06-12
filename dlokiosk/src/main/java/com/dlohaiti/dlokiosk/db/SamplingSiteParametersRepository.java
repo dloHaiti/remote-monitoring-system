@@ -1,13 +1,16 @@
 package com.dlohaiti.dlokiosk.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import com.dlohaiti.dlokiosk.ParameterSamplingSites;
 import com.dlohaiti.dlokiosk.domain.Parameter;
 import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -17,10 +20,12 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 public class SamplingSiteParametersRepository {
     private final static String TAG = SamplingSiteParametersRepository.class.getSimpleName();
     private final KioskDatabase db;
+    private final SamplingSiteRepository samplingSiteRepository;
 
     @Inject
-    public SamplingSiteParametersRepository(KioskDatabase db) {
+    public SamplingSiteParametersRepository(KioskDatabase db, SamplingSiteRepository samplingSiteRepository) {
         this.db = db;
+        this.samplingSiteRepository = samplingSiteRepository;
     }
 
     public SortedSet<Parameter> findBySamplingSite(SamplingSite samplingSite) {
@@ -82,5 +87,52 @@ public class SamplingSiteParametersRepository {
     private static String whereIn(String columnName, int numberOfItems) {
         String replacements = StringUtils.repeat("?", ",", numberOfItems);
         return String.format("%s IN (%s)", columnName, replacements);
+    }
+
+    public boolean replaceAll(List<ParameterSamplingSites> samplingSiteParameters) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            wdb.delete(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, null, null);
+            wdb.delete(KioskDatabase.ParametersTable.TABLE_NAME, null, null);
+            wdb.delete(KioskDatabase.SamplingSitesTable.TABLE_NAME, null, null);
+            for(ParameterSamplingSites pss : samplingSiteParameters) {
+                ContentValues parameterValues = new ContentValues();
+                Parameter parameter = pss.getParameter();
+                String parameterName = parameter.getName();
+                parameterValues.put(KioskDatabase.ParametersTable.NAME, parameterName);
+                parameterValues.put(KioskDatabase.ParametersTable.UNIT_OF_MEASURE, parameter.getUnitOfMeasure());
+                if(parameter.getMinimum() != null) {
+                    parameterValues.put(KioskDatabase.ParametersTable.MINIMUM, String.valueOf(parameter.getMinimum()));
+                }
+                if(parameter.getMaximum() != null) {
+                    parameterValues.put(KioskDatabase.ParametersTable.MAXIMUM, String.valueOf(parameter.getMaximum()));
+                }
+                parameterValues.put(KioskDatabase.ParametersTable.IS_OK_NOT_OK, String.valueOf(parameter.isOkNotOk()));
+                long parameterId = wdb.insert(KioskDatabase.ParametersTable.TABLE_NAME, null, parameterValues);
+                if(parameterId == -1) {
+                    Log.e(TAG, String.format("Error inserting Parameter[%s]", parameterName));
+                    break;
+                }
+
+                for(SamplingSite site : pss.getSamplingSites()) {
+                    SamplingSite existingSite = samplingSiteRepository.findOrCreateByName(site.getName());
+                    ContentValues parameterSites = new ContentValues();
+                    parameterSites.put(KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID, parameterId);
+                    parameterSites.put(KioskDatabase.SamplingSitesParametersTable.SITE_ID, existingSite.getId());
+                    long rowId = wdb.insert(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, null, parameterSites);
+                    if(rowId == -1) {
+                        Log.e(TAG, String.format("Error inserting SamplingSite[%s]-Parameter[%s] relationship", site.getName(), parameterName));
+                    }
+                }
+            }
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to replace parameters, sampling sites, and relationships", e);
+            return false;
+        } finally {
+            wdb.endTransaction();
+        }
     }
 }

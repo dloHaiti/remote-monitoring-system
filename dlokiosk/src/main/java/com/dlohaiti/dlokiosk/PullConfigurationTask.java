@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.dlohaiti.dlokiosk.client.*;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
+import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import roboguice.inject.InjectResource;
@@ -22,6 +23,7 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
     @Inject private ConfigurationClient client;
     @Inject private ProductRepository productRepository;
     @Inject private PromotionRepository promotionRepository;
+    @Inject private SamplingSiteParametersRepository samplingSiteParametersRepository;
     @Inject private KioskDate kioskDate;
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
     @InjectResource(R.string.fetch_configuration_succeeded) private String fetchConfigurationSucceededMessage;
@@ -52,15 +54,24 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
             Date end = kioskDate.getFormat().parse(p.getEndDate());
             promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), null));
         }
-//        List<Parameter> parameters = new ArrayList<Parameter>();
-//        for(ParameterJson p : c.getParameters()) {
-//            parameters.a
-//        }
+
+        List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();
+        for(ParameterJson p : c.getParameters()) {
+            Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk());
+            List<SamplingSite> samplingSites = new ArrayList<SamplingSite>();
+            for(SamplingSiteJson site : p.getSamplingSites()) {
+                samplingSites.add(new SamplingSite(site.getName()));
+            }
+            samplingSiteParameters.add(new ParameterSamplingSites(parameter, samplingSites));
+        }
         if(productRepository.replaceAll(products)) {
             Log.i(TAG, "products successfully replaced");
         }
         if(promotionRepository.replaceAll(promotions)) {
             Log.i(TAG, "promotions successfully replaced");
+        }
+        if(samplingSiteParametersRepository.replaceAll(samplingSiteParameters)) {
+            Log.i(TAG, "sampling sites and parameters successfully updated");
         }
         return "";
     }

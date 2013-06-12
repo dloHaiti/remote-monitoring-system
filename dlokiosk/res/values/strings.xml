@@ -67,4 +67,5 @@
     <string name="update_configuration">Update Configuration</string>
     <string name="fetch_configuration_failed">Error Fetching Configuration</string>
     <string name="fetch_configuration_succeeded">Configuration Successfully Updated</string>
+  <string name="update_configuration_failed">Updating Configuration Failed On Device</string>
 </resources>

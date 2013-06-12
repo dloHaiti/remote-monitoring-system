@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PullConfigurationTask extends RoboAsyncTask<String> {
+public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     private static final String TAG = PullConfigurationTask.class.getSimpleName();
     private ProgressDialog dialog;
     @Inject private ConfigurationClient client;
@@ -27,6 +27,7 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
     @Inject private KioskDate kioskDate;
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
     @InjectResource(R.string.fetch_configuration_succeeded) private String fetchConfigurationSucceededMessage;
+    @InjectResource(R.string.update_configuration_failed) private String updateConfigurationFailedMessage;
     private Context context;
 
     public PullConfigurationTask(Context context) {
@@ -40,15 +41,15 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
         dialog.show();
     }
 
-    @Override public String call() throws Exception {
+    @Override public Boolean call() throws Exception {
         Configuration c = client.fetch();
         List<Product> products = new ArrayList<Product>();
-        for(ProductJson p : c.getProducts()) {
+        for (ProductJson p : c.getProducts()) {
             Money price = new Money(p.getPrice().getAmount());
             products.add(new Product(null, p.getSku(), null, p.isRequiresQuantity(), 1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons()));
         }
         List<Promotion> promotions = new ArrayList<Promotion>();
-        for(PromotionJson p : c.getPromotions()) {
+        for (PromotionJson p : c.getPromotions()) {
             PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(p.getAppliesTo());
             Date start = kioskDate.getFormat().parse(p.getStartDate());
             Date end = kioskDate.getFormat().parse(p.getEndDate());
@@ -56,28 +57,25 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
         }
 
         List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();
-        for(ParameterJson p : c.getParameters()) {
+        for (ParameterJson p : c.getParameters()) {
             Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk());
             List<SamplingSite> samplingSites = new ArrayList<SamplingSite>();
-            for(SamplingSiteJson site : p.getSamplingSites()) {
+            for (SamplingSiteJson site : p.getSamplingSites()) {
                 samplingSites.add(new SamplingSite(site.getName()));
             }
             samplingSiteParameters.add(new ParameterSamplingSites(parameter, samplingSites));
         }
-        if(productRepository.replaceAll(products)) {
-            Log.i(TAG, "products successfully replaced");
-        }
-        if(promotionRepository.replaceAll(promotions)) {
-            Log.i(TAG, "promotions successfully replaced");
-        }
-        if(samplingSiteParametersRepository.replaceAll(samplingSiteParameters)) {
-            Log.i(TAG, "sampling sites and parameters successfully updated");
-        }
-        return "";
+        return productRepository.replaceAll(products) &&
+                promotionRepository.replaceAll(promotions) &&
+                samplingSiteParametersRepository.replaceAll(samplingSiteParameters);
     }
 
-    @Override protected void onSuccess(String s) throws Exception {
-        Toast.makeText(context, fetchConfigurationSucceededMessage, Toast.LENGTH_LONG).show();
+    @Override protected void onSuccess(Boolean s) throws Exception {
+        if(s.equals(Boolean.TRUE)) {
+            Toast.makeText(context, fetchConfigurationSucceededMessage, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, updateConfigurationFailedMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override protected void onException(Exception e) throws RuntimeException {
@@ -86,7 +84,7 @@ public class PullConfigurationTask extends RoboAsyncTask<String> {
     }
 
     @Override protected void onFinally() throws RuntimeException {
-        if(dialog.isShowing()) {
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
     }

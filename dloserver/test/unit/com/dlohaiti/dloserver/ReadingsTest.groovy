@@ -187,4 +187,34 @@ class ReadingsTest {
     //they combine for totalized gallons
     assert 20029G == readings.totalizeGallonsFor(new LocalDate(2013, 4, 15))
   }
+
+  void testShouldGiveReadingAveragePerDayParameterAndSite() {
+    def pH = new ParameterBuilder(name: 'pH').build()
+    def april10 = new LocalDate(2013, 4, 10).toDate()
+    def site1 = new SamplingSiteBuilder(name: 'site1').build()
+    Readings readings = new Readings(readings: [
+        new ReadingBuilder(
+            samplingSite: site1,
+            measurements: [
+                new Measurement(parameter: pH, value: 5G),
+                new Measurement(parameter: new ParameterBuilder(name: 'Temperature').build(), value: 10G),
+            ],
+            createdDate: april10
+        ).build(),
+        new ReadingBuilder(
+            samplingSite: site1,
+            measurements: [
+                new Measurement(parameter: pH, value: 7G),
+                new Measurement(parameter: new ParameterBuilder(name: 'Temperature').build(), value: 20G),
+            ],
+            createdDate: april10
+        ).build()
+    ])
+
+    assert 6G == readings.averageFor(site1, pH, april10)
+    assert 15G == readings.averageFor(site1, new ParameterBuilder(name: 'Temperature').build(), april10)
+    assert 0 == readings.averageFor(site1, new ParameterBuilder(name: 'Nonsense').build(), april10)
+    assert 0 == readings.averageFor(new SamplingSiteBuilder(name: 'site2').build(), pH, april10)
+    assert 0 == readings.averageFor(site1, pH, new LocalDate(2013, 4, 9).toDate())
+  }
 }

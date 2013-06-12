@@ -27,6 +27,10 @@ class Reading {
     return date == new LocalDate(createdDate.year + 1900, createdDate.month + 1, createdDate.date);
   }
 
+  boolean isOnDate(Date date) {
+    return isOnDate(new LocalDate(date.year + 1900, date.month + 1, date.date))
+  }
+
   boolean isFollowupSite() {
     return samplingSite.isFollowup()
   }

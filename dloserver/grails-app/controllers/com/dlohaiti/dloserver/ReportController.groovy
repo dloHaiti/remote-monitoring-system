@@ -11,7 +11,9 @@ class ReportController {
   }
 
   def readings() {
-
+    Kiosk kiosk = Kiosk.findByName(params.kioskName)
+    def readings = new Readings(readings: Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight()))
+    [parameters: Parameter.findAll(), lastWeek: previousWeek().collect({d -> d.toDate()}), readings: readings]
   }
 
   def salesByDay() {

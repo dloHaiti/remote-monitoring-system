@@ -10,6 +10,10 @@ class ReportController {
     [kioskName: request.kioskName]
   }
 
+  def readings() {
+
+  }
+
   def salesByDay() {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
     List<Product> products = Product.findAll()

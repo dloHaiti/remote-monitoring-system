@@ -18,16 +18,17 @@ class ReportController {
 
     def paramMap = [:]
     for(parameter in parameters) {
+      def sitesForParameter = parameter.samplingSites.unique()
       paramMap[parameter.name] = []
       def header = ['Dates']
-      for(site in parameter.samplingSites.unique()) {
+      for(site in sitesForParameter) {
         header.add(site.name)
       }
       paramMap[parameter.name].add(header)
 
       for(day in previousWeek()) {
         def row = [day.toString('MM/dd/yy')]
-        for(site in parameter.samplingSites.unique()) {
+        for(site in sitesForParameter) {
           row.add(readings.averageFor(site, parameter, day.toDate()))
         }
         paramMap[parameter.name].add(row)

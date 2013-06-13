@@ -2,6 +2,8 @@ package com.dlohaiti.dloserver
 
 import org.joda.time.LocalDate
 
+import java.math.RoundingMode
+
 class Readings {
   static mapWith = "none"
 
@@ -52,6 +54,6 @@ class Readings {
     if (allMeasurements.empty) {
       return 0
     }
-    return allMeasurements.inject(0, { acc, m -> acc + m.value }) / allMeasurements.size();
+    return (allMeasurements.inject(0, { acc, m -> acc + m.value }) / allMeasurements.size() as BigDecimal).setScale(2, RoundingMode.HALF_UP);
   }
 }

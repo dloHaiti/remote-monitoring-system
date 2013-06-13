@@ -13,7 +13,28 @@ class ReportController {
   def readings() {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
     def readings = new Readings(readings: Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight()))
-    [parameters: Parameter.findAll(), lastWeek: previousWeek().collect({d -> d.toDate()}), readings: readings]
+
+    def parameters = Parameter.findAll()
+
+    def paramMap = [:]
+    for(parameter in parameters) {
+      paramMap[parameter.name] = []
+      def header = ['Dates']
+      for(site in parameter.samplingSites.unique()) {
+        header.add(site.name)
+      }
+      paramMap[parameter.name].add(header)
+
+      for(day in previousWeek()) {
+        def row = [day.toString('MM/dd/yy')]
+        for(site in parameter.samplingSites.unique()) {
+          row.add(readings.averageFor(site, parameter, day.toDate()))
+        }
+        paramMap[parameter.name].add(row)
+      }
+    }
+
+    [parameters: parameters, lastWeek: previousWeek().collect({d -> d.toDate()}), readings: readings, paramMap: paramMap]
   }
 
   def salesByDay() {

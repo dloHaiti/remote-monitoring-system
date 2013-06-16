@@ -6,7 +6,6 @@ import android.widget.EditText;
 import com.dlohaiti.dlokiosk.client.ConfigurationClient;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
-import com.dlohaiti.dlokiosk.domain.Kiosk;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -16,17 +15,16 @@ public class ConfigurationActivity extends RoboActivity {
     @InjectView(R.id.kiosk_password) private EditText kioskPasswordTextBox;
     @InjectView(R.id.reports_home_url) private EditText reportsHomeUrl;
     @InjectView(R.id.server_url) private EditText serverUrl;
-    @Inject private ConfigurationRepository configurationRepository;
+    @Inject private ConfigurationRepository config;
     @Inject private ConfigurationClient client;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
-        Kiosk kiosk = configurationRepository.getKiosk();
-        kioskIdTextBox.setText(kiosk.getId());
-        kioskPasswordTextBox.setText(kiosk.getPassword());
-        reportsHomeUrl.setText(configurationRepository.get(ConfigurationKey.REPORTS_HOME_URL));
-        serverUrl.setText(configurationRepository.get(ConfigurationKey.SERVER_URL));
+        kioskIdTextBox.setText(config.get(ConfigurationKey.KIOSK_ID));
+        kioskPasswordTextBox.setText(config.get(ConfigurationKey.KIOSK_PASSWORD));
+        reportsHomeUrl.setText(config.get(ConfigurationKey.REPORTS_HOME_URL));
+        serverUrl.setText(config.get(ConfigurationKey.SERVER_URL));
     }
 
     public void save(View v) {
@@ -34,9 +32,10 @@ public class ConfigurationActivity extends RoboActivity {
         String kioskPassword = kioskPasswordTextBox.getText().toString();
         String reportsHome = reportsHomeUrl.getText().toString();
         String serverHome = serverUrl.getText().toString();
-        configurationRepository.save(kioskId, kioskPassword);
-        configurationRepository.save(ConfigurationKey.REPORTS_HOME_URL, reportsHome);
-        configurationRepository.save(ConfigurationKey.SERVER_URL, serverHome);
+        config.save(ConfigurationKey.KIOSK_ID, kioskId);
+        config.save(ConfigurationKey.KIOSK_PASSWORD, kioskPassword);
+        config.save(ConfigurationKey.REPORTS_HOME_URL, reportsHome);
+        config.save(ConfigurationKey.SERVER_URL, serverHome);
         finish();
     }
 

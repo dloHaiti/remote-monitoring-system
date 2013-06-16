@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,14 +18,11 @@ import static org.mockito.Mockito.mock;
 public class ReceiptFactoryTest {
 
     private Clock clock;
-    private ConfigurationRepository configurationRepository;
     private ReceiptFactory factory;
 
     @Before
     public void setUp() {
         clock = mock(Clock.class);
-        configurationRepository = mock(ConfigurationRepository.class);
-        given(configurationRepository.getKiosk()).willReturn(new Kiosk("k1", "pw"));
         given(clock.now()).willReturn(new Date(0));
         factory = new ReceiptFactory(clock);
     }

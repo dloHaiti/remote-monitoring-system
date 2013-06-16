@@ -8,6 +8,11 @@ class Promotion {
   BigDecimal amount
   String type
   String sku
+  String base64EncodedImage
+
+  static mapping = {
+    base64EncodedImage type: "text"
+  }
 
   static constraints = {
     sku(unique: true)

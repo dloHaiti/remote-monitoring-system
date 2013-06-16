@@ -1,10 +1,8 @@
 package com.dlohaiti.dlokiosk.client;
 
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -16,7 +14,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import roboguice.inject.InjectResource;
 
 import java.text.DateFormat;
 
@@ -26,13 +23,13 @@ public class RestClient {
 
     private final RestTemplate restTemplate;
     private final ConfigurationRepository config;
-
-    @InjectResource(R.string.dlo_server_url) String baseUrl;
+    private final String baseUrl;
 
     @Inject
     public RestClient(ConfigurationRepository config, KioskDate kioskDate) {
         this.restTemplate = getJsonRestTemplate(kioskDate.getFormat());
         this.config = config;
+        this.baseUrl = config.get(ConfigurationKey.SERVER_URL);
     }
 
     private RestTemplate getJsonRestTemplate(DateFormat format) {

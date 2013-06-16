@@ -17,7 +17,7 @@
       android:layout_centerHorizontal="true"
       android:layout_marginTop="20dp"
       android:padding="15dp"
-      android:hint="@string/kioskIdHint" />
+      android:hint="@string/kiosk_id_hint" />
 
     <Button
       android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
     android:layout_gravity="center_horizontal"
     android:padding="15dp"
     android:inputType="textPassword"
-    android:hint="@string/kioskPasswordHint" />
+    android:hint="@string/kiosk_password_hint" />
 
   <EditText
       android:id="@+id/server_url"
@@ -55,6 +55,6 @@
       android:layout_width="wrap_content"
       android:layout_gravity="center_horizontal"
       android:inputType="textUri"
-      android:hint="@string/serverUrlHint"/>
+      android:hint="@string/server_url_hint"/>
 
 </LinearLayout>

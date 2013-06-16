@@ -8,6 +8,7 @@ public class ProductJson {
     private Integer maximumQuantity;
     private boolean requiresQuantity;
     private MoneyJson price;
+    private String base64EncodedImage;
 
     public String getSku() {
         return sku;
@@ -63,5 +64,13 @@ public class ProductJson {
 
     public void setPrice(MoneyJson price) {
         this.price = price;
+    }
+
+    public String getBase64EncodedImage() {
+        return base64EncodedImage;
+    }
+
+    public void setBase64EncodedImage(String base64EncodedImage) {
+        this.base64EncodedImage = base64EncodedImage;
     }
 }

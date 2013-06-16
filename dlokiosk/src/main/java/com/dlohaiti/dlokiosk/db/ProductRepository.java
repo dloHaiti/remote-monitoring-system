@@ -5,15 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import com.dlohaiti.dlokiosk.R;
+import com.dlohaiti.dlokiosk.Base64ImageConverter;
 import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.google.inject.Inject;
-import org.springframework.util.support.Base64;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +22,7 @@ public class ProductRepository {
     private final static String TAG = ProductRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final Context context;
+    private final Base64ImageConverter imageConverter;
     private final static String[] columns = new String[]{
             KioskDatabase.ProductsTable.ID,
             KioskDatabase.ProductsTable.SKU,
@@ -39,9 +37,10 @@ public class ProductRepository {
     };
 
     @Inject
-    public ProductRepository(Context context, KioskDatabase db) {
+    public ProductRepository(Context context, KioskDatabase db, Base64ImageConverter imageConverter) {
         this.context = context;
         this.db = db;
+        this.imageConverter = imageConverter;
     }
 
     public List<Product> list() {
@@ -75,14 +74,7 @@ public class ProductRepository {
         Money price = new Money(new BigDecimal(cursor.getDouble(6)));
         String description = cursor.getString(8);
         Integer gallons = cursor.getInt(9);
-        Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
-        try {
-            byte[] imageData = Base64.decode(cursor.getString(2));
-            resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-        } catch (IOException e) {
-            Log.e(TAG, String.format("image for product(%s) could not be decoded", sku), e);
-            resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
-        }
+        Bitmap resource = imageConverter.fromBase64EncodedString(cursor.getString(2));
         long id = cursor.getLong(0);
         return new Product(id, sku, resource, requiresQuantity, 1, minimum, maximum, price, description, gallons);
     }
@@ -119,7 +111,7 @@ public class ProductRepository {
                 values.put(KioskDatabase.ProductsTable.PRICE, p.getPrice().getAmount().toString());
                 values.put(KioskDatabase.ProductsTable.DESCRIPTION, p.getDescription());
                 values.put(KioskDatabase.ProductsTable.GALLONS, p.getGallons());
-//                values.put(KioskDatabase.ProductsTable.ICON, null)
+                values.put(KioskDatabase.ProductsTable.ICON, imageConverter.toBase64EncodedString(p.getImageResource()));
                 values.put(KioskDatabase.ProductsTable.MINIMUM_QUANTITY, p.getMinimumQuantity());
                 values.put(KioskDatabase.ProductsTable.MAXIMUM_QUANTITY, p.getMaximumQuantity());
                 values.put(KioskDatabase.ProductsTable.REQUIRES_QUANTITY, p.requiresQuantity());

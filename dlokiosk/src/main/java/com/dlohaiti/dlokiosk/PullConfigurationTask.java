@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.client.*;
@@ -25,6 +26,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject private PromotionRepository promotionRepository;
     @Inject private SamplingSiteParametersRepository samplingSiteParametersRepository;
     @Inject private KioskDate kioskDate;
+    @Inject private Base64ImageConverter imageConverter;
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
     @InjectResource(R.string.fetch_configuration_succeeded) private String fetchConfigurationSucceededMessage;
     @InjectResource(R.string.update_configuration_failed) private String updateConfigurationFailedMessage;
@@ -46,7 +48,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         List<Product> products = new ArrayList<Product>();
         for (ProductJson p : c.getProducts()) {
             Money price = new Money(p.getPrice().getAmount());
-            products.add(new Product(null, p.getSku(), null, p.isRequiresQuantity(), 1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons()));
+            Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
+            products.add(new Product(null, p.getSku(), imageResource, p.isRequiresQuantity(), 1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons()));
         }
         List<Promotion> promotions = new ArrayList<Promotion>();
         for (PromotionJson p : c.getPromotions()) {

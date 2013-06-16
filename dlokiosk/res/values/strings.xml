@@ -3,37 +3,15 @@
 
   <string name="app_name">dloKiosk</string>
   <string name="action_configuration">Configuration</string>
-  <string name="hello_world">Hello world!</string>
   <string name="record_new_reading_button">New Reading</string>
   <string name="manual_sync_button">Manual Sync</string>
   <string name="title_activity_enter_reading">Enter New Reading</string>
-  <string name="label_temperature">Temperature</string>
-  <string name="label_pH">pH</string>
-  <string name="label_odor">Odor</string>
-  <string name="label_color">Color</string>
-  <string name="label_hardness">Hardness</string>
-  <string name="label_alkalinity">Alkalinity</string>
-  <string name="label_chlorine">Chlorine</string>
-  <string name="label_tds">TDS</string>
-  <string name="label_turbidity">Turbidity</string>
   <string name="ok">OK</string>
   <string name="not_ok">Not OK</string>
-  <string name="heading_taste">Taste</string>
   <string name="button_save">Save Readings</string>
   <string name="dialog_save">Save</string>
   <string name="dialog_cancel">Cancel</string>
 
-  <string name="label_calcium_carbonate">mg/L CaCO3</string>
-  <string name="label_chlorine_with_units">mg/L Cl2</string>
-  <string name="label_milligrams_liter">mg/L</string>
-  <string name="label_degrees_celsius">°C</string>
-  <string name="label_ntu">NTU</string>
-  <string name="heading_total_chlorine_residual">Total Chlorine Residual</string>
-  <string name="heading_free_chlorine_residual">Free Chlorine Residual</string>
-  <string name="heading_free_chlorine_concentration">Free Chlorine Concentration</string>
-  <string name="heading_total_chlorine_concentration">Total Chlorine Concentration</string>
-  <string name="button_wtu_eff">WTU Eff</string>
-  <string name="button_borehole">Borehole</string>
   <string name="server_status_checking_label">Server Status</string>
   <string name="sending_readings_message">Sending readings to server</string>
   <string name="no_readings_msg">Everything already synchronized!</string>

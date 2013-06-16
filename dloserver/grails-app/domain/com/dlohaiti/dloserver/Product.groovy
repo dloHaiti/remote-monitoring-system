@@ -7,8 +7,13 @@ class Product {
   Money price
   Integer minimumQuantity
   Integer maximumQuantity
+  String base64EncodedImage
 
   static embedded = ['price']
+
+  static mapping = {
+    base64EncodedImage type: "text"
+  }
 
   static constraints = {
     sku(blank: false, unique: true)

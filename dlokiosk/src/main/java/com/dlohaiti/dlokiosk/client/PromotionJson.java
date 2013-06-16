@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk.client;
 
 import java.math.BigDecimal;
 
+@SuppressWarnings("unused")
 public class PromotionJson {
     private String appliesTo;
     private String startDate;
@@ -11,6 +12,7 @@ public class PromotionJson {
     private String type;
     private String sku;
     private boolean hasRange;
+    private String base64EncodedImage;
 
     public String getAppliesTo() {
         return appliesTo;
@@ -74,5 +76,13 @@ public class PromotionJson {
 
     public void setHasRange(boolean hasRange) {
         this.hasRange = hasRange;
+    }
+
+    public String getBase64EncodedImage() {
+        return base64EncodedImage;
+    }
+
+    public void setBase64EncodedImage(String base64EncodedImage) {
+        this.base64EncodedImage = base64EncodedImage;
     }
 }

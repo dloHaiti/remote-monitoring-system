@@ -5,17 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
+import com.dlohaiti.dlokiosk.Base64ImageConverter;
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.Promotion;
 import com.dlohaiti.dlokiosk.domain.PromotionApplicationType;
 import com.dlohaiti.dlokiosk.domain.PromotionType;
 import com.google.inject.Inject;
-import org.springframework.util.support.Base64;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +26,7 @@ public class PromotionRepository {
     private final Context context;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
+    private final Base64ImageConverter imageConverter;
     private final static String[] columns = {
             KioskDatabase.PromotionsTable.ID,
             KioskDatabase.PromotionsTable.APPLIES_TO,
@@ -42,10 +40,11 @@ public class PromotionRepository {
     };
 
     @Inject
-    public PromotionRepository(Context context, KioskDatabase db, KioskDate kioskDate) {
+    public PromotionRepository(Context context, KioskDatabase db, KioskDate kioskDate, Base64ImageConverter imageConverter) {
         this.context = context;
         this.db = db;
         this.kioskDate = kioskDate;
+        this.imageConverter = imageConverter;
     }
 
     public List<Promotion> list() {
@@ -99,14 +98,7 @@ public class PromotionRepository {
         String amount = c.getString(3);
         PromotionType type = PromotionType.valueOf(c.getString(4));
         String sku = c.getString(8);
-        Bitmap resource; //TODO: how can we make this show the unknown image when it doesn't decode properly?
-        try {
-            byte[] imageData = Base64.decode(c.getString(7));
-            resource = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-        } catch (IOException e) {
-            Log.e(TAG, String.format("image for promo(%s) could not be decoded", sku), e);
-            resource = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
-        }
+        Bitmap resource = imageConverter.fromBase64EncodedString(c.getString(7));
         return new Promotion(id, sku, appliesTo, productSku, startDate, endDate, amount, type, resource);
     }
 
@@ -124,7 +116,7 @@ public class PromotionRepository {
                 values.put(KioskDatabase.PromotionsTable.START_DATE, kioskDate.getFormat().format(p.getStartDate()));
                 values.put(KioskDatabase.PromotionsTable.END_DATE, kioskDate.getFormat().format(p.getEndDate()));
                 values.put(KioskDatabase.PromotionsTable.TYPE, p.getType().name());
-//TODO: icon                values.put(KioskDatabase.PromotionsTable.ICON, null);
+                values.put(KioskDatabase.PromotionsTable.ICON, imageConverter.toBase64EncodedString(p.getImageResource()));
                 wdb.insert(KioskDatabase.PromotionsTable.TABLE_NAME, null, values);
             }
             wdb.setTransactionSuccessful();

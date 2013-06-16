@@ -56,7 +56,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(p.getAppliesTo());
             Date start = kioskDate.getFormat().parse(p.getStartDate());
             Date end = kioskDate.getFormat().parse(p.getEndDate());
-            promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), null));
+            Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
+            promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), imageResource));
         }
 
         List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();

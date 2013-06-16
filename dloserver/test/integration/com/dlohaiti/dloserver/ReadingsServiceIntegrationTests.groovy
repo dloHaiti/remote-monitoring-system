@@ -44,9 +44,9 @@ s2,2013-12-12 00:01:02 EDT,8
 
         assert Reading.count() == 1
         assert Measurement.findByParameter(ph).value == 8
-        assert Measurement.findByParameter(ph).timestamp == sdf.parse("2013-12-12 00:01:02 EDT")
+        assert Measurement.findByParameter(ph).createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
         assert Measurement.findByParameter(temperature).value == 20
-        assert Measurement.findByParameter(temperature).timestamp == sdf.parse("2013-12-12 00:01:02 EDT")
+        assert Measurement.findByParameter(temperature).createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
     }
 
     @Test

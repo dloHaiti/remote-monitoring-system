@@ -24,7 +24,7 @@ class ReadingsController {
         render(status: 201, text: [msg: "OK"] as JSON)
       }
     } catch (Exception e) {
-      log.error("Error saving Reading [${params.date('timestamp', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
+      log.error("Error saving Reading [${params.date('createdDate', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
       render(status: 503, text: [msg: e.message] as JSON)
     }
   }

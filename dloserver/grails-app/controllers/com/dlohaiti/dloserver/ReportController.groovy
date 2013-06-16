@@ -42,7 +42,7 @@ class ReportController {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
     List<Product> products = Product.findAll()
     List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
-    List<Delivery> deliveries = Delivery.findAllByKioskAndTimestampGreaterThanEquals(kiosk, oneWeekAgoMidnight())
+    List<Delivery> deliveries = Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
 
     def tableHeader = ['']
     for(day in previousWeek()) {
@@ -81,7 +81,7 @@ class ReportController {
 
   def volumeByDay() {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
-    List<Delivery> deliveries = Delivery.findAllByKioskAndTimestampGreaterThanEquals(kiosk, oneWeekAgoMidnight())
+    List<Delivery> deliveries = Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
     List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
     List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
     List<Product> products = Product.findAll()

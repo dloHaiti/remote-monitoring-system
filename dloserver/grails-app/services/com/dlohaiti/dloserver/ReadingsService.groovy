@@ -65,7 +65,7 @@ class ReadingsService {
             if (validLine) {
                 measurement = parseMeasurement(nextLine)
                 if (measurementIsNotUnique(measurement)) {
-                    log.warn("Measurement for sensor ${measurement.parameter.sensor.sensorId} @ ${measurement.timestamp} ignored, as it was already in DB")
+                    log.warn("Measurement for sensor ${measurement.parameter.sensor.sensorId} ignored, as it was already in DB")
                     continue
                 }
                 reading.addToMeasurements(measurement)
@@ -92,12 +92,11 @@ class ReadingsService {
     }
 
     private static boolean measurementIsNotUnique(Measurement measurement) {
-        Measurement.findByParameterAndTimestamp(measurement.parameter, measurement.timestamp)
+        Measurement.findByParameter(measurement.parameter)
     }
 
     private Measurement parseMeasurement(String[] nextLine) {
         def sensorId = nextLine[0]
-        def timestamp = nextLine[1]
         def value = nextLine[2]
 
         def sensor = Sensor.findBySensorIdIlike(sensorId)

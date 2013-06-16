@@ -15,7 +15,7 @@ class ReceiptsControllerIntegrationTests extends GroovyTestCase {
 
     @Test
     void shouldSaveValidDataToDb() {
-        controller.request.json = '{"kioskId":"k1", "createdAt":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+        controller.request.json = '{"kioskId":"k1", "createdDate":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
 
         controller.save()
 
@@ -32,7 +32,7 @@ class ReceiptsControllerIntegrationTests extends GroovyTestCase {
 
     @Test
     void shouldRejectInvalidTimestampFormat() {
-        controller.request.json = '{"kioskId":"k1", "createdAt":1213431241234,"orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+        controller.request.json = '{"kioskId":"k1", "createdDate":1213431241234,"orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
 
         controller.save()
 
@@ -42,7 +42,7 @@ class ReceiptsControllerIntegrationTests extends GroovyTestCase {
 
     @Test
     void shouldRejectMissingKiosk() {
-        controller.request.json = '{"kioskId":"k0001", "createdAt":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+        controller.request.json = '{"kioskId":"k0001", "createdDate":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
 
         controller.save()
 

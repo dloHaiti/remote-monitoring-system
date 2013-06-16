@@ -92,7 +92,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 DeliveriesTable.ID,
                 DeliveriesTable.DELIVERY_TYPE,
                 DeliveriesTable.QUANTITY,
-                DeliveriesTable.CREATED_AT
+                DeliveriesTable.CREATED_DATE
         );
         String createPromotions = String.format(
                 "CREATE TABLE %s(" +
@@ -390,7 +390,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
     public static class ReceiptsTable {
         public static final String TABLE_NAME = "RECEIPTS";
         public static final String ID = "ID";
-        public static final String CREATED_AT = "CREATED_AT";
+        public static final String CREATED_AT = "CREATED_DATE";
         public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
         public static final String TOTAL = "TOTAL";
     }
@@ -406,7 +406,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String ID = "ID";
         public static final String QUANTITY = "QUANTITY";
         public static final String DELIVERY_TYPE = "DELIVERY_TYPE";
-        public static final String CREATED_AT = "CREATED_AT";
+        public static final String CREATED_DATE = "CREATED_DATE";
     }
 
     public static class PromotionsTable {

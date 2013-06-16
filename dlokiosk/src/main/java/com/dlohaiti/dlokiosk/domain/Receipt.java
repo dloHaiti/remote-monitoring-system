@@ -10,18 +10,18 @@ import java.util.List;
 public class Receipt {
     private final Long id;
     private final List<LineItem> lineItems;
-    private final Date createdAt;
+    private final Date createdDate;
     private final Integer totalGallons;
     private final Money total;
 
-    public Receipt(List<LineItem> lineItems, Date createdAt, Integer totalGallons, Money total) {
-        this(null, lineItems, createdAt, totalGallons, total);
+    public Receipt(List<LineItem> lineItems, Date createdDate, Integer totalGallons, Money total) {
+        this(null, lineItems, createdDate, totalGallons, total);
     }
 
-    public Receipt(Long id, List<LineItem> lineItems, Date createdAt, Integer totalGallons, Money total) {
+    public Receipt(Long id, List<LineItem> lineItems, Date createdDate, Integer totalGallons, Money total) {
         this.id = id;
         this.lineItems = lineItems;
-        this.createdAt = createdAt;
+        this.createdDate = createdDate;
         this.totalGallons = totalGallons;
         this.total = total;
     }
@@ -39,7 +39,7 @@ public class Receipt {
     }
 
     public Date getCreatedDate() {
-        return createdAt;
+        return createdDate;
     }
 
     @JsonIgnore public Long getId() {
@@ -61,7 +61,7 @@ public class Receipt {
 
         Receipt receipt = (Receipt) o;
 
-        if (createdAt != null ? !createdAt.equals(receipt.createdAt) : receipt.createdAt != null) return false;
+        if (createdDate != null ? !createdDate.equals(receipt.createdDate) : receipt.createdDate != null) return false;
         if (id != null ? !id.equals(receipt.id) : receipt.id != null) return false;
         if (lineItems != null ? !lineItems.equals(receipt.lineItems) : receipt.lineItems != null) return false;
         if (total != null ? !total.equals(receipt.total) : receipt.total != null) return false;
@@ -75,7 +75,7 @@ public class Receipt {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (totalGallons != null ? totalGallons.hashCode() : 0);
         result = 31 * result + (total != null ? total.hashCode() : 0);
         return result;

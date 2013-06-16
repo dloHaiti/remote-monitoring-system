@@ -110,7 +110,7 @@ public class PromotionRepository {
             for(Promotion p : promotions) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.PromotionsTable.SKU, p.getSku());
-                values.put(KioskDatabase.PromotionsTable.AMOUNT, p.getAmount().toString());
+                values.put(KioskDatabase.PromotionsTable.AMOUNT, p.getRawAmount().toString());
                 values.put(KioskDatabase.PromotionsTable.APPLIES_TO, p.getAppliesTo().name());
                 values.put(KioskDatabase.PromotionsTable.PRODUCT_SKU, p.getProductSku());
                 values.put(KioskDatabase.PromotionsTable.START_DATE, kioskDate.getFormat().format(p.getStartDate()));

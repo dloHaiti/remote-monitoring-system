@@ -8,25 +8,25 @@ public class Delivery {
     private final Integer id;
     private final int quantity;
     private final DeliveryType type;
-    private final Date createdAt;
+    private final Date createdDate;
 
-    public Delivery(int quantity, DeliveryType type, Date createdAt) {
-        this(null, quantity, type, createdAt);
+    public Delivery(int quantity, DeliveryType type, Date createdDate) {
+        this(null, quantity, type, createdDate);
     }
 
-    public Delivery(Integer id, Integer quantity, DeliveryType type, Date createdAt) {
+    public Delivery(Integer id, Integer quantity, DeliveryType type, Date createdDate) {
         this.id = id;
         this.quantity = quantity;
         this.type = type;
-        this.createdAt = createdAt;
+        this.createdDate = createdDate;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
     public int getQuantity() {

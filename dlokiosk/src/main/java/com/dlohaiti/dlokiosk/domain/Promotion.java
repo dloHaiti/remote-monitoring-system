@@ -61,6 +61,10 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return id;
     }
 
+    @JsonIgnore public BigDecimal getRawAmount() {
+        return amount;
+    }
+
     public BigDecimal getAmount() {
         if (type == PromotionType.AMOUNT) {
             return amount;

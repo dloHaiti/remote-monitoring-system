@@ -2,7 +2,6 @@ package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.DeliveryType;
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.google.inject.Inject;
 
 import java.text.ParseException;
@@ -24,11 +23,11 @@ public class DeliveryFactory {
 
     public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String createdAtDate) {
         DeliveryType type = DeliveryType.valueOf(deliveryType);
-        Date createdAt = null;
+        Date createdDate = null;
         try {
-            createdAt = kioskDate.getFormat().parse(createdAtDate);
+            createdDate = kioskDate.getFormat().parse(createdAtDate);
         } catch (ParseException e) {
         }
-        return new Delivery(id, quantity, type, createdAt);
+        return new Delivery(id, quantity, type, createdDate);
     }
 }

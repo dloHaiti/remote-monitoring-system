@@ -19,7 +19,7 @@ public class ViewReportsActivity extends RoboActivity {
         setContentView(R.layout.activity_view_reports);
         viewReportsWebView.setWebViewClient(webViewClient);
         viewReportsWebView.getSettings().setJavaScriptEnabled(true);
-        viewReportsWebView.loadUrl(config.get(ConfigurationKey.REPORTS_HOME_URL));
+        viewReportsWebView.loadUrl(config.get(ConfigurationKey.SERVER_URL) + "/report");
     }
 
     @Override public void onBackPressed() {

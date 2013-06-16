@@ -202,7 +202,6 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
-        db.execSQL(insertConfig, new Object[]{ConfigurationKey.REPORTS_HOME_URL.name(), "http://10.0.2.2:8080/dloserver/report"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.SERVER_URL.name(), "http://10.0.2.2:8080/dloserver"});
     }
 

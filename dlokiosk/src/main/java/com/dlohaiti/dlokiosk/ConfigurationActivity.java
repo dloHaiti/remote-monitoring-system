@@ -13,7 +13,6 @@ import roboguice.inject.InjectView;
 public class ConfigurationActivity extends RoboActivity {
     @InjectView(R.id.kiosk_id) private EditText kioskIdTextBox;
     @InjectView(R.id.kiosk_password) private EditText kioskPasswordTextBox;
-    @InjectView(R.id.reports_home_url) private EditText reportsHomeUrl;
     @InjectView(R.id.server_url) private EditText serverUrl;
     @Inject private ConfigurationRepository config;
     @Inject private ConfigurationClient client;
@@ -23,18 +22,15 @@ public class ConfigurationActivity extends RoboActivity {
         setContentView(R.layout.activity_configuration);
         kioskIdTextBox.setText(config.get(ConfigurationKey.KIOSK_ID));
         kioskPasswordTextBox.setText(config.get(ConfigurationKey.KIOSK_PASSWORD));
-        reportsHomeUrl.setText(config.get(ConfigurationKey.REPORTS_HOME_URL));
         serverUrl.setText(config.get(ConfigurationKey.SERVER_URL));
     }
 
     public void save(View v) {
         String kioskId = kioskIdTextBox.getText().toString();
         String kioskPassword = kioskPasswordTextBox.getText().toString();
-        String reportsHome = reportsHomeUrl.getText().toString();
         String serverHome = serverUrl.getText().toString();
         config.save(ConfigurationKey.KIOSK_ID, kioskId);
         config.save(ConfigurationKey.KIOSK_PASSWORD, kioskPassword);
-        config.save(ConfigurationKey.REPORTS_HOME_URL, reportsHome);
         config.save(ConfigurationKey.SERVER_URL, serverHome);
         finish();
     }

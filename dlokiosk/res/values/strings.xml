@@ -34,7 +34,6 @@
   <string name="heading_total_chlorine_concentration">Total Chlorine Concentration</string>
   <string name="button_wtu_eff">WTU Eff</string>
   <string name="button_borehole">Borehole</string>
-  <string name="dlo_server_url">http://10.0.2.2:8080/dloserver</string>
   <string name="server_status_checking_label">Server Status</string>
   <string name="sending_readings_message">Sending readings to server</string>
   <string name="no_readings_msg">Everything already synchronized!</string>
@@ -61,7 +60,6 @@
   <string name="zero">0</string>
   <string name="default_currency">HTG</string>
   <string name="title_activity_select_sampling_site">Select Sample Site</string>
-    <string name="reportsHomeUrlHint">example: http://server/reports</string>
     <string name="view_reports_button">View Reports</string>
     <string name="title_activity_view_reports">View Reports</string>
     <string name="update_configuration">Update Configuration</string>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
@@ -21,7 +20,7 @@ import java.util.*;
 public class NewEnterReadingActivity extends RoboActivity {
 
     @InjectView(R.id.heading) private TextView heading;
-    @InjectView(R.id.parameters) private LinearLayout parametersList;
+    @InjectView(R.id.parameters) private ViewFlipper parametersList;
     @Inject private SamplingSiteParametersRepository repository;
     @Inject private ReadingsRepository readingsRepository;
     @Inject private SamplingSiteRepository samplingSiteRepository;
@@ -75,6 +74,10 @@ public class NewEnterReadingActivity extends RoboActivity {
     @Override public void onBackPressed() {
         startActivity(new Intent(this, SelectSamplingSiteActivity.class));
         finish();
+    }
+
+    public void nextParameter(View v) {
+        parametersList.showNext();
     }
 
     public void saveParameters(View v) {

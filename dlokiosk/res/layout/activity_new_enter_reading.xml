@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/parameters_header"
         android:layout_alignParentTop="true"
@@ -22,21 +23,29 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="30dp"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/next_parameter"
             android:text="@string/button_save"
             android:onClick="saveParameters"/>
+
+        <Button
+            android:id="@+id/next_parameter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="30dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/next"
+            android:onClick="nextParameter"/>
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_below="@+id/parameters_header"
-        android:padding="16dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-        <LinearLayout
+        android:layout_below="@+id/parameters_header">
+
+        <ViewFlipper
             android:id="@+id/parameters"
-            android:orientation="vertical"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"/>
-        </ScrollView>
+    </RelativeLayout>
 
 </RelativeLayout>

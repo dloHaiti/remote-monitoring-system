@@ -43,4 +43,6 @@
     <string name="fetch_configuration_succeeded">Configuration Successfully Updated</string>
     <string name="update_configuration_failed">Updating Configuration Failed On Device</string>
     <string name="server_url_hint">Server Address</string>
+    <string name="loading_configuration">Loading Configuration From Server…</string>
+    <string name="select_sampling_site_caption">Select a Location</string>
 </resources>

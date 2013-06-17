@@ -7,12 +7,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import com.dlohaiti.dlokiosk.db.ConfigurationKey;
+import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
+import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class MainActivity extends RoboActivity implements StatusView {
     @InjectView(R.id.serverStatusProgressBar) ProgressBar serverStatusProgressBar;
     @InjectView(R.id.statusImage) ImageView statusImage;
+    @Inject private ConfigurationRepository config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,7 @@ public class MainActivity extends RoboActivity implements StatusView {
         super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus) {
-            new CheckServerStatusTask(this.getApplicationContext(), this, getString(R.string.dlo_server_url)).execute();
+            new CheckServerStatusTask(this.getApplicationContext(), this, config.get(ConfigurationKey.SERVER_URL)).execute();
         }
     }
 

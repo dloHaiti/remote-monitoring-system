@@ -30,6 +30,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
     @InjectResource(R.string.fetch_configuration_succeeded) private String fetchConfigurationSucceededMessage;
     @InjectResource(R.string.update_configuration_failed) private String updateConfigurationFailedMessage;
+    @InjectResource(R.string.loading_configuration) private String loadingConfigurationMessage;
     private Context context;
 
     public PullConfigurationTask(Context context) {
@@ -39,7 +40,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     }
 
     @Override protected void onPreExecute() throws Exception {
-        dialog.setMessage("Loading Configuration From Server...");
+        dialog.setMessage(loadingConfigurationMessage);
         dialog.show();
     }
 

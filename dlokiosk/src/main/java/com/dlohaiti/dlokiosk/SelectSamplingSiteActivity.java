@@ -10,6 +10,7 @@ import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
 import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 public class SelectSamplingSiteActivity extends RoboActivity {
 
     @InjectView(R.id.sampling_site_spinner) private Spinner samplingSiteSpinner;
+    @InjectResource(R.string.select_sampling_site_caption) private String selectSamplingSiteCaption;
     @Inject private SamplingSiteRepository repository;
     private boolean isRealSelection = false;
 
@@ -25,7 +27,7 @@ public class SelectSamplingSiteActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_sample_site);
         final List<String> sites = new ArrayList<String>();
-        sites.add("Select a Location");
+        sites.add(selectSamplingSiteCaption);
         for(SamplingSite site : repository.list()) {
             sites.add(site.getName());
         }

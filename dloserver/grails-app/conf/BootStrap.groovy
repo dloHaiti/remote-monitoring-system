@@ -11,13 +11,6 @@ class BootStrap {
 
     def dateFormatter = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
 
-    JSON.registerObjectMarshaller(Money) { Money m ->
-      return [
-          amount: m.amount,
-          currencyCode: m.currency.currencyCode
-      ]
-    }
-
     JSON.registerObjectMarshaller(DeliveryConfiguration) { DeliveryConfiguration c ->
       return [
           minimum: c.minimumValue,

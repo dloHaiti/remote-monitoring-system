@@ -79,9 +79,10 @@ class BootStrap {
 
     if (DeliveryAgent.count() == 0) {
       new DeliveryConfiguration(minimumValue: 0, maximumValue: 24, defaultValue: 24, gallons: 4, price: new Money(amount: 5G)).save()
-      new DeliveryAgent(name: "Agent 1", kiosk: Kiosk.findByName("kiosk01")).save()
-      new DeliveryAgent(name: "Agent 2", kiosk: Kiosk.findByName("kiosk01")).save()
-      new DeliveryAgent(name: "Agent 3", kiosk: Kiosk.findByName("kiosk02")).save()
+      new DeliveryAgent(name: "Agent 1", kiosk: Kiosk.findByName("kiosk01"), active: true).save()
+      new DeliveryAgent(name: "Agent 2", kiosk: Kiosk.findByName("kiosk01"), active: true).save()
+      new DeliveryAgent(name: "Inactive Agent 4", kiosk: Kiosk.findByName("kiosk01"), active: false).save()
+      new DeliveryAgent(name: "Agent 3", kiosk: Kiosk.findByName("kiosk02"), active: true).save()
     }
 
     if (Promotion.count() == 0) {

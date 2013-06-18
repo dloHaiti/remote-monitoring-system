@@ -10,7 +10,7 @@ class ConfigurationController {
     List<Product> products = Product.all
     List<Parameter> parameters = Parameter.all
     List<Promotion> promotions = Promotion.all
-    List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKiosk(kiosk)
+    List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(kiosk, true)
 
 
     render(

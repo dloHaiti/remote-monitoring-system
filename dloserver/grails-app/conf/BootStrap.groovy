@@ -22,9 +22,7 @@ class BootStrap {
       return [
           minimum: c.minimumValue,
           maximum: c.maximumValue,
-          default: c.defaultValue,
-          gallons: c.gallons,
-          price: c.price
+          default: c.defaultValue
       ]
     }
 

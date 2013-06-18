@@ -21,6 +21,9 @@ public class NewEnterReadingActivity extends RoboActivity {
 
     @InjectView(R.id.heading) private TextView heading;
     @InjectView(R.id.parameters) private ViewFlipper parametersList;
+    @InjectView(R.id.save_parameters) private Button saveParametersButton;
+    @InjectView(R.id.previous_parameter) private Button previousParameterButton;
+    @InjectView(R.id.next_parameter) private Button nextParameterButton;
     @Inject private SamplingSiteParametersRepository repository;
     @Inject private ReadingsRepository readingsRepository;
     @Inject private SamplingSiteRepository samplingSiteRepository;
@@ -69,6 +72,9 @@ public class NewEnterReadingActivity extends RoboActivity {
             }
             parametersList.addView(row);
         }
+        boolean hasSeveralParameters = parametersList.getChildCount() > 1;
+        nextParameterButton.setEnabled(hasSeveralParameters);
+        previousParameterButton.setEnabled(hasSeveralParameters);
     }
 
     @Override public void onBackPressed() {
@@ -78,6 +84,10 @@ public class NewEnterReadingActivity extends RoboActivity {
 
     public void nextParameter(View v) {
         parametersList.showNext();
+    }
+
+    public void previousParameter(View v) {
+        parametersList.showPrevious();
     }
 
     public void saveParameters(View v) {

@@ -11,6 +11,15 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <Button
+            android:id="@+id/previous_parameter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="30dp"
+            android:layout_alignParentLeft="true"
+            android:text="@string/previous"
+            android:onClick="previousParameter"/>
+
         <TextView
             android:id="@+id/heading"
             android:layout_height="wrap_content"

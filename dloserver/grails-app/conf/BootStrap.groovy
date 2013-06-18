@@ -11,6 +11,29 @@ class BootStrap {
 
     def dateFormatter = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
 
+    JSON.registerObjectMarshaller(Money) { Money m ->
+      return [
+          amount: m.amount,
+          currencyCode: m.currency.currencyCode
+      ]
+    }
+
+    JSON.registerObjectMarshaller(DeliveryConfiguration) { DeliveryConfiguration c ->
+      return [
+          minimum: c.minimumValue,
+          maximum: c.maximumValue,
+          default: c.defaultValue,
+          gallons: c.gallons,
+          price: c.price
+      ]
+    }
+
+    JSON.registerObjectMarshaller(DeliveryAgent) { DeliveryAgent d ->
+      return [
+        name: d.name
+      ]
+    }
+
     JSON.registerObjectMarshaller(Parameter) { Parameter p ->
       return [
           isOkNotOk: p.isOkNotOk,
@@ -61,6 +84,13 @@ class BootStrap {
     if (Kiosk.count() == 0) {
       new Kiosk(name: "kiosk01", apiKey: 'pw').save()
       new Kiosk(name: "kiosk02", apiKey: 'pw').save()
+    }
+
+    if (DeliveryAgent.count() == 0) {
+      new DeliveryConfiguration(minimumValue: 0, maximumValue: 24, defaultValue: 24, gallons: 4, price: new Money(amount: 5G)).save()
+      new DeliveryAgent(name: "Agent 1", kiosk: Kiosk.findByName("kiosk01")).save()
+      new DeliveryAgent(name: "Agent 2", kiosk: Kiosk.findByName("kiosk01")).save()
+      new DeliveryAgent(name: "Agent 3", kiosk: Kiosk.findByName("kiosk02")).save()
     }
 
     if (Promotion.count() == 0) {

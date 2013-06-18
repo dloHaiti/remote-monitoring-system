@@ -4,11 +4,11 @@ import org.joda.time.LocalDate
 
 //TODO: make this whole class a type of product or otherwise get it in the database
 class Delivery {
-    Date createdDate
-    Integer quantity
-    String type
+  Date createdDate
+  Integer quantity
+  String type
 
-    static belongsTo = [kiosk: Kiosk]
+  static belongsTo = [kiosk: Kiosk, deliveryAgent: DeliveryAgent]
 
   boolean isOnDate(LocalDate date) {
     return date == new LocalDate(createdDate.getYear() + 1900, createdDate.getMonth() + 1, createdDate.getDate());
@@ -23,10 +23,10 @@ class Delivery {
   }
 
   Integer getGallons() {
-    return 4
+    return DeliveryConfiguration.first()?.gallons
   }
 
   Money getPrice() {
-    return new Money(amount: 5G)
+    return DeliveryConfiguration.first()?.price
   }
 }

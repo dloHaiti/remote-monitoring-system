@@ -46,6 +46,10 @@ public class ConfigurationRepository {
         }
     }
 
+    public boolean save(ConfigurationKey key, Integer value) {
+        return save(key, String.valueOf(value));
+    }
+
     public boolean save(ConfigurationKey key, String value) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         ContentValues val = new ContentValues();

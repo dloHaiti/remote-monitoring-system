@@ -94,6 +94,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 DeliveriesTable.QUANTITY,
                 DeliveriesTable.CREATED_DATE
         );
+        String createDeliveryAgents = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT" +
+                        ")",
+                DeliveryAgentsTable.TABLE_NAME,
+                DeliveryAgentsTable.ID,
+                DeliveryAgentsTable.NAME
+        );
         String createPromotions = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
@@ -186,6 +195,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ConfigurationTable.VALUE
         );
 
+        db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
         db.execSQL(createMeasurementLineItems);
         db.execSQL(createSamplingSites);
@@ -304,5 +314,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String PARAMETER_NAME = "PARAMETER_NAME";
         public static final String VALUE = "VALUE";
         public static final String READING_ID = "READING_ID";
+    }
+
+    public static class DeliveryAgentsTable {
+        public static final String TABLE_NAME = "DELIVERY_AGENTS";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
     }
 }

@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.client.*;
-import com.dlohaiti.dlokiosk.db.ProductRepository;
-import com.dlohaiti.dlokiosk.db.PromotionRepository;
-import com.dlohaiti.dlokiosk.db.SamplingSiteParametersRepository;
+import com.dlohaiti.dlokiosk.db.*;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import roboguice.inject.InjectResource;
@@ -25,6 +23,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject private ProductRepository productRepository;
     @Inject private PromotionRepository promotionRepository;
     @Inject private SamplingSiteParametersRepository samplingSiteParametersRepository;
+    @Inject private DeliveryAgentRepository deliveryAgentRepository;
+    @Inject private ConfigurationRepository configurationRepository;
     @Inject private KioskDate kioskDate;
     @Inject private Base64ImageConverter imageConverter;
     @InjectResource(R.string.fetch_configuration_failed) private String fetchConfigurationFailedMessage;
@@ -60,7 +60,6 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
             promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), imageResource));
         }
-
         List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();
         for (ParameterJson p : c.getParameters()) {
             Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk());
@@ -70,9 +69,20 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             }
             samplingSiteParameters.add(new ParameterSamplingSites(parameter, samplingSites));
         }
-        return productRepository.replaceAll(products) &&
+        List<DeliveryAgent> agents = new ArrayList<DeliveryAgent>();
+        for (DeliveryAgentJson agent : c.getDelivery().getAgents()) {
+            agents.add(new DeliveryAgent(agent.getName()));
+        }
+
+        DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
+
+        return configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MIN, configuration.getMinimum()) &&
+            configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MAX, configuration.getMaximum()) &&
+            configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_DEFAULT, configuration.getDefault()) &&
+            productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&
-                samplingSiteParametersRepository.replaceAll(samplingSiteParameters);
+                samplingSiteParametersRepository.replaceAll(samplingSiteParameters) &&
+                deliveryAgentRepository.replaceAll(agents);
     }
 
     @Override protected void onSuccess(Boolean s) throws Exception {

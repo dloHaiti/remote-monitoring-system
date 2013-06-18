@@ -1,13 +1,17 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.DeliveryAgent;
 import com.google.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryAgentRepository {
+    private final static String TAG = DeliveryAgentRepository.class.getSimpleName();
     private final KioskDatabase db;
 
     @Inject
@@ -32,5 +36,27 @@ public class DeliveryAgentRepository {
         } finally {
             wdb.endTransaction();
         }
+    }
+
+    public List<DeliveryAgent> list() {
+        List<DeliveryAgent> agents = new ArrayList<DeliveryAgent>();
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.query(KioskDatabase.DeliveryAgentsTable.TABLE_NAME, new String[] {KioskDatabase.DeliveryAgentsTable.NAME}, null, null, null, null, null);
+        try {
+            if(cursor.moveToFirst()) {
+                while(!cursor.isAfterLast()) {
+                    agents.add(new DeliveryAgent(cursor.getString(0)));
+                    cursor.moveToNext();
+                }
+            }
+            rdb.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load delivery agents from database", e);
+        } finally {
+            cursor.close();
+            rdb.endTransaction();
+        }
+        return agents;
     }
 }

@@ -86,13 +86,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s TEXT," +
                         "%s INTEGER," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 DeliveriesTable.TABLE_NAME,
                 DeliveriesTable.ID,
                 DeliveriesTable.DELIVERY_TYPE,
                 DeliveriesTable.QUANTITY,
-                DeliveriesTable.CREATED_DATE
+                DeliveriesTable.CREATED_DATE,
+                DeliveriesTable.AGENT_NAME
         );
         String createDeliveryAgents = String.format(
                 "CREATE TABLE %s(" +
@@ -263,6 +265,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String QUANTITY = "QUANTITY";
         public static final String DELIVERY_TYPE = "DELIVERY_TYPE";
         public static final String CREATED_DATE = "CREATED_DATE";
+        public static final String AGENT_NAME = "AGENT_NAME";
     }
 
     public static class PromotionsTable {

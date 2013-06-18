@@ -27,7 +27,7 @@ public class DeliveryFactoryTest {
 
     @Test
     public void shouldGetTimeFromClock() {
-        Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED);
+        Delivery delivery = factory.makeDelivery(24, DeliveryType.RETURNED, "");
         assertThat(delivery.getCreatedDate(), is(new Date(0)));
     }
 }

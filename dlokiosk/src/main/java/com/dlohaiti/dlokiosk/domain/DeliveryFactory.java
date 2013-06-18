@@ -17,17 +17,17 @@ public class DeliveryFactory {
         this.kioskDate = kioskDate;
     }
 
-    public Delivery makeDelivery(int quantity, DeliveryType type) {
-        return new Delivery(quantity, type, clock.now());
+    public Delivery makeDelivery(int quantity, DeliveryType type, String agentName) {
+        return new Delivery(quantity, type, clock.now(), agentName);
     }
 
-    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String createdAtDate) {
+    public Delivery makeDelivery(Integer id, Integer quantity, String deliveryType, String createdAtDate, String agentName) {
         DeliveryType type = DeliveryType.valueOf(deliveryType);
         Date createdDate = null;
         try {
             createdDate = kioskDate.getFormat().parse(createdAtDate);
         } catch (ParseException e) {
         }
-        return new Delivery(id, quantity, type, createdDate);
+        return new Delivery(id, quantity, type, createdDate, agentName);
     }
 }

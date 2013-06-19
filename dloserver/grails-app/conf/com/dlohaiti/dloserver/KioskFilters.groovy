@@ -8,7 +8,7 @@ class KioskFilters {
         all(controller:'*', action:'*') {
             before = {
               if (SecurityUtils.subject.authenticated) {
-                request.kioskName = SecurityUtils.subject.principal
+                request.kiosk = Kiosk.findByName(SecurityUtils.subject.principal)
               }
             }
         }

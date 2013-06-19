@@ -13,7 +13,7 @@ class ReceiptsController {
     Receipt receipt
 
     try {
-      params.kioskName = request.kioskName
+      params.kiosk = request.kiosk
       receipt = receiptsService.saveReceipt(params)
 
       if (receipt.hasErrors()) {

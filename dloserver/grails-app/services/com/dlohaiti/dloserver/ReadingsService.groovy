@@ -20,7 +20,7 @@ class ReadingsService {
             reading.addToMeasurements(measurement)
         }
 
-        reading.kiosk = Kiosk.findByName(params.kioskName)
+        reading.kiosk = params.kiosk
         reading.save(flush: true)
         return reading
     }

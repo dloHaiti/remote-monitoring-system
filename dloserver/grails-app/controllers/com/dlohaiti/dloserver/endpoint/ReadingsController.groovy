@@ -13,7 +13,7 @@ class ReadingsController {
     Reading reading
 
     try {
-      params.kioskName = request.kioskName
+      params.kiosk = request.kiosk
       reading = readingsService.saveReading(params)
 
       if (reading.hasErrors()) {

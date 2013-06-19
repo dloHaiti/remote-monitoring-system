@@ -11,6 +11,8 @@ dloserver
 * grails 2.2.1
 * mysql
 
+The kiosk object is attached through the request by the `KioskFilters` class
+
 dlokiosk
 ========
 * roboguice

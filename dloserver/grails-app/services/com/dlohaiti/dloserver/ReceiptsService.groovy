@@ -24,7 +24,7 @@ class ReceiptsService {
       )
       receipt.addToReceiptLineItems(lineItem)
     }
-    receipt.kiosk = Kiosk.findByName(params.kioskName)
+    receipt.kiosk = params.kiosk
     receipt.save(flush: true)
     return receipt
   }

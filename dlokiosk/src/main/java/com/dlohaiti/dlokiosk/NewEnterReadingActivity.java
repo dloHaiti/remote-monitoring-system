@@ -12,6 +12,7 @@ import com.dlohaiti.dlokiosk.db.SamplingSiteRepository;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 import java.math.BigDecimal;
@@ -24,6 +25,9 @@ public class NewEnterReadingActivity extends RoboActivity {
     @InjectView(R.id.save_parameters) private Button saveParametersButton;
     @InjectView(R.id.previous_parameter) private Button previousParameterButton;
     @InjectView(R.id.next_parameter) private Button nextParameterButton;
+    @InjectResource(R.string.please_correct_message) private String pleaseCorrect;
+    @InjectResource(R.string.saved_message) private String savedMessage;
+    @InjectResource(R.string.error_not_saved_message) private String errorNotSavedMessage;
     @Inject private SamplingSiteParametersRepository repository;
     @Inject private ReadingsRepository readingsRepository;
     @Inject private SamplingSiteRepository samplingSiteRepository;
@@ -106,14 +110,14 @@ public class NewEnterReadingActivity extends RoboActivity {
             }
         }
         if(errors) {
-            Toast.makeText(this, "Please correct!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, pleaseCorrect, Toast.LENGTH_SHORT).show();
         } else {
             boolean successful = readingsRepository.save(new Reading(samplingSite, measurements, clock.now()));
             if(successful) {
-                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, "There was an error. Data not saved!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
             }
         }
     }

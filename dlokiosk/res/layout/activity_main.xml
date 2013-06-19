@@ -10,11 +10,11 @@
   tools:context=".MainActivity">
 
   <RelativeLayout
-    android:layout_width="172dp"
-    android:layout_height="39dp"
-    android:layout_centerHorizontal="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_marginTop="120dp"
+    android:gravity="center_horizontal"
     android:id="@+id/relativeLayout">
 
     <ImageView
@@ -52,38 +52,31 @@
     android:layout_centerVertical="true">
 
     <Button
-      android:layout_width="100dp"
-      android:layout_height="fill_parent"
+      style="@style/home_screen_button"
       android:onClick="moveToNewSaleScreen"
       android:text="@string/new_sale_button"
       android:id="@+id/new_sale_button" />
 
     <Button
-      android:layout_width="100dp"
-      android:layout_height="fill_parent"
+      style="@style/home_screen_button"
       android:onClick="moveToDeliveryTrackingScreen"
       android:text="@string/delivery_tracking_button"
       android:id="@+id/delivery_tracking_button" />
 
     <Button
-      android:layout_width="100dp"
-      android:layout_height="fill_parent"
-      android:layout_gravity="center"
+      style="@style/home_screen_button"
       android:onClick="moveToSelectSamplingSite"
       android:text="@string/record_new_reading_button"
       android:id="@+id/button" />
 
     <Button
-      android:layout_width="100dp"
-      android:layout_height="fill_parent"
-      android:layout_gravity="center"
+      style="@style/home_screen_button"
       android:onClick="moveToViewReports"
       android:text="@string/view_reports_button"
       android:id="@+id/view_reports" />
 
     <Button
-      android:layout_width="100dp"
-      android:layout_height="fill_parent"
+      style="@style/home_screen_button"
       android:onClick="doManualSync"
       android:text="@string/manual_sync_button"
       android:id="@+id/manualSyncButton" />

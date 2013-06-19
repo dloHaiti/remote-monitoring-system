@@ -97,4 +97,8 @@ public class DeliveryRepository {
             wdb.endTransaction();
         }
     }
+
+    public boolean isNotEmpty() {
+        return list().size() > 0;
+    }
 }

@@ -115,4 +115,8 @@ public class ReadingsRepository {
             wdb.endTransaction();
         }
     }
+
+    public boolean isNotEmpty() {
+        return list().size() > 0;
+    }
 }

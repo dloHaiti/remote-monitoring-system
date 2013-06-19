@@ -1,14 +1,16 @@
 package com.dlohaiti.dlokiosk;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import com.dlohaiti.dlokiosk.db.ConfigurationKey;
-import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
+import com.dlohaiti.dlokiosk.db.*;
 import com.google.inject.Inject;
 import org.joda.time.LocalDate;
 import roboguice.activity.RoboActivity;
@@ -20,6 +22,9 @@ public class MainActivity extends RoboActivity implements StatusView {
     @InjectView(R.id.serverStatusProgressBar) ProgressBar serverStatusProgressBar;
     @InjectView(R.id.statusImage) ImageView statusImage;
     @Inject private ConfigurationRepository config;
+    @Inject private ReadingsRepository readingsRepository;
+    @Inject private ReceiptsRepository receiptsRepository;
+    @Inject private DeliveryRepository deliveryRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +34,16 @@ public class MainActivity extends RoboActivity implements StatusView {
 
     @Override protected void onResume() {
         super.onResume();
-        String text = config.get(ConfigurationKey.LAST_UPDATE);
-        LocalDate lastUpdate = basicDate().parseLocalDate(text);
-        if(lastUpdate.isBefore(new LocalDate())) {
-            new PullConfigurationTask(this).execute();
-            config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(basicDate()));
+        if(isConnected()) {
+            String text = config.get(ConfigurationKey.LAST_UPDATE);
+            LocalDate lastUpdate = basicDate().parseLocalDate(text);
+            if(lastUpdate.isBefore(new LocalDate())) {
+                new PullConfigurationTask(this).execute();
+                config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(basicDate()));
+            }
+            if(hasUnsentData()) {
+                doManualSync(null);
+            }
         }
     }
 
@@ -100,6 +110,19 @@ public class MainActivity extends RoboActivity implements StatusView {
             startActivity(new Intent(MainActivity.this, ConfigurationActivity.class));
         }
         return super.onMenuItemSelected(featureId, item);
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private boolean hasUnsentData() {
+        return readingsRepository.isNotEmpty() ||
+                receiptsRepository.isNotEmpty() ||
+                deliveryRepository.isNotEmpty();
     }
 
 }

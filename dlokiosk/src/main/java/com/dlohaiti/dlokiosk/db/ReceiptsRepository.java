@@ -164,4 +164,8 @@ public class ReceiptsRepository {
         productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.PRICE, orderedItem.getPrice().getAmount().toString());
         return productLineItemValue;
     }
+
+    public boolean isNotEmpty() {
+        return list().size() > 0;
+    }
 }

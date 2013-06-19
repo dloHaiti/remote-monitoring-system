@@ -7,7 +7,15 @@ Scaling in the future would most likely look like:
 1 database server
 multiple application servers, each with their own FTP server for receiving data from the sensors
 
+Backup
+------
 There is no automated backup solution in place, and mysql should be backed up regularly at an interval that makes sense.
+
+
+Security
+--------
+Endpoints are protected with HTTP Basic authentication. A sensible next step would be HTTPS, which requires a SSL
+certificate. It should be a relatively high priority.
 
 
 Kiosk Information
@@ -51,7 +59,7 @@ Add a Parameter
 Add a SamplingSiteParameter
 ---------------------------
 1. connect to the database with mysql workbench or similar
-2. insert into the SAMPLING_SITES_PARAMTER table
+2. insert into the SAMPLING_SITES_PARAMETER table
 * every kiosk gets the same list of these
 
 

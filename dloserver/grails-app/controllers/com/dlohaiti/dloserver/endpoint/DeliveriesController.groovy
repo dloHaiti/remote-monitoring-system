@@ -1,7 +1,7 @@
 package com.dlohaiti.dloserver.endpoint
 
 import com.dlohaiti.dloserver.Delivery
-import com.dlohaiti.dloserver.DeliveryAgentMissingException
+import com.dlohaiti.dloserver.MissingDeliveryAgentException
 import grails.converters.JSON
 
 class DeliveriesController {
@@ -21,7 +21,7 @@ class DeliveriesController {
           contentType: 'application/json',
           text: [errors: []] as JSON)
 
-    } catch (DeliveryAgentMissingException e) {
+    } catch (MissingDeliveryAgentException e) {
       log.error("Could not find Agent with name [${params.agentName}] for Kiosk [${params.kiosk.name}]")
       render(
           status: 409,

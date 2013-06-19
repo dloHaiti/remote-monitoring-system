@@ -12,7 +12,11 @@ class ReceiptsService {
     params.lineItems?.each { item ->
       def gallons = 0
       if(item.type == "PRODUCT") {
-        gallons = Product.findBySku(item.sku).gallons * item.quantity
+        def product = Product.findBySku(item.sku)
+        if(product == null) {
+          throw new MissingProductException();
+        }
+        gallons = product.gallons * item.quantity
       }
       def lineItem = new ReceiptLineItem(
           sku: item.sku,

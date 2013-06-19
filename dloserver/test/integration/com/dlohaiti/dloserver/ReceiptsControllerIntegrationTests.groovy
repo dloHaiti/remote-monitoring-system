@@ -1,52 +1,135 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.endpoint.ReceiptsController
+import groovy.json.JsonBuilder
 import org.junit.Before
 import org.junit.Test
 
 class ReceiptsControllerIntegrationTests extends GroovyTestCase {
 
-    ReceiptsController controller = new ReceiptsController()
+  ReceiptsController controller
 
-    @Before
-    void setup() {
-        new Kiosk(name: "k1").save()
-    }
+  @Before void setup() {
+    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save()
+    new Product(sku: 'AAA', gallons: 300, description: 'a', price: new Money(amount: 1), base64EncodedImage: 'a').save()
+    new Product(sku: 'BBB', gallons: 200, description: 'b', price: new Money(amount: 1), base64EncodedImage: 'b').save()
 
-    @Test
-    void shouldSaveValidDataToDb() {
-        controller.request.json = '{"kioskId":"k1", "createdDate":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+    controller = new ReceiptsController()
+    controller.request.contentType = 'application/json'
+    controller.request.kiosk = kiosk
+  }
 
-        controller.save()
+  @Test void shouldRespondWithCreatedWhenSuccessful() {
+    def req = [
+        createdDate: '2013-04-24 12:00:01 EDT',
+        totalGallons: 200,
+        total: [
+            amount: 500,
+            currencyCode: 'HTG'
+        ],
+        lineItems: [
+            [
+                sku: 'AAA',
+                quantity: 1,
+                type: 'PRODUCT',
+                price: [
+                    amount: 300,
+                    currencyCode: 'HTG'
+                ]
+            ],
+            [
+                sku: 'BBB',
+                quantity: 1,
+                type: 'PRODUCT',
+                price: [
+                    amount: 200,
+                    currencyCode: 'HTG'
+                ]
+            ]
+        ]
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
 
-        assert '{"msg":"OK"}' == controller.response.contentAsString
-        assert 201 == controller.response.status
-        assert 1 == Receipt.count()
+    controller.save()
 
-        Receipt receipt = Receipt.first()
-        assert receipt.kiosk == new Kiosk(name: "k1")
-        assert 1 == receipt.receiptLineItems.size()
-        assert receipt.receiptLineItems.first().quantity == 1
-        assert receipt.receiptLineItems.first().sku == "10GAL"
-    }
+    assert 201 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":[]}' == controller.response.contentAsString
+    assert 1 == Receipt.count()
+    assert 2 == ReceiptLineItem.count()
+  }
 
-    @Test
-    void shouldRejectInvalidTimestampFormat() {
-        controller.request.json = '{"kioskId":"k1", "createdDate":1213431241234,"orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+  @Test void shouldRespondWithUnprocessableWhenProductOnReceiptIsMissing() {
+    def req = [
+        createdDate: '2013-04-24 12:00:01 EDT',
+        totalGallons: 200,
+        total: [
+            amount: 500,
+            currencyCode: 'HTG'
+        ],
+        lineItems: [
+            [
+                sku: 'MISSING',
+                quantity: 1,
+                type: 'PRODUCT',
+                price: [
+                    amount: 300,
+                    currencyCode: 'HTG'
+                ]
+            ]
+        ]
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
 
-        controller.save()
+    controller.save()
 
-        assert 422 == controller.response.status
-        assert 0 == Receipt.count()
-    }
+    assert 422 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["PRODUCT_MISSING"]}' == controller.response.contentAsString
+    assert 0 == Receipt.count()
+    assert 0 == ReceiptLineItem.count()
+  }
 
-    @Test
-    void shouldRejectMissingKiosk() {
-        controller.request.json = '{"kioskId":"k0001", "createdDate":"2013-04-24 12:00:01 EDT","orderedProducts":[{"quantity":1,"sku":"10GAL"}]}'
+  @Test void shouldRespondWithUnprocessableWhenErrors() {
+    def req = [
+        createdDate: null, // not nullable as per constraints in Receipt
+        totalGallons: 200,
+        total: [
+            amount: 500,
+            currencyCode: 'HTG'
+        ],
+        lineItems: [
+            [
+                sku: 'AAA',
+                quantity: 1,
+                type: 'PRODUCT',
+                price: [
+                    amount: 300,
+                    currencyCode: 'HTG'
+                ]
+            ]
+        ]
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
 
-        controller.save()
+    controller.save()
 
-        assert 422 == controller.response.status
-        assert 0 == Receipt.count()
-    }
+    assert 422 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["CREATEDDATE_NULLABLE"]}' == controller.response.contentAsString
+    assert 0 == Receipt.count()
+    assert 0 == ReceiptLineItem.count()
+  }
+
+  @Test void shouldRespondWithServerErrorWhenUnforeseenErrorOccurs() {
+    controller.receiptsService = [saveReceipt: {-> throw new RuntimeException() }] as DeliveriesService
+
+    controller.save()
+
+    assert 500 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["SERVER_ERROR"]}' == controller.response.contentAsString
+    assert 0 == Receipt.count()
+    assert 0 == ReceiptLineItem.count()
+  }
 }

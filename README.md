@@ -13,6 +13,11 @@ dloserver
 
 The kiosk object is attached through the request by the `KioskFilters` class
 
+testing
+-------
+Integration tests are meant to cover accepted formats and responses.
+
+
 dlokiosk
 ========
 * roboguice

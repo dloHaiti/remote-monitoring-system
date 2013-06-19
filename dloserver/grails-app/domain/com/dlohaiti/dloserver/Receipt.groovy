@@ -12,7 +12,7 @@ class Receipt {
   Integer totalGallons
   BigDecimal total
   String currencyCode
-  List receiptLineItems
+  List<ReceiptLineItem> receiptLineItems
 
   static hasMany = [receiptLineItems: ReceiptLineItem]
 
@@ -21,11 +21,11 @@ class Receipt {
   }
 
   boolean hasSku(String sku) {
-    return receiptLineItems.any { item -> item.sku == sku }
+    return receiptLineItems.any { ReceiptLineItem item -> item.sku == sku }
   }
 
   Integer totalGallonsForSku(String sku) {
-    List<ReceiptLineItem> itemsWithSku = receiptLineItems.findAll({ item -> item.sku == sku })
+    List<ReceiptLineItem> itemsWithSku = receiptLineItems.findAll({ ReceiptLineItem item -> item.sku == sku })
     return itemsWithSku.inject(0, { acc, val -> acc + val.gallons })
   }
 }

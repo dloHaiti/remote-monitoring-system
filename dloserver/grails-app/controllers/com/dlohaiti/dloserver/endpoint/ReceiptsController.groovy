@@ -1,5 +1,6 @@
 package com.dlohaiti.dloserver.endpoint
 
+import com.dlohaiti.dloserver.MissingProductException
 import com.dlohaiti.dloserver.Receipt
 import grails.converters.JSON
 
@@ -17,15 +18,30 @@ class ReceiptsController {
       receipt = receiptsService.saveReceipt(params)
 
       if (receipt.hasErrors()) {
-        // TODO Better formatting of error msgs
-        log.debug(receipt.errors)
-        render(status: 422, text: [msg: receipt.errors] as JSON)
+        render(
+            status: 422,
+            contentType: 'application/json',
+            text: [errors: receipt.errors.getFieldErrors().collect({e -> "${e.field.toUpperCase()}_${e.code.toUpperCase()}"})] as JSON)
       } else {
-        render(status: 201, text: [msg: "OK"] as JSON)
+        render(
+            status: 201,
+            contentType: 'application/json',
+            text: [errors: []] as JSON)
       }
+    } catch (MissingProductException e) {
+      log.error("Could not find referenced product")
+      render(
+          status: 422,
+          contentType: 'application/json',
+          text: [errors: ['PRODUCT_MISSING']] as JSON
+      )
     } catch (Exception e) {
-      log.error("Error saving Receipt [${params.date('createdDate', 'yyyy-MM-dd hh:mm:ss z')}]: ", e)
-      render(status: 503, text: [msg: e.message] as JSON)
+      def date = params.date('createdDate', grailsApplication.config.dloserver.measurement.timeformat.toString())
+      log.error("Could not save Delivery on [${date}] from Kiosk [${params.kiosk.name}]")
+      render(
+          status: 500,
+          contentType: 'application/json',
+          text: [errors: ['SERVER_ERROR']] as JSON)
     }
   }
 }

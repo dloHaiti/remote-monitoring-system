@@ -10,8 +10,11 @@ import android.widget.ProgressBar;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.google.inject.Inject;
+import org.joda.time.LocalDate;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+
+import static org.joda.time.format.ISODateTimeFormat.basicDate;
 
 public class MainActivity extends RoboActivity implements StatusView {
     @InjectView(R.id.serverStatusProgressBar) ProgressBar serverStatusProgressBar;
@@ -22,6 +25,16 @@ public class MainActivity extends RoboActivity implements StatusView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        String text = config.get(ConfigurationKey.LAST_UPDATE);
+        LocalDate lastUpdate = basicDate().parseLocalDate(text);
+        if(lastUpdate.isBefore(new LocalDate())) {
+            new PullConfigurationTask(this).execute();
+            config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(basicDate()));
+        }
     }
 
     @Override

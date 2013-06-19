@@ -46,4 +46,5 @@
     <string name="loading_configuration">Loading Configuration From Server…</string>
     <string name="select_sampling_site_caption">Select a Location</string>
     <string name="previous"><![CDATA[< Previous]]></string>
+    <string name="last_updated_label">Last Updated:</string>
 </resources>

@@ -22,18 +22,19 @@ public class ConfigurationRepository {
     public String get(ConfigurationKey key) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        try {
             Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()), null, null, null);
-            cursor.moveToFirst();
-            //TODO: more than one result
-            rdb.setTransactionSuccessful();
-            String value = cursor.getString(1);
-            cursor.close();
+        try {
+            String value = "";
+            if(cursor.moveToFirst()) {
+                value = cursor.getString(1);
+                rdb.setTransactionSuccessful();
+            }
             return value;
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to get value for %s from database.", key.name()), e);
             return "";
         } finally {
+            cursor.close();
             rdb.endTransaction();
         }
     }
@@ -57,6 +58,7 @@ public class ConfigurationRepository {
         val.put(KioskDatabase.ConfigurationTable.VALUE, value);
         writableDatabase.beginTransaction();
         try {
+            //Depends on things being inserted beforehand
             writableDatabase.update(KioskDatabase.ConfigurationTable.TABLE_NAME, val, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()));
             writableDatabase.setTransactionSuccessful();
             return true;

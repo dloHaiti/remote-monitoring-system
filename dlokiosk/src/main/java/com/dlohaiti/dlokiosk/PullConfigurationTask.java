@@ -76,6 +76,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
 
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
 
+        //FIXME: what happens when one of these fails?
         return configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MIN, configuration.getMinimum()) &&
             configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MAX, configuration.getMaximum()) &&
             configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_DEFAULT, configuration.getDefault()) &&

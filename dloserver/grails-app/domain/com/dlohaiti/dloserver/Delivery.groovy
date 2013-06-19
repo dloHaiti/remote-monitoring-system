@@ -2,7 +2,6 @@ package com.dlohaiti.dloserver
 
 import org.joda.time.LocalDate
 
-//TODO: make this whole class a type of product or otherwise get it in the database
 class Delivery {
   Date createdDate
   Integer quantity

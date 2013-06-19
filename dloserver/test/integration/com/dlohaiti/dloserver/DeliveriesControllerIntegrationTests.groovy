@@ -1,29 +1,67 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.endpoint.DeliveriesController
+import groovy.json.JsonBuilder
 import org.junit.Before
 import org.junit.Test;
 
 class DeliveriesControllerIntegrationTests {
 
-  def controller
+  DeliveriesController controller
+  DeliveryAgent agent
 
   @Before void setUp() {
+    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save()
     controller = new DeliveriesController()
-    new Kiosk(name: "k1").save()
+    controller.request.contentType = 'application/json'
+    controller.request.kiosk = kiosk
+    agent = new DeliveryAgent(name: 'agent 1', kiosk: kiosk, active: true).save()
   }
 
   @Test void shouldRespondWithCreatedWhenSuccessful() {
-    controller.request.json = '{"kioskId":"k1","quantity":24,"type":"RETURN","createdDate":"2013-04-24 12:00:01 EDT"}'
+    def req = new JsonBuilder()
+    req {
+      quantity 24
+      type 'RETURN'
+      createdDate '2013-04-24 12:00:01 EDT'
+      agentName agent.getName()
+    }
+    controller.request.json = req.toString()
+
     controller.save()
+
     assert 201 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":[]}' == controller.response.contentAsString
     assert 1 == Delivery.count()
   }
 
-  @Test void shouldRespondWithUnprocessableWhenMalformed() {
-    controller.request.json = '{"kioskId":"0293i4","quantity":24,"type":"RETURN","createdDate":"2013-04-24 12:00:01 EDT"}'
+  @Test void shouldRespondWithConflictWhenDeliveryAgentDoesNotExist() {
+    def req = new JsonBuilder()
+    req {
+      quantity 24
+      type 'RETURN'
+      createdDate '2013-04-24 12:00:01 EDT'
+      agentName 'tobias'
+    }
+    controller.request.json = req.toString()
+
     controller.save()
-    assert 422 == controller.response.status
+
+    assert 409 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["DELIVERY_AGENT_MISSING"]}' == controller.response.contentAsString
+    assert 0 == Delivery.count()
+  }
+
+  @Test void shouldResponseWithInternalServerErrorIfException() {
+    controller.deliveriesService = [saveDelivery: {-> throw new RuntimeException() }] as DeliveriesService
+
+    controller.save()
+
+    assert 500 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["SERVER_ERROR"]}' == controller.response.contentAsString
     assert 0 == Delivery.count()
   }
 }

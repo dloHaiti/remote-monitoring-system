@@ -1,5 +1,10 @@
 package com.dlohaiti.dloserver
 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+@ToString
+@EqualsAndHashCode(includes = ['sku', 'description', 'gallons', 'price', 'minimumQuantity', 'maximumQuantity', 'base64EncodedImage', 'active'])
 class Product {
   String sku
   String description
@@ -8,6 +13,7 @@ class Product {
   Integer minimumQuantity
   Integer maximumQuantity
   String base64EncodedImage
+  Boolean active
 
   static embedded = ['price']
 

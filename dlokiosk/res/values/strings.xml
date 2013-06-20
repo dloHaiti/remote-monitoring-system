@@ -46,11 +46,9 @@
     <string name="server_url_hint">Adresse du serveur</string>
     <string name="loading_configuration">Chargement des données depuis le serveur… </string>
     <string name="select_sampling_site_caption">Sélectionner site</string>
-
-    <!-- still need to be translated -->
-    <string name="previous"><![CDATA[< Previous]]></string>
-    <string name="last_updated_label">Last Updated:</string>
-    <string name="please_correct_message">Please correct!</string>
-    <string name="saved_message">Saved!</string>
-    <string name="error_not_saved_message">There was an error. Data not saved!</string>
+    <string name="previous">&lt; Precedent</string>
+    <string name="last_updated_label">Derniere mise a jour:</string>
+    <string name="please_correct_message">Mercie de corriger!</string>
+    <string name="saved_message">Enregistre!</string>
+    <string name="error_not_saved_message">Une erreur est survenue. Les donnees n'ont pas ete enregistrees!</string>
 </resources>

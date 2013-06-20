@@ -50,5 +50,5 @@
     <string name="last_updated_label">Derniere mise a jour:</string>
     <string name="please_correct_message">Mercie de corriger!</string>
     <string name="saved_message">Enregistre!</string>
-    <string name="error_not_saved_message">Une erreur est survenue. Les donnees n'ont pas ete enregistrees!</string>
+    <string name="error_not_saved_message">Une erreur est survenue. Les donnees n\'ont pas ete enregistrees!</string>
 </resources>

@@ -19,8 +19,8 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
     @Before
     void setupData() {
         Kiosk kiosk = new Kiosk(name: "k1", apiKey: 'pw').save(failOnError: true)
-        temperature = new Parameter(name: "temptest").save(failOnError: true)
-        ph = new Parameter(name: "pHtest", minimum: 4, maximum: 9).save(failOnError: true)
+        temperature = new Parameter(name: "temptest", isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: true).save(failOnError: true)
+        ph = new Parameter(name: "pHtest", minimum: 4, maximum: 9, isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: true).save(failOnError: true)
         samplingSite = new SamplingSite(name: "Borehole").save(failOnError: true)
         new Sensor(sensorId: "s1", kiosk: kiosk, parameter: temperature, displayName: "S1", samplingSite: samplingSite).save(failOnError: true)
         new Sensor(sensorId: "s2", kiosk: kiosk, parameter: ph, displayName: "S2", samplingSite: samplingSite).save(failOnError: true)

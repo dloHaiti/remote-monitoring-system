@@ -2,6 +2,7 @@ package com.dlohaiti.dloserver.endpoint
 import com.dlohaiti.dloserver.DeliveryAgent
 import com.dlohaiti.dloserver.Kiosk
 import com.dlohaiti.dloserver.Money
+import com.dlohaiti.dloserver.Parameter
 import com.dlohaiti.dloserver.Product
 import grails.converters.JSON
 import org.junit.Before
@@ -43,5 +44,18 @@ class ConfigurationControllerIntegrationTests {
     def products = JSON.parse(controller.response.contentAsString).products
     assert 2 == products.size()
     assert [[sku: one.sku], [sku: two.sku]] == products.collect({ p -> [sku: p.sku] })
+  }
+
+  @Test void shouldOnlyReturnActiveAndManualParameters() {
+    def one = new Parameter(name: 'manual-active', manual: true, active: true, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    new Parameter(name: 'manual-inactive', manual: true, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    new Parameter(name: 'automatic-active', manual: false, active: true, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    new Parameter(name: 'automatic-inactive', manual: false, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+
+    controller.index()
+
+    def parameters = JSON.parse(controller.response.contentAsString).parameters
+    assert 1 == parameters.size()
+    assert [[name: one.name]] == parameters.collect({p -> [name: p.name]})
   }
 }

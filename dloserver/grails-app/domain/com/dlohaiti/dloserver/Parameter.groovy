@@ -11,8 +11,10 @@ class Parameter {
   String unit
   BigDecimal minimum
   BigDecimal maximum
-  boolean isUsedInTotalizer
-  boolean isOkNotOk
+  Boolean isUsedInTotalizer
+  Boolean isOkNotOk
+  Boolean manual
+  Boolean active
 
   static hasMany = [samplingSites: SamplingSite]
 

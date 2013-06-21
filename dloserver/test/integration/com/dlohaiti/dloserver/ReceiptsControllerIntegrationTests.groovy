@@ -10,9 +10,9 @@ class ReceiptsControllerIntegrationTests extends GroovyTestCase {
   ReceiptsController controller
 
   @Before void setup() {
-    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save()
-    new Product(sku: 'AAA', gallons: 300, description: 'a', price: new Money(amount: 1), base64EncodedImage: 'a').save()
-    new Product(sku: 'BBB', gallons: 200, description: 'b', price: new Money(amount: 1), base64EncodedImage: 'b').save()
+    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save(failOnError: true)
+    new Product(sku: 'AAA', gallons: 300, description: 'a', price: new Money(amount: 1), base64EncodedImage: 'a').save(failOnError: true)
+    new Product(sku: 'BBB', gallons: 200, description: 'b', price: new Money(amount: 1), base64EncodedImage: 'b').save(failOnError: true)
 
     controller = new ReceiptsController()
     controller.request.contentType = 'application/json'

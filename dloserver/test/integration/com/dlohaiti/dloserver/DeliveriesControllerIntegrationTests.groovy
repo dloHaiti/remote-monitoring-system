@@ -11,11 +11,11 @@ class DeliveriesControllerIntegrationTests {
   DeliveryAgent agent
 
   @Before void setUp() {
-    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save()
+    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save(failOnError: true)
     controller = new DeliveriesController()
     controller.request.contentType = 'application/json'
     controller.request.kiosk = kiosk
-    agent = new DeliveryAgent(name: 'agent 1', kiosk: kiosk, active: true).save()
+    agent = new DeliveryAgent(name: 'agent 1', kiosk: kiosk, active: true).save(failOnError: true)
   }
 
   @Test void shouldRespondWithCreatedWhenSuccessful() {

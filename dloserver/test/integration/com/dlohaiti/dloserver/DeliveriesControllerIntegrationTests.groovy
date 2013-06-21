@@ -19,14 +19,13 @@ class DeliveriesControllerIntegrationTests {
   }
 
   @Test void shouldRespondWithCreatedWhenSuccessful() {
-    def req = new JsonBuilder()
-    req {
-      quantity 24
-      type 'RETURN'
-      createdDate '2013-04-24 12:00:01 EDT'
-      agentName agent.getName()
-    }
-    controller.request.json = req.toString()
+    def req = [
+      quantity: 24,
+      type: 'RETURN',
+      createdDate: '2013-04-24 12:00:01 EDT',
+      agentName: agent.getName()
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
 
     controller.save()
 
@@ -36,21 +35,37 @@ class DeliveriesControllerIntegrationTests {
     assert 1 == Delivery.count()
   }
 
-  @Test void shouldRespondWithConflictWhenDeliveryAgentDoesNotExist() {
-    def req = new JsonBuilder()
-    req {
-      quantity 24
-      type 'RETURN'
-      createdDate '2013-04-24 12:00:01 EDT'
-      agentName 'tobias'
-    }
-    controller.request.json = req.toString()
+  @Test void shouldRespondWithUnprocessableWhenDeliveryAgentDoesNotExist() {
+    def req = [
+      quantity: 24,
+      type: 'RETURN',
+      createdDate: '2013-04-24 12:00:01 EDT',
+      agentName: 'tobias'
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
 
     controller.save()
 
-    assert 409 == controller.response.status
+    assert 422 == controller.response.status
     assert 'application/json;charset=utf-8' == controller.response.contentType
     assert '{"errors":["DELIVERY_AGENT_MISSING"]}' == controller.response.contentAsString
+    assert 0 == Delivery.count()
+  }
+
+  @Test void shouldRespondWithUnprocessableWhenConstraintViolated() {
+    def req = [
+        quantity: null, //quantity is required
+        type: 'RETURN',
+        createdDate: '2013-04-24 12:00:01 EDT',
+        agentName: agent.getName()
+    ]
+    controller.request.json = new JsonBuilder(req).toString()
+
+    controller.save()
+
+    assert 422 == controller.response.status
+    assert 'application/json;charset=utf-8' == controller.response.contentType
+    assert '{"errors":["QUANTITY_NULLABLE"]}' == controller.response.contentAsString
     assert 0 == Delivery.count()
   }
 

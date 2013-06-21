@@ -10,17 +10,20 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
     def readingsService
     def grailsApplication
 
-    private SimpleDateFormat sdf
+    SimpleDateFormat sdf
 
-    private Parameter temperature = Parameter.findByName("Temperature")
-    private Parameter ph = Parameter.findByName("pH")
-    private Location location = Location.first()
+    Parameter temperature
+    Parameter ph
+    SamplingSite samplingSite
 
     @Before
     void setupData() {
-        Kiosk kiosk = new Kiosk(name: "k1").save()
-        new Sensor(sensorId: "s1", kiosk: kiosk, measurementType: temperature, displayName: "S1", location: location).save()
-        new Sensor(sensorId: "s2", kiosk: kiosk, measurementType: ph, displayName: "S2", location: location).save()
+        Kiosk kiosk = new Kiosk(name: "k1", apiKey: 'pw').save(failOnError: true)
+        temperature = new Parameter(name: "temptest").save(failOnError: true)
+        ph = new Parameter(name: "pHtest", minimum: 4, maximum: 9).save(failOnError: true)
+        samplingSite = new SamplingSite(name: "Borehole").save(failOnError: true)
+        new Sensor(sensorId: "s1", kiosk: kiosk, parameter: temperature, displayName: "S1", samplingSite: samplingSite).save(failOnError: true)
+        new Sensor(sensorId: "s2", kiosk: kiosk, parameter: ph, displayName: "S2", samplingSite: samplingSite).save(failOnError: true)
 
         sdf = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
     }
@@ -42,11 +45,10 @@ s2,2013-12-12 00:01:02 EDT,8
 """
         readingsService.importIncomingFiles()
 
-        assert Reading.count() == 1
+        assert Reading.count() == 2
+        assert Reading.first().createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
         assert Measurement.findByParameter(ph).value == 8
-        assert Measurement.findByParameter(ph).createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
         assert Measurement.findByParameter(temperature).value == 20
-        assert Measurement.findByParameter(temperature).createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
     }
 
     @Test
@@ -61,7 +63,7 @@ s2,2013-12-12 05:00:00 EDT,9
 """
         readingsService.importIncomingFiles()
 
-        assert Reading.count() == 2
+        assert Reading.count() == 3
         assert Measurement.countByParameter(temperature) == 1
         assert Measurement.countByParameter(ph) == 2
     }
@@ -78,7 +80,7 @@ s2,2013-12-12 00:02:00 EDT,9
 """
         readingsService.importIncomingFiles()
 
-        assert Reading.count() == 2
+        assert Reading.count() == 4
         assert totalProcessedFiles == 2
     }
 
@@ -94,7 +96,7 @@ s2,2013-12-12 00:01:02 EDT,8
 """
         readingsService.importIncomingFiles()
 
-        assert Reading.count() == 1
+        assert Reading.count() == 2 //one for each line in good_file.csv
         assert Measurement.findByParameter(ph).value == 8
         assert totalProcessedFiles == 1
         assert totalFailedFiles == 1

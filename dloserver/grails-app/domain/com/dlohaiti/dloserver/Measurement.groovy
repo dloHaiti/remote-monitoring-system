@@ -7,11 +7,10 @@ class Measurement {
     static belongsTo = [reading: Reading]
 
     static constraints = {
-        parameter(nullable: false)
         value(nullable: false, validator: {
             val, obj ->
-                ((obj.parameter?.minimum == null) || (val >= obj.parameter?.minimum)) &&
-                        ((obj.parameter?.maximum == null) || (val <= obj.parameter?.maximum))
+                ((obj.parameter.minimum == null) || (val >= obj.parameter.minimum)) &&
+                        ((obj.parameter.maximum == null) || (val <= obj.parameter.maximum))
         })
     }
 }

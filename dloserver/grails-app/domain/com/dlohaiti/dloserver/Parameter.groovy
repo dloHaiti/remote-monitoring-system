@@ -14,7 +14,6 @@ class Parameter {
   boolean isUsedInTotalizer
   boolean isOkNotOk
 
-  static hasOne = [sensor: Sensor]
   static hasMany = [samplingSites: SamplingSite]
 
   static constraints = {
@@ -22,7 +21,6 @@ class Parameter {
     unit(nullable: true)
     minimum(nullable: true)
     maximum(nullable: true, validator: { val, obj -> ((val == null) || (obj.minimum < val)) })
-    sensor(nullable: true, unique: true, display: false)
   }
 
   // eager loading of the sampling sites, for serializing to JSON in configuration controller

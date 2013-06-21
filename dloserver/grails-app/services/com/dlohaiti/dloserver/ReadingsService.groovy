@@ -1,6 +1,7 @@
 package com.dlohaiti.dloserver
-
 import au.com.bytecode.opencsv.CSVReader
+
+import java.text.SimpleDateFormat
 
 class ReadingsService {
 
@@ -56,53 +57,47 @@ class ReadingsService {
     private boolean importFile(String filename) {
         log.info("Started importing file '$filename'")
         CSVReader reader = new CSVReader(new StringReader(incomingService.getFileContent(filename)))
-        Reading reading = new Reading(createdDate: new Date())
 
+        List<Reading> readingsToSave = [];
         String[] nextLine
         while ((nextLine = reader.readNext()) != null) {
-            boolean validLine = (nextLine.length == 3)
-            Measurement measurement
-            if (validLine) {
-                measurement = parseMeasurement(nextLine)
-                if (measurementIsNotUnique(measurement)) {
-                    log.warn("Measurement for sensor ${measurement.parameter.sensor.sensorId} ignored, as it was already in DB")
-                    continue
-                }
-                reading.addToMeasurements(measurement)
-                reading.kiosk = measurement.parameter?.sensor?.kiosk
-                validLine = measurement.validate()
-            }
-            if (!validLine) {
-                log.error("File '$filename' will be rejected because it contains an invalid line: \"${nextLine}\"")
-                measurement?.errors?.allErrors?.collect {
-                    log.debug(messageSource.getMessage(it, Locale.CANADA))
-                }
-                return false
-            }
-        }
-
-        def result = reading.save(flush: true)
-        if (!result) {
-            log.error("Could not import file '$filename' with ${reading.measurements?.size()} measurements")
-            log.debug(reading.errors)
+          if(nextLine.length != 3) {
+            log.error("Rejecting file [${filename}] because of invalid line:\n\t\t${nextLine}")
             return false
+          }
+          String sensorId = nextLine[0]
+          String timestamp = nextLine[1]
+          String value = nextLine[2]
+
+          Date createdDate = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString()).parse(timestamp)
+          Sensor sensor = Sensor.findBySensorId(sensorId)
+          if(sensor == null) {
+            log.error("Rejecting file [${filename}] because line references invalid SensorId [${sensorId}]")
+            return false
+          }
+
+          def existingReading = Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate, sensor.kiosk, sensor.samplingSite)
+          if(existingReading?.measurements.find({m -> m.parameter == sensor.parameter})) {
+            log.warn("Ignoring duplicate line from file [${filename}]. line:\n\t\t${nextLine}")
+            continue
+          }
+
+          Measurement measurement = new Measurement(parameter: sensor.parameter, value: parseValue(value))
+          Reading reading = new Reading(createdDate: createdDate)
+          reading.addToMeasurements(measurement)
+          reading.samplingSite = sensor.samplingSite
+          reading.kiosk = sensor.kiosk
+          if(reading.validate()) {
+            readingsToSave.add(reading)
+          } else {
+            log.error("Reading from file [${filename}] with line [${nextLine}] has validation errors preventing save")
+            return false
+          }
         }
-        log.info("Finished importing file '$filename' with ${reading.measurements?.size()} measurements")
+        for(reading in readingsToSave) {
+          reading.save(flush: true)
+        }
+        log.info("Finished importing file [${filename}] with [${readingsToSave.size()}] readings")
         return true
-    }
-
-    private static boolean measurementIsNotUnique(Measurement measurement) {
-        Measurement.findByParameter(measurement.parameter)
-    }
-
-    private Measurement parseMeasurement(String[] nextLine) {
-        def sensorId = nextLine[0]
-        def value = nextLine[2]
-
-        def sensor = Sensor.findBySensorIdIlike(sensorId)
-        def measurement = new Measurement()
-        measurement.parameter = sensor?.measurementType
-        measurement.value = parseValue(value)
-        return measurement
     }
 }

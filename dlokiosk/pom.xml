@@ -57,12 +57,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.pivotallabs</groupId>
-            <artifactId>robolectric</artifactId>
-            <version>1.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
             <version>1.2</version>
@@ -92,6 +86,13 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
+
+      <dependency>
+          <groupId>org.robolectric</groupId>
+          <artifactId>robolectric</artifactId>
+          <version>2.1.1</version>
+          <scope>test</scope>
+      </dependency>
     </dependencies>
 
     <build>

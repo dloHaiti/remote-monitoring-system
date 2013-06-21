@@ -1,6 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
-public class DeliveryAgent {
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.upperCase;
+
+public class DeliveryAgent implements Comparable<DeliveryAgent> {
     private final String name;
 
     public DeliveryAgent(String name) {
@@ -26,5 +29,9 @@ public class DeliveryAgent {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
+    }
+
+    @Override public int compareTo(DeliveryAgent another) {
+        return upperCase(defaultString(name)).compareTo(upperCase(defaultString(another.name)));
     }
 }

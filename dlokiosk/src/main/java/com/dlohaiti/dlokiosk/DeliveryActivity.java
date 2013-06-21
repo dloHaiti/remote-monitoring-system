@@ -30,7 +30,7 @@ public class DeliveryActivity extends RoboActivity {
         setContentView(R.layout.activity_delivery_tracking);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for(DeliveryAgent agent : deliveryAgentRepository.list()) {
+        for(DeliveryAgent agent : deliveryAgentRepository.findAll()) {
             adapter.add(agent.getName());
         }
         agentSpinner.setAdapter(adapter);

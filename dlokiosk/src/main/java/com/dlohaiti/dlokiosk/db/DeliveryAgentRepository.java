@@ -7,8 +7,9 @@ import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.DeliveryAgent;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class DeliveryAgentRepository {
     private final static String TAG = DeliveryAgentRepository.class.getSimpleName();
@@ -38,8 +39,8 @@ public class DeliveryAgentRepository {
         }
     }
 
-    public List<DeliveryAgent> list() {
-        List<DeliveryAgent> agents = new ArrayList<DeliveryAgent>();
+    public SortedSet<DeliveryAgent> findAll() {
+        SortedSet<DeliveryAgent> agents = new TreeSet<DeliveryAgent>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(KioskDatabase.DeliveryAgentsTable.TABLE_NAME, new String[] {KioskDatabase.DeliveryAgentsTable.NAME}, null, null, null, null, null);

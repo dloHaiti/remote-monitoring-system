@@ -2,7 +2,6 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.DeliveryType;
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.database.DatabaseUtils.queryNumEntries;
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.DeliveriesTable.*;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
@@ -23,10 +24,10 @@ public class DeliveryRepository {
     private final KioskDate kioskDate;
     private final static String[] COLUMNS = new String[]{
             KioskDatabase.DeliveriesTable.ID,
-            KioskDatabase.DeliveriesTable.QUANTITY,
-            KioskDatabase.DeliveriesTable.DELIVERY_TYPE,
-            KioskDatabase.DeliveriesTable.CREATED_DATE,
-            KioskDatabase.DeliveriesTable.AGENT_NAME
+            QUANTITY,
+            DELIVERY_TYPE,
+            CREATED_DATE,
+            AGENT_NAME
     };
 
     @Inject
@@ -37,21 +38,22 @@ public class DeliveryRepository {
 
     public boolean save(Delivery delivery) {
         ContentValues values = new ContentValues();
-        values.put(KioskDatabase.DeliveriesTable.QUANTITY, delivery.getQuantity());
-        values.put(KioskDatabase.DeliveriesTable.DELIVERY_TYPE, delivery.getType().name());
-        values.put(KioskDatabase.DeliveriesTable.CREATED_DATE, kioskDate.getFormat().format(delivery.getCreatedDate()));
-        values.put(KioskDatabase.DeliveriesTable.AGENT_NAME, delivery.getAgentName());
-        SQLiteDatabase writableDatabase = db.getWritableDatabase();
-        writableDatabase.beginTransaction();
+        values.put(QUANTITY, delivery.getQuantity());
+        values.put(DELIVERY_TYPE, delivery.getType().name());
+        values.put(CREATED_DATE, kioskDate.getFormat().format(delivery.getCreatedDate()));
+        values.put(AGENT_NAME, delivery.getAgentName());
+
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
         try {
-            writableDatabase.insert(KioskDatabase.DeliveriesTable.TABLE_NAME, null, values);
-            writableDatabase.setTransactionSuccessful();
+            wdb.insert(TABLE_NAME, null, values);
+            wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
             Log.e(TAG, "Failed to save delivery to database.", e);
             return false;
         } finally {
-            writableDatabase.endTransaction();
+            wdb.endTransaction();
         }
     }
 
@@ -59,7 +61,7 @@ public class DeliveryRepository {
         List<Delivery> deliveries = new ArrayList<Delivery>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(KioskDatabase.DeliveriesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -73,7 +75,7 @@ public class DeliveryRepository {
             }
             rdb.setTransactionSuccessful();
             return deliveries;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "Failed to load all deliveries from database.", e);
             return new ArrayList<Delivery>();
         } finally {
@@ -86,7 +88,7 @@ public class DeliveryRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(KioskDatabase.DeliveriesTable.TABLE_NAME, where(KioskDatabase.DeliveriesTable.ID), matches(delivery.getId()));
+            wdb.delete(TABLE_NAME, where(ID), matches(delivery.getId()));
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -98,6 +100,6 @@ public class DeliveryRepository {
     }
 
     public boolean isNotEmpty() {
-        return DatabaseUtils.queryNumEntries(db.getReadableDatabase(), KioskDatabase.DeliveriesTable.TABLE_NAME) > 0;
+        return queryNumEntries(db.getReadableDatabase(), TABLE_NAME) > 0;
     }
 }

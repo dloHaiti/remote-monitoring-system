@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.DeliveryAgentsTable.TABLE_NAME;
+
 public class DeliveryAgentRepository {
     private final static String TAG = DeliveryAgentRepository.class.getSimpleName();
+    private final static String[] COLUMNS = new String[]{KioskDatabase.DeliveryAgentsTable.NAME};
     private final KioskDatabase db;
 
     @Inject
@@ -24,11 +27,11 @@ public class DeliveryAgentRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(KioskDatabase.DeliveryAgentsTable.TABLE_NAME, null, null);
+            wdb.delete(TABLE_NAME, null, null);
             for(DeliveryAgent agent : agents) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.DeliveryAgentsTable.NAME, agent.getName());
-                wdb.insert(KioskDatabase.DeliveryAgentsTable.TABLE_NAME, null, values);
+                wdb.insert(TABLE_NAME, null, values);
             }
             wdb.setTransactionSuccessful();
             return true;
@@ -43,13 +46,12 @@ public class DeliveryAgentRepository {
         SortedSet<DeliveryAgent> agents = new TreeSet<DeliveryAgent>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(KioskDatabase.DeliveryAgentsTable.TABLE_NAME, new String[] {KioskDatabase.DeliveryAgentsTable.NAME}, null, null, null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
-            if(cursor.moveToFirst()) {
-                while(!cursor.isAfterLast()) {
-                    agents.add(new DeliveryAgent(cursor.getString(0)));
-                    cursor.moveToNext();
-                }
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                agents.add(new DeliveryAgent(cursor.getString(0)));
+                cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();
         } catch (Exception e) {

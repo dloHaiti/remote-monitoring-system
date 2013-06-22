@@ -11,16 +11,16 @@ import com.dlohaiti.dlokiosk.db.DeliveryAgentRepository;
 import com.dlohaiti.dlokiosk.db.DeliveryRepository;
 import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.DeliveryAgent;
-import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+
+import java.util.Date;
 
 public class DeliveryActivity extends RoboActivity {
 
     @InjectView(R.id.delivery_tracking) private NumberPicker deliveryPicker;
     @InjectView(R.id.agent_spinner) private Spinner agentSpinner;
-    @Inject private DeliveryFactory factory;
     @Inject private DeliveryRepository repository;
     @Inject private DeliveryAgentRepository deliveryAgentRepository;
     @Inject private ConfigurationRepository config;
@@ -49,7 +49,7 @@ public class DeliveryActivity extends RoboActivity {
     }
 
     private void createRecord(DeliveryType type) {
-        Delivery delivery = factory.makeDelivery(deliveryPicker.getValue(), type, (String)agentSpinner.getSelectedItem());
+        Delivery delivery = new Delivery(deliveryPicker.getValue(), type, new Date(), (String) agentSpinner.getSelectedItem());
         boolean isSuccessful = repository.save(delivery);
 
         ResultDialog resultDialog = new ResultDialog();

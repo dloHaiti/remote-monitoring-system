@@ -69,4 +69,14 @@ public class Delivery {
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         return result;
     }
+
+    @Override public String toString() {
+        return "Delivery{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", type=" + type +
+                ", agentName='" + agentName + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }

@@ -8,6 +8,6 @@ import java.text.SimpleDateFormat;
 @Singleton
 public class KioskDate {
     public DateFormat getFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
     }
 }

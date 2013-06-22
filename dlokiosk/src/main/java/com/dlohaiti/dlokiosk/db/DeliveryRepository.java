@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
@@ -10,7 +11,6 @@ import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
@@ -21,6 +21,13 @@ public class DeliveryRepository {
     private final DeliveryFactory factory;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
+    private final static String[] COLUMNS = new String[]{
+            KioskDatabase.DeliveriesTable.ID,
+            KioskDatabase.DeliveriesTable.QUANTITY,
+            KioskDatabase.DeliveriesTable.DELIVERY_TYPE,
+            KioskDatabase.DeliveriesTable.CREATED_DATE,
+            KioskDatabase.DeliveriesTable.AGENT_NAME
+    };
 
     @Inject
     public DeliveryRepository(KioskDatabase db, DeliveryFactory factory, KioskDate kioskDate) {
@@ -49,19 +56,12 @@ public class DeliveryRepository {
         }
     }
 
-    public Collection<Delivery> list() {
+    public List<Delivery> list() {
         List<Delivery> deliveries = new ArrayList<Delivery>();
-        String[] columns = new String[]{
-                KioskDatabase.DeliveriesTable.ID,
-                KioskDatabase.DeliveriesTable.QUANTITY,
-                KioskDatabase.DeliveriesTable.DELIVERY_TYPE,
-                KioskDatabase.DeliveriesTable.CREATED_DATE,
-                KioskDatabase.DeliveriesTable.AGENT_NAME
-        };
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
+        Cursor cursor = rdb.query(KioskDatabase.DeliveriesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
-            Cursor cursor = rdb.query(KioskDatabase.DeliveriesTable.TABLE_NAME, columns, null, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Integer id = cursor.getInt(0);
@@ -72,13 +72,13 @@ public class DeliveryRepository {
                 deliveries.add(factory.makeDelivery(id, quantity, type, createdDate, agentName));
                 cursor.moveToNext();
             }
-            cursor.close();
             rdb.setTransactionSuccessful();
             return deliveries;
         } catch(Exception e) {
             Log.e(TAG, "Failed to load all deliveries from database.", e);
             return new ArrayList<Delivery>();
         } finally {
+            cursor.close();
             rdb.endTransaction();
         }
     }
@@ -99,6 +99,6 @@ public class DeliveryRepository {
     }
 
     public boolean isNotEmpty() {
-        return list().size() > 0;
+        return DatabaseUtils.queryNumEntries(db.getReadableDatabase(), KioskDatabase.DeliveriesTable.TABLE_NAME) > 0;
     }
 }

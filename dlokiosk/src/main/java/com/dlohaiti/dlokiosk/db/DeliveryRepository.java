@@ -5,12 +5,13 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import com.dlohaiti.dlokiosk.DeliveryType;
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Delivery;
-import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
@@ -18,7 +19,6 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class DeliveryRepository {
     private final static String TAG = DeliveryRepository.class.getSimpleName();
-    private final DeliveryFactory factory;
     private final KioskDatabase db;
     private final KioskDate kioskDate;
     private final static String[] COLUMNS = new String[]{
@@ -30,8 +30,7 @@ public class DeliveryRepository {
     };
 
     @Inject
-    public DeliveryRepository(KioskDatabase db, DeliveryFactory factory, KioskDate kioskDate) {
-        this.factory = factory;
+    public DeliveryRepository(KioskDatabase db, KioskDate kioskDate) {
         this.db = db;
         this.kioskDate = kioskDate;
     }
@@ -66,10 +65,10 @@ public class DeliveryRepository {
             while (!cursor.isAfterLast()) {
                 Integer id = cursor.getInt(0);
                 Integer quantity = cursor.getInt(1);
-                String type = cursor.getString(2);
-                String createdDate = cursor.getString(3);
+                DeliveryType type = DeliveryType.valueOf(cursor.getString(2));
+                Date createdDate = kioskDate.getFormat().parse(cursor.getString(3));
                 String agentName = cursor.getString(4);
-                deliveries.add(factory.makeDelivery(id, quantity, type, createdDate, agentName));
+                deliveries.add(new Delivery(id, quantity, type, createdDate, agentName));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();

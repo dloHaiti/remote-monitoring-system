@@ -2,9 +2,7 @@ package com.dlohaiti.dlokiosk.db;
 
 import com.dlohaiti.dlokiosk.DeliveryType;
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.domain.Clock;
 import com.dlohaiti.dlokiosk.domain.Delivery;
-import com.dlohaiti.dlokiosk.domain.DeliveryFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +25,7 @@ public class DeliveryRepositoryTest {
 
     @Before
     public void setUp() {
-        KioskDate kioskDate = new KioskDate();
-        repository = new DeliveryRepository(db, new DeliveryFactory(new Clock(), kioskDate), kioskDate);
+        repository = new DeliveryRepository(db, new KioskDate());
     }
 
     @Test

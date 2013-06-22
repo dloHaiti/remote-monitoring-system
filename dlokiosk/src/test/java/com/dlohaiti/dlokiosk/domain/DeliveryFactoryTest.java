@@ -1,7 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.DeliveryType;
-import com.dlohaiti.dlokiosk.KioskDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class DeliveryFactoryTest {
     @Before
     public void setUp() {
         clock = mock(Clock.class);
-        factory = new DeliveryFactory(clock, new KioskDate());
+        factory = new DeliveryFactory(clock);
 
         given(clock.now()).willReturn(new Date(0));
     }

@@ -14,7 +14,7 @@ class ReportController {
     Kiosk kiosk = params.kiosk
     def readings = new Readings(readings: Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight()))
 
-    def parameters = Parameter.findAll()
+    def parameters = Parameter.findAllByActive(true)
 
     def paramMap = [:]
     for(parameter in parameters) {
@@ -40,7 +40,7 @@ class ReportController {
 
   def salesByDay() {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
-    List<Product> products = Product.findAll()
+    List<Product> products = Product.findAllByActive(true)
     List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
     List<Delivery> deliveries = Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight())
 

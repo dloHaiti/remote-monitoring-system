@@ -59,41 +59,46 @@ class ReadingsService {
     private boolean importFile(String filename) {
         log.info("Started importing file '$filename'")
         CSVReader reader = new CSVReader(new StringReader(incomingService.getFileContent(filename)))
+        List<String[]> allLines = reader.readAll()
 
         List<Reading> readingsToSave = [];
-        String[] nextLine
-        while ((nextLine = reader.readNext()) != null) {
-          if(nextLine.length != 3) {
-            log.error("Rejecting file [${filename}] because of invalid line:\n\t\t${nextLine}")
-            return false
-          }
-          String sensorId = nextLine[0]
-          String timestamp = nextLine[1]
-          String value = nextLine[2]
+        def parser = new SolarFileParser()
+        if(parser.isSolarFile(allLines[0])) {
+          readingsToSave = parser.parse(allLines)
+        } else {
+          for(String[] line in allLines) {
+            if(line.length != 3) {
+              log.error("Rejecting file [${filename}] because of invalid line:\n\t\t${line}")
+              return false
+            }
 
-          Date createdDate = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString()).parse(timestamp)
-          Sensor sensor = Sensor.findBySensorId(sensorId)
-          if(sensor == null) {
-            log.error("Rejecting file [${filename}] because line references invalid SensorId [${sensorId}]")
-            return false
-          }
+            String sensorId = line[0]
+            String timestamp = line[1]
+            String value = line[2]
+            Date createdDate = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString()).parse(timestamp)
+            Sensor sensor = Sensor.findBySensorId(sensorId)
+            if(sensor == null) {
+              log.error("Rejecting file [${filename}] because line references invalid SensorId [${sensorId}]")
+              return false
+            }
 
-          def existingReading = Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate, sensor.kiosk, sensor.samplingSite)
-          if(existingReading?.measurements.find({m -> m.parameter == sensor.parameter})) {
-            log.warn("Ignoring duplicate line from file [${filename}]. line:\n\t\t${nextLine}")
-            continue
-          }
+            def existingReading = Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate, sensor.kiosk, sensor.samplingSite)
+            if(existingReading?.measurements.find({m -> m.parameter == sensor.parameter})) {
+              log.warn("Ignoring duplicate line from file [${filename}]. line:\n\t\t${line}")
+              continue
+            }
 
-          Measurement measurement = new Measurement(parameter: sensor.parameter, value: parseValue(value))
-          Reading reading = new Reading(createdDate: createdDate)
-          reading.addToMeasurements(measurement)
-          reading.samplingSite = sensor.samplingSite
-          reading.kiosk = sensor.kiosk
-          if(reading.validate()) {
-            readingsToSave.add(reading)
-          } else {
-            log.error("Reading from file [${filename}] with line [${nextLine}] has validation errors preventing save")
-            return false
+            Measurement measurement = new Measurement(parameter: sensor.parameter, value: parseValue(value))
+            Reading reading = new Reading(createdDate: createdDate)
+            reading.addToMeasurements(measurement)
+            reading.samplingSite = sensor.samplingSite
+            reading.kiosk = sensor.kiosk
+            if(reading.validate()) {
+              readingsToSave.add(reading)
+            } else {
+              log.error("Reading from file [${filename}] with line [${line}] has validation errors preventing save")
+              return false
+            }
           }
         }
         for(reading in readingsToSave) {

@@ -26,6 +26,14 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
         new Sensor(sensorId: "s2", kiosk: kiosk, parameter: ph, displayName: "S2", samplingSite: samplingSite).save(failOnError: true)
 
         sdf = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
+
+        // solar stuff
+        Parameter kwh = new Parameter(name: 'kWh', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
+        Parameter floatTime = new Parameter(name: 'Float Time (h:m)', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
+        Parameter highPower = new Parameter(name: 'High Power (kW)', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
+        Parameter highTemp = new Parameter(name: 'High Temp (C)', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
+        Parameter vin = new Parameter(name: 'Vin', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
+        Parameter vbatt = new Parameter(name: 'Vbatt', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
     }
 
     @Before
@@ -49,6 +57,18 @@ s2,2013-12-12 00:01:02 EDT,8
         assert Reading.first().createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
         assert Measurement.findByParameter(ph).value == 8
         assert Measurement.findByParameter(temperature).value == 20
+    }
+
+    @Test
+    void shouldImportValidSolarFile() {
+        createIncomingFile("Mon_May_6_2013.csv") <<
+                """KioskId,Date,kWh,Time,Float Time (h:m),High Power (kW),High Temp (C),Vin,Vbatt,,
+k1,5/5/2013,0.7,23:59,05:04,0.583,34,96.5,60.7,,
+k1,5/4/2013,0.4,23:59,04:26,0.46,32.6,108,60.6,,"""
+        readingsService.importIncomingFiles()
+
+        assert Reading.count() == 2
+        assert Measurement.count() == 12
     }
 
     @Test

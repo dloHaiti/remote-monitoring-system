@@ -17,6 +17,7 @@ class Reading {
 
   static constraints = {
     username(nullable: true, blank: true)
+    samplingSite(nullable: true)
   }
 
   boolean isUsedForTotalizer() {

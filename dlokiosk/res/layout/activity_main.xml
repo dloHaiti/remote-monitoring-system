@@ -74,12 +74,6 @@
       android:onClick="moveToViewReports"
       android:text="@string/view_reports_button"
       android:id="@+id/view_reports" />
-
-    <Button
-      style="@style/home_screen_button"
-      android:onClick="doManualSync"
-      android:text="@string/manual_sync_button"
-      android:id="@+id/manualSyncButton" />
   </LinearLayout>
 
 </RelativeLayout>

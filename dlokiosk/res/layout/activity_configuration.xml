@@ -26,13 +26,24 @@
         android:layout_toRightOf="@+id/last_update_label"/>
 
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:onClick="doManualSync"
+        android:text="@string/manual_sync_button"
+        android:layout_toLeftOf="@+id/update_configuration_button"
+        android:id="@+id/manualSyncButton" />
+
+    <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
       android:layout_toLeftOf="@+id/save_configuration_button"
       android:padding="20dp"
       android:text="@string/update_configuration"
-      android:onClick="updateConfiguration" />
+      android:onClick="updateConfiguration"
+      android:id="@+id/update_configuration_button"/>
 
     <Button
       android:id="@+id/save_configuration_button"

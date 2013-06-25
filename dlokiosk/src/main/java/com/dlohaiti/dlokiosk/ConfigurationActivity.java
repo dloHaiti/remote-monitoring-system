@@ -44,4 +44,8 @@ public class ConfigurationActivity extends RoboActivity {
         new PullConfigurationTask(this).execute();
         config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(ISODateTimeFormat.basicDate()));
     }
+
+    public void doManualSync(View view) {
+        new ManualSyncReadingsTask(this).execute();
+    }
 }

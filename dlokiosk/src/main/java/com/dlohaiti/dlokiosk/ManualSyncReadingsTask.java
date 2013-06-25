@@ -3,7 +3,6 @@ package com.dlohaiti.dlokiosk;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.util.Log;
 import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
@@ -62,7 +61,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         boolean atLeastOneDeliveryFailed = false;
 
         for(Reading reading : readings) {
-            boolean sendOk = readingsClient.send(reading);
+            boolean sendOk = readingsClient.send(reading).isSuccess();
             if(sendOk) {
                 readingsRepository.remove(reading);
             } else {
@@ -71,7 +70,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         }
 
         for (Receipt receipt : receipts) {
-            boolean sendOk = receiptsClient.send(receipt);
+            boolean sendOk = receiptsClient.send(receipt).isSuccess();
             if(sendOk) {
                 receiptsRepository.remove(receipt);
             } else {
@@ -80,7 +79,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         }
 
         for(Delivery delivery: deliveries) {
-            boolean sendOk = deliveriesClient.send(delivery);
+            boolean sendOk = deliveriesClient.send(delivery).isSuccess();
             if(sendOk) {
                 deliveriesRepository.remove(delivery);
             } else {

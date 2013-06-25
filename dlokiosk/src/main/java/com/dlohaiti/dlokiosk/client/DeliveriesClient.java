@@ -11,7 +11,7 @@ public class DeliveriesClient {
         this.restClient = restClient;
     }
 
-    public boolean send(Delivery delivery) {
+    public PostResponse send(Delivery delivery) {
         return restClient.post("/deliveries", delivery);
     }
 }

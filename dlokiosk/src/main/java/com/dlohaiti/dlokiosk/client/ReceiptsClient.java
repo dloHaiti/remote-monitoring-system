@@ -11,7 +11,7 @@ public class ReceiptsClient {
         this.restClient = restClient;
     }
 
-    public boolean send(Receipt receipt) {
+    public PostResponse send(Receipt receipt) {
         return restClient.post("/receipts", receipt);
     }
 }

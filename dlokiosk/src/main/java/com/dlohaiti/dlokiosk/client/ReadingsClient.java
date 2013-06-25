@@ -11,7 +11,7 @@ public class ReadingsClient {
         this.restClient = restClient;
     }
 
-    public boolean send(Reading reading) {
+    public PostResponse send(Reading reading) {
         return restClient.post("/readings", reading);
     }
 }

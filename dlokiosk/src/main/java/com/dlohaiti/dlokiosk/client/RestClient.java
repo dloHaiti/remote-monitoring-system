@@ -16,7 +16,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
-import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 public class RestClient {
 
@@ -53,6 +54,7 @@ public class RestClient {
         );
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setAuthorization(authHeader);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         return requestHeaders;
     }
 
@@ -60,14 +62,14 @@ public class RestClient {
         return restTemplate.exchange(this.baseUrl + uri, HttpMethod.GET, new HttpEntity<Object>(requestHeaders()), responseType, new Object()).getBody();
     }
 
-    public boolean post(String uri, Object data) {
+    public PostResponse post(String uri, Object data) {
         String url = this.baseUrl + uri;
         try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), Map.class, new Object());
-            return true;
+            ResponseEntity<PostResponse> responseEntity = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), PostResponse.class, new Object());
+            return responseEntity.getBody();
         } catch (HttpClientErrorException e) {
             logger.error("Error " + e.getStatusCode() + " while posting data to url " + url, e);
-            return false;
+            return new PostResponse(asList("HTTP " + e.getStatusCode() + " ERROR"));
         }
     }
 }

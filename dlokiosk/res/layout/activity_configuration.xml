@@ -25,15 +25,6 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/last_update_label"/>
 
-    <EditText
-      android:id="@+id/kiosk_id"
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="20dp"
-      android:padding="15dp"
-      android:hint="@string/kiosk_id_hint" />
-
     <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -55,21 +46,35 @@
 
   </RelativeLayout>
 
-  <EditText
-    android:id="@+id/kiosk_password"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:padding="15dp"
-    android:inputType="textPassword"
-    android:hint="@string/kiosk_password_hint" />
-
-  <EditText
-      android:id="@+id/server_url"
+  <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:inputType="textUri"
-      android:hint="@string/server_url_hint"/>
+      android:layout_marginTop="20dp"
+      android:orientation="horizontal">
+      <EditText
+          android:id="@+id/kiosk_id"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:padding="15dp"
+          android:hint="@string/kiosk_id_hint" />
+
+      <EditText
+          android:id="@+id/kiosk_password"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:padding="15dp"
+          android:inputType="textPassword"
+          android:hint="@string/kiosk_password_hint" />
+
+      <EditText
+          android:id="@+id/server_url"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:padding="15dp"
+          android:inputType="textUri"
+          android:hint="@string/server_url_hint"/>
+  </LinearLayout>
 
 </LinearLayout>

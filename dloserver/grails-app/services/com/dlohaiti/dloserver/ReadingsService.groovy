@@ -12,14 +12,16 @@ class ReadingsService {
     public saveReading(params) {
         Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
         SamplingSite samplingSite = SamplingSite.findByName(params.samplingSiteName)
-        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite, username: params.kioskName])
-
-        params.measurements?.each {
-            Measurement measurement = new Measurement()
-            measurement.parameter = Parameter.findByNameIlike(it.parameterName)
-            measurement.value = new BigDecimal(it.value as Double)
-            reading.addToMeasurements(measurement)
+        if(samplingSite == null) {
+          throw new MissingSamplingSiteException()
         }
+        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite, username: "${params.kiosk.name} operator"])
+          for(it in params.measurements) {
+              Measurement measurement = new Measurement()
+              measurement.parameter = Parameter.findByNameIlike(it.parameterName)
+              measurement.value = new BigDecimal(it.value as Double)
+              reading.addToMeasurements(measurement)
+          }
 
         reading.kiosk = params.kiosk
         reading.save(flush: true)

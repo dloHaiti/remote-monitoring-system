@@ -29,7 +29,7 @@ environments {
         url = "jdbc:mysql://localhost:3306/dlo"
         driverClassName = "com.mysql.jdbc.Driver"
         username = "app"
-        password = "SQ7cuYGAMVtVZh+J"
+        password = "password123"
         properties {
           maxActive = 100
           maxIdle = 25

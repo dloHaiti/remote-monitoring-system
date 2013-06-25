@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
+import java.util.Map;
 
 public class RestClient {
 
@@ -62,7 +63,7 @@ public class RestClient {
     public boolean post(String uri, Object data) {
         String url = this.baseUrl + uri;
         try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), String.class, new Object());
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(data, requestHeaders()), Map.class, new Object());
             return true;
         } catch (HttpClientErrorException e) {
             logger.error("Error " + e.getStatusCode() + " while posting data to url " + url, e);

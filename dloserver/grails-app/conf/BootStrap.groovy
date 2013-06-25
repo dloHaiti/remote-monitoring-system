@@ -71,11 +71,10 @@ class BootStrap {
       ]
     }
 
-//    if (Kiosk.count() == 0) {
-//      new Kiosk(name: "kiosk01", apiKey: 'pw').save()
-//      new Kiosk(name: "kiosk02", apiKey: 'pw').save()
-//    }
-//
+    if (Kiosk.count() == 0) {
+      new Kiosk(name: "kiosk01", apiKey: 'pw').save()
+    }
+
 //    if (DeliveryAgent.count() == 0) {
 //      new DeliveryConfiguration(minimumValue: 0, maximumValue: 24, defaultValue: 24, gallons: 4, price: new Money(amount: 5G)).save()
 //      new DeliveryAgent(name: "Agent 1", kiosk: Kiosk.findByName("kiosk01"), active: true).save()

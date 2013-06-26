@@ -55,7 +55,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s REAL," +
                         "%s TEXT," +
-                        "%s INTEGER," +
+                        "%s TEXT," +
                         "%s INTEGER," +
                         "%s INTEGER," +
                         "%s INTEGER" +

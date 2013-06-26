@@ -47,21 +47,20 @@ public class ProductRepository {
         List<Product> products = new ArrayList<Product>();
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
+        Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, null, null, null, null, null);
         try {
-            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, null, null, null, null, null);
             cursor.moveToFirst();
-            //TODO: guard against/fail gracefully when running out of memory
             while (!cursor.isAfterLast()) {
                 products.add(buildProduct(cursor));
                 cursor.moveToNext();
             }
-            cursor.close();
             readableDatabase.setTransactionSuccessful();
             return products;
         } catch(Exception e) {
             Log.e(TAG, "Failed to load all products from the database.", e);
             return new ArrayList<Product>();
         } finally {
+            cursor.close();
             readableDatabase.endTransaction();
         }
     }
@@ -82,20 +81,20 @@ public class ProductRepository {
     public Product findById(Long id) {
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
+        Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, where(KioskDatabase.ProductsTable.ID), matches(id), null, null, null);
         try {
-            Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, where(KioskDatabase.ProductsTable.ID), matches(id), null, null, null);
             if (cursor.getCount() != 1) {
                 return new Product(null, null, null, false, null, null, null, null, null, null);
             }
             cursor.moveToFirst();
             Product product = buildProduct(cursor);
-            cursor.close();
             readableDatabase.setTransactionSuccessful();
             return product;
         } catch(Exception e) {
             Log.e(TAG, String.format("Failed to find product with id %d in the database.", id), e);
             return new Product(null, null, null, false, null, null, null, null, null, null);
         } finally {
+            cursor.close();
             readableDatabase.endTransaction();
         }
     }
@@ -114,7 +113,7 @@ public class ProductRepository {
                 values.put(KioskDatabase.ProductsTable.ICON, imageConverter.toBase64EncodedString(p.getImageResource()));
                 values.put(KioskDatabase.ProductsTable.MINIMUM_QUANTITY, p.getMinimumQuantity());
                 values.put(KioskDatabase.ProductsTable.MAXIMUM_QUANTITY, p.getMaximumQuantity());
-                values.put(KioskDatabase.ProductsTable.REQUIRES_QUANTITY, p.requiresQuantity());
+                values.put(KioskDatabase.ProductsTable.REQUIRES_QUANTITY, String.valueOf(p.requiresQuantity()));
                 values.put(KioskDatabase.ProductsTable.CURRENCY, p.getPrice().getCurrencyCode());
                 wdb.insert(KioskDatabase.ProductsTable.TABLE_NAME, null, values);
             }

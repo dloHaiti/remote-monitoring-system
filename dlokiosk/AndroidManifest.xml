@@ -16,6 +16,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
         <activity
+                android:screenOrientation="landscape"
                 android:name="com.dlohaiti.dlokiosk.MainActivity"
                 android:label="@string/app_name" >
             <intent-filter>
@@ -25,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name="com.dlohaiti.dlokiosk.EnterSaleActivity"
                 android:label="@string/title_activity_enter_sale" >
             <meta-data
@@ -32,6 +34,7 @@
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name="com.dlohaiti.dlokiosk.ConfigurationActivity"
                 android:label="@string/title_activity_configuration" >
             <meta-data
@@ -39,6 +42,7 @@
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name=".DeliveryActivity"
                 android:label="@string/title_activity_delivery_tracking" >
             <meta-data
@@ -46,6 +50,7 @@
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name=".EnterPromotionActivity"
                 android:label="@string/title_activity_enter_promotion" >
             <meta-data
@@ -53,6 +58,7 @@
                     android:value="com.dlohaiti.dlokiosk.EnterSaleActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name=".SelectSamplingSiteActivity"
                 android:label="@string/title_activity_select_sampling_site" >
             <meta-data
@@ -60,6 +66,7 @@
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name=".ViewReportsActivity"
                 android:label="@string/title_activity_view_reports" >
             <meta-data
@@ -67,6 +74,7 @@
                     android:value="com.dlohaiti.dlokiosk.MainActivity" />
         </activity>
         <activity
+                android:screenOrientation="landscape"
                 android:name=".NewEnterReadingActivity"
                 android:label="@string/title_activity_enter_reading" >
             <meta-data

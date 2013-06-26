@@ -7,7 +7,7 @@ import java.math.RoundingMode
 class ReportController {
 
   def index() {
-    [kioskName: request.kioskName]
+    [kioskName: request.kiosk.name]
   }
 
   def readings() {

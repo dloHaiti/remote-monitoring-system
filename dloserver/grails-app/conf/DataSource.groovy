@@ -24,21 +24,6 @@ environments {
         }
     }
     production {
-      dataSource {
-        dbCreate = "update"  // Uncomment to modify tables
-        url = "jdbc:mysql://localhost:3306/dlo"
-        driverClassName = "com.mysql.jdbc.Driver"
-        username = "app"
-        password = "password123"
-        properties {
-          maxActive = 100
-          maxIdle = 25
-          minIdle = 5
-          initialSize = 10
-          minEvictableIdleTimeMillis = 60000
-          timeBetweenEvictionRunsMillis = 60000
-          maxWait = 10000
-        }
-      }
+      grails.config.locations = ["file:/etc/appconfig/Config.groovy"]
     }
 }

@@ -8,17 +8,76 @@ things easier for the next person.
 
 dloserver
 =========
-* grails 2.2.1
+* grails 2.2.1 ([documentation][docs])
 * mysql
 * vsftpd
 
+
+development
+-----------
+install `gvm` from gvmtool.net by opening up a Terminal (Mac) and typing
+
+```shell
+$ curl -s get.gvmtool.net | bash
+```
+
+next, we'll need to install grails 2.2.1
+
+```shell
+$ gvm install grails 2.2.1
+```
+
+get the source code, run the server
+
+```shell
+$ git clone https://github.com/dloHaiti/remote-monitoring-system.git
+$ cd remote-monitoring-system
+$ grails run-app
+```
+
+the server should now be running @ http://localhost:8080/dloserver with an in-memory database.
+to access the database, head to http://localhost:8080/dloserver/dbconsole
+
+changes can be made in any text editor, preferably with tests.
+changes to the structure of the database will require a [database migration][dbm]
+
+Once you're confident in the changes, it's time to push to production.
+
+deployment
+----------
+1. run all the automated tests
+```shell
+$ grails test-app
+```
+
+2. package the application
+```shell
+$ grails prod war
+```
+
+3. push to server
+```shell
+$ scp target/dloserver-<version>.war user@address:/tmp/dloserver.war
+```
+
+4. restart the application on the server
+```shell
+$ ssh user@address
+$ sudo service tomcat7 stop
+$ sudo rm -rf /var/lib/tomcat7/webapps/dloserver*
+$ sudo mv /tmp/dloserver.war /var/lib/tomcat7/webapps
+$ sudo service tomcat7 start
+```
+
+creating a production-like environment
+--------------------------------------
 To get a production-like server up and running, create a vm with 2GB RAM and
 install Ubuntu 12.04 32-bit. `scp` a copy of `server-setup.sh` over to the vm
 and run it. Fill in the prompts as they appear. Note the script assumes you'll
 set a mysql root password and prompts for it 3 times in a row.
 
 ```shell
-$ scp dloserver/scripts/server-setup.sh username@address:/tmp/
+$ scp dloserver/server-setup.sh username@address:/tmp/
 The authenticity of host 'address' can't be established.
 ECDSA key fingerprint is _fingerprint_.
 
@@ -46,3 +105,7 @@ Integration tests are meant to cover accepted formats and responses.
 dlokiosk
 ========
 * roboguice
+
+
+[docs]: http://grails.org/documentation
+[dbm]: http://grails-plugins.github.io/grails-database-migration/docs/manual/index.html

@@ -15,7 +15,7 @@ dloserver
 
 development
 -----------
-install `gvm` from gvmtool.net by opening up a Terminal (Mac) and typing
+install `gvm` from [gvmtool.net][gvm] by opening up a Terminal (Mac) and typing
 
 ```shell
 $ curl -s get.gvmtool.net | bash
@@ -107,5 +107,6 @@ dlokiosk
 * roboguice
 
 
+[gvm]: http://gvmtool.net/
 [docs]: http://grails.org/documentation
 [dbm]: http://grails-plugins.github.io/grails-database-migration/docs/manual/index.html

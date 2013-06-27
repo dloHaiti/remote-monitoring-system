@@ -41,7 +41,15 @@ to access the database, head to http://localhost:8080/dloserver/dbconsole
 changes can be made in any text editor, preferably with tests.
 changes to the structure of the database will require a [database migration][dbm]
 
-Once you're confident in the changes, it's time to push to production.
+Once you're confident in the changes, commit them.
+
+```shell
+$ git add -A
+$ git commit -m "message about something specific I changed"
+$ git push origin master
+```
+
+After the changes are committed, we can push to production.
 
 deployment
 ----------

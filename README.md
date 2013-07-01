@@ -112,9 +112,37 @@ Integration tests are meant to cover accepted formats and responses.
 
 dlokiosk
 ========
-* roboguice
+Uses the [RoboGuice][roboguice] framework. Requires Android 4.0.+
+
+
+development
+-----------
+1. Install [Apache Maven][mvn]
+2. Install [Android Development Tools][adt]
+3. Create an emulator based on the Nexus 7 named 'dloKioski' and start it
+
+Tests can be run with `mvn clean test`
+Deploy the code to the emulator with `mvn clean package android:deploy`
+
+
+device deployment
+-----------------
+1. Create an archive for deployment to devices with `mvn clean package`
+2. Host the resulting archive (named 'DLO Kiosk.apk') on dropbox or similar
+3. Ensure all data is off the existing kiosks by hitting the 'Manual Sync' button in 'Configuration' on each kiosk
+4. Remove the application from the kiosks
+5. Download the archive from the dropbox (or similar) link
+6. Install the archive and ensure it is pointing to the correct server with username and password
+
+
+license
+=======
+Apache 2.0
 
 
 [gvm]: http://gvmtool.net/
 [docs]: http://grails.org/documentation
 [dbm]: http://grails-plugins.github.io/grails-database-migration/docs/manual/index.html
+[roboguice]: https://github.com/roboguice/roboguice
+[mvn]: https://maven.apache.org/
+[adt]: https://developer.android.com/sdk/installing/bundle.html

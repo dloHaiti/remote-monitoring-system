@@ -30,7 +30,7 @@
     <string name="data_save_successful">Données enregistrées</string>
     <string name="data_save_error">Echec lors de l’enregistrement des données</string>
     <string name="add_to_cart">Ajouter au panier</string>
-    <string name="next">Suivant &gt;  </string>
+    <string name="next">Suivant &gt;</string>
     <string name="title_activity_enter_promotion">Promotions</string>
     <string name="order_total">Total commande:</string>
     <string name="new_total">Nouveau total:</string>

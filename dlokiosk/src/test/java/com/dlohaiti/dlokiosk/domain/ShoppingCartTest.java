@@ -63,6 +63,13 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void shouldClearPromotions() {
+        cart.addPromotion(promotionBuilder().build());
+        cart.clearPromotions();
+        assertThat(cart.isEmpty(), is(true));
+    }
+
+    @Test
     public void shouldKnowSubtotalForSingleQuantity() {
         Product product1 = productBuilder().withPrice(10d).build();
         Product product2 = productBuilder().withPrice(15d).build();

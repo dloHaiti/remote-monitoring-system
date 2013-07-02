@@ -77,4 +77,8 @@ public class ShoppingCart {
     public void removePromotion(int id) {
         promotions.remove(id);
     }
+
+    public void clearPromotions() {
+        promotions.clear();
+    }
 }

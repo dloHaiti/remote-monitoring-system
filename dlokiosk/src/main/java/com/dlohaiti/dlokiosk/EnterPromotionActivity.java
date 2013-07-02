@@ -25,7 +25,7 @@ public class EnterPromotionActivity extends RoboActivity {
     @InjectView(R.id.total) private TextView totalTextBox;
     @InjectView(R.id.total_currency) private TextView totalCurrencyTextBox;
     @Inject private PromotionRepository promotionRepository;
-    @Inject private ShoppingCart shoppingCart;
+    @Inject ShoppingCart shoppingCart;
     private ImageAdapter adapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class EnterPromotionActivity extends RoboActivity {
 
     @Override public void onBackPressed() {
         startActivity(new Intent(this, EnterSaleActivity.class));
+        shoppingCart.clearPromotions();
         finish();
     }
 

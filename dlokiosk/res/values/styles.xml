@@ -47,4 +47,40 @@
         <item name="android:layout_marginRight">10dp</item>
     </style>
 
+    <style name="right_grid">
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:columnWidth">100dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">30dp</item>
+        <item name="android:numColumns">2</item>
+        <item name="android:verticalSpacing">20dp</item>
+        <item name="android:horizontalSpacing">20dp</item>
+        <item name="android:background">@drawable/gray_box</item>
+        <item name="android:stretchMode">columnWidth</item>
+    </style>
+
+  <style name="left_grid">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:columnWidth">100dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">30dp</item>
+        <item name="android:numColumns">2</item>
+        <item name="android:verticalSpacing">20dp</item>
+        <item name="android:horizontalSpacing">20dp</item>
+        <item name="android:background">@drawable/gray_box</item>
+        <item name="android:stretchMode">columnWidth</item>
+  </style>
+
 </resources>

@@ -13,40 +13,12 @@
 
   <GridView
     android:id="@+id/left_grid"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:layout_alignParentLeft="true"
-    android:layout_alignRight="@+id/two_rectangle_grid_anchor"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:gravity="center"
-    android:padding="30dp"
-    android:columnWidth="100dp"
-    android:numColumns="2"
-    android:verticalSpacing="20dp"
-    android:horizontalSpacing="20dp"
-    android:background="@drawable/gray_box"
-    android:stretchMode="columnWidth" />
+    style="@style/left_grid"
+    android:layout_alignRight="@+id/two_rectangle_grid_anchor" />
 
   <GridView
     android:id="@+id/right_grid"
-    android:layout_marginRight="20dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:layout_alignParentRight="true"
-    android:layout_alignLeft="@+id/two_rectangle_grid_anchor"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:columnWidth="100dp"
-    android:gravity="center"
-    android:padding="30dp"
-    android:numColumns="2"
-    android:verticalSpacing="20dp"
-    android:horizontalSpacing="20dp"
-    android:background="@drawable/gray_box"
-    android:stretchMode="columnWidth" />
+    style="@style/right_grid"
+    android:layout_alignLeft="@+id/two_rectangle_grid_anchor"/>
 
 </RelativeLayout>

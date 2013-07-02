@@ -48,7 +48,7 @@
 
   <RelativeLayout
     android:id="@+id/new_total_row"
-    android:layout_above="@+id/checkout_button"
+    android:layout_alignParentBottom="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginRight="25dp"
@@ -79,16 +79,4 @@
       android:text="@string/default_currency"
       android:textSize="24sp" />
   </RelativeLayout>
-
-  <Button
-      android:id="@+id/checkout_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentBottom="true"
-      android:layout_marginRight="20dp"
-      android:layout_marginBottom="20dp"
-      android:padding="30dp"
-      android:onClick="checkout"
-      android:text="@string/checkout" />
 </RelativeLayout>

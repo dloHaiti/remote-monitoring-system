@@ -2,6 +2,9 @@ package com.dlohaiti.dlokiosk;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -46,14 +49,28 @@ public class EnterSaleActivity extends RoboActivity {
         });
     }
 
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.enter_sale, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_button:
+                startActivity(new Intent(this, EnterPromotionActivity.class));
+                finish();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
     public void addToShoppingCart(Product product) {
         sc.addProduct(product);
         adapter.notifyDataSetChanged();
-    }
-
-    public void moveToPromotions(View v) {
-        startActivity(new Intent(this, EnterPromotionActivity.class));
-        finish();
     }
 
     @Override public void onBackPressed() {

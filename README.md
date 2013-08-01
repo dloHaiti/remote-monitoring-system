@@ -15,6 +15,8 @@ dloserver
 
 development
 -----------
+install `git`. GitHub has provided an [excellent guide][installing_git].
+
 install `gvm` from [gvmtool.net][gvm] by opening up a Terminal (Mac) and typing
 
 ```shell
@@ -140,6 +142,7 @@ license
 Apache 2.0
 
 
+[installing_git]: https://help.github.com/articles/set-up-git
 [gvm]: http://gvmtool.net/
 [docs]: http://grails.org/documentation
 [dbm]: http://grails-plugins.github.io/grails-database-migration/docs/manual/index.html

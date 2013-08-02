@@ -25,7 +25,7 @@ public class NewEnterReadingActivity extends RoboActivity {
     @InjectView(R.id.save_parameters) private Button saveParametersButton;
     @InjectView(R.id.previous_parameter) private Button previousParameterButton;
     @InjectView(R.id.next_parameter) private Button nextParameterButton;
-    @InjectResource(R.string.please_correct_message) private String pleaseCorrect;
+    @InjectResource(R.string.please_correct_message) private String pleaseCorrectMessage;
     @InjectResource(R.string.saved_message) private String savedMessage;
     @InjectResource(R.string.error_not_saved_message) private String errorNotSavedMessage;
     @Inject private SamplingSiteParametersRepository repository;
@@ -99,7 +99,7 @@ public class NewEnterReadingActivity extends RoboActivity {
     }
 
     public void saveParameters(View v) {
-        if(currentViewIsValid()) {
+        if(allViewsAreValid()) {
             Set<Measurement> measurements = new HashSet<Measurement>();
             for (Map.Entry<Parameter, EditText> entry : values.entrySet()) {
                 EditText input = entry.getValue();
@@ -114,7 +114,24 @@ public class NewEnterReadingActivity extends RoboActivity {
             } else {
                 Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(this, pleaseCorrectMessage, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean allViewsAreValid() {
+        boolean isValid = true;
+        for (Map.Entry<Parameter, EditText> entry : values.entrySet()) {
+            EditText input = entry.getValue();
+            Parameter parameter = entry.getKey();
+            String value = input.getText().toString();
+            if (parameter.considersInvalid(value)) {
+                isValid = false;
+                CharSequence message = parameter.hasRange() ? parameter.getRange() : "Cannot be blank";
+                input.setError(message);
+            }
+        }
+        return isValid;
     }
 
     private boolean currentViewIsValid() {

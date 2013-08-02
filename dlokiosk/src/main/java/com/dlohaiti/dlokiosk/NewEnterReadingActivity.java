@@ -87,38 +87,51 @@ public class NewEnterReadingActivity extends RoboActivity {
     }
 
     public void nextParameter(View v) {
-        parametersList.showNext();
+        if (currentViewIsValid()) {
+            parametersList.showNext();
+        }
     }
 
     public void previousParameter(View v) {
-        parametersList.showPrevious();
+        if (currentViewIsValid()) {
+            parametersList.showPrevious();
+        }
     }
 
     public void saveParameters(View v) {
-        boolean errors = false;
-        Set<Measurement> measurements = new HashSet<Measurement>();
-        for(Map.Entry<Parameter, EditText> entry : values.entrySet()) {
-            EditText input = entry.getValue();
-            Parameter parameter = entry.getKey();
-            String value = input.getText().toString();
-            if(parameter.considersInvalid(value)) {
-                errors = true;
-                CharSequence message = parameter.hasRange() ? parameter.getRange() : "Cannot be blank";
-                input.setError(message);
-            } else {
+        if(currentViewIsValid()) {
+            Set<Measurement> measurements = new HashSet<Measurement>();
+            for (Map.Entry<Parameter, EditText> entry : values.entrySet()) {
+                EditText input = entry.getValue();
+                Parameter parameter = entry.getKey();
+                String value = input.getText().toString();
                 measurements.add(new Measurement(parameter, new BigDecimal(value)));
             }
-        }
-        if(errors) {
-            Toast.makeText(this, pleaseCorrect, Toast.LENGTH_SHORT).show();
-        } else {
             boolean successful = readingsRepository.save(new Reading(samplingSite, measurements, clock.now()));
-            if(successful) {
+            if (successful) {
                 Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private boolean currentViewIsValid() {
+        boolean isValid = true;
+        EditText candidate = (EditText) parametersList.getCurrentView().findViewById(R.id.parameter_input);
+        for (Map.Entry<Parameter, EditText> entry : values.entrySet()) {
+            if (candidate == entry.getValue()) { // this is the one we care about
+                EditText input = entry.getValue();
+                Parameter parameter = entry.getKey();
+                String value = input.getText().toString();
+                if (parameter.considersInvalid(value)) {
+                    isValid = false;
+                    CharSequence message = parameter.hasRange() ? parameter.getRange() : "Cannot be blank";
+                    input.setError(message);
+                }
+            }
+        }
+        return isValid;
     }
 }

@@ -119,9 +119,13 @@ Uses the [RoboGuice][roboguice] framework. Requires Android 4.0.+
 
 development
 -----------
-1. Install [Apache Maven][mvn]
+1. Install [Apache Maven][mvn]. 
+   This is installed when running `mvn --version` from the terminal prints the version information
 2. Install [Android Development Tools][adt]
-3. Create an emulator based on the Nexus 7 named 'dloKioski' and start it
+3. Set up the ADT Bundle by referring to [Google's guide][setup_adt].
+4. Download the [recommended][recommended] packages, platforms, and tools with the SDK manager. 
+   This steps takes a considerable amount of time.
+5. Create an emulator based on the Nexus 7 named 'dloKioski' and start it
 
 Tests can be run with `mvn clean test`
 Deploy the code to the emulator with `mvn clean package android:deploy`
@@ -149,3 +153,5 @@ Apache 2.0
 [roboguice]: https://github.com/roboguice/roboguice
 [mvn]: https://maven.apache.org/
 [adt]: https://developer.android.com/sdk/installing/bundle.html
+[setup_adt]: https://developer.android.com/sdk/installing/bundle.html
+[recommended]: https://developer.android.com/tools/help/sdk-manager.html

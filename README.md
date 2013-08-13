@@ -33,7 +33,7 @@ get the source code, run the server
 
 ```shell
 $ git clone https://github.com/dloHaiti/remote-monitoring-system.git
-$ cd remote-monitoring-system
+$ cd remote-monitoring-system/dloserver
 $ grails run-app
 ```
 

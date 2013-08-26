@@ -144,7 +144,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
-                        "%s TEXT" +
+                        "%s TEXT," +
+                        "%s INTEGER" +
                         ")",
                 ParametersTable.TABLE_NAME,
                 ParametersTable.ID,
@@ -152,7 +153,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ParametersTable.UNIT_OF_MEASURE,
                 ParametersTable.MINIMUM,
                 ParametersTable.MAXIMUM,
-                ParametersTable.IS_OK_NOT_OK
+                ParametersTable.IS_OK_NOT_OK,
+                ParametersTable.PRIORITY
         );
         String createSamplingSiteParameters = String.format(
                 "CREATE TABLE %s(" +
@@ -296,6 +298,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String MINIMUM = "MINIMUM";
         public static final String MAXIMUM = "MAXIMUM";
         public static final String IS_OK_NOT_OK = "IS_OK_NOT_OK";
+        public static final String PRIORITY = "PRIORITY";
     }
 
     public static class SamplingSitesParametersTable {

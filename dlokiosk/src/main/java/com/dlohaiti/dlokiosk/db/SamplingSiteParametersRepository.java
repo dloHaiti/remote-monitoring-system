@@ -21,6 +21,14 @@ public class SamplingSiteParametersRepository {
     private final static String TAG = SamplingSiteParametersRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final SamplingSiteRepository samplingSiteRepository;
+    private final String[] COLUMNS = new String[] {
+            KioskDatabase.ParametersTable.NAME,
+            KioskDatabase.ParametersTable.UNIT_OF_MEASURE,
+            KioskDatabase.ParametersTable.MINIMUM,
+            KioskDatabase.ParametersTable.MAXIMUM,
+            KioskDatabase.ParametersTable.IS_OK_NOT_OK,
+            KioskDatabase.ParametersTable.PRIORITY
+    };
 
     @Inject
     public SamplingSiteParametersRepository(KioskDatabase db, SamplingSiteRepository samplingSiteRepository) {
@@ -35,13 +43,19 @@ public class SamplingSiteParametersRepository {
         try {
             int samplingSiteId = fetchSamplingSiteId(samplingSite, rdb);
             String[] parameterIds = fetchParameterIds(rdb, samplingSiteId);
-            Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, new String[]{KioskDatabase.ParametersTable.NAME, KioskDatabase.ParametersTable.UNIT_OF_MEASURE, KioskDatabase.ParametersTable.MINIMUM, KioskDatabase.ParametersTable.MAXIMUM, KioskDatabase.ParametersTable.IS_OK_NOT_OK}, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
+            Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, COLUMNS, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
             if(query.getCount() < 1) {
                 throw new RuntimeException(String.format("No parameters found with ids: %s", StringUtils.join(parameterIds, ",")));
             }
             query.moveToFirst();
             while(!query.isAfterLast()) {
-                parameters.add(new Parameter(query.getString(0), query.getString(1), query.getString(2), query.getString(3), Boolean.parseBoolean(query.getString(4))));
+                String name = query.getString(0);
+                String unitOfMeasure = query.getString(1);
+                String minimum = query.getString(2);
+                String maximum = query.getString(3);
+                boolean isOkNotOk = Boolean.parseBoolean(query.getString(4));
+                Integer priority = query.getInt(5);
+                parameters.add(new Parameter(name, unitOfMeasure, minimum, maximum, isOkNotOk, priority));
                 query.moveToNext();
             }
             query.close();
@@ -109,6 +123,7 @@ public class SamplingSiteParametersRepository {
                     parameterValues.put(KioskDatabase.ParametersTable.MAXIMUM, String.valueOf(parameter.getMaximum()));
                 }
                 parameterValues.put(KioskDatabase.ParametersTable.IS_OK_NOT_OK, String.valueOf(parameter.isOkNotOk()));
+                parameterValues.put(KioskDatabase.ParametersTable.PRIORITY, parameter.getPriority());
                 long parameterId = wdb.insert(KioskDatabase.ParametersTable.TABLE_NAME, null, parameterValues);
                 if(parameterId == -1) {
                     Log.e(TAG, String.format("Error inserting Parameter[%s]", parameterName));

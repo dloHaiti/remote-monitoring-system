@@ -62,7 +62,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         }
         List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();
         for (ParameterJson p : c.getParameters()) {
-            Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk());
+            Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk(), p.getPriority());
             List<SamplingSite> samplingSites = new ArrayList<SamplingSite>();
             for (SamplingSiteJson site : p.getSamplingSites()) {
                 samplingSites.add(new SamplingSite(site.getName()));

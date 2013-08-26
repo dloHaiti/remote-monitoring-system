@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk.client;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ParameterJson {
@@ -9,6 +8,7 @@ public class ParameterJson {
     private String maximum;
     private String name;
     private String unit;
+    private Integer priority;
     private List<SamplingSiteJson> samplingSites;
 
     public boolean isOkNotOk() {
@@ -49,6 +49,14 @@ public class ParameterJson {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public List<SamplingSiteJson> getSamplingSites() {

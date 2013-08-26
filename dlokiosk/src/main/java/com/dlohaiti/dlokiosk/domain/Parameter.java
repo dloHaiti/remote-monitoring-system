@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -17,10 +18,6 @@ public class Parameter implements Comparable<Parameter> {
     private final boolean isOkNotOk;
     private final Integer priority;
 
-    public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk) {
-        this(name, unitOfMeasure, minimum, maximum, isOkNotOk, 1);
-    }
-
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk, Integer priority) {
         this.name = defaultString(name);
         this.unitOfMeasure = unitOfMeasure;
@@ -28,7 +25,7 @@ public class Parameter implements Comparable<Parameter> {
         this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
-        this.priority = priority;
+        this.priority = ObjectUtils.defaultIfNull(priority, 1);
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
@@ -62,15 +59,10 @@ public class Parameter implements Comparable<Parameter> {
         return isOkNotOk;
     }
 
-    @Override public int compareTo(Parameter parameter) {
-        if(priority < parameter.priority) {
-            return -1;
-        }
-        if(priority > parameter.priority) {
-            return 1;
-        }
-        return upperCase(name).compareTo(upperCase(parameter.name));
+    public Integer getPriority() {
+        return priority;
     }
+
 
     public CharSequence getRange() {
         return minimum.toString() + " - " + maximum.toString();
@@ -92,8 +84,17 @@ public class Parameter implements Comparable<Parameter> {
         return left.compareTo(right) > 0;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public int compareTo(Parameter parameter) {
+        if(priority < parameter.priority) {
+            return -1;
+        }
+        if(priority > parameter.priority) {
+            return 1;
+        }
+        return upperCase(name).compareTo(upperCase(parameter.name));
+    }
+
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -104,20 +105,21 @@ public class Parameter implements Comparable<Parameter> {
         if (maximum != null ? !maximum.equals(parameter.maximum) : parameter.maximum != null) return false;
         if (minimum != null ? !minimum.equals(parameter.minimum) : parameter.minimum != null) return false;
         if (name != null ? !name.equals(parameter.name) : parameter.name != null) return false;
+        if (priority != null ? !priority.equals(parameter.priority) : parameter.priority != null) return false;
         if (unitOfMeasure != null ? !unitOfMeasure.equals(parameter.unitOfMeasure) : parameter.unitOfMeasure != null)
             return false;
 
         return true;
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (unitOfMeasure != null ? unitOfMeasure.hashCode() : 0);
         result = 31 * result + (minimum != null ? minimum.hashCode() : 0);
         result = 31 * result + (maximum != null ? maximum.hashCode() : 0);
         result = 31 * result + (hasRange ? 1 : 0);
         result = 31 * result + (isOkNotOk ? 1 : 0);
+        result = 31 * result + (priority != null ? priority.hashCode() : 0);
         return result;
     }
 }

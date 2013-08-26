@@ -75,17 +75,17 @@ public class ParameterTest {
     }
 
     @Test
-    public void shouldHaveNaturalAlphabeticalSortOrder() {
-        Parameter a = new Parameter("a", "", "", "", false);
-        Parameter b = new Parameter("b", "", "", "", false);
+    public void shouldHaveNaturalAlphabeticalSortOrderWhenSamePriority() {
+        Parameter a = new Parameter("a", "", "", "", false, 1);
+        Parameter b = new Parameter("b", "", "", "", false, 1);
 
         assertThat(a.compareTo(b), is(-1));
     }
 
     @Test
-    public void shouldHaveNaturalAlphabeticalSortOrderIgnoringCase() {
-        Parameter a = new Parameter("a", "", "", "", false);
-        Parameter b = new Parameter("B", "", "", "", false);
+    public void shouldHaveNaturalAlphabeticalSortOrderIgnoringCaseWhenSamePriority() {
+        Parameter a = new Parameter("a", "", "", "", false, 1);
+        Parameter b = new Parameter("B", "", "", "", false, 1);
 
         assertThat(a.compareTo(b), is(-1));
     }

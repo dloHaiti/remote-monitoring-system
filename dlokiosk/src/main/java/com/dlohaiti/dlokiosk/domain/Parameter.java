@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
@@ -16,14 +15,20 @@ public class Parameter implements Comparable<Parameter> {
     private final BigDecimal maximum;
     private final boolean hasRange;
     private final boolean isOkNotOk;
+    private final Integer priority;
 
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk) {
+        this(name, unitOfMeasure, minimum, maximum, isOkNotOk, 1);
+    }
+
+    public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk, Integer priority) {
         this.name = defaultString(name);
         this.unitOfMeasure = unitOfMeasure;
         this.minimum = parseBigDecimal(minimum, null);
         this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
+        this.priority = priority;
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {

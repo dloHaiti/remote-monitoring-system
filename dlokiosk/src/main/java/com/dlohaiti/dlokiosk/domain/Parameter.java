@@ -25,7 +25,7 @@ public class Parameter implements Comparable<Parameter> {
         this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
-        this.priority = ObjectUtils.defaultIfNull(priority, 1);
+        this.priority = ObjectUtils.defaultIfNull(priority, Integer.MAX_VALUE);
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {

@@ -15,6 +15,7 @@ class Parameter {
   Boolean isOkNotOk
   Boolean manual
   Boolean active
+  Integer priority
 
   static hasMany = [samplingSites: SamplingSite]
 
@@ -23,6 +24,7 @@ class Parameter {
     unit(nullable: true)
     minimum(nullable: true)
     maximum(nullable: true, validator: { val, obj -> ((val == null) || (obj.minimum < val)) })
+    priority(nullable: true)
   }
 
   // eager loading of the sampling sites, for serializing to JSON in configuration controller

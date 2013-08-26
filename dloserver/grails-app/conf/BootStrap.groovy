@@ -33,6 +33,7 @@ class BootStrap {
           maximum: p.maximum,
           name: p.name,
           unit: p.unit,
+          priority: p.priority,
           samplingSites: p.samplingSites
       ]
     }

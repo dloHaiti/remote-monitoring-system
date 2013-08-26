@@ -75,6 +75,14 @@ public class ParameterTest {
     }
 
     @Test
+    public void shouldHaveNaturalSortOrderByPriority() {
+        Parameter a = new Parameter("a", "", "", "", false, 100);
+        Parameter b = new Parameter("b", "", "", "", false, 1);
+
+        assertThat(a.compareTo(b), is(1));
+    }
+
+    @Test
     public void shouldHaveNaturalAlphabeticalSortOrderWhenSamePriority() {
         Parameter a = new Parameter("a", "", "", "", false, 1);
         Parameter b = new Parameter("b", "", "", "", false, 1);

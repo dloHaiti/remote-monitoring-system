@@ -63,6 +63,12 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     @Override public int compareTo(Parameter parameter) {
+        if(priority < parameter.priority) {
+            return -1;
+        }
+        if(priority > parameter.priority) {
+            return 1;
+        }
         return upperCase(name).compareTo(upperCase(parameter.name));
     }
 

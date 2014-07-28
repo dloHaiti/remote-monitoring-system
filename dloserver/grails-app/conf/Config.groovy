@@ -108,6 +108,8 @@ dloserver {
     readings.failed    = '/tmp/failed'
 
     measurement.timeformat = "yyyy-MM-dd hh:mm:ss z"
+    locale.language="fr"
+    locale.country="fr"
 }
 
 environments {

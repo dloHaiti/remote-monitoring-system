@@ -5,6 +5,6 @@ class Operator extends User{
     String contactDetails=""
 
     static constraints = {
-        contactDetails blank:true
+        contactDetails blank:true,  nullable: true
     }
 }

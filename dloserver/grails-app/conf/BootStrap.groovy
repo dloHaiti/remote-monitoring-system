@@ -77,6 +77,8 @@ class BootStrap {
     if (Environment.current != Environment.TEST) {
       if(User.count()==0){
           new Operator(userName:"operator1",password:"password").save(failOnError: true)
+         def c1 =  new Country(name:"haiti",unitOfMeasure: "gallon").save(failOnError: true)
+         new Region(name:"Region1",country:c1).save(failOnError: true)
       }
       if (Kiosk.count() == 0) {
         new Kiosk(name: "kiosk01", apiKey: 'pw').save(failOnError: true)

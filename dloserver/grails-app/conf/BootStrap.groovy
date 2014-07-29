@@ -9,8 +9,8 @@ class BootStrap {
   def grailsApplication
 
   def init = { servletContext ->
-
-    def dateFormatter = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString())
+    def locale=  new Locale(grailsApplication.config.dloserver.locale.language.toString(),grailsApplication.config.dloserver.locale.country.toString())
+    def dateFormatter = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString(),locale)
 
     JSON.registerObjectMarshaller(DeliveryConfiguration) { DeliveryConfiguration c ->
       return [
@@ -75,6 +75,9 @@ class BootStrap {
     }
 
     if (Environment.current != Environment.TEST) {
+      if(User.count()==0){
+          new Operator(userName:"operator1",password:"password").save(failOnError: true)
+      }
       if (Kiosk.count() == 0) {
         new Kiosk(name: "kiosk01", apiKey: 'pw').save(failOnError: true)
       }

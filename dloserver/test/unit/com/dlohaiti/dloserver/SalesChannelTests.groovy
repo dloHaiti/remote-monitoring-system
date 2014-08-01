@@ -34,6 +34,12 @@ class SalesChannelTests {
         assert !c2.validate()
         c2.name="c2"
         assert c2.validate()
+    }
 
+    def testForChannelWithoutDiscount(){
+        mockForConstraintsTests(SalesChannel)
+
+        SalesChannel c1 = new SalesChannel(name: 'channel_without_discount',description: '')
+        assert c1.validate()
     }
 }

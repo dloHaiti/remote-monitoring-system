@@ -8,7 +8,7 @@ class Kiosk {
     String name
     String apiKey
 
-    static hasMany = [sensors: Sensor]
+    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount]
 
     static constraints = {
         name(blank: false, unique: true)

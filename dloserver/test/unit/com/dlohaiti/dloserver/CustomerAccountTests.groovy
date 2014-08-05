@@ -29,4 +29,12 @@ class CustomerAccountTests {
         CustomerAccount account = (new CustomerAccount(name: "Customer1",contactNames: ['contact1'],customerType: type))
         assert "School" == account.customerType.name
     }
+
+    void testKioskAssociation(){
+        mockForConstraintsTests(CustomerAccount)
+        Kiosk k1 = new Kiosk(name: "k1",apiKey: "sampleKey")
+
+        CustomerAccount account = (new CustomerAccount(name: "Customer2",contactNames: ['contact1'],kiosk: k1))
+        assert "k1" == account.kiosk.name
+    }
 }

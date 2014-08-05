@@ -6,6 +6,10 @@ class SalesChannel {
     String discountType
     BigDecimal discountAmount
 
+
+    static hasMany = [customerAccounts: CustomerAccount]
+
+
     static constraints = {
         name(unique: true,blank:false)
         description(nullable: true)

@@ -5,8 +5,11 @@ class CustomerAccount {
     String phoneNumber
     String address
 
-    static belongsTo = [ customerType: CustomerType, kiosk: Kiosk ]
-    static hasMany = [contactNames: String]
+    CustomerType customerType
+    Kiosk kiosk
+
+    static belongsTo = [SalesChannel,CustomerType,Kiosk]
+    static hasMany = [contactNames: String, channels: SalesChannel]
 
     static mapping = {
         address type: "text"

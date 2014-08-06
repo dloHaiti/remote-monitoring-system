@@ -21,18 +21,34 @@ public class SelectableArrayAdapter extends ArrayAdapter<SelectableListItem> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View rowView = inflater.inflate(R.layout.layout_selectable_list_item, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.list_item);
-        textView.setText(listItems[position].name());
-        if (listItems[position].isSelected()) {
-            rowView.setBackgroundColor(context.getResources().getColor(android.R.color.holo_blue_light));
+        ViewHolder holder;
+        if (view == null) {
+            holder = new ViewHolder();
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.layout_selectable_list_item, parent, false);
+            holder.listItem = (TextView) view.findViewById(R.id.list_item);
+            view.setTag(holder);
         } else {
-            rowView.setBackgroundColor(Color.TRANSPARENT);
+            holder = (ViewHolder) view.getTag();
         }
-        return rowView;
+
+        holder.listItem.setText(listItems[position].name());
+        if (listItems[position].isSelected()) {
+            holder
+                    .listItem
+                    .setBackgroundColor(Color.
+                            context.getResources().getColor(android.R.color.holo_blue_light));
+        } else {
+            holder
+                    .listItem
+                    .setBackgroundColor(Color.TRANSPARENT);
+        }
+        return view;
+    }
+
+    class ViewHolder {
+        TextView listItem;
     }
 }
 

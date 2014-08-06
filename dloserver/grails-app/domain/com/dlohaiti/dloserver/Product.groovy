@@ -17,6 +17,8 @@ class Product {
 
   static embedded = ['price']
 
+  static belongsTo = [category: ProductCategory]
+
   static mapping = {
     base64EncodedImage type: "text"
   }

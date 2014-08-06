@@ -4,6 +4,7 @@ import com.dlohaiti.dloserver.Kiosk
 import com.dlohaiti.dloserver.Money
 import com.dlohaiti.dloserver.Parameter
 import com.dlohaiti.dloserver.Product
+import com.dlohaiti.dloserver.ProductCategory
 import grails.converters.JSON
 import org.junit.Before
 import org.junit.Test
@@ -35,9 +36,10 @@ class ConfigurationControllerIntegrationTests {
   }
 
   @Test void shouldOnlyReturnActiveProducts() {
-    def one = new Product(sku: 'ACTIVE-ABC', active: true, description: 'abc', gallons: 1, price: new Money(amount: 10G), base64EncodedImage: 'abc').save(failOnError: true)
-    def two = new Product(sku: 'ACTIVE-XYZ', active: true, description: 'xyz', gallons: 5, price: new Money(amount: 1G), base64EncodedImage: 'xyz').save(failOnError: true)
-    new Product(sku: 'INACTIVE-LLL', active: false, description: 'lll', gallons: 10, price: new Money(amount: 5G), base64EncodedImage: 'lll').save(failOnError: true)
+    def category = new ProductCategory(name: "Category1",base64EncodedImage: "").save(failOnError: true)
+    def one = new Product(sku: 'ACTIVE-ABC', active: true, description: 'abc', gallons: 1, price: new Money(amount: 10G), base64EncodedImage: 'abc',category: category).save(failOnError: true)
+    def two = new Product(sku: 'ACTIVE-XYZ', active: true, description: 'xyz', gallons: 5, price: new Money(amount: 1G), base64EncodedImage: 'xyz',category: category).save(failOnError: true)
+    new Product(sku: 'INACTIVE-LLL', active: false, description: 'lll', gallons: 10, price: new Money(amount: 5G), base64EncodedImage: 'lll',category: category).save(failOnError: true)
 
     controller.index()
 

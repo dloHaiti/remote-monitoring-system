@@ -66,6 +66,10 @@ public class MainActivity extends RoboActivity implements StatusView {
         startActivity(new Intent(this, EnterSaleActivity.class));
     }
 
+    public void moveToSelectSalesChannelScreen(View view) {
+        startActivity(new Intent(this, SelectSalesChannelActivity.class));
+    }
+
     public void doManualSync(View view) {
         new ManualSyncReadingsTask(this).execute();
     }
@@ -124,5 +128,4 @@ public class MainActivity extends RoboActivity implements StatusView {
                 receiptsRepository.isNotEmpty() ||
                 deliveryRepository.isNotEmpty();
     }
-
 }

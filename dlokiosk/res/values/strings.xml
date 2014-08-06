@@ -51,4 +51,6 @@
     <string name="please_correct_message">Mercie de corriger!</string>
     <string name="saved_message">Enregistre!</string>
     <string name="error_not_saved_message">Une erreur est survenue. Les donnees n\'ont pas ete enregistrees!</string>
+    <string name="sales_channel_continue_button">Continuer</string>
+    <string name="view_new_sale_button">Nouveau flux de vente</string>
 </resources>

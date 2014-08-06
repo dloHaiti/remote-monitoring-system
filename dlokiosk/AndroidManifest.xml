@@ -81,6 +81,14 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectSamplingSiteActivity" />
         </activity>
+        <activity
+                android:screenOrientation="landscape"
+                android:name=".SelectSalesChannelActivity"
+                android:label="@string/title_activity_enter_reading" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.NewSaleActivity" />
+        </activity>
     </application>
 
 </manifest>

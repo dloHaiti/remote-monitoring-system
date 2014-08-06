@@ -74,6 +74,12 @@
       android:onClick="moveToViewReports"
       android:text="@string/view_reports_button"
       android:id="@+id/view_reports" />
+
+    <Button
+      style="@style/home_screen_button"
+      android:onClick="moveToSelectSalesChannelScreen"
+      android:text="@string/view_new_sale_button"
+      android:id="@+id/view_new_sale" />
   </LinearLayout>
 
 </RelativeLayout>

@@ -10,7 +10,7 @@ class ConfigurationController {
     List<Parameter> parameters = Parameter.findAllByActiveAndManual(true, true)
     List<Promotion> promotions = Promotion.all
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
-
+    List<ProductCategory> productCategories=ProductCategory.all
 
     render(
         status: 200,
@@ -20,6 +20,7 @@ class ConfigurationController {
             products: products,
             promotions: promotions,
             parameters: parameters,
+            productCategories: productCategories,
             delivery: [
               configuration: DeliveryConfiguration.first(), //there should only be one, always grab the first one
               agents: deliveryAgents

@@ -44,6 +44,13 @@ class BootStrap {
       ]
     }
 
+    JSON.registerObjectMarshaller(ProductCategory) { ProductCategory c ->
+          return [
+                  name: c.name,
+                  base64EncodedImage: c.base64EncodedImage
+          ]
+    }
+
     JSON.registerObjectMarshaller(Product) { Product p ->
       return [
           sku: p.sku,

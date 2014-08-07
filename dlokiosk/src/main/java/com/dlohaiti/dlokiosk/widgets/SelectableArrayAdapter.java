@@ -37,7 +37,7 @@ public class SelectableArrayAdapter extends ArrayAdapter<SelectableListItem> {
         if (listItems[position].isSelected()) {
             holder
                     .listItem
-                    .setBackgroundColor(Color.
+                    .setBackgroundColor(
                             context.getResources().getColor(android.R.color.holo_blue_light));
         } else {
             holder

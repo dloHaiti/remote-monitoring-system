@@ -1,11 +1,11 @@
 package com.dlohaiti.dlokiosk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.dlohaiti.dlokiosk.widgets.SelectableArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
 import roboguice.activity.RoboActivity;
@@ -13,6 +13,7 @@ import roboguice.inject.InjectView;
 
 public class SelectSalesChannelActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
+    public static final String SALES_CHANNEL_PARAM = "SALES_CHANNEL";
     private final SelectableListItem[] salesChannels = {
             new SelectableListItem("Sales Channel 1"),
             new SelectableListItem("Sales Channel 2"),
@@ -64,7 +65,8 @@ public class SelectSalesChannelActivity extends RoboActivity implements AdapterV
     }
 
     public void onContinue(View view) {
-        Toast.makeText(getApplicationContext(), "Selected sales channel " + selectedItem.name(), Toast.LENGTH_SHORT)
-                .show();
+        Intent intent = new Intent(this, SelectCustomerActivity.class);
+        intent.putExtra(SALES_CHANNEL_PARAM, selectedItem.name());
+        startActivity(intent);
     }
 }

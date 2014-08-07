@@ -8,7 +8,7 @@
 
     <TextView
             style="@style/list_header"
-            android:text="Select Sales Channel"/>
+            android:text="@string/sales_channel_list_header"/>
 
     <ImageView
             android:layout_width="match_parent"
@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="12"
-            style="@style/sale_continue_button"
-            android:text="@string/sales_channel_continue_button"
+            style="@style/navigation_button"
+            android:text="@string/continue_text"
             android:onClick="onContinue"/>
 
 </LinearLayout>

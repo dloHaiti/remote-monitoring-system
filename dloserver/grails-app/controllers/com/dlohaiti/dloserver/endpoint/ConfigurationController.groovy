@@ -12,6 +12,8 @@ class ConfigurationController {
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
     List<ProductCategory> productCategories=ProductCategory.all
     List<SalesChannel> salesChannels=SalesChannel.all
+    List<CustomerAccount> accounts = CustomerAccount.findAllByKiosk(request.kiosk)
+
 
     render(
         status: 200,
@@ -23,6 +25,7 @@ class ConfigurationController {
             parameters: parameters,
             salesChannels: salesChannels,
             productCategories: productCategories,
+            customerAccounts: accounts,
             delivery: [
               configuration: DeliveryConfiguration.first(), //there should only be one, always grab the first one
               agents: deliveryAgents

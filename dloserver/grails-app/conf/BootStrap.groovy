@@ -45,12 +45,26 @@ class BootStrap {
         }
         JSON.registerObjectMarshaller(SalesChannel) { SalesChannel sc ->
             return [
-                    name              : sc.name,
+                    id: sc.id,
+                    name       : sc.name,
                     description: sc.description
+            ]
+        }
+        JSON.registerObjectMarshaller(CustomerAccount) { CustomerAccount a ->
+            return [
+                    id: a.id,
+                    name       : a.name,
+                    address    : a.address,
+                    phoneNumber: a.phoneNumber,
+                    kiosk_id   : a.kiosk.id,
+                    channels   : a.channels.collect{
+                        SalesChannel channel -> [id: channel.id]
+                    }
             ]
         }
         JSON.registerObjectMarshaller(ProductCategory) { ProductCategory c ->
             return [
+                    id: c.id,
                     name              : c.name,
                     base64EncodedImage: c.base64EncodedImage
             ]
@@ -99,6 +113,12 @@ class BootStrap {
             if (SalesChannel.count() == 0) {
                 new SalesChannel(name: 'Over the Counter', description: 'Over the Counter', discountType: "AMOUNT", discountAmount: 12).save(failOnError: true)
                 new SalesChannel(name: 'Door delivery', description: 'door delivery', discountType: "AMOUNT", discountAmount: 12).save(failOnError: true)
+            }
+
+            if (CustomerAccount.count() == 0) {
+                CustomerType type = (new CustomerType(name: "School")).save(failOnError: true)
+                new CustomerAccount(name: "Customer1", contactNames: ['contact1'], customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
+
             }
             if (DeliveryAgent.count() == 0) {
                 new DeliveryConfiguration(minimumValue: 0, maximumValue: 24, defaultValue: 24, gallons: 4, price: new Money(amount: 5G)).save(failOnError: true)

@@ -57,11 +57,14 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return false;
     }
 
-    @JsonIgnore @Override public Long getId() {
+    @JsonIgnore
+    @Override
+    public Long getId() {
         return id;
     }
 
-    @JsonIgnore public BigDecimal getRawAmount() {
+    @JsonIgnore
+    public BigDecimal getRawAmount() {
         return amount;
     }
 
@@ -75,19 +78,24 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return BigDecimal.ZERO;
     }
 
-    @JsonIgnore public PromotionType getType() {
+    @JsonIgnore
+    public PromotionType getType() {
         return type;
     }
 
-    @JsonIgnore @Override public Bitmap getImageResource() {
+    @JsonIgnore
+    @Override
+    public Bitmap getImageResource() {
         return resource;
     }
 
-    @Override public String getSku() {
+    @Override
+    public String getSku() {
         return sku;
     }
 
-    @Override public Integer getQuantity() {
+    @Override
+    public Integer getQuantity() {
         return 1;
     }
 
@@ -127,7 +135,8 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return appliesTo == PromotionApplicationType.SKU && productSku.equals(product.getSku());
     }
 
-    @Override public int compareTo(Promotion another) {
+    @Override
+    public int compareTo(Promotion another) {
         if (type == another.type) {
             return another.amount.compareTo(amount);
         }
@@ -137,7 +146,8 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return 1;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -156,7 +166,8 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return true;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sku != null ? sku.hashCode() : 0);
         result = 31 * result + (appliesTo != null ? appliesTo.hashCode() : 0);
@@ -169,7 +180,8 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
         return result;
     }
 
-    @Override public Money getPrice() {
+    @Override
+    public Money getPrice() {
         return new Money(BigDecimal.ZERO);
     }
 
@@ -182,9 +194,9 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
     }
 
     public BigDecimal discountCart(BigDecimal total) {
-        if(isPercentOff())
+        if (isPercentOff())
             return this.getAmount().multiply(total, new MathContext(4, RoundingMode.HALF_UP));
-        if(isAmountOff())
+        if (isAmountOff())
             return this.getAmount();
         return BigDecimal.ZERO;
     }

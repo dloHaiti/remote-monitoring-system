@@ -22,10 +22,10 @@ public class ConfigurationRepository {
     public String get(ConfigurationKey key) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-            Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()), null, null, null);
+        Cursor cursor = rdb.query(KioskDatabase.ConfigurationTable.TABLE_NAME, columns, where(KioskDatabase.ConfigurationTable.KEY), matches(key.name()), null, null, null);
         try {
             String value = "";
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 value = cursor.getString(1);
                 rdb.setTransactionSuccessful();
             }

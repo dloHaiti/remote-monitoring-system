@@ -107,7 +107,7 @@ public class PromotionRepository {
         wdb.beginTransaction();
         try {
             wdb.delete(KioskDatabase.PromotionsTable.TABLE_NAME, null, null);
-            for(Promotion p : promotions) {
+            for (Promotion p : promotions) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.PromotionsTable.SKU, p.getSku());
                 values.put(KioskDatabase.PromotionsTable.AMOUNT, p.getRawAmount().toString());

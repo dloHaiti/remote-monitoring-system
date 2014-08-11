@@ -31,7 +31,8 @@ public class Discount {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Discount{" +
                 "sku='" + sku + '\'' +
                 ", amount=" + amount +

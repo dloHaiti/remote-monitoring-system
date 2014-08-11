@@ -27,7 +27,7 @@ public class Register {
     public Receipt checkout(ShoppingCart cart) {
         List<LineItem> lineItems = buildLineItemsFrom(cart);
         int totalGallons = 0;
-        for(Product product : cart.getProducts()) {
+        for (Product product : cart.getProducts()) {
             totalGallons += product.getGallons() * product.getQuantity();
         }
         Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons, new Money(cart.getTotal()));
@@ -37,7 +37,7 @@ public class Register {
 
     private List<LineItem> buildLineItemsFrom(ShoppingCart cart) {
         List<LineItem> lineItems = new ArrayList<LineItem>();
-        for(Promotion promotion : cart.getPromotions()) {
+        for (Promotion promotion : cart.getPromotions()) {
             lineItems.add(new LineItem(promotion.getSku(), promotion.getQuantity(), new Money(BigDecimal.ZERO), PROMOTION));
         }
         List<Promotion> promotionsCopy = new ArrayList<Promotion>(cart.getPromotions());
@@ -49,32 +49,32 @@ public class Register {
         List<Discount> discounts = new ArrayList<Discount>();
         for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
             Promotion promo = it.next();
-            if(promo.appliesToBasket()) {
+            if (promo.appliesToBasket()) {
                 BigDecimal discount = promo.discountCart(subtotal);
                 subtotal = subtotal.subtract(discount);
                 BigDecimal discountPerItem = discount.divide(new BigDecimal(cart.getProducts().size()), 4, RoundingMode.HALF_UP);
-                for(Product p : productsCopy) {
+                for (Product p : productsCopy) {
                     discounts.add(new Discount(p.getSku(), new Money(discountPerItem)));
                 }
                 it.remove();
             }
         }
 
-        for(Product product : productsCopy) {
+        for (Product product : productsCopy) {
             for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
                 Promotion promo = it.next();
-                if(promo.isFor(product)) {
+                if (promo.isFor(product)) {
                     discounts.add(new Discount(product.getSku(), new Money(promo.discountFor(product))));
                     it.remove();
                 }
             }
         }
 
-        for(Product product : productsCopy) {
+        for (Product product : productsCopy) {
             Money actualPrice = retailPriceFor(product);
             for (Iterator<Discount> it = discounts.iterator(); it.hasNext(); ) {
                 Discount discount = it.next();
-                if(discount.isFor(product)) {
+                if (discount.isFor(product)) {
                     actualPrice = actualPrice.minus(discount.getAmount());
                     it.remove();
                 }
@@ -91,7 +91,7 @@ public class Register {
 
     public Money subtotal(ShoppingCart cart) {
         BigDecimal subtotal = BigDecimal.ZERO;
-        for(Product product : cart.getProducts()) {
+        for (Product product : cart.getProducts()) {
             subtotal = subtotal.add(retailPriceFor(product).getAmount());
         }
         return new Money(subtotal);
@@ -100,10 +100,10 @@ public class Register {
     public Money total(ShoppingCart cart) {
         List<LineItem> lineItems = buildLineItemsFrom(cart);
         BigDecimal total = BigDecimal.ZERO;
-        for(LineItem item : lineItems) {
+        for (LineItem item : lineItems) {
             total = total.add(item.getPrice().getAmount());
         }
-        if(total.compareTo(BigDecimal.ZERO) < 0) {
+        if (total.compareTo(BigDecimal.ZERO) < 0) {
             return new Money(BigDecimal.ZERO);
         }
         return new Money(total);

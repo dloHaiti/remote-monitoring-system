@@ -81,7 +81,7 @@ public class RegisterTest {
         Receipt receipt = register.checkout(cart);
 
         BigDecimal lineItemTotal = BigDecimal.ZERO;
-        for(LineItem item : receipt.getProductLineItems()) {
+        for (LineItem item : receipt.getProductLineItems()) {
             lineItemTotal = lineItemTotal.add(item.getPrice().getAmount());
         }
 

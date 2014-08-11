@@ -12,7 +12,7 @@ public class ResultDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         boolean isSuccessful = this.getArguments().getBoolean("isSuccessful");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        if(isSuccessful) {
+        if (isSuccessful) {
             builder.setMessage(R.string.data_save_successful);
         } else {
             builder.setMessage(R.string.data_save_error);

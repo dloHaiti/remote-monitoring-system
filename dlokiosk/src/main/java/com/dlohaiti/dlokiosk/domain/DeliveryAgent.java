@@ -31,7 +31,8 @@ public class DeliveryAgent implements Comparable<DeliveryAgent> {
         return name != null ? name.hashCode() : 0;
     }
 
-    @Override public int compareTo(DeliveryAgent another) {
+    @Override
+    public int compareTo(DeliveryAgent another) {
         return upperCase(defaultString(name)).compareTo(upperCase(defaultString(another.name)));
     }
 }

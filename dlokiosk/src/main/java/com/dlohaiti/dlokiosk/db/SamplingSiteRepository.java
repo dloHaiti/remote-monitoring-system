@@ -74,7 +74,7 @@ public class SamplingSiteRepository {
         wdb.beginTransaction();
         Cursor c = wdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, where(KioskDatabase.SamplingSitesTable.NAME), matches(name), null, null, null);
         try {
-            if(c.moveToFirst()) {
+            if (c.moveToFirst()) {
                 wdb.setTransactionSuccessful();
                 return new SamplingSite(c.getLong(0), c.getString(1));
             }

@@ -12,24 +12,30 @@ import com.google.inject.Inject;
 import roboguice.inject.InjectView;
 
 public class InternalWebViewClient extends WebViewClient {
-    @InjectView(R.id.view_reports_progress) private ProgressBar progress;
-    @Inject private ConfigurationRepository config;
+    @InjectView(R.id.view_reports_progress)
+    private ProgressBar progress;
+    @Inject
+    private ConfigurationRepository config;
 
-    @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
         view.loadUrl(url);
         return true;
     }
 
-    @Override public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
         handler.proceed(config.get(ConfigurationKey.KIOSK_ID), config.get(ConfigurationKey.KIOSK_PASSWORD));
     }
 
-    @Override public void onPageStarted(WebView view, String url, Bitmap favicon) {
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
         progress.setVisibility(View.VISIBLE);
         view.setVisibility(View.INVISIBLE);
     }
 
-    @Override public void onPageFinished(WebView view, String url) {
+    @Override
+    public void onPageFinished(WebView view, String url) {
         progress.setVisibility(View.INVISIBLE);
         view.setVisibility(View.VISIBLE);
     }

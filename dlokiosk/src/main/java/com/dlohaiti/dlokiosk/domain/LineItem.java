@@ -15,11 +15,13 @@ public class LineItem implements Orderable {
         this.type = type;
     }
 
-    @Override public String getSku() {
+    @Override
+    public String getSku() {
         return sku;
     }
 
-    @Override public Integer getQuantity() {
+    @Override
+    public Integer getQuantity() {
         return quantity;
     }
 

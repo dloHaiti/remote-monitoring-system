@@ -21,7 +21,7 @@ public class SamplingSiteParametersRepository {
     private final static String TAG = SamplingSiteParametersRepository.class.getSimpleName();
     private final KioskDatabase db;
     private final SamplingSiteRepository samplingSiteRepository;
-    private final String[] COLUMNS = new String[] {
+    private final String[] COLUMNS = new String[]{
             KioskDatabase.ParametersTable.NAME,
             KioskDatabase.ParametersTable.UNIT_OF_MEASURE,
             KioskDatabase.ParametersTable.MINIMUM,
@@ -44,11 +44,11 @@ public class SamplingSiteParametersRepository {
             int samplingSiteId = fetchSamplingSiteId(samplingSite, rdb);
             String[] parameterIds = fetchParameterIds(rdb, samplingSiteId);
             Cursor query = rdb.query(KioskDatabase.ParametersTable.TABLE_NAME, COLUMNS, whereIn(KioskDatabase.ParametersTable.ID, parameterIds.length), parameterIds, null, null, null);
-            if(query.getCount() < 1) {
+            if (query.getCount() < 1) {
                 throw new RuntimeException(String.format("No parameters found with ids: %s", StringUtils.join(parameterIds, ",")));
             }
             query.moveToFirst();
-            while(!query.isAfterLast()) {
+            while (!query.isAfterLast()) {
                 String name = query.getString(0);
                 String unitOfMeasure = query.getString(1);
                 String minimum = query.getString(2);
@@ -70,15 +70,15 @@ public class SamplingSiteParametersRepository {
     }
 
     private String[] fetchParameterIds(SQLiteDatabase rdb, int samplingSiteId) {
-        Cursor sp = rdb.query(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID}, where(KioskDatabase.SamplingSitesParametersTable.SITE_ID), matches(samplingSiteId), null, null, null);
-        if(sp.getCount() < 1) {
+        Cursor sp = rdb.query(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, new String[]{KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID}, where(KioskDatabase.SamplingSitesParametersTable.SITE_ID), matches(samplingSiteId), null, null, null);
+        if (sp.getCount() < 1) {
             throw new RuntimeException(String.format("Expected at least 1 parameter for Sampling Site; got %d", sp.getCount()));
         }
         sp.moveToFirst();
         //TODO
         String[] parameterIds = new String[sp.getCount()];
         int i = 0;
-        while(!sp.isAfterLast()) {
+        while (!sp.isAfterLast()) {
             parameterIds[i] = sp.getString(0);
             sp.moveToNext();
             i++;
@@ -88,8 +88,8 @@ public class SamplingSiteParametersRepository {
     }
 
     private int fetchSamplingSiteId(SamplingSite samplingSite, SQLiteDatabase rdb) {
-        Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, new String[] {KioskDatabase.SamplingSitesTable.ID}, where(KioskDatabase.SamplingSitesTable.NAME), matches(samplingSite.getName()), null, null, null);
-        if(c.getCount() != 1) {
+        Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, new String[]{KioskDatabase.SamplingSitesTable.ID}, where(KioskDatabase.SamplingSitesTable.NAME), matches(samplingSite.getName()), null, null, null);
+        if (c.getCount() != 1) {
             throw new RuntimeException(String.format("Expected 1 result; got %d.", c.getCount()));
         }
         c.moveToFirst();
@@ -110,33 +110,33 @@ public class SamplingSiteParametersRepository {
             wdb.delete(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, null, null);
             wdb.delete(KioskDatabase.ParametersTable.TABLE_NAME, null, null);
             wdb.delete(KioskDatabase.SamplingSitesTable.TABLE_NAME, null, null);
-            for(ParameterSamplingSites pss : samplingSiteParameters) {
+            for (ParameterSamplingSites pss : samplingSiteParameters) {
                 ContentValues parameterValues = new ContentValues();
                 Parameter parameter = pss.getParameter();
                 String parameterName = parameter.getName();
                 parameterValues.put(KioskDatabase.ParametersTable.NAME, parameterName);
                 parameterValues.put(KioskDatabase.ParametersTable.UNIT_OF_MEASURE, parameter.getUnitOfMeasure());
-                if(parameter.getMinimum() != null) {
+                if (parameter.getMinimum() != null) {
                     parameterValues.put(KioskDatabase.ParametersTable.MINIMUM, String.valueOf(parameter.getMinimum()));
                 }
-                if(parameter.getMaximum() != null) {
+                if (parameter.getMaximum() != null) {
                     parameterValues.put(KioskDatabase.ParametersTable.MAXIMUM, String.valueOf(parameter.getMaximum()));
                 }
                 parameterValues.put(KioskDatabase.ParametersTable.IS_OK_NOT_OK, String.valueOf(parameter.isOkNotOk()));
                 parameterValues.put(KioskDatabase.ParametersTable.PRIORITY, parameter.getPriority());
                 long parameterId = wdb.insert(KioskDatabase.ParametersTable.TABLE_NAME, null, parameterValues);
-                if(parameterId == -1) {
+                if (parameterId == -1) {
                     Log.e(TAG, String.format("Error inserting Parameter[%s]", parameterName));
                     break;
                 }
 
-                for(SamplingSite site : pss.getSamplingSites()) {
+                for (SamplingSite site : pss.getSamplingSites()) {
                     SamplingSite existingSite = samplingSiteRepository.findOrCreateByName(site.getName());
                     ContentValues parameterSites = new ContentValues();
                     parameterSites.put(KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID, parameterId);
                     parameterSites.put(KioskDatabase.SamplingSitesParametersTable.SITE_ID, existingSite.getId());
                     long rowId = wdb.insert(KioskDatabase.SamplingSitesParametersTable.TABLE_NAME, null, parameterSites);
-                    if(rowId == -1) {
+                    if (rowId == -1) {
                         Log.e(TAG, String.format("Error inserting SamplingSite[%s]-Parameter[%s] relationship", site.getName(), parameterName));
                     }
                 }

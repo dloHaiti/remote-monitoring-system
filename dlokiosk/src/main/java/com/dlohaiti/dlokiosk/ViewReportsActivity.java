@@ -10,11 +10,15 @@ import roboguice.inject.InjectView;
 
 public class ViewReportsActivity extends RoboActivity {
 
-    @InjectView(R.id.view_reports_webview) WebView viewReportsWebView;
-    @Inject private ConfigurationRepository config;
-    @Inject private InternalWebViewClient webViewClient;
+    @InjectView(R.id.view_reports_webview)
+    WebView viewReportsWebView;
+    @Inject
+    private ConfigurationRepository config;
+    @Inject
+    private InternalWebViewClient webViewClient;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_reports);
         viewReportsWebView.setWebViewClient(webViewClient);
@@ -22,8 +26,9 @@ public class ViewReportsActivity extends RoboActivity {
         viewReportsWebView.loadUrl(config.get(ConfigurationKey.SERVER_URL) + "/report");
     }
 
-    @Override public void onBackPressed() {
-        if(viewReportsWebView.canGoBack()) {
+    @Override
+    public void onBackPressed() {
+        if (viewReportsWebView.canGoBack()) {
             viewReportsWebView.goBack();
         } else {
             finish();

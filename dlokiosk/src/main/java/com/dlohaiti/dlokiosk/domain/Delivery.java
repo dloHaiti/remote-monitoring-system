@@ -70,7 +70,8 @@ public class Delivery {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Delivery{" +
                 "id=" + id +
                 ", quantity=" + quantity +

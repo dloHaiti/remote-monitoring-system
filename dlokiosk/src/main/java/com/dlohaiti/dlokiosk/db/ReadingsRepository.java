@@ -21,12 +21,12 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class ReadingsRepository {
     private final static String TAG = ReadingsRepository.class.getSimpleName();
-    private final static String[] READINGS_COLUMNS = new String[] {
+    private final static String[] READINGS_COLUMNS = new String[]{
             KioskDatabase.ReadingsTable.ID,
             KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME,
             KioskDatabase.ReadingsTable.CREATED_DATE
     };
-    private final static String[] MEASUREMENTS_COLUMNS = new String[] {
+    private final static String[] MEASUREMENTS_COLUMNS = new String[]{
             KioskDatabase.MeasurementsTable.PARAMETER_NAME,
             KioskDatabase.MeasurementsTable.VALUE
     };
@@ -49,7 +49,7 @@ public class ReadingsRepository {
         wdb.beginTransaction();
         try {
             long readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
-            for(Measurement m : reading.getMeasurements()) {
+            for (Measurement m : reading.getMeasurements()) {
                 ContentValues cv = new ContentValues();
                 cv.put(KioskDatabase.MeasurementsTable.PARAMETER_NAME, m.getParameterName());
                 cv.put(KioskDatabase.MeasurementsTable.VALUE, m.getValue().toString());
@@ -73,13 +73,13 @@ public class ReadingsRepository {
         try {
             Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, null, null, null, null, null);
             Log.i(TAG, "Found readings: " + rc.getCount());
-            if(rc.moveToFirst()) {
-                while(!rc.isAfterLast()) {
+            if (rc.moveToFirst()) {
+                while (!rc.isAfterLast()) {
                     long readingId = rc.getLong(0);
                     Set<Measurement> measurements = new HashSet<Measurement>();
                     Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
-                    if(mc.moveToFirst()) {
-                        while(!mc.isAfterLast()) {
+                    if (mc.moveToFirst()) {
+                        while (!mc.isAfterLast()) {
                             measurements.add(new Measurement(mc.getString(0), new BigDecimal(mc.getString(1))));
                             mc.moveToNext();
                         }

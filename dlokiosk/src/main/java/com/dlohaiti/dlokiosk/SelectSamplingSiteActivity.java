@@ -18,17 +18,21 @@ import java.util.List;
 
 public class SelectSamplingSiteActivity extends RoboActivity {
 
-    @InjectView(R.id.sampling_site_spinner) private Spinner samplingSiteSpinner;
-    @InjectResource(R.string.select_sampling_site_caption) private String selectSamplingSiteCaption;
-    @Inject private SamplingSiteRepository repository;
+    @InjectView(R.id.sampling_site_spinner)
+    private Spinner samplingSiteSpinner;
+    @InjectResource(R.string.select_sampling_site_caption)
+    private String selectSamplingSiteCaption;
+    @Inject
+    private SamplingSiteRepository repository;
     private boolean isRealSelection = false;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_sample_site);
         final List<String> sites = new ArrayList<String>();
         sites.add(selectSamplingSiteCaption);
-        for(SamplingSite site : repository.list()) {
+        for (SamplingSite site : repository.list()) {
             sites.add(site.getName());
         }
 
@@ -37,7 +41,8 @@ public class SelectSamplingSiteActivity extends RoboActivity {
         adapter.addAll(sites);
         samplingSiteSpinner.setAdapter(adapter);
         samplingSiteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //HACK: populating the spinner fires onItemSelected for the first value in the spinner
                 if (!isRealSelection) {
                     isRealSelection = true;
@@ -49,7 +54,8 @@ public class SelectSamplingSiteActivity extends RoboActivity {
                 }
             }
 
-            @Override public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
                 // intentionally left blank
             }
         });

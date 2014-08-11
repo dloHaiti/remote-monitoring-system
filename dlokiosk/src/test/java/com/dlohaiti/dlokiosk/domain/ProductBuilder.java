@@ -17,7 +17,8 @@ public class ProductBuilder {
     private String description = "10 Gallon";
     private Integer gallons = 0;
 
-    private ProductBuilder(){}
+    private ProductBuilder() {
+    }
 
     public static ProductBuilder productBuilder() {
         return new ProductBuilder();

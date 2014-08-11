@@ -32,11 +32,12 @@ public class NumberPickerDialog extends DialogFragment {
         builder.setPositiveButton(R.string.add_to_cart, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 int quantity = numberPicker.getValue();
-                ((EnterSaleActivity)getActivity()).addToShoppingCart(product.withQuantity(quantity));
+                ((EnterSaleActivity) getActivity()).addToShoppingCart(product.withQuantity(quantity));
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int which) {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });

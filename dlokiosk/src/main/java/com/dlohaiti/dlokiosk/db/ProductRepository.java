@@ -56,7 +56,7 @@ public class ProductRepository {
             }
             readableDatabase.setTransactionSuccessful();
             return products;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "Failed to load all products from the database.", e);
             return new ArrayList<Product>();
         } finally {
@@ -90,7 +90,7 @@ public class ProductRepository {
             Product product = buildProduct(cursor);
             readableDatabase.setTransactionSuccessful();
             return product;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, String.format("Failed to find product with id %d in the database.", id), e);
             return new Product(null, null, null, false, null, null, null, null, null, null);
         } finally {
@@ -104,7 +104,7 @@ public class ProductRepository {
         wdb.beginTransaction();
         try {
             wdb.delete(KioskDatabase.ProductsTable.TABLE_NAME, null, null);
-            for(Product p : products) {
+            for (Product p : products) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.ProductsTable.SKU, p.getSku());
                 values.put(KioskDatabase.ProductsTable.PRICE, p.getPrice().getAmount().toString());

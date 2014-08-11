@@ -83,7 +83,7 @@ public class ReceiptsRepository {
             receiptsCursor.close();
             readableDatabase.setTransactionSuccessful();
             return receipts;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "Failed to load all receipts from the database.", e);
             return new ArrayList<Receipt>();
         } finally {

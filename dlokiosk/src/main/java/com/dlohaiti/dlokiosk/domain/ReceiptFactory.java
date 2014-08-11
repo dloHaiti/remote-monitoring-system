@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;
@@ -22,7 +21,7 @@ public class ReceiptFactory {
     public Receipt makeReceipt(List<Product> products, List<Promotion> promotions, Money total) {
         List<LineItem> lineItems = buildLineItems(products, promotions);
         int totalGallons = 0;
-        for(Product product: products) {
+        for (Product product : products) {
             totalGallons += (product.getGallons() * product.getQuantity());
         }
         return new Receipt(lineItems, clock.now(), totalGallons, total);

@@ -19,12 +19,18 @@ import roboguice.inject.InjectView;
 import static org.joda.time.format.ISODateTimeFormat.basicDate;
 
 public class MainActivity extends RoboActivity implements StatusView {
-    @InjectView(R.id.serverStatusProgressBar) ProgressBar serverStatusProgressBar;
-    @InjectView(R.id.statusImage) ImageView statusImage;
-    @Inject private ConfigurationRepository config;
-    @Inject private ReadingsRepository readingsRepository;
-    @Inject private ReceiptsRepository receiptsRepository;
-    @Inject private DeliveryRepository deliveryRepository;
+    @InjectView(R.id.serverStatusProgressBar)
+    ProgressBar serverStatusProgressBar;
+    @InjectView(R.id.statusImage)
+    ImageView statusImage;
+    @Inject
+    private ConfigurationRepository config;
+    @Inject
+    private ReadingsRepository readingsRepository;
+    @Inject
+    private ReceiptsRepository receiptsRepository;
+    @Inject
+    private DeliveryRepository deliveryRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +38,17 @@ public class MainActivity extends RoboActivity implements StatusView {
         setContentView(R.layout.activity_main);
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
-        if(isConnected()) {
+        if (isConnected()) {
             String text = config.get(ConfigurationKey.LAST_UPDATE);
             LocalDate lastUpdate = basicDate().parseLocalDate(text);
-            if(lastUpdate.isBefore(new LocalDate())) {
+            if (lastUpdate.isBefore(new LocalDate())) {
                 new PullConfigurationTask(this).execute();
                 config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(basicDate()));
             }
-            if(hasUnsentData()) {
+            if (hasUnsentData()) {
                 doManualSync(null);
             }
         }
@@ -109,7 +116,8 @@ public class MainActivity extends RoboActivity implements StatusView {
         statusImage.setVisibility(View.VISIBLE);
     }
 
-    @Override public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (item.getItemId() == R.id.action_configuration) {
             startActivity(new Intent(MainActivity.this, ConfigurationActivity.class));
         }

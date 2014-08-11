@@ -13,7 +13,8 @@ public class PromotionBuilder {
     private PromotionType type = PromotionType.PERCENT;
     private String sku = "PROMO10";
 
-    private PromotionBuilder() {}
+    private PromotionBuilder() {
+    }
 
     public static PromotionBuilder promotionBuilder() {
         return new PromotionBuilder();

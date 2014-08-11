@@ -28,7 +28,7 @@ public class DeliveryAgentRepository {
         wdb.beginTransaction();
         try {
             wdb.delete(TABLE_NAME, null, null);
-            for(DeliveryAgent agent : agents) {
+            for (DeliveryAgent agent : agents) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.DeliveryAgentsTable.NAME, agent.getName());
                 wdb.insert(TABLE_NAME, null, values);
@@ -49,7 +49,7 @@ public class DeliveryAgentRepository {
         Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
             cursor.moveToFirst();
-            while(!cursor.isAfterLast()) {
+            while (!cursor.isAfterLast()) {
                 agents.add(new DeliveryAgent(cursor.getString(0)));
                 cursor.moveToNext();
             }

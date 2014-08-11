@@ -16,8 +16,8 @@ public class Failures {
 
     public Integer countFor(FailureKind kind) {
         int total = 0;
-        for(Failure failure : failures) {
-            if(failure.isFor(kind)) {
+        for (Failure failure : failures) {
+            if (failure.isFor(kind)) {
                 total++;
             }
         }

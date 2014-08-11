@@ -30,7 +30,8 @@ public class Receipt {
         return lineItems;
     }
 
-    @JsonIgnore public Integer getLineItemsCount() {
+    @JsonIgnore
+    public Integer getLineItemsCount() {
         int total = 0;
         for (LineItem op : lineItems) {
             total += op.getQuantity();
@@ -42,7 +43,8 @@ public class Receipt {
         return createdDate;
     }
 
-    @JsonIgnore public Long getId() {
+    @JsonIgnore
+    public Long getId() {
         return id;
     }
 
@@ -81,10 +83,11 @@ public class Receipt {
         return result;
     }
 
-    @JsonIgnore public Integer getProductLineItemsCount() {
+    @JsonIgnore
+    public Integer getProductLineItemsCount() {
         int total = 0;
         for (LineItem op : lineItems) {
-            if(op.getType() == ReceiptLineItemType.PRODUCT) {
+            if (op.getType() == ReceiptLineItemType.PRODUCT) {
                 total += op.getQuantity();
             }
         }
@@ -93,8 +96,8 @@ public class Receipt {
 
     public List<LineItem> getProductLineItems() {
         List<LineItem> items = new ArrayList<LineItem>();
-        for(LineItem item : lineItems) {
-            if(item.getType() == ReceiptLineItemType.PRODUCT) {
+        for (LineItem item : lineItems) {
+            if (item.getType() == ReceiptLineItemType.PRODUCT) {
                 items.add(item);
             }
         }

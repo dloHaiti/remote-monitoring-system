@@ -6,9 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class EnterPromotionActivityTest {
@@ -16,12 +14,14 @@ public class EnterPromotionActivityTest {
     private EnterPromotionActivity activity;
     private ShoppingCart mockCart;
 
-    @Before public void setUp() {
+    @Before
+    public void setUp() {
         activity = new EnterPromotionActivity();
         mockCart = mock(ShoppingCart.class);
     }
 
-    @Test public void shouldClearPromotionsOnBackPressed() {
+    @Test
+    public void shouldClearPromotionsOnBackPressed() {
         activity.shoppingCart = mockCart;
 
         activity.onBackPressed();

@@ -29,7 +29,7 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
-        if(NumberUtils.isNumber(candidate)) {
+        if (NumberUtils.isNumber(candidate)) {
             return new BigDecimal(candidate).setScale(2);
         }
         return defaultValue;
@@ -69,7 +69,7 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     public boolean considersInvalid(String value) {
-        if(!NumberUtils.isNumber(value)) {
+        if (!NumberUtils.isNumber(value)) {
             return true;
         }
         BigDecimal val = new BigDecimal(value);
@@ -84,17 +84,19 @@ public class Parameter implements Comparable<Parameter> {
         return left.compareTo(right) > 0;
     }
 
-    @Override public int compareTo(Parameter parameter) {
-        if(priority < parameter.priority) {
+    @Override
+    public int compareTo(Parameter parameter) {
+        if (priority < parameter.priority) {
             return -1;
         }
-        if(priority > parameter.priority) {
+        if (priority > parameter.priority) {
             return 1;
         }
         return upperCase(name).compareTo(upperCase(parameter.name));
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -112,7 +114,8 @@ public class Parameter implements Comparable<Parameter> {
         return true;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (unitOfMeasure != null ? unitOfMeasure.hashCode() : 0);
         result = 31 * result + (minimum != null ? minimum.hashCode() : 0);

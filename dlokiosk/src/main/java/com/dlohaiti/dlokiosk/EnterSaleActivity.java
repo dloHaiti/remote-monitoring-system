@@ -13,13 +13,18 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class EnterSaleActivity extends RoboActivity {
-    @InjectView(R.id.left_grid) private GridView inventoryGrid;
-    @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
-    @Inject private ProductRepository repository;
-    @Inject private ShoppingCart sc;
+    @InjectView(R.id.left_grid)
+    private GridView inventoryGrid;
+    @InjectView(R.id.right_grid)
+    private GridView shoppingCartGrid;
+    @Inject
+    private ProductRepository repository;
+    @Inject
+    private ShoppingCart sc;
     private ImageAdapter adapter;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_sale);
         inventoryGrid.setAdapter(new ImageAdapter<Product>(this, repository.list()));
@@ -39,7 +44,8 @@ public class EnterSaleActivity extends RoboActivity {
         });
 
         shoppingCartGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 sc.removeProduct(position);
                 adapter.notifyDataSetChanged();
             }
@@ -56,7 +62,8 @@ public class EnterSaleActivity extends RoboActivity {
         finish();
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         sc.clear();
         finish();
     }

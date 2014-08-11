@@ -19,18 +19,24 @@ import java.util.Date;
 
 public class DeliveryActivity extends RoboActivity {
 
-    @InjectView(R.id.delivery_tracking) private NumberPicker deliveryPicker;
-    @InjectView(R.id.agent_spinner) private Spinner agentSpinner;
-    @Inject private DeliveryRepository repository;
-    @Inject private DeliveryAgentRepository deliveryAgentRepository;
-    @Inject private ConfigurationRepository config;
+    @InjectView(R.id.delivery_tracking)
+    private NumberPicker deliveryPicker;
+    @InjectView(R.id.agent_spinner)
+    private Spinner agentSpinner;
+    @Inject
+    private DeliveryRepository repository;
+    @Inject
+    private DeliveryAgentRepository deliveryAgentRepository;
+    @Inject
+    private ConfigurationRepository config;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tracking);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for(DeliveryAgent agent : deliveryAgentRepository.findAll()) {
+        for (DeliveryAgent agent : deliveryAgentRepository.findAll()) {
             adapter.add(agent.getName());
         }
         agentSpinner.setAdapter(adapter);

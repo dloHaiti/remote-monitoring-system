@@ -44,7 +44,8 @@ public class SamplingSite implements Comparable<SamplingSite> {
         return result;
     }
 
-    @Override public int compareTo(SamplingSite another) {
+    @Override
+    public int compareTo(SamplingSite another) {
         return upperCase(name).compareTo(upperCase(another.name));
     }
 }

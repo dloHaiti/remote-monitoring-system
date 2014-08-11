@@ -45,7 +45,8 @@ public class Money {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Money{" +
                 "amount=" + amount +
                 ", currency=" + currency +

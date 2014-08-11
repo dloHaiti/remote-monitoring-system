@@ -18,17 +18,26 @@ import java.util.List;
 
 public class EnterPromotionActivity extends RoboActivity {
 
-    @InjectView(R.id.left_grid) private GridView inventoryGrid;
-    @InjectView(R.id.right_grid) private GridView shoppingCartGrid;
-    @InjectView(R.id.subtotal) private TextView subtotalTextBox;
-    @InjectView(R.id.subtotal_currency) private TextView subtotalCurrencyTextBox;
-    @InjectView(R.id.total) private TextView totalTextBox;
-    @InjectView(R.id.total_currency) private TextView totalCurrencyTextBox;
-    @Inject private PromotionRepository promotionRepository;
-    @Inject ShoppingCart shoppingCart;
+    @InjectView(R.id.left_grid)
+    private GridView inventoryGrid;
+    @InjectView(R.id.right_grid)
+    private GridView shoppingCartGrid;
+    @InjectView(R.id.subtotal)
+    private TextView subtotalTextBox;
+    @InjectView(R.id.subtotal_currency)
+    private TextView subtotalCurrencyTextBox;
+    @InjectView(R.id.total)
+    private TextView totalTextBox;
+    @InjectView(R.id.total_currency)
+    private TextView totalCurrencyTextBox;
+    @Inject
+    private PromotionRepository promotionRepository;
+    @Inject
+    ShoppingCart shoppingCart;
     private ImageAdapter adapter;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_promotions);
 
@@ -42,14 +51,16 @@ public class EnterPromotionActivity extends RoboActivity {
         adapter = new ImageAdapter<Promotion>(this, shoppingCart.getPromotions());
         shoppingCartGrid.setAdapter(adapter);
         inventoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 shoppingCart.addPromotion(promotionRepository.findById(id));
                 adapter.notifyDataSetChanged();
                 updateNewTotal();
             }
         });
         shoppingCartGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 shoppingCart.removePromotion(position);
                 adapter.notifyDataSetChanged();
                 updateNewTotal();
@@ -62,7 +73,8 @@ public class EnterPromotionActivity extends RoboActivity {
         updateNewTotal();
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         startActivity(new Intent(this, EnterSaleActivity.class));
         shoppingCart.clearPromotions();
         finish();

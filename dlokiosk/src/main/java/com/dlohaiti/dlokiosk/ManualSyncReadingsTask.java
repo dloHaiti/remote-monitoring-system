@@ -21,12 +21,18 @@ import java.util.Collection;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
-    @Inject private ReceiptsClient receiptsClient;
-    @Inject private DeliveriesClient deliveriesClient;
-    @Inject private ReadingsClient readingsClient;
-    @Inject private ReceiptsRepository receiptsRepository;
-    @Inject private DeliveryRepository deliveriesRepository;
-    @Inject private ReadingsRepository readingsRepository;
+    @Inject
+    private ReceiptsClient receiptsClient;
+    @Inject
+    private DeliveriesClient deliveriesClient;
+    @Inject
+    private ReadingsClient readingsClient;
+    @Inject
+    private ReceiptsRepository receiptsRepository;
+    @Inject
+    private DeliveryRepository deliveriesRepository;
+    @Inject
+    private ReadingsRepository readingsRepository;
 
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -60,9 +66,9 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
         Failures failures = new Failures();
 
-        for(Reading reading : readings) {
+        for (Reading reading : readings) {
             PostResponse response = readingsClient.send(reading);
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 readingsRepository.remove(reading);
             } else {
                 failures.add(new Failure(FailureKind.READING, response.getErrors()));
@@ -71,16 +77,16 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
         for (Receipt receipt : receipts) {
             PostResponse response = receiptsClient.send(receipt);
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 receiptsRepository.remove(receipt);
             } else {
                 failures.add(new Failure(FailureKind.RECEIPT, response.getErrors()));
             }
         }
 
-        for(Delivery delivery: deliveries) {
+        for (Delivery delivery : deliveries) {
             PostResponse response = deliveriesClient.send(delivery);
-            if(response.isSuccess()) {
+            if (response.isSuccess()) {
                 deliveriesRepository.remove(delivery);
             } else {
                 failures.add(new Failure(FailureKind.DELIVERY, response.getErrors()));

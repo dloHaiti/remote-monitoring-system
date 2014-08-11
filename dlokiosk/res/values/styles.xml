@@ -65,7 +65,7 @@
         <item name="android:stretchMode">columnWidth</item>
     </style>
 
-  <style name="left_grid">
+    <style name="left_grid">
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginLeft">20dp</item>
         <item name="android:layout_marginTop">10dp</item>
@@ -81,28 +81,28 @@
         <item name="android:horizontalSpacing">20dp</item>
         <item name="android:background">@drawable/gray_box</item>
         <item name="android:stretchMode">columnWidth</item>
-  </style>
+    </style>
 
-  <style name="navigation_button">
+    <style name="navigation_button">
         <item name="android:paddingLeft">50dp</item>
         <item name="android:paddingRight">50dp</item>
-  </style>
+    </style>
 
-  <style name="list_item">
-      <item name="android:layout_width">fill_parent</item>
-      <item name="android:layout_height">?android:attr/listPreferredItemHeightSmall</item>
-      <item name="android:textColor">@android:color/black</item>
-      <item name="android:textSize">18sp</item>
-      <item name="android:paddingLeft">8dip</item>
-      <item name="android:paddingRight">8dip</item>
-      <item name="android:gravity">center</item>
-      <item name="android:background">@android:color/transparent</item>
-  </style>
+    <style name="list_item">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">?android:attr/listPreferredItemHeightSmall</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
-  <style name="list_header" parent="list_item">
-      <item name="android:textStyle">bold</item>
-      <item name="android:textColor">@color/list_header_text_color</item>
-      <item name="android:background">@color/list_header_background_color</item>
-      <item name="android:gravity">center</item>
-  </style>
+    <style name="list_header" parent="list_item">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_header_text_color</item>
+        <item name="android:background">@color/list_header_background_color</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

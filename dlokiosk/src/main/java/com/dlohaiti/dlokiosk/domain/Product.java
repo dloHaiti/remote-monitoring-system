@@ -41,7 +41,8 @@ public class Product implements VisibleGridItem {
         return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity, price, description, gallons);
     }
 
-    @Override public Long getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 
@@ -49,7 +50,8 @@ public class Product implements VisibleGridItem {
         return sku;
     }
 
-    @Override public Bitmap getImageResource() {
+    @Override
+    public Bitmap getImageResource() {
         return imageResource;
     }
 

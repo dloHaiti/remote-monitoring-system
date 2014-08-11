@@ -6,46 +6,46 @@
               android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content">
 
         <NumberPicker
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="30dp"
-            android:id="@+id/delivery_tracking"/>
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:id="@+id/delivery_tracking"/>
 
         <Spinner
-            android:id="@+id/agent_spinner"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+                android:id="@+id/agent_spinner"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
         <Button
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:padding="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/out_for_delivery_button"
-            android:onClick="outForDelivery"/>
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/out_for_delivery_button"
+                android:onClick="outForDelivery"/>
 
         <Button
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:padding="20dp"
-            android:text="@string/returned_button"
-            android:onClick="returned"/>
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="20dp"
+                android:text="@string/returned_button"
+                android:onClick="returned"/>
     </LinearLayout>
 </LinearLayout>

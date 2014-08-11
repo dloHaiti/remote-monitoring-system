@@ -1,7 +1,8 @@
 package com.dlohaiti.dlokiosk.db;
 
 public class KioskDatabaseUtils {
-    private KioskDatabaseUtils() {}
+    private KioskDatabaseUtils() {
+    }
 
     static String[] matches(int match) {
         return matches(String.valueOf(match));
@@ -12,7 +13,7 @@ public class KioskDatabaseUtils {
     }
 
     static String[] matches(String match) {
-        return new String[] {match};
+        return new String[]{match};
     }
 
     static String where(String columnName) {

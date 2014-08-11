@@ -1,38 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-  <View
-    android:id="@+id/two_rectangle_grid_anchor"
-    android:layout_height="0dp"
-    android:layout_width="0dp"
-    android:layout_centerHorizontal="true" />
-
-  <GridView
-    android:id="@+id/left_grid"
-    style="@style/left_grid"
-    android:layout_alignRight="@+id/two_rectangle_grid_anchor" />
-
-  <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignLeft="@+id/two_rectangle_grid_anchor">
+    <View
+            android:id="@+id/two_rectangle_grid_anchor"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_centerHorizontal="true"/>
 
     <GridView
-      android:id="@+id/right_grid"
-      style="@style/right_grid"
-      android:layout_above="@+id/action_button" />
+            android:id="@+id/left_grid"
+            style="@style/left_grid"
+            android:layout_alignRight="@+id/two_rectangle_grid_anchor"/>
 
-    <Button
-      android:id="@+id/action_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentBottom="true"
-      android:layout_marginRight="20dp"
-      android:layout_marginBottom="20dp"
-      android:padding="30dp"
-      android:onClick="moveToPromotions"
-      android:text="@string/next" />
-  </RelativeLayout>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/two_rectangle_grid_anchor">
+
+        <GridView
+                android:id="@+id/right_grid"
+                style="@style/right_grid"
+                android:layout_above="@+id/action_button"/>
+
+        <Button
+                android:id="@+id/action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:padding="30dp"
+                android:onClick="moveToPromotions"
+                android:text="@string/next"/>
+    </RelativeLayout>
 </RelativeLayout>

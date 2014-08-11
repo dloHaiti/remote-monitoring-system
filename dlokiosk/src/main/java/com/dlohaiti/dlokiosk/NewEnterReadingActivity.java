@@ -20,22 +20,35 @@ import java.util.*;
 
 public class NewEnterReadingActivity extends RoboActivity {
 
-    @InjectView(R.id.heading) private TextView heading;
-    @InjectView(R.id.parameters) private ViewFlipper parametersList;
-    @InjectView(R.id.save_parameters) private Button saveParametersButton;
-    @InjectView(R.id.previous_parameter) private Button previousParameterButton;
-    @InjectView(R.id.next_parameter) private Button nextParameterButton;
-    @InjectResource(R.string.please_correct_message) private String pleaseCorrectMessage;
-    @InjectResource(R.string.saved_message) private String savedMessage;
-    @InjectResource(R.string.error_not_saved_message) private String errorNotSavedMessage;
-    @Inject private SamplingSiteParametersRepository repository;
-    @Inject private ReadingsRepository readingsRepository;
-    @Inject private SamplingSiteRepository samplingSiteRepository;
-    @Inject private Clock clock;
+    @InjectView(R.id.heading)
+    private TextView heading;
+    @InjectView(R.id.parameters)
+    private ViewFlipper parametersList;
+    @InjectView(R.id.save_parameters)
+    private Button saveParametersButton;
+    @InjectView(R.id.previous_parameter)
+    private Button previousParameterButton;
+    @InjectView(R.id.next_parameter)
+    private Button nextParameterButton;
+    @InjectResource(R.string.please_correct_message)
+    private String pleaseCorrectMessage;
+    @InjectResource(R.string.saved_message)
+    private String savedMessage;
+    @InjectResource(R.string.error_not_saved_message)
+    private String errorNotSavedMessage;
+    @Inject
+    private SamplingSiteParametersRepository repository;
+    @Inject
+    private ReadingsRepository readingsRepository;
+    @Inject
+    private SamplingSiteRepository samplingSiteRepository;
+    @Inject
+    private Clock clock;
     private final Map<Parameter, EditText> values = new HashMap<Parameter, EditText>();
     private SamplingSite samplingSite;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         values.clear();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_enter_reading);
@@ -43,24 +56,25 @@ public class NewEnterReadingActivity extends RoboActivity {
         samplingSite = samplingSiteRepository.findByName(extras.getString("samplingSiteName"));
         heading.setText(samplingSite.getName());
         SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for(Parameter p : parameters) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        for (Parameter p : parameters) {
             View row = inflater.inflate(R.layout.parameter_row, null);
-            TextView label = (TextView)row.findViewById(R.id.parameter_label);
-            TextView units = (TextView)row.findViewById(R.id.parameter_units);
-            TextView range = (TextView)row.findViewById(R.id.parameter_range);
-            final EditText input = (EditText)row.findViewById(R.id.parameter_input);
+            TextView label = (TextView) row.findViewById(R.id.parameter_label);
+            TextView units = (TextView) row.findViewById(R.id.parameter_units);
+            TextView range = (TextView) row.findViewById(R.id.parameter_range);
+            final EditText input = (EditText) row.findViewById(R.id.parameter_input);
             values.put(p, input);
 
-            if(p.isOkNotOk()) {
+            if (p.isOkNotOk()) {
                 input.setVisibility(View.GONE);
-                RadioGroup okGroup = (RadioGroup)row.findViewById(R.id.ok_group);
+                RadioGroup okGroup = (RadioGroup) row.findViewById(R.id.ok_group);
                 okGroup.setVisibility(View.VISIBLE);
                 okGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if(R.id.radio_ok == checkedId) {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        if (R.id.radio_ok == checkedId) {
                             input.setText("1");
-                        } else if(R.id.radio_not_ok == checkedId) {
+                        } else if (R.id.radio_not_ok == checkedId) {
                             input.setText("0");
                         } else {
                             input.setText("");
@@ -71,7 +85,7 @@ public class NewEnterReadingActivity extends RoboActivity {
 
             label.setText(p.getName());
             units.setText(p.getUnitOfMeasure());
-            if(p.hasRange() && !p.isOkNotOk()) {
+            if (p.hasRange() && !p.isOkNotOk()) {
                 range.setText(p.getRange());
             }
             parametersList.addView(row);
@@ -81,7 +95,8 @@ public class NewEnterReadingActivity extends RoboActivity {
         previousParameterButton.setEnabled(hasSeveralParameters);
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         startActivity(new Intent(this, SelectSamplingSiteActivity.class));
         finish();
     }
@@ -99,7 +114,7 @@ public class NewEnterReadingActivity extends RoboActivity {
     }
 
     public void saveParameters(View v) {
-        if(allViewsAreValid()) {
+        if (allViewsAreValid()) {
             Set<Measurement> measurements = new HashSet<Measurement>();
             for (Map.Entry<Parameter, EditText> entry : values.entrySet()) {
                 EditText input = entry.getValue();

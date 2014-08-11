@@ -14,14 +14,21 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public class ConfigurationActivity extends RoboActivity {
-    @InjectView(R.id.kiosk_id) private EditText kioskIdTextBox;
-    @InjectView(R.id.kiosk_password) private EditText kioskPasswordTextBox;
-    @InjectView(R.id.server_url) private EditText serverUrl;
-    @InjectView(R.id.last_updated) private TextView lastUpdated;
-    @Inject private ConfigurationRepository config;
-    @Inject private ConfigurationClient client;
+    @InjectView(R.id.kiosk_id)
+    private EditText kioskIdTextBox;
+    @InjectView(R.id.kiosk_password)
+    private EditText kioskPasswordTextBox;
+    @InjectView(R.id.server_url)
+    private EditText serverUrl;
+    @InjectView(R.id.last_updated)
+    private TextView lastUpdated;
+    @Inject
+    private ConfigurationRepository config;
+    @Inject
+    private ConfigurationClient client;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
         kioskIdTextBox.setText(config.get(ConfigurationKey.KIOSK_ID));

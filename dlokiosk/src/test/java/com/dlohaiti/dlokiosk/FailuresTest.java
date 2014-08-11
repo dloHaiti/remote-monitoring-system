@@ -11,11 +11,13 @@ public class FailuresTest {
 
     private Failures failures;
 
-    @Before public void setUp() {
+    @Before
+    public void setUp() {
         failures = new Failures();
     }
 
-    @Test public void shouldKnowIfNotEmpty() {
+    @Test
+    public void shouldKnowIfNotEmpty() {
         assertThat(failures.isNotEmpty(), is(false));
 
         failures.add(new Failure(FailureKind.DELIVERY, asList("SERVER_ERROR")));
@@ -23,7 +25,8 @@ public class FailuresTest {
         assertThat(failures.isNotEmpty(), is(true));
     }
 
-    @Test public void shouldKnowCountOfFailuresForGivenFailureKind() {
+    @Test
+    public void shouldKnowCountOfFailuresForGivenFailureKind() {
         failures.add(new Failure(FailureKind.DELIVERY, asList("MISSING_DELIVERY_AGENT")));
         failures.add(new Failure(FailureKind.RECEIPT, asList("CREATEDDATE_NULLABLE", "PRODUCT_MISSING")));
         failures.add(new Failure(FailureKind.RECEIPT, asList("PRODUCT_MISSING")));

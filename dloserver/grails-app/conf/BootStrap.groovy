@@ -72,6 +72,7 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(Product) { Product p ->
             return [
+                    id               : p.id,
                     sku               : p.sku,
                     description       : p.description,
                     gallons           : p.gallons,
@@ -79,6 +80,18 @@ class BootStrap {
                     minimumQuantity   : p.minimumQuantity,
                     requiresQuantity  : p.requiresQuantity(),
                     base64EncodedImage: p.base64EncodedImage,
+                    price             : [
+                            amount      : p.price.amount,
+                            currencyCode: p.price.currency.currencyCode
+                    ]
+            ]
+        }
+
+        JSON.registerObjectMarshaller(ProductMrp) { ProductMrp p ->
+            return [
+                    kiosk_id: p.kiosk.id,
+                    product_id: p.product.id,
+                    channel_id: p.salesChannel.id,
                     price             : [
                             amount      : p.price.amount,
                             currencyCode: p.price.currency.currencyCode

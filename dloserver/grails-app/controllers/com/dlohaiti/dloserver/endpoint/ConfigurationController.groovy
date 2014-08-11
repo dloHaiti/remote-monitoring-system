@@ -6,12 +6,13 @@ import grails.converters.JSON
 class ConfigurationController {
 
   def index() {
+
     List<Product> products = Product.findAllByActive(true)
     List<Parameter> parameters = Parameter.findAllByActiveAndManual(true, true)
     List<Promotion> promotions = Promotion.all
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
     List<ProductCategory> productCategories=ProductCategory.all
-    List<SalesChannel> salesChannels=SalesChannel.all
+    List<SalesChannel> salesChannels=request.kiosk.getSalesChannels()
     List<CustomerAccount> accounts = CustomerAccount.findAllByKiosk(request.kiosk)
 
 

@@ -7,7 +7,7 @@ class SalesChannel {
     BigDecimal discountAmount
 
 
-    static hasMany = [customerAccounts: CustomerAccount]
+    static hasMany = [customerAccounts: CustomerAccount,productMrps: ProductMrp]
 
 
     static constraints = {

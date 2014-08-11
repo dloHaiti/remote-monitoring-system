@@ -8,7 +8,7 @@ class Kiosk {
     String name
     String apiKey
 
-    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount]
+    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount,productMrps: ProductMrp]
 
     static constraints = {
         name(blank: false, unique: true)
@@ -19,5 +19,9 @@ class Kiosk {
     @Override
     public String toString() {
         name
+    }
+
+    List<SalesChannel> getSalesChannels() {
+        ProductMrp.findAllByKiosk(this)*.salesChannel
     }
 }

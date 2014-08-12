@@ -19,17 +19,16 @@ class CountryTests {
 
         assert !nullCountry.validate()
         assert "nullable" == nullCountry.errors['name']
-        assert 'nullable' == nullCountry.errors['unitOfMeasure']
     }
 
     def testForUnique(){
         mockForConstraintsTests(Country)
 
-        Country c1 = new Country(name: 'c1',unitOfMeasure: 'litter')
+        Country c1 = new Country(name: 'c1')
         assert c1.validate()
 
 
-        Country c2 = new Country(name: 'c1',unitOfMeasure: 'litter')
+        Country c2 = new Country(name: 'c1')
         mockForConstraintsTests(Country, [c1,c2])
         assert !c2.validate()
         c2.name="c2"

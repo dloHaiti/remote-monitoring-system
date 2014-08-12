@@ -54,6 +54,7 @@ class BootStrap {
             return [
                     id: a.id,
                     name       : a.name,
+                    contactName: a.contactName,
                     address    : a.address,
                     phoneNumber: a.phoneNumber,
                     kiosk_id   : a.kiosk.id,
@@ -130,7 +131,7 @@ class BootStrap {
 
             if (CustomerAccount.count() == 0) {
                 CustomerType type = (new CustomerType(name: "School")).save(failOnError: true)
-                new CustomerAccount(name: "Customer1", contactNames: ['contact1'], customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
+                new CustomerAccount(name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
 
             }
             if (DeliveryAgent.count() == 0) {

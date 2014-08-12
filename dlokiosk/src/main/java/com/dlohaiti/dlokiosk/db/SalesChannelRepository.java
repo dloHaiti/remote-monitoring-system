@@ -11,15 +11,13 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static com.dlohaiti.dlokiosk.db.KioskDatabase.SalesChannelTable;
-
 public class SalesChannelRepository {
     private final static String TAG = SalesChannelRepository.class.getSimpleName();
     private final static String[] COLUMNS = new String[]
             {
-                    SalesChannelTable.ID,
-                    SalesChannelTable.NAME,
-                    SalesChannelTable.DESCRIPTION
+                    KioskDatabase.SalesChannelsTable.ID,
+                    KioskDatabase.SalesChannelsTable.NAME,
+                    KioskDatabase.SalesChannelsTable.DESCRIPTION
             };
     private final KioskDatabase db;
 
@@ -32,14 +30,14 @@ public class SalesChannelRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(SalesChannelTable.TABLE_NAME, null, null);
+            wdb.delete(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, null);
             for (SalesChannel channel : channels) {
                 ContentValues values = new ContentValues();
-                values.put(KioskDatabase.SalesChannelTable.ID, channel.id());
-                values.put(KioskDatabase.SalesChannelTable.NAME, channel.name());
-                values.put(KioskDatabase.SalesChannelTable.DESCRIPTION, channel.description());
+                values.put(KioskDatabase.SalesChannelsTable.ID, channel.id());
+                values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
+                values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
 
-                wdb.insert(SalesChannelTable.TABLE_NAME, null, values);
+                wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);
             }
             wdb.setTransactionSuccessful();
             return true;
@@ -54,7 +52,7 @@ public class SalesChannelRepository {
         SortedSet<SalesChannel> channels = new TreeSet<SalesChannel>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(SalesChannelTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+        Cursor cursor = rdb.query(KioskDatabase.SalesChannelsTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {

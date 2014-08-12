@@ -35,14 +35,14 @@ public class SalesChannelRepositoryTest {
     }
 
     @Test
-    public void shouldReturnAllAgentsInSetInAlphabeticalOrder() {
+    public void shouldReturnAllSalesChannelsInSetInAlphabeticalOrder() {
         SQLiteDatabase wdb = db.getWritableDatabase();
         for (SalesChannel channel : asList(new SalesChannel(1L, "Name 1", "Desc 1"), new SalesChannel(2L, "Name 2", "Desc 2"))) {
             ContentValues values = new ContentValues();
-            values.put(KioskDatabase.SalesChannelTable.ID, channel.id());
-            values.put(KioskDatabase.SalesChannelTable.NAME, channel.name());
-            values.put(KioskDatabase.SalesChannelTable.DESCRIPTION, channel.description());
-            wdb.insert(KioskDatabase.SalesChannelTable.TABLE_NAME, null, values);
+            values.put(KioskDatabase.SalesChannelsTable.ID, channel.id());
+            values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
+            values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
+            wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);
         }
 
         SortedSet<SalesChannel> list = repository.findAll();
@@ -55,10 +55,10 @@ public class SalesChannelRepositoryTest {
         SQLiteDatabase wdb = db.getWritableDatabase();
         for (SalesChannel channel : asList(new SalesChannel(1L, "Over the Counter", "Over the Counter"), new SalesChannel(2L, "Door delivery", "Door delivery"))) {
             ContentValues values = new ContentValues();
-            values.put(KioskDatabase.SalesChannelTable.ID, channel.id());
-            values.put(KioskDatabase.SalesChannelTable.NAME, channel.name());
-            values.put(KioskDatabase.SalesChannelTable.DESCRIPTION, channel.description());
-            wdb.insert(KioskDatabase.SalesChannelTable.TABLE_NAME, null, values);
+            values.put(KioskDatabase.SalesChannelsTable.ID, channel.id());
+            values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
+            values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
+            wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);
         }
         assertThat(repository.findAll(),
                 is(sortedSet(new SalesChannel(1L, "Over the Counter", "Over the Counter"), new SalesChannel(2L, "Door delivery", "Door delivery"))));

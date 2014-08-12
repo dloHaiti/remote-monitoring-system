@@ -9,7 +9,7 @@ import com.google.inject.Singleton;
 @Singleton
 public class KioskDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "kiosk.db";
-    private final static int DATABASE_VERSION = 1;
+    private final static int DATABASE_VERSION = 2;
 
     @Inject
     public KioskDatabase(Context context) {
@@ -199,10 +199,26 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT" +
                         ")",
-                SalesChannelTable.TABLE_NAME,
-                SalesChannelTable.ID,
-                SalesChannelTable.NAME,
-                SalesChannelTable.DESCRIPTION
+                SalesChannelsTable.TABLE_NAME,
+                SalesChannelsTable.ID,
+                SalesChannelsTable.NAME,
+                SalesChannelsTable.DESCRIPTION
+        );
+
+        String createCustomerAccounts = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s INTEGER" +
+                        ")",
+                CustomerAccountsTable.TABLE_NAME,
+                CustomerAccountsTable.ID,
+                CustomerAccountsTable.NAME,
+                CustomerAccountsTable.ADDRESS,
+                CustomerAccountsTable.PHONE_NUMBER,
+                CustomerAccountsTable.KIOSK_ID
         );
 
         String insertConfig = String.format(
@@ -226,6 +242,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createDeliveries);
         db.execSQL(createPromotions);
         db.execSQL(createSalesChannels);
+        db.execSQL(createCustomerAccounts);
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "kiosk01"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
@@ -345,10 +362,19 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String NAME = "NAME";
     }
 
-    public static class SalesChannelTable {
+    public static class SalesChannelsTable {
         public static final String TABLE_NAME = "SALES_CHANNELS";
         public static final String ID = "ID";
         public static final String NAME = "NAME";
         public static final String DESCRIPTION = "DESCRIPTION";
+    }
+
+    public static class CustomerAccountsTable {
+        public static final String TABLE_NAME = "CUSTOMER_ACCOUNTS";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
+        public static final String ADDRESS = "ADDRESS";
+        public static final String PHONE_NUMBER = "PHONE_NUMBER";
+        public static final String KIOSK_ID = "KIOSK_ID";
     }
 }

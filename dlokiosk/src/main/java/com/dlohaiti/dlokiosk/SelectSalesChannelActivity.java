@@ -37,10 +37,11 @@ public class SelectSalesChannelActivity extends RoboActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_select_sales_channel);
+
         SortedSet<SalesChannel> salesChannels = salesChannelRepository.findAll();
         listItems = salesChannels.toArray(new SalesChannel[salesChannels.size()]);
 
-        setContentView(R.layout.activity_select_sales_channel);
         adapter = new SelectableArrayAdapter(getApplicationContext(), listItems);
         salesChannelsView.setAdapter(adapter);
         salesChannelsView.setOnItemClickListener(this);

@@ -1,6 +1,11 @@
 package com.dlohaiti.dlokiosk.domain;
 
-public class CustomerAccount {
+import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
+
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.upperCase;
+
+public class CustomerAccount extends SelectableListItem implements Comparable<CustomerAccount> {
     private long id;
     private String name;
     private String address;
@@ -8,11 +13,37 @@ public class CustomerAccount {
     private long kiosk_id;
 
     public CustomerAccount(long id, String name, String address, String phoneNumber, long kiosk_id) {
+        super(id, name);
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
+    }
+
+    public long id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String address() {
+        return address;
+    }
+
+    public String phoneNumber() {
+        return phoneNumber;
+    }
+
+    public long kioskId() {
+        return kiosk_id;
+    }
+
+    @Override
+    public int compareTo(CustomerAccount another) {
+        return upperCase(defaultString(name)).compareTo(upperCase(defaultString(another.name)));
     }
 
     @Override

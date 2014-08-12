@@ -6,25 +6,22 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.widgets.SelectableArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
+import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
+import java.util.SortedSet;
+
 public class SelectCustomerActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
-    private final SelectableListItem[] salesChannels = {
-            new SelectableListItem(1L, "Customer 1"),
-            new SelectableListItem(1L, "Customer 2"),
-            new SelectableListItem(1L, "Customer 3"),
-            new SelectableListItem(1L, "Customer 4"),
-            new SelectableListItem(1L, "Customer 5"),
-            new SelectableListItem(1L, "Customer 6"),
-            new SelectableListItem(1L, "Customer 7"),
-            new SelectableListItem(1L, "Customer 8"),
-            new SelectableListItem(1L, "Customer 9"),
-            new SelectableListItem(1L, "Customer 10")
-    };
+    private SelectableListItem[] listItems;
+
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
 
     @InjectView(R.id.customer_list)
     private ListView salesChannelsView;
@@ -46,7 +43,11 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_select_customer_channel);
-        adapter = new SelectableArrayAdapter(getApplicationContext(), salesChannels);
+
+        SortedSet<CustomerAccount> accounts = customerAccountRepository.findAll();
+        listItems = accounts.toArray(new CustomerAccount[accounts.size()]);
+
+        adapter = new SelectableArrayAdapter(getApplicationContext(), listItems);
         salesChannelsView.setAdapter(adapter);
         salesChannelsView.setOnItemClickListener(this);
         continueButton.setEnabled(false);
@@ -57,7 +58,7 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View listItemView, int position, long id) {
-        SelectableListItem clickedSalesChannel = salesChannels[position];
+        SelectableListItem clickedSalesChannel = listItems[position];
         if (clickedSalesChannel.isSelected()) {
             clickedSalesChannel.unSelect();
             selectedItem = null;

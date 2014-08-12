@@ -4,18 +4,25 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import com.dlohaiti.dlokiosk.domain.DeliveryAgent;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.google.inject.Inject;
 
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static com.dlohaiti.dlokiosk.db.KioskDatabase.DeliveryAgentsTable.TABLE_NAME;
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
+
 
 public class CustomerAccountRepository {
     private final static String TAG = CustomerAccountRepository.class.getSimpleName();
-    private final static String[] COLUMNS = new String[]{KioskDatabase.DeliveryAgentsTable.NAME};
+    private final static String[] COLUMNS = new String[]{
+            KioskDatabase.CustomerAccountsTable.ID,
+            KioskDatabase.CustomerAccountsTable.NAME,
+            KioskDatabase.CustomerAccountsTable.ADDRESS,
+            KioskDatabase.CustomerAccountsTable.PHONE_NUMBER,
+            KioskDatabase.CustomerAccountsTable.KIOSK_ID,
+    };
     private final KioskDatabase db;
 
     @Inject
@@ -23,14 +30,18 @@ public class CustomerAccountRepository {
         this.db = db;
     }
 
-    public boolean replaceAll(List<DeliveryAgent> agents) {
+    public boolean replaceAll(List<CustomerAccount> accounts) {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
             wdb.delete(TABLE_NAME, null, null);
-            for (DeliveryAgent agent : agents) {
+            for (CustomerAccount account : accounts) {
                 ContentValues values = new ContentValues();
-                values.put(KioskDatabase.DeliveryAgentsTable.NAME, agent.getName());
+                values.put(KioskDatabase.CustomerAccountsTable.NAME, account.name());
+                values.put(KioskDatabase.CustomerAccountsTable.ADDRESS, account.address());
+                values.put(KioskDatabase.CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
+                values.put(KioskDatabase.CustomerAccountsTable.KIOSK_ID, account.kioskId());
+
                 wdb.insert(TABLE_NAME, null, values);
             }
             wdb.setTransactionSuccessful();
@@ -42,15 +53,20 @@ public class CustomerAccountRepository {
         }
     }
 
-    public SortedSet<DeliveryAgent> findAll() {
-        SortedSet<DeliveryAgent> agents = new TreeSet<DeliveryAgent>();
+    public SortedSet<CustomerAccount> findAll() {
+        SortedSet<CustomerAccount> agents = new TreeSet<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                agents.add(new DeliveryAgent(cursor.getString(0)));
+                agents.add(new CustomerAccount(cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getLong(4)
+                ));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();

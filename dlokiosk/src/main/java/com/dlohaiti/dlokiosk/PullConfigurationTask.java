@@ -112,7 +112,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 promotionRepository.replaceAll(promotions) &&
                 samplingSiteParametersRepository.replaceAll(samplingSiteParameters) &&
                 deliveryAgentRepository.replaceAll(agents) &&
-                salesChannelRepository.replaceAll(salesChannels);
+                salesChannelRepository.replaceAll(salesChannels) &&
+                customerAccountRepository.replaceAll(customerAccounts);
     }
 
     @Override

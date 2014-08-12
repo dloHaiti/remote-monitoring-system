@@ -193,12 +193,25 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 MeasurementsTable.VALUE
         );
 
+        String createSalesChannels = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                        ")",
+                SalesChannelTable.TABLE_NAME,
+                SalesChannelTable.ID,
+                SalesChannelTable.NAME,
+                SalesChannelTable.DESCRIPTION
+        );
+
         String insertConfig = String.format(
                 "INSERT INTO %s(%s, %s) VALUES (?, ?)",
                 ConfigurationTable.TABLE_NAME,
                 ConfigurationTable.KEY,
                 ConfigurationTable.VALUE
         );
+
 
         db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
@@ -212,6 +225,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
         db.execSQL(createPromotions);
+        db.execSQL(createSalesChannels);
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "kiosk01"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
@@ -329,5 +343,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "DELIVERY_AGENTS";
         public static final String ID = "ID";
         public static final String NAME = "NAME";
+    }
+
+    public static class SalesChannelTable {
+        public static final String TABLE_NAME = "SALES_CHANNELS";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
+        public static final String DESCRIPTION = "DESCRIPTION";
     }
 }

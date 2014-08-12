@@ -7,6 +7,8 @@ public class Configuration {
     private List<PromotionJson> promotions;
     private List<ParameterJson> parameters;
     private DeliveryJson delivery;
+    private List<SalesChannelJson> salesChannels;
+    private List<CustomerAccountJson> customerAccounts;
 
     public List<ProductJson> getProducts() {
         return products;
@@ -38,5 +40,21 @@ public class Configuration {
 
     public void setDelivery(DeliveryJson delivery) {
         this.delivery = delivery;
+    }
+
+    public List<SalesChannelJson> getSalesChannels() {
+        return salesChannels;
+    }
+
+    public void setSalesChannels(List<SalesChannelJson> salesChannels) {
+        this.salesChannels = salesChannels;
+    }
+
+    public List<CustomerAccountJson> getCustomerAccounts() {
+        return customerAccounts;
+    }
+
+    public void setCustomerAccounts(List<CustomerAccountJson> customerAccounts) {
+        this.customerAccounts = customerAccounts;
     }
 }

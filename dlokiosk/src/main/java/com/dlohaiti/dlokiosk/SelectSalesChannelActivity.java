@@ -6,26 +6,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.widgets.SelectableArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
+import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+
+import java.util.SortedSet;
 
 public class SelectSalesChannelActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
     public static final String SALES_CHANNEL_PARAM = "SALES_CHANNEL";
-    private final SelectableListItem[] salesChannels = {
-            new SelectableListItem("Sales Channel 1"),
-            new SelectableListItem("Sales Channel 2"),
-            new SelectableListItem("Sales Channel 3"),
-            new SelectableListItem("Sales Channel 4"),
-            new SelectableListItem("Sales Channel 5"),
-            new SelectableListItem("Sales Channel 6"),
-            new SelectableListItem("Sales Channel 7"),
-            new SelectableListItem("Sales Channel 8"),
-            new SelectableListItem("Sales Channel 9"),
-            new SelectableListItem("Sales Channel 10")
-    };
+    private SelectableListItem[] listItems;
+
+    @Inject
+    private SalesChannelRepository salesChannelRepository;
 
     @InjectView(R.id.sales_channel_list)
     private ListView salesChannelsView;
@@ -39,8 +36,12 @@ public class SelectSalesChannelActivity extends RoboActivity implements AdapterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SortedSet<SalesChannel> salesChannels = salesChannelRepository.findAll();
+        listItems = salesChannels.toArray(new SalesChannel[salesChannels.size()]);
+
         setContentView(R.layout.activity_select_sales_channel);
-        adapter = new SelectableArrayAdapter(getApplicationContext(), salesChannels);
+        adapter = new SelectableArrayAdapter(getApplicationContext(), listItems);
         salesChannelsView.setAdapter(adapter);
         salesChannelsView.setOnItemClickListener(this);
         continueButton.setEnabled(false);
@@ -48,7 +49,7 @@ public class SelectSalesChannelActivity extends RoboActivity implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View listItemView, int position, long id) {
-        SelectableListItem clickedSalesChannel = salesChannels[position];
+        SelectableListItem clickedSalesChannel = listItems[position];
         if (clickedSalesChannel.isSelected()) {
             clickedSalesChannel.unSelect();
             selectedItem = null;

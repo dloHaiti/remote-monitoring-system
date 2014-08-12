@@ -1,10 +1,12 @@
 package com.dlohaiti.dlokiosk.widgets;
 
 public class SelectableListItem {
+    private long id;
     private String name;
     private boolean selected;
 
-    public SelectableListItem(String name) {
+    public SelectableListItem(long id, String name) {
+        this.id = id;
         this.name = name;
     }
 

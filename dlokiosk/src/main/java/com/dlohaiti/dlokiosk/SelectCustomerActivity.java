@@ -14,16 +14,16 @@ import roboguice.inject.InjectView;
 public class SelectCustomerActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
     private final SelectableListItem[] salesChannels = {
-            new SelectableListItem("Customer 1"),
-            new SelectableListItem("Customer 2"),
-            new SelectableListItem("Customer 3"),
-            new SelectableListItem("Customer 4"),
-            new SelectableListItem("Customer 5"),
-            new SelectableListItem("Customer 6"),
-            new SelectableListItem("Customer 7"),
-            new SelectableListItem("Customer 8"),
-            new SelectableListItem("Customer 9"),
-            new SelectableListItem("Customer 10")
+            new SelectableListItem(1L, "Customer 1"),
+            new SelectableListItem(1L, "Customer 2"),
+            new SelectableListItem(1L, "Customer 3"),
+            new SelectableListItem(1L, "Customer 4"),
+            new SelectableListItem(1L, "Customer 5"),
+            new SelectableListItem(1L, "Customer 6"),
+            new SelectableListItem(1L, "Customer 7"),
+            new SelectableListItem(1L, "Customer 8"),
+            new SelectableListItem(1L, "Customer 9"),
+            new SelectableListItem(1L, "Customer 10")
     };
 
     @InjectView(R.id.customer_list)

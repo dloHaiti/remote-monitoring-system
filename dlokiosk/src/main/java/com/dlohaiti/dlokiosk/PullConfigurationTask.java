@@ -30,6 +30,10 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject
     private DeliveryAgentRepository deliveryAgentRepository;
     @Inject
+    private SalesChannelRepository salesChannelRepository;
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
+    @Inject
     private ConfigurationRepository configurationRepository;
     @Inject
     private KioskDate kioskDate;
@@ -87,6 +91,16 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (DeliveryAgentJson agent : c.getDelivery().getAgents()) {
             agents.add(new DeliveryAgent(agent.getName()));
         }
+        List<SalesChannel> salesChannels = new ArrayList<SalesChannel>();
+        for (SalesChannelJson channel : c.getSalesChannels()) {
+            salesChannels.add(new SalesChannel(channel.getId(), channel.getName(), channel.getDescription()));
+        }
+        List<CustomerAccount> customerAccounts = new ArrayList<CustomerAccount>();
+        for (CustomerAccountJson account : c.getCustomerAccounts()) {
+            customerAccounts.add(
+                    new CustomerAccount(account.getId(), account.getName(),
+                            account.getAddress(), account.getPhoneNumber(), account.getKiosk_id()));
+        }
 
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
 
@@ -97,7 +111,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&
                 samplingSiteParametersRepository.replaceAll(samplingSiteParameters) &&
-                deliveryAgentRepository.replaceAll(agents);
+                deliveryAgentRepository.replaceAll(agents) &&
+                salesChannelRepository.replaceAll(salesChannels);
     }
 
     @Override

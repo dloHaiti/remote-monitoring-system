@@ -4,6 +4,7 @@ import com.dlohaiti.dloserver.*
 import grails.converters.JSON
 
 class ConfigurationController {
+    def configurationService
 
   def index() {
 
@@ -29,6 +30,10 @@ class ConfigurationController {
             customerAccounts: accounts,
             productMrps: productMrps,
             delivery: [
+              unitOfMeasure: configurationService.getUnitOfMeasure(),
+              currency: configurationService.getCurrencyCode(),
+              locale: configurationService.getLocale(),
+              dateformat: configurationService.getDateFormat(),
               configuration: DeliveryConfiguration.first(), //there should only be one, always grab the first one
               agents: deliveryAgents
             ]

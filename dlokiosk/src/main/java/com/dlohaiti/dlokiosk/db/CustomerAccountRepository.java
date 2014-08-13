@@ -11,23 +11,26 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountSalesChannelMapTable;
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
-
 
 public class CustomerAccountRepository {
     private final static String TAG = CustomerAccountRepository.class.getSimpleName();
     private final static String[] COLUMNS = new String[]{
-            KioskDatabase.CustomerAccountsTable.ID,
-            KioskDatabase.CustomerAccountsTable.NAME,
-            KioskDatabase.CustomerAccountsTable.ADDRESS,
-            KioskDatabase.CustomerAccountsTable.PHONE_NUMBER,
-            KioskDatabase.CustomerAccountsTable.KIOSK_ID,
+            CustomerAccountsTable.ID,
+            CustomerAccountsTable.NAME,
+            CustomerAccountsTable.ADDRESS,
+            CustomerAccountsTable.PHONE_NUMBER,
+            CustomerAccountsTable.KIOSK_ID,
     };
     private final KioskDatabase db;
+    private SalesChannelRepository salesChannelRepository;
 
     @Inject
-    public CustomerAccountRepository(KioskDatabase db) {
+    public CustomerAccountRepository(KioskDatabase db, SalesChannelRepository salesChannelRepository) {
         this.db = db;
+        this.salesChannelRepository = salesChannelRepository;
     }
 
     public boolean replaceAll(List<CustomerAccount> accounts) {
@@ -37,36 +40,52 @@ public class CustomerAccountRepository {
             wdb.delete(TABLE_NAME, null, null);
             for (CustomerAccount account : accounts) {
                 ContentValues values = new ContentValues();
-                values.put(KioskDatabase.CustomerAccountsTable.NAME, account.name());
-                values.put(KioskDatabase.CustomerAccountsTable.ADDRESS, account.address());
-                values.put(KioskDatabase.CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
-                values.put(KioskDatabase.CustomerAccountsTable.KIOSK_ID, account.kioskId());
+                values.put(CustomerAccountsTable.NAME, account.name());
+                values.put(CustomerAccountsTable.ADDRESS, account.address());
+                values.put(CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
+                values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
 
                 wdb.insert(TABLE_NAME, null, values);
             }
+            replaceAllSalesChannelCustomerAccountMap(wdb, accounts);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
+            Log.e(TAG, "Error when replacing all Customer Accounts. Exception: " + e);
             return false;
         } finally {
             wdb.endTransaction();
         }
     }
 
+    private void replaceAllSalesChannelCustomerAccountMap(SQLiteDatabase wdb, List<CustomerAccount> accounts) {
+        wdb.delete(CustomerAccountSalesChannelMapTable.TABLE_NAME, null, null);
+        for (CustomerAccount account : accounts) {
+            for (long channelId : account.channelIds()) {
+                ContentValues values = new ContentValues();
+                values.put(CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID, account.id());
+                values.put(CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID, channelId);
+
+                wdb.insert(CustomerAccountSalesChannelMapTable.TABLE_NAME, null, values);
+            }
+        }
+    }
+
     public SortedSet<CustomerAccount> findAll() {
-        SortedSet<CustomerAccount> agents = new TreeSet<CustomerAccount>();
+        SortedSet<CustomerAccount> accounts = new TreeSet<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                agents.add(new CustomerAccount(cursor.getLong(0),
+                CustomerAccount account = new CustomerAccount(cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getLong(4)
-                ));
+                        cursor.getLong(4));
+                accounts.add(account);
+                account.withChannels(salesChannelRepository.findByCustomerId(account.id()));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();
@@ -76,6 +95,6 @@ public class CustomerAccountRepository {
             cursor.close();
             rdb.endTransaction();
         }
-        return agents;
+        return accounts;
     }
 }

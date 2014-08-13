@@ -14,12 +14,13 @@ import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-import java.util.SortedSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectSalesChannelActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
     public static final String SALES_CHANNEL_PARAM = "SALES_CHANNEL";
-    private SelectableListItem[] listItems;
+    private List<SalesChannel> listItems;
 
     @Inject
     private SalesChannelRepository salesChannelRepository;
@@ -38,19 +39,28 @@ public class SelectSalesChannelActivity extends RoboActivity implements AdapterV
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_select_sales_channel);
+        loadSalesChannels();
+        initialiseSalesChannelList();
+        initialiseButtons();
+    }
 
-        SortedSet<SalesChannel> salesChannels = salesChannelRepository.findAll();
-        listItems = salesChannels.toArray(new SalesChannel[salesChannels.size()]);
+    private void initialiseButtons() {
+        continueButton.setEnabled(false);
+    }
 
+    private void initialiseSalesChannelList() {
         adapter = new SelectableArrayAdapter(getApplicationContext(), listItems);
         salesChannelsView.setAdapter(adapter);
         salesChannelsView.setOnItemClickListener(this);
-        continueButton.setEnabled(false);
+    }
+
+    private void loadSalesChannels() {
+        listItems = new ArrayList<SalesChannel>(salesChannelRepository.findAll());
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View listItemView, int position, long id) {
-        SelectableListItem clickedSalesChannel = listItems[position];
+        SelectableListItem clickedSalesChannel = listItems.get(position);
         if (clickedSalesChannel.isSelected()) {
             clickedSalesChannel.unSelect();
             selectedItem = null;

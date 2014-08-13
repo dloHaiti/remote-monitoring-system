@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.widgets.SelectableArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
@@ -14,17 +15,22 @@ import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-import java.util.SortedSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectCustomerActivity extends RoboActivity implements AdapterView.OnItemClickListener {
 
-    private SelectableListItem[] listItems;
+    private List<CustomerAccount> allAccounts;
+    private List<CustomerAccount> listItems = new ArrayList<CustomerAccount>();
+    private List<CustomerAccount> salesChannelAccounts;
 
     @Inject
     private CustomerAccountRepository customerAccountRepository;
+    @Inject
+    private SalesChannelRepository salesChannelRepository;
 
     @InjectView(R.id.customer_list)
-    private ListView salesChannelsView;
+    private ListView customerAccountsView;
 
     @InjectView(R.id.continue_button)
     private Button continueButton;
@@ -37,28 +43,47 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
 
     private SelectableArrayAdapter adapter;
     private SelectableListItem selectedItem;
+    private String selectedSalesChannel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_select_customer_channel);
+        loadIntentParams();
+        loadCustomerAccounts();
+        initialiseCustomerList();
+        initialiseButtons();
+    }
 
-        SortedSet<CustomerAccount> accounts = customerAccountRepository.findAll();
-        listItems = accounts.toArray(new CustomerAccount[accounts.size()]);
+    private void loadIntentParams() {
+        selectedSalesChannel = (String) getIntent().getExtras().get(SelectSalesChannelActivity.SALES_CHANNEL_PARAM);
+    }
 
+    private void loadCustomerAccounts() {
+        allAccounts = new ArrayList<CustomerAccount>(customerAccountRepository.findAll());
+        salesChannelAccounts = new ArrayList<CustomerAccount>();
+        for (CustomerAccount account : allAccounts) {
+            if (account.canBeServedByChannel(selectedSalesChannel)) {
+                salesChannelAccounts.add(account);
+            }
+        }
+    }
+
+    private void initialiseCustomerList() {
         adapter = new SelectableArrayAdapter(getApplicationContext(), listItems);
-        salesChannelsView.setAdapter(adapter);
-        salesChannelsView.setOnItemClickListener(this);
+        customerAccountsView.setAdapter(adapter);
+        customerAccountsView.setOnItemClickListener(this);
+    }
+
+    private void initialiseButtons() {
         continueButton.setEnabled(false);
         onAllCustomersButtonClick();
-        customersForSelectedSalesChannelButton.
-                setText((String) getIntent().getExtras().get(SelectSalesChannelActivity.SALES_CHANNEL_PARAM));
+        customersForSelectedSalesChannelButton.setText(selectedSalesChannel);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View listItemView, int position, long id) {
-        SelectableListItem clickedSalesChannel = listItems[position];
+        SelectableListItem clickedSalesChannel = allAccounts.get(position);
         if (clickedSalesChannel.isSelected()) {
             clickedSalesChannel.unSelect();
             selectedItem = null;
@@ -90,12 +115,16 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
     private void onAllCustomersButtonClick() {
         allCustomersButton.setSelected(true);
         customersForSelectedSalesChannelButton.setSelected(false);
-
+        listItems.clear();
+        listItems.addAll(allAccounts);
+        adapter.notifyDataSetChanged();
     }
-
 
     public void onCustomersForSelectedSalesChannelButtonClick(View view) {
         allCustomersButton.setSelected(false);
         customersForSelectedSalesChannelButton.setSelected(true);
+        listItems.clear();
+        listItems.addAll(salesChannelAccounts);
+        adapter.notifyDataSetChanged();
     }
 }

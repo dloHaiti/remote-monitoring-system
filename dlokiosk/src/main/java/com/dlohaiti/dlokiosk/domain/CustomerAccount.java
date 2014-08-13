@@ -2,6 +2,9 @@ package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
@@ -11,6 +14,9 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     private String address;
     private String phoneNumber;
     private long kiosk_id;
+    private List<Long> channelIds;
+
+    private List<SalesChannel> channels;
 
     public CustomerAccount(long id, String name, String address, String phoneNumber, long kiosk_id) {
         super(id, name);
@@ -39,6 +45,24 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
 
     public long kioskId() {
         return kiosk_id;
+    }
+
+    public List<Long> channelIds() {
+        return channelIds;
+    }
+
+    public List<SalesChannel> channels() {
+        return channels;
+    }
+
+    public CustomerAccount withChannelIds(List<Long> channelIds) {
+        this.channelIds = channelIds;
+        return this;
+    }
+
+    public CustomerAccount withChannels(ArrayList<SalesChannel> channels) {
+        this.channels = channels;
+        return this;
     }
 
     @Override
@@ -70,5 +94,14 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (int) (kiosk_id ^ (kiosk_id >>> 32));
         return result;
+    }
+
+    public boolean canBeServedByChannel(String channel) {
+        for (SalesChannel salesChannel : channels) {
+            if (salesChannel.name().equalsIgnoreCase(channel)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

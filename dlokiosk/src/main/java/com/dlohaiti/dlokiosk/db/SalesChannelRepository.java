@@ -6,10 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import static java.lang.String.format;
 
 public class SalesChannelRepository {
     private final static String TAG = SalesChannelRepository.class.getSimpleName();
@@ -49,10 +53,14 @@ public class SalesChannelRepository {
     }
 
     public SortedSet<SalesChannel> findAll() {
-        SortedSet<SalesChannel> channels = new TreeSet<SalesChannel>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(KioskDatabase.SalesChannelsTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+        return readAll(rdb, cursor);
+    }
+
+    private SortedSet<SalesChannel> readAll(SQLiteDatabase rdb, Cursor cursor) {
+        SortedSet<SalesChannel> channels = new TreeSet<SalesChannel>();
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -67,5 +75,26 @@ public class SalesChannelRepository {
             rdb.endTransaction();
         }
         return channels;
+    }
+
+    public ArrayList<SalesChannel> findByCustomerId(long customerId) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.rawQuery(format(
+                        "SELECT %s FROM " +
+                                "%s sc, " +
+                                "%s map " +
+                                "WHERE map.%s = ? and map.%s = sc.%s " +
+                                "ORDER BY sc.%s",
+                        StringUtils.join(COLUMNS, ","),
+                        KioskDatabase.SalesChannelsTable.TABLE_NAME,
+                        KioskDatabase.CustomerAccountSalesChannelMapTable.TABLE_NAME,
+                        KioskDatabase.CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID,
+                        KioskDatabase.CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID,
+                        KioskDatabase.SalesChannelsTable.ID,
+                        KioskDatabase.SalesChannelsTable.NAME),
+                new String[]{String.valueOf(customerId)});
+
+        return new ArrayList<SalesChannel>(readAll(rdb, cursor));
     }
 }

@@ -221,6 +221,16 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 CustomerAccountsTable.KIOSK_ID
         );
 
+        String createCustomerAccountSalesChannelMap = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s INTEGER " +
+                        ")",
+                CustomerAccountSalesChannelMapTable.TABLE_NAME,
+                CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID,
+                CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID
+        );
+
         String insertConfig = String.format(
                 "INSERT INTO %s(%s, %s) VALUES (?, ?)",
                 ConfigurationTable.TABLE_NAME,
@@ -243,6 +253,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createPromotions);
         db.execSQL(createSalesChannels);
         db.execSQL(createCustomerAccounts);
+        db.execSQL(createCustomerAccountSalesChannelMap);
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "kiosk01"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
@@ -376,5 +387,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String ADDRESS = "ADDRESS";
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
         public static final String KIOSK_ID = "KIOSK_ID";
+    }
+
+    public static class CustomerAccountSalesChannelMapTable {
+        public static final String TABLE_NAME = "CUSTOMER_ACCOUNT_SALES_CHANNEL_MAP";
+        public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
+        public static final String SALES_CHANNEL_ID = "SALES_CHANNEL_ID";
     }
 }

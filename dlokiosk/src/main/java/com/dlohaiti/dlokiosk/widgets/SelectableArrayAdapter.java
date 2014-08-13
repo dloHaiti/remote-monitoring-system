@@ -9,11 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 
-public class SelectableArrayAdapter extends ArrayAdapter<SelectableListItem> {
-    private final Context context;
-    private final SelectableListItem[] listItems;
+import java.util.List;
 
-    public SelectableArrayAdapter(Context context, SelectableListItem[] listItems) {
+public class SelectableArrayAdapter<T extends SelectableListItem> extends ArrayAdapter<T> {
+    private final Context context;
+    private final List<T> listItems;
+
+    public SelectableArrayAdapter(Context context, List<T> listItems) {
         super(context, R.layout.layout_selectable_list_item, listItems);
         this.context = context;
         this.listItems = listItems;
@@ -33,8 +35,8 @@ public class SelectableArrayAdapter extends ArrayAdapter<SelectableListItem> {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.listItem.setText(listItems[position].name());
-        if (listItems[position].isSelected()) {
+        holder.listItem.setText(listItems.get(position).name());
+        if (listItems.get(position).isSelected()) {
             holder
                     .listItem
                     .setBackgroundColor(

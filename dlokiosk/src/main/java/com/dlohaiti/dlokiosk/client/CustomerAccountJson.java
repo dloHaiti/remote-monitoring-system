@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerAccountJson {
@@ -8,7 +9,7 @@ public class CustomerAccountJson {
     private String address;
     private String phoneNumber;
     private long kiosk_id;
-    private List<SalesChannelJson> channels;
+    private List<SalesChannelIdJson> channels;
 
     public long getId() {
         return id;
@@ -50,11 +51,19 @@ public class CustomerAccountJson {
         this.kiosk_id = kiosk_id;
     }
 
-    public List<SalesChannelJson> getChannels() {
+    public List<SalesChannelIdJson> getChannels() {
         return channels;
     }
 
-    public void setChannels(List<SalesChannelJson> channels) {
+    public void setChannels(List<SalesChannelIdJson> channels) {
         this.channels = channels;
+    }
+
+    public List<Long> channelIds() {
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (SalesChannelIdJson channel : channels) {
+            ids.add(channel.getId());
+        }
+        return ids;
     }
 }

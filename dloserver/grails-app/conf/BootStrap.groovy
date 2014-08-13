@@ -71,6 +71,15 @@ class BootStrap {
             ]
         }
 
+        JSON.registerObjectMarshaller(Sponsor) { Sponsor s ->
+            return [
+                    id: s.id,
+                    name              : s.name,
+                    contactName: s.contactName,
+                    description: s.description
+            ]
+        }
+
         JSON.registerObjectMarshaller(Product) { Product p ->
             return [
                     id               : p.id,

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountSalesChannelMapTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
@@ -99,9 +98,9 @@ public class CustomerAccountRepositoryTest {
             wdb.insert(CustomerAccountsTable.TABLE_NAME, null, values);
 
             ContentValues mapTableValues = new ContentValues();
-            mapTableValues.put(CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID, account.id());
-            mapTableValues.put(CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID, account.channelIds().get(0));
-            wdb.insert(CustomerAccountSalesChannelMapTable.TABLE_NAME, null, mapTableValues);
+            mapTableValues.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.id());
+            mapTableValues.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID, account.channelIds().get(0));
+            wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, mapTableValues);
         }
     }
 

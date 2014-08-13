@@ -88,9 +88,9 @@ public class SalesChannelRepository {
                                 "ORDER BY sc.%s",
                         StringUtils.join(COLUMNS, ","),
                         KioskDatabase.SalesChannelsTable.TABLE_NAME,
-                        KioskDatabase.CustomerAccountSalesChannelMapTable.TABLE_NAME,
-                        KioskDatabase.CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID,
-                        KioskDatabase.CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID,
+                        KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,
+                        KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
+                        KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,
                         KioskDatabase.SalesChannelsTable.ID,
                         KioskDatabase.SalesChannelsTable.NAME),
                 new String[]{String.valueOf(customerId)});

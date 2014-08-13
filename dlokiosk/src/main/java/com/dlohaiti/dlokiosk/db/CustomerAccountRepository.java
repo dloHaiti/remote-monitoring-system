@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountSalesChannelMapTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
 
@@ -59,14 +58,14 @@ public class CustomerAccountRepository {
     }
 
     private void replaceAllSalesChannelCustomerAccountMap(SQLiteDatabase wdb, List<CustomerAccount> accounts) {
-        wdb.delete(CustomerAccountSalesChannelMapTable.TABLE_NAME, null, null);
+        wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, null);
         for (CustomerAccount account : accounts) {
             for (long channelId : account.channelIds()) {
                 ContentValues values = new ContentValues();
-                values.put(CustomerAccountSalesChannelMapTable.CUSTOMER_ACCOUNT_ID, account.id());
-                values.put(CustomerAccountSalesChannelMapTable.SALES_CHANNEL_ID, channelId);
+                values.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.id());
+                values.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID, channelId);
 
-                wdb.insert(CustomerAccountSalesChannelMapTable.TABLE_NAME, null, values);
+                wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, values);
             }
         }
     }

@@ -16,7 +16,7 @@ class ConfigurationController {
     List<SalesChannel> salesChannels=request.kiosk.getSalesChannels()
     List<CustomerAccount> accounts = CustomerAccount.findAllByKiosk(request.kiosk)
     List<ProductMrp> productMrps = ProductMrp.findAllByKiosk(request.kiosk)
-    List<Sponsor> sponsors = Sponsor.findAllByKiosk(request.kiosk)
+    List<Sponsor> sponsors = request.kiosk.getSponsors()
 
     render(
         status: 200,

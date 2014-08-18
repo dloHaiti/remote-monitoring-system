@@ -24,4 +24,8 @@ class Kiosk {
     List<SalesChannel> getSalesChannels() {
         ProductMrp.findAllByKiosk(this)*.salesChannel
     }
+
+    List<Sponsor> getSponsors(){
+        CustomerAccount.findAllByKiosk(this)*.sponsor
+    }
 }

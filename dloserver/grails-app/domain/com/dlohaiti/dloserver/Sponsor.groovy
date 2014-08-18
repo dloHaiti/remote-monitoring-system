@@ -5,7 +5,7 @@ class Sponsor {
     String contactName
     String description
 
-    static belongsTo =[kiosk: Kiosk]
+    static hasMany =[customerAccounts: CustomerAccount]
 
     static mapping = {
         description type: "text"

@@ -6,10 +6,11 @@ class CustomerAccount {
     String address
     String contactName
 
+    Sponsor sponsor
     CustomerType customerType
     Kiosk kiosk
 
-    static belongsTo = [SalesChannel,CustomerType,Kiosk]
+    static belongsTo = [SalesChannel,CustomerType,Kiosk,Sponsor]
     static hasMany = [channels: SalesChannel]
 
     static mapping = {
@@ -22,6 +23,7 @@ class CustomerAccount {
 
     static constraints = {
         name(nullable: true,unique: ['kiosk'])
+        sponsor(nullable: true)
         contactName(validator: {
             val, obj,errors ->
                 if(obj.name == null && val == null) return errors.rejectValue('contactName', 'can not be null')

@@ -26,6 +26,6 @@ class Kiosk {
     }
 
     List<Sponsor> getSponsors(){
-        CustomerAccount.findAllByKiosk(this)*.sponsor
+        CustomerAccount.findAllByKiosk(this)*.sponsors.unique()
     }
 }

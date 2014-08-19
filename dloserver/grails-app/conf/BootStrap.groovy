@@ -58,7 +58,9 @@ class BootStrap {
                     address    : a.address,
                     phoneNumber: a.phoneNumber,
                     kiosk_id   : a.kiosk.id,
-                    sponsor_id : a.sponsor?.id,
+                    sponsors   : a.sponsors.collect{
+                        Sponsor s -> [id: s.id]
+                    },
                     channels   : a.channels.collect{
                         SalesChannel channel -> [id: channel.id]
                     }
@@ -139,14 +141,16 @@ class BootStrap {
                 new SalesChannel(name: 'Door delivery', description: 'door delivery', discountType: "AMOUNT", discountAmount: 12).save(failOnError: true)
             }
 
-            if (Sponsor.count() == 0) {
-                new Sponsor(name: "sponsor1", contactName: 'contact1').save(failOnError: true)
 
-            }
 
             if (CustomerAccount.count() == 0) {
                 CustomerType type = (new CustomerType(name: "School")).save(failOnError: true)
-                new CustomerAccount(name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first(),sponsor:Sponsor.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
+                new CustomerAccount(name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
+
+            }
+
+            if (Sponsor.count() == 0) {
+                new Sponsor(name: "sponsor1", contactName: 'contact1').addToAccounts(CustomerAccount.first()).save(failOnError: true)
 
             }
             if (DeliveryAgent.count() == 0) {

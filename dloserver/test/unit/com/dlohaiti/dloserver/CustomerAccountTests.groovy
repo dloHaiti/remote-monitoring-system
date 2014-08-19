@@ -63,12 +63,4 @@ class CustomerAccountTests {
         CustomerAccount account = (new CustomerAccount(name: "Customer2",contactName: 'contact1',kiosk: k1))
         assert "k1" == account.kiosk.name
     }
-
-    void testSponsorAssociation(){
-        mockForConstraintsTests(CustomerAccount)
-        Sponsor s = new Sponsor(name:"sponsor1",contactName:"contact1")
-
-        CustomerAccount account = new CustomerAccount(name: "Customer2",contactName: 'contact1',sponsor: s)
-        assert "sponsor1" == account.sponsor.name
-    }
 }

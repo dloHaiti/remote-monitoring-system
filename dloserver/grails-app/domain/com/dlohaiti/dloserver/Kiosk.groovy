@@ -22,7 +22,7 @@ class Kiosk {
     }
 
     List<SalesChannel> getSalesChannels() {
-        ProductMrp.findAllByKiosk(this)*.salesChannel
+        ProductMrp.findAllByKiosk(this)*.salesChannel.unique()
     }
 
     List<Sponsor> getSponsors(){

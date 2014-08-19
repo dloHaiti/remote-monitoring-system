@@ -19,6 +19,7 @@ public class CustomerAccountRepository {
     private final static String[] COLUMNS = new String[]{
             CustomerAccountsTable.ID,
             CustomerAccountsTable.NAME,
+            CustomerAccountsTable.CONTACT_NAME,
             CustomerAccountsTable.ADDRESS,
             CustomerAccountsTable.PHONE_NUMBER,
             CustomerAccountsTable.KIOSK_ID,
@@ -40,6 +41,7 @@ public class CustomerAccountRepository {
             for (CustomerAccount account : accounts) {
                 ContentValues values = new ContentValues();
                 values.put(CustomerAccountsTable.NAME, account.name());
+                values.put(CustomerAccountsTable.CONTACT_NAME, account.contactName());
                 values.put(CustomerAccountsTable.ADDRESS, account.address());
                 values.put(CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
@@ -80,9 +82,9 @@ public class CustomerAccountRepository {
             while (!cursor.isAfterLast()) {
                 CustomerAccount account = new CustomerAccount(cursor.getLong(0),
                         cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getLong(4));
+                        cursor.getString(2), cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getLong(5));
                 accounts.add(account);
                 account.withChannels(salesChannelRepository.findByCustomerId(account.id()));
                 cursor.moveToNext();

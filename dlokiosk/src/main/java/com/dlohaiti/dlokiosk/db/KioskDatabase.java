@@ -211,11 +211,13 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s INTEGER" +
                         ")",
                 CustomerAccountsTable.TABLE_NAME,
                 CustomerAccountsTable.ID,
                 CustomerAccountsTable.NAME,
+                CustomerAccountsTable.CONTACT_NAME,
                 CustomerAccountsTable.ADDRESS,
                 CustomerAccountsTable.PHONE_NUMBER,
                 CustomerAccountsTable.KIOSK_ID
@@ -384,6 +386,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "CUSTOMER_ACCOUNTS";
         public static final String ID = "ID";
         public static final String NAME = "NAME";
+        public static final String CONTACT_NAME = "CONTACT_NAME";
         public static final String ADDRESS = "ADDRESS";
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
         public static final String KIOSK_ID = "KIOSK_ID";

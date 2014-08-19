@@ -99,8 +99,9 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (CustomerAccountJson account : c.getCustomerAccounts()) {
             customerAccounts.add(
                     new CustomerAccount(account.getId(), account.getName(),
-                            account.getAddress(), account.getPhoneNumber(),
-                            account.getKiosk_id()).withChannelIds(account.channelIds()));
+                            account.getContactName(), account.getAddress(), account.getPhoneNumber(),
+                            account.getKiosk_id())
+                            .withChannelIds(account.channelIds()));
         }
 
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();

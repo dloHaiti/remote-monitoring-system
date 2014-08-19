@@ -10,6 +10,7 @@ public class CustomerAccountJson {
     private String phoneNumber;
     private long kiosk_id;
     private List<SalesChannelIdJson> channels;
+    private String contactName;
 
     public long getId() {
         return id;
@@ -65,5 +66,13 @@ public class CustomerAccountJson {
             ids.add(channel.getId());
         }
         return ids;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }

@@ -8,6 +8,7 @@ class Kiosk {
     String name
     String apiKey
 
+    static belongsTo = [region:Region]
     static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount,productMrps: ProductMrp]
 
     static constraints = {
@@ -27,5 +28,9 @@ class Kiosk {
 
     List<Sponsor> getSponsors(){
         CustomerAccount.findAllByKiosk(this)*.sponsors.unique()
+    }
+
+    List<Promotion> getPromotions(){
+        this.region.promotions.toArray()
     }
 }

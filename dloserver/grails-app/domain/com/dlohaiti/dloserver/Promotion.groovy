@@ -10,7 +10,11 @@ class Promotion {
   String sku
   String base64EncodedImage
 
-  static mapping = {
+  static hasMany = [regions: Region]
+  static belongsTo = Region
+
+
+    static mapping = {
     base64EncodedImage type: "text"
   }
 

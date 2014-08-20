@@ -10,7 +10,7 @@ class ConfigurationController {
 
     List<Product> products = Product.findAllByActive(true)
     List<Parameter> parameters = Parameter.findAllByActiveAndManual(true, true)
-    List<Promotion> promotions = Promotion.all
+    List<Promotion> promotions = request.kiosk.getPromotions()
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
     List<ProductCategory> productCategories=ProductCategory.all
     List<SalesChannel> salesChannels=request.kiosk.getSalesChannels()

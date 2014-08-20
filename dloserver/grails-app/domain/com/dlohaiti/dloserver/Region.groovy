@@ -5,6 +5,7 @@ class Region {
     String description
 
     static belongsTo = [country: Country]
+    static hasMany = [promotions: Promotion,kiosk: Kiosk]
 
     static constraints = {
         name(blank: false, unique: true)

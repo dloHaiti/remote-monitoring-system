@@ -74,7 +74,7 @@ public class MainActivity extends RoboActivity implements StatusView {
     }
 
     public void moveToSelectSalesChannelScreen(View view) {
-        startActivity(new Intent(this, SelectSalesChannelActivity.class));
+        startActivity(new Intent(this, SelectSalesChannelAndCustomerActivity.class));
     }
 
     public void doManualSync(View view) {

@@ -3,4 +3,11 @@
     <color name="list_header_text_color">#494949</color>
     <color name="list_header_background_color">#e6e6e6</color>
     <color name="released_button_color">#cdcdcd</color>
+    <color name="activity_background">@android:color/white</color>
+    <color name="blue_background">#a1c2f7</color>
+    <color name="list_divider_gray">#dddee0</color>
+    <color name="list_divider_blue">#56a9f6</color>
+    <color name="search_box_border_color">#b3b3b3</color>
+    <color name="search_box_text_color">#8fb2f7</color>
+    <color name="toggle_button_color">#5a5a5a</color>
 </resources>

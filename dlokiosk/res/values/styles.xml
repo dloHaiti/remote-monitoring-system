@@ -90,7 +90,7 @@
 
     <style name="list_item">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">?android:attr/listPreferredItemHeightSmall</item>
+        <item name="android:layout_height">44sp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">8dip</item>
@@ -104,5 +104,26 @@
         <item name="android:textColor">@color/list_header_text_color</item>
         <item name="android:background">@color/list_header_background_color</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:layout_width">280sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">55sp</item>
+        <item name="android:textColor">@color/search_box_text_color</item>
+        <item name="android:padding">13dp</item>
+    </style>
+
+    <style name="toggle_button_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">20sp</item>
+        <item name="android:background">@color/toggle_button_color</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColor">@android:color/white</item>
+
     </style>
 </resources>

@@ -34,4 +34,8 @@ class Kiosk {
         def promotions = this.region.promotions
         return (promotions != null ) ? promotions.toArray() : []
     }
+    List<Rebate> getRebates(){
+        def rebates = this.region.rebates
+        return (rebates != null ) ? rebates.toArray() : []
+    }
 }

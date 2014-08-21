@@ -17,6 +17,7 @@ class ConfigurationController {
     List<CustomerAccount> accounts = CustomerAccount.findAllByKiosk(request.kiosk)
     List<ProductMrp> productMrps = ProductMrp.findAllByKiosk(request.kiosk)
     List<Sponsor> sponsors = request.kiosk.getSponsors()
+    List<Rebate> rebates = request.kiosk.getRebates()
 
     render(
         status: 200,
@@ -31,6 +32,7 @@ class ConfigurationController {
             customerAccounts: accounts,
             productMrps: productMrps,
             sponsors: sponsors,
+            rebates: rebates,
             delivery: [
               unitOfMeasure: configurationService.getUnitOfMeasure(),
               currency: configurationService.getCurrencyCode(),

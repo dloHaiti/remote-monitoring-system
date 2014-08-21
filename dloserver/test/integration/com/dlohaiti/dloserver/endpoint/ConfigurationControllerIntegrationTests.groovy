@@ -1,12 +1,5 @@
 package com.dlohaiti.dloserver.endpoint
-import com.dlohaiti.dloserver.DeliveryAgent
-import com.dlohaiti.dloserver.Kiosk
-import com.dlohaiti.dloserver.Money
-import com.dlohaiti.dloserver.Parameter
-import com.dlohaiti.dloserver.Product
-import com.dlohaiti.dloserver.ProductCategory
-import com.dlohaiti.dloserver.Country
-import com.dlohaiti.dloserver.Region
+import com.dlohaiti.dloserver.*
 import grails.converters.JSON
 import org.junit.Before
 import org.junit.Test
@@ -15,10 +8,9 @@ class ConfigurationControllerIntegrationTests {
 
   def controller = new ConfigurationController()
   def kiosk
-
+def country
+def region
   @Before void setUp() {
-      Country country
-      Region region
       if(Country.count()==0){
           country =new Country(name: "haiti").save(failOnError: true)
       }else{
@@ -37,9 +29,6 @@ class ConfigurationControllerIntegrationTests {
   }
 
   @Test void shouldOnlyReturnActiveDeliveryAgentsForKiosk() {
-      Country country=new Country(name: "haiti2").save(failOnError: true)
-      Region region = new Region(name: "Region3",country: country).save(failOnError: true)
-
       def differentKiosk = new Kiosk(name: 'nonmatch', apiKey: 'pw',region:region).save(failOnError: true)
     def one = new DeliveryAgent(name: 'matching-active-agent1', active: true, kiosk: kiosk).save(failOnError: true)
     def two = new DeliveryAgent(name: 'matching-active-agent2', active: true, kiosk: kiosk).save(failOnError: true)
@@ -79,4 +68,20 @@ class ConfigurationControllerIntegrationTests {
     assert 1 == parameters.size()
     assert [[name: one.name]] == parameters.collect({p -> [name: p.name]})
   }
+    @Test void shouldOnlyReturnRebatesBasedtoKioskRegion(){
+
+        def category = new ProductCategory(name: "Category1",base64EncodedImage: "").save(failOnError: true)
+        def one = new Product(sku: 'ACTIVE-ABC', active: true, description: 'abc', gallons: 1, price: new Money(amount: 10G), base64EncodedImage: 'abc',category: category).save(failOnError: true)
+
+        def differentRegion = new Region(name: "region2",country: country).save(failOnError: true)
+
+       def  rebate = new Rebate(name:"Rebate1", noOfSkus: 100, transactionType: "Monthly", noOfFreeSkus: 10, product: one).addToRegions(region).save(failOnError: true)
+        new Rebate(name:"Rebate2",noOfSkus: 100, transactionType: "Monthly", noOfFreeSkus: 10, product: one).addToRegions(differentRegion).save(failOnError: true)
+
+        controller.index()
+
+        def rebates = JSON.parse(controller.response.contentAsString).rebates
+        assert 1 == rebates.size()
+        assert [[name: rebate.name]] == rebates.collect({r -> [name: r.name]})
+    }
 }

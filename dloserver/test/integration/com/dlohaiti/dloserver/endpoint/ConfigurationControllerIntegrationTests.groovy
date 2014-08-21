@@ -5,6 +5,8 @@ import com.dlohaiti.dloserver.Money
 import com.dlohaiti.dloserver.Parameter
 import com.dlohaiti.dloserver.Product
 import com.dlohaiti.dloserver.ProductCategory
+import com.dlohaiti.dloserver.Country
+import com.dlohaiti.dloserver.Region
 import grails.converters.JSON
 import org.junit.Before
 import org.junit.Test
@@ -15,13 +17,30 @@ class ConfigurationControllerIntegrationTests {
   def kiosk
 
   @Before void setUp() {
-    kiosk = new Kiosk(name: 'testkiosk', apiKey: 'pw').save(failOnError: true)
+      Country country
+      Region region
+      if(Country.count()==0){
+          country =new Country(name: "haiti").save(failOnError: true)
+      }else{
+          country =Country.first()
+      }
+
+      if(Region.count()==0){
+          region=  new Region(name: "Region1",country: country).save(failOnError: true)
+      }else{
+          region=Region.first()
+      }
+
+      kiosk = new Kiosk(name: 'testkiosk', apiKey: 'pw',region:region).save(failOnError: true)
     controller.request.contentType = 'application/json'
     controller.request.kiosk = kiosk
   }
 
   @Test void shouldOnlyReturnActiveDeliveryAgentsForKiosk() {
-    def differentKiosk = new Kiosk(name: 'nonmatch', apiKey: 'pw').save(failOnError: true)
+      Country country=new Country(name: "haiti2").save(failOnError: true)
+      Region region = new Region(name: "Region3",country: country).save(failOnError: true)
+
+      def differentKiosk = new Kiosk(name: 'nonmatch', apiKey: 'pw',region:region).save(failOnError: true)
     def one = new DeliveryAgent(name: 'matching-active-agent1', active: true, kiosk: kiosk).save(failOnError: true)
     def two = new DeliveryAgent(name: 'matching-active-agent2', active: true, kiosk: kiosk).save(failOnError: true)
     new DeliveryAgent(name: 'matching-inactive-agent3', active: false, kiosk: kiosk).save(failOnError: true)

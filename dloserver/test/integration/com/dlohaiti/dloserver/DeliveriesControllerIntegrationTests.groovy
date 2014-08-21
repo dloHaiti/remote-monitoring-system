@@ -11,7 +11,10 @@ class DeliveriesControllerIntegrationTests {
   DeliveryAgent agent
 
   @Before void setUp() {
-    def kiosk = new Kiosk(name: 'k1', apiKey: 'pw').save(failOnError: true)
+      Country country=new Country(name: "haiti").save(failOnError: true)
+      Region region = new Region(name: "Region1",country: country).save(failOnError: true)
+
+      def kiosk = new Kiosk(name: 'k1', apiKey: 'pw',region:region).save(failOnError: true)
     controller = new DeliveriesController()
     controller.request.contentType = 'application/json'
     controller.request.kiosk = kiosk

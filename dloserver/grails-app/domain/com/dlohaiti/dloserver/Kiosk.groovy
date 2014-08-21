@@ -31,6 +31,7 @@ class Kiosk {
     }
 
     List<Promotion> getPromotions(){
-        this.region.promotions.toArray()
+        def promotions = this.region.promotions
+        return (promotions != null ) ? promotions.toArray() : []
     }
 }

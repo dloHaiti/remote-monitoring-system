@@ -18,7 +18,10 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
 
     @Before
     void setupData() {
-        Kiosk kiosk = new Kiosk(name: "k1", apiKey: 'pw').save(failOnError: true)
+        Country country=new Country(name: "haiti").save(failOnError: true)
+        Region region = new Region(name: "Region1",country: country).save(failOnError: true)
+
+        Kiosk kiosk = new Kiosk(name: "k1", apiKey: 'pw',region:region).save(failOnError: true)
         temperature = new Parameter(name: "temptest", isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: true).save(failOnError: true)
         ph = new Parameter(name: "pHtest", minimum: 4, maximum: 9, isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: true).save(failOnError: true)
         samplingSite = new SamplingSite(name: "Borehole").save(failOnError: true)

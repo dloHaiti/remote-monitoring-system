@@ -14,7 +14,10 @@ class ReadingsControllerIntegrationTests {
   def p2
 
   @Before void setUp() {
-    kiosk = new Kiosk(name: 'testkiosk', apiKey: 'pw').save(failOnError: true)
+      Country country=new Country(name: "haiti").save(failOnError: true)
+      Region region = new Region(name: "Region1",country: country).save(failOnError: true)
+
+      kiosk = new Kiosk(name: 'testkiosk', apiKey: 'pw',region:region).save(failOnError: true)
     samplingSite = new SamplingSite(name: 'Borehole - Late Day').save(failOnError: true)
     p1 = new Parameter(name: 'param1', isOkNotOk: false, isUsedInTotalizer: false, manual: true, active: true, samplingSites: [samplingSite]).save(failOnError: true)
     p2 = new Parameter(name: 'param2', isOkNotOk: false, isUsedInTotalizer: false, manual: true, active: true, samplingSites: [samplingSite]).save(failOnError: true)

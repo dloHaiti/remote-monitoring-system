@@ -17,7 +17,9 @@ class SolarFileParserTest {
 
   @Before void setUp() {
     parser = new SolarFileParser()
-    kiosk = new Kiosk(name: "testkiosk01", apiKey: "pw").save(failOnError: true)
+     Country country=new Country(name: "haiti").save(failOnError: true)
+    Region region = new Region(name: "Region1",country: country).save(failOnError: true)
+    kiosk = new Kiosk(name: "testkiosk01", apiKey: "pw",region:region).save(failOnError: true)
     kwh = new Parameter(name: 'kWh', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
     floatTime = new Parameter(name: 'Float Time (h:m)', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)
     highPower = new Parameter(name: 'High Power (kW)', isUsedInTotalizer: false, isOkNotOk: false, active: true, manual: false).save(failOnError: true)

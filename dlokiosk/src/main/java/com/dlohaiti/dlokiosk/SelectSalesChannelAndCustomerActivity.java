@@ -2,13 +2,18 @@ package com.dlohaiti.dlokiosk;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.*;
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.widgets.SelectableArrayAdapter;
+import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-import static java.util.Arrays.asList;
+import java.util.ArrayList;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
@@ -18,23 +23,91 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     @InjectView(R.id.customer_list)
     private ListView customerListView;
 
+    @InjectView(R.id.continue_button)
+    private Button continueButton;
+
     private ArrayAdapter<String> customerListAdapter;
+    private SelectableArrayAdapter salesChannelAdapter;
+
+    @Inject
+    private SalesChannelRepository salesChannelRepository;
+
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
+
+    private ArrayList<SalesChannel> salesChannels;
+    private ArrayList<CustomerAccount> allCustomerAccounts;
+    private ArrayList<CustomerAccount> filteredCustomerAccounts;
+    private SalesChannel selectedSalesChannel;
+    private CustomerAccount selectedCustomerAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_sales_channel_and_customer);
 
-        salesChannelListView
-                .setAdapter(new ArrayAdapter<String>(this.getApplicationContext(),
-                        R.layout.layout_selectable_list_item,
-                        asList("Sales Channel 1", "Sales Channel 2", "Sales Channel 3", "Sales Channel 4")));
-        customerListAdapter = new ArrayAdapter<String>(this.getApplicationContext(),
-                R.layout.layout_selectable_list_item,
-                asList("Customer 1", "Customer 2", "Customer 3", "Customer 4", "Customer 5",
-                        "Customer 6", "Customer 7", "Customer 8", "Customer 9", "Customer 10",
-                        "Customer 11", "Customer 12", "Customer 13", "Customer 14", "Customer 15"));
+        loadSalesChannels();
+        loadCustomerAccounts();
+
+        initialiseSalesChannelList();
+        initialiseCustomerList();
+    }
+
+    private void loadSalesChannels() {
+        salesChannels = new ArrayList<SalesChannel>(salesChannelRepository.findAll());
+    }
+
+    private void loadCustomerAccounts() {
+        allCustomerAccounts = new ArrayList<CustomerAccount>(customerAccountRepository.findAll());
+        filteredCustomerAccounts = allCustomerAccounts;
+    }
+
+    private void initialiseSalesChannelList() {
+        salesChannelAdapter = new SelectableArrayAdapter(getApplicationContext(), salesChannels);
+        salesChannelListView.setAdapter(salesChannelAdapter);
+        salesChannelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                SalesChannel tappedSalesChannel = salesChannels.get(position);
+                if (tappedSalesChannel.isSelected()) {
+                    tappedSalesChannel.unSelect();
+                    selectedSalesChannel = null;
+                    continueButton.setEnabled(false);
+                } else {
+                    tappedSalesChannel.select();
+                    if (selectedSalesChannel != null) {
+                        selectedSalesChannel.unSelect();
+                    }
+                    selectedSalesChannel = tappedSalesChannel;
+                    continueButton.setEnabled(true);
+                }
+                salesChannelAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initialiseCustomerList() {
+        customerListAdapter = new SelectableArrayAdapter(getApplicationContext(), filteredCustomerAccounts);
         customerListView.setAdapter(customerListAdapter);
+        customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                CustomerAccount tappedCustomerAccount = filteredCustomerAccounts.get(position);
+                if (tappedCustomerAccount.isSelected()) {
+                    tappedCustomerAccount.unSelect();
+                    selectedCustomerAccount = null;
+                    continueButton.setEnabled(false);
+                } else {
+                    tappedCustomerAccount.select();
+                    if (selectedCustomerAccount != null) {
+                        selectedCustomerAccount.unSelect();
+                    }
+                    selectedCustomerAccount = tappedCustomerAccount;
+                    continueButton.setEnabled(true);
+                }
+                customerListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

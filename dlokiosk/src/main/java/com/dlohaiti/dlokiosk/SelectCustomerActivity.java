@@ -48,7 +48,8 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_customer_channel);
+        setContentView(R.layout.
+                activity_select_customer_channel);
         loadIntentParams();
         loadCustomerAccounts();
         initialiseCustomerList();

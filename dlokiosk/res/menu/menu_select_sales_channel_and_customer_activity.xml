@@ -9,8 +9,9 @@
             android:actionViewClass="android.widget.SearchView"
             android:title="@string/search_customer_text"/>
     <item
-            android:id="@+id/show_all_customers"
+            android:id="@+id/sales_channel_customer_toggle"
             android:orderInCategory="2"
             android:showAsAction="always"
-            android:title="@string/all_customers_text"/>
+            android:title="@string/all_customers_text"
+            android:onClick="onShowAllCustomersButtonClick"/>
 </menu>

@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
 
 import java.util.List;
 
-public class SelectableArrayAdapter<T extends SelectableListItem> extends ArrayAdapter<T> {
+public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
     private final Context context;
-    private final List<T> listItems;
+    private final List<SalesChannel> listItems;
 
-    public SelectableArrayAdapter(Context context, List<T> listItems) {
+    public SalesChannelArrayAdapter(Context context, List<SalesChannel> listItems) {
         super(context, R.layout.layout_selectable_list_item, listItems);
         this.context = context;
         this.listItems = listItems;

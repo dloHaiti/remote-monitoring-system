@@ -107,7 +107,7 @@ dloserver {
     readings.processed = '/tmp/processed'
     readings.failed    = '/tmp/failed'
 
-    measurement.timeformat = "yyyy-MM-dd hh:mm:ss z"
+    measurement.timeformat = "yyyy-MM-dd hh:mm:ss"
     locale.language="ht"
     locale.country="HT"
 

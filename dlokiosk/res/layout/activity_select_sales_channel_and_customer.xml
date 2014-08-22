@@ -50,15 +50,26 @@
                 android:layout_weight="20"
                 android:layout_height="match_parent"
                 android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_gray"
+                android:divider="@color/list_divider_blue"
                 android:background="@color/blue_background"/>
-        <ListView
-                android:id="@+id/customer_list"
+        <FrameLayout
+                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_weight="80"
-                android:layout_height="match_parent"
-                android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_gray"/>
+                android:layout_height="match_parent">
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:src="@color/list_divider_gray"/>
+
+            <ListView
+                    android:id="@+id/customer_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:dividerHeight="@dimen/list_divider_height"
+                    android:divider="@color/list_divider_gray"/>
+
+        </FrameLayout>
     </LinearLayout>
 
     <RelativeLayout

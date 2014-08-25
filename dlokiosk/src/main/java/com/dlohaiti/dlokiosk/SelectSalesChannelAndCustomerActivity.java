@@ -194,4 +194,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         showAllCustomers = !showAllCustomers;
         customerListAdapter.notifyDataSetChanged();
     }
+
+    public void onBack(View view) {
+        finish();
+    }
 }

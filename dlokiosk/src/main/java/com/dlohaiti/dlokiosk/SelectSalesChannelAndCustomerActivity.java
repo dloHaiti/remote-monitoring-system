@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SearchView;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
@@ -12,10 +15,12 @@ import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.widgets.CustomerAccountArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SalesChannelArrayAdapter;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
@@ -44,6 +49,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     private CustomerAccount selectedCustomerAccount;
     private boolean showAllCustomers = true;
     private MenuItem salesChannelCustomerToggle;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         salesChannelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                clearCustomerSearch();
                 SalesChannel tappedSalesChannel = salesChannels.get(position);
                 if (selectedSalesChannel != null) {
                     selectedSalesChannel.unSelect();
@@ -85,6 +92,11 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
                 updateSalesChannelCustomerToggleButtonStatus();
             }
         });
+    }
+
+    private void clearCustomerSearch() {
+        searchView.setQuery("", true);
+        searchView.setIconified(true);
     }
 
     private void updateSalesChannelCustomerToggleButtonStatus() {
@@ -138,23 +150,30 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         getMenuInflater().inflate(R.menu.menu_select_sales_channel_and_customer_activity, menu);
 
         salesChannelCustomerToggle = menu.findItem(R.id.sales_channel_customer_toggle);
+        searchView = ((SearchView) menu.findItem(R.id.search_customer).getActionView());
 
-        ((SearchView) menu
-                .findItem(R.id.search_customer)
-                .getActionView())
-                .setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String text) {
-                        menu.findItem(R.id.search_customer).getActionView().clearFocus();
-                        return true;
-                    }
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                menu.findItem(R.id.search_customer).getActionView().clearFocus();
+                return true;
+            }
 
-                    @Override
-                    public boolean onQueryTextChange(String text) {
-                        customerListAdapter.getFilter().filter(text);
-                        return true;
+            @Override
+            public boolean onQueryTextChange(String text) {
+                List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
+
+                for (CustomerAccount listItem : filteredCustomerList) {
+                    if (StringUtils.contains(listItem.name().toLowerCase(), text.toLowerCase())) {
+                        newFilteredCustomerList.add(listItem);
                     }
-                });
+                }
+                filteredCustomerList.clear();
+                filteredCustomerList.addAll(newFilteredCustomerList);
+                customerListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -168,6 +187,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             updateCustomerList();
         }
 
+        clearCustomerSearch();
         showAllCustomers = !showAllCustomers;
         customerListAdapter.notifyDataSetChanged();
     }

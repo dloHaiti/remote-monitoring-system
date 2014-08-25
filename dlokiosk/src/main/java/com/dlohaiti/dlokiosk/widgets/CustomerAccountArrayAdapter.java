@@ -14,30 +14,30 @@ import java.util.List;
 
 public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
     private final Context context;
-    private final List<CustomerAccount> listItems;
+    private final List<CustomerAccount> accounts;
 
-    public CustomerAccountArrayAdapter(Context context, List<CustomerAccount> listItems) {
-        super(context, R.layout.layout_selectable_list_item, listItems);
+    public CustomerAccountArrayAdapter(Context context, List<CustomerAccount> accounts) {
+        super(context, R.layout.layout_selectable_list_item, accounts);
         this.context = context;
-        this.listItems = listItems;
+        this.accounts = accounts;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
+        CustomerAccountViewHolder holder;
         if (view == null) {
-            holder = new ViewHolder();
+            holder = new CustomerAccountViewHolder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.layout_selectable_list_item, parent, false);
             holder.listItem = (TextView) view.findViewById(R.id.list_item);
             view.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (CustomerAccountViewHolder) view.getTag();
         }
 
-        holder.listItem.setText(listItems.get(position).name());
-        if (listItems.get(position).isSelected()) {
+        holder.listItem.setText(accounts.get(position).name());
+        if (accounts.get(position).isSelected()) {
             holder.listItem.setBackgroundColor(context.getResources().getColor(android.R.color.holo_blue_light));
         } else {
             holder.listItem.setBackgroundColor(Color.TRANSPARENT);
@@ -45,7 +45,8 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
         return view;
     }
 
-    class ViewHolder {
+    class CustomerAccountViewHolder {
         TextView listItem;
     }
+
 }

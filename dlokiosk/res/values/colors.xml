@@ -10,4 +10,5 @@
     <color name="search_box_border_color">#b3b3b3</color>
     <color name="search_box_text_color">#8fb2f7</color>
     <color name="toggle_button_color">#5a5a5a</color>
+    <color name="selected_sales_channel_background">#4394f7</color>
 </resources>

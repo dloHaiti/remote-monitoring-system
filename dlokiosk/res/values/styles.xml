@@ -96,7 +96,11 @@
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="selected_sales_channel_list_item" parent="list_item">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="list_header" parent="list_item">

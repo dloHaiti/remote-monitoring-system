@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              style="@style/list_item"
+              android:weightSum="100">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/customer_name"
+              style="@style/customer_account_list_item"
+              android:text="Customer name"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/contact_name"
+              style="@style/customer_account_list_item"
+              android:text="Contact name"/>
+
+</LinearLayout>
+

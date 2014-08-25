@@ -17,7 +17,7 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
     private final List<SalesChannel> listItems;
 
     public SalesChannelArrayAdapter(Context context, List<SalesChannel> listItems) {
-        super(context, R.layout.layout_selectable_list_item, listItems);
+        super(context, R.layout.layout_sales_channel_list_item, listItems);
         this.context = context;
         this.listItems = listItems;
     }
@@ -29,7 +29,7 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.layout_selectable_list_item, parent, false);
+            view = inflater.inflate(R.layout.layout_sales_channel_list_item, parent, false);
             holder.listItem = (TextView) view.findViewById(R.id.list_item);
             view.setTag(holder);
         } else {

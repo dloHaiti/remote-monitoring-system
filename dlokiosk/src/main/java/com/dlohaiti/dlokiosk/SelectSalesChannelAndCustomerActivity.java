@@ -15,12 +15,13 @@ import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.widgets.CustomerAccountArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SalesChannelArrayAdapter;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
@@ -163,9 +164,11 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             public boolean onQueryTextChange(String text) {
                 List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
 
-                for (CustomerAccount listItem : filteredCustomerList) {
-                    if (StringUtils.contains(listItem.name().toLowerCase(), text.toLowerCase())) {
-                        newFilteredCustomerList.add(listItem);
+                for (CustomerAccount account : allCustomerList) {
+                    if ((selectedSalesChannel != null && account.canBeServedByChannel(selectedSalesChannel.name()))
+                            && (containsIgnoreCase(account.name(), text)
+                            || containsIgnoreCase(account.contactName(), text))) {
+                        newFilteredCustomerList.add(account);
                     }
                 }
                 filteredCustomerList.clear();

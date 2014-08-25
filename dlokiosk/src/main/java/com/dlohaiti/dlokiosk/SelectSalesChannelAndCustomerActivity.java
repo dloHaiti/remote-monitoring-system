@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
@@ -96,7 +97,9 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     }
 
     private void clearCustomerSearch() {
-        searchView.setQuery("", true);
+        if (isNotBlank(searchView.getQuery())) {
+            searchView.setQuery("", true);
+        }
         searchView.setIconified(true);
     }
 
@@ -181,6 +184,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     }
 
     public void onShowAllCustomersButtonClick(MenuItem item) {
+        clearCustomerSearch();
+
         if (showAllCustomers) {
             item.setTitle(selectedSalesChannel.name());
             filteredCustomerList.clear();
@@ -190,7 +195,6 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             updateCustomerList();
         }
 
-        clearCustomerSearch();
         showAllCustomers = !showAllCustomers;
         customerListAdapter.notifyDataSetChanged();
     }

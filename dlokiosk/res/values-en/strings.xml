@@ -61,4 +61,11 @@
     <string name="customer_list_header">Select Customer</string>
     <string name="all_customers_text">Show All Customers</string>
     <string name="search_customer_text">Search Customer</string>
+    <string name="no_configuration_error_title">
+        No configuration found
+    </string>
+    <string name="no_configuration_error_message">
+        Please update configuration from go to Main -> Settings -> Configuration -> Update
+        Configuration
+    </string>
 </resources>

@@ -61,4 +61,10 @@
     <string name="customer_list_header">Sélectionnez la clientèle</string>
     <string name="all_customers_text">Voir tous les clients</string>
     <string name="search_customer_text">Recherche client</string>
+    <string name="no_configuration_error_title">
+        Aucune configuration trouvée
+    </string>
+    <string name="no_configuration_error_message">
+        S\'il vous plaît mettre à jour la configuration de passer à la page principale -> Paramètres -> Configuration -> Configuration de mise à jour
+    </string>
 </resources>

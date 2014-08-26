@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,8 +67,26 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
     private void loadSalesChannels() {
         salesChannels = new SalesChannels(salesChannelRepository.findAll());
+        terminateIfThereIsNoConfiguration();
         salesChannels.get(0).select();
         selectedSalesChannel = salesChannels.get(0);
+    }
+
+    private void terminateIfThereIsNoConfiguration() {
+        if (salesChannels.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.no_configuration_error_message)
+                    .setTitle(R.string.no_configuration_error_title)
+                    .setCancelable(false)
+                    .setNeutralButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    finish();
+                                }
+                            })
+                    .show();
+        }
     }
 
     private void loadCustomerAccounts() {

@@ -225,7 +225,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
 
         String createSalesChannelCustomerAccounts = String.format(
                 "CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY," +
+                        "%s INTEGER ," +
                         "%s INTEGER " +
                         ")",
                 SalesChannelCustomerAccountsTable.TABLE_NAME,

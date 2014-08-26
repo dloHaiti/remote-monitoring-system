@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
+              android:id="@+id/customer_list_item"
               style="@style/list_item"
               android:weightSum="100">
 

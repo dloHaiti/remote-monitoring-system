@@ -11,17 +11,16 @@ import android.widget.SearchView;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.SalesChannels;
 import com.dlohaiti.dlokiosk.widgets.CustomerAccountArrayAdapter;
 import com.dlohaiti.dlokiosk.widgets.SalesChannelArrayAdapter;
+import com.dlohaiti.dlokiosk.widgets.SalesChannelViewHolder;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
@@ -44,9 +43,9 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     @Inject
     private CustomerAccountRepository customerAccountRepository;
 
-    private ArrayList<SalesChannel> salesChannels;
-    private ArrayList<CustomerAccount> allCustomerList;
-    private ArrayList<CustomerAccount> filteredCustomerList = new ArrayList<CustomerAccount>();
+    private SalesChannels salesChannels;
+    private CustomerAccounts allCustomerList;
+    private CustomerAccounts filteredCustomerList = new CustomerAccounts();
     private SalesChannel selectedSalesChannel;
     private CustomerAccount selectedCustomerAccount;
     private boolean showAllCustomers = true;
@@ -65,13 +64,13 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     }
 
     private void loadSalesChannels() {
-        salesChannels = new ArrayList<SalesChannel>(salesChannelRepository.findAll());
+        salesChannels = new SalesChannels(salesChannelRepository.findAll());
         salesChannels.get(0).select();
         selectedSalesChannel = salesChannels.get(0);
     }
 
     private void loadCustomerAccounts() {
-        allCustomerList = new ArrayList<CustomerAccount>(customerAccountRepository.findAll());
+        allCustomerList = new CustomerAccounts(customerAccountRepository.findAll());
         updateFilteredCustomerList();
     }
 
@@ -82,7 +81,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 clearCustomerSearch();
-                SalesChannel tappedSalesChannel = salesChannels.get(position);
+                SalesChannel tappedSalesChannel = salesChannels
+                        .findSalesChannelById(((SalesChannelViewHolder) view.getTag()).id);
                 if (selectedSalesChannel != null) {
                     selectedSalesChannel.unSelect();
                 }
@@ -134,12 +134,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
     private void updateFilteredCustomerList() {
         filteredCustomerList.clear();
-        for (CustomerAccount account : allCustomerList) {
-            account.unSelect();
-            if (account.canBeServedByChannel(selectedSalesChannel.name())) {
-                filteredCustomerList.add(account);
-            }
-        }
+        filteredCustomerList.addAll(
+                allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.id()));
         selectedCustomerAccount = null;
     }
 
@@ -165,17 +161,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
             @Override
             public boolean onQueryTextChange(String text) {
-                List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
-
-                for (CustomerAccount account : allCustomerList) {
-                    if ((selectedSalesChannel != null && account.canBeServedByChannel(selectedSalesChannel.name()))
-                            && (containsIgnoreCase(account.name(), text)
-                            || containsIgnoreCase(account.contactName(), text))) {
-                        newFilteredCustomerList.add(account);
-                    }
-                }
                 filteredCustomerList.clear();
-                filteredCustomerList.addAll(newFilteredCustomerList);
+                filteredCustomerList.addAll(allCustomerList.filterAccountsBy(text, selectedSalesChannel));
                 customerListAdapter.notifyDataSetChanged();
                 return true;
             }

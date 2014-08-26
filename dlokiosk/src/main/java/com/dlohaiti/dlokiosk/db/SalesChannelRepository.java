@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.SalesChannelCustomerAccountsTable;
 import static java.lang.String.format;
 
 public class SalesChannelRepository {
@@ -69,7 +70,7 @@ public class SalesChannelRepository {
             }
             rdb.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to load delivery agents from database", e);
+            Log.e(TAG, "Failed to Sales Channels from database", e);
         } finally {
             cursor.close();
             rdb.endTransaction();
@@ -88,9 +89,9 @@ public class SalesChannelRepository {
                                 "ORDER BY sc.%s",
                         StringUtils.join(COLUMNS, ","),
                         KioskDatabase.SalesChannelsTable.TABLE_NAME,
-                        KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,
-                        KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
-                        KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,
+                        SalesChannelCustomerAccountsTable.TABLE_NAME,
+                        SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
+                        SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,
                         KioskDatabase.SalesChannelsTable.ID,
                         KioskDatabase.SalesChannelsTable.NAME),
                 new String[]{String.valueOf(customerId)});

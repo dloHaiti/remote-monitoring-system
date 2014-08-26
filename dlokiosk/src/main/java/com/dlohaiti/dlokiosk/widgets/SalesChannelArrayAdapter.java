@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.SalesChannels;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
     private final Context context;
     private final List<SalesChannel> listItems;
 
-    public SalesChannelArrayAdapter(Context context, List<SalesChannel> listItems) {
+    public SalesChannelArrayAdapter(Context context, SalesChannels listItems) {
         super(context, R.layout.layout_sales_channel_list_item, listItems);
         this.context = context;
         this.listItems = listItems;
@@ -24,20 +25,22 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
+        SalesChannelViewHolder holder;
         if (view == null) {
-            holder = new ViewHolder();
+            holder = new SalesChannelViewHolder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.layout_sales_channel_list_item, parent, false);
             holder.listItem = (TextView) view.findViewById(R.id.list_item);
             view.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (SalesChannelViewHolder) view.getTag();
         }
 
-        holder.listItem.setText(listItems.get(position).name());
-        if (listItems.get(position).isSelected()) {
+        SalesChannel salesChannel = listItems.get(position);
+        holder.listItem.setText(salesChannel.name());
+        holder.id = salesChannel.id();
+        if (salesChannel.isSelected()) {
             holder.listItem.setTextAppearance(getContext(), R.style.selected_sales_channel_list_item);
             holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_sales_channel_background));
         } else {
@@ -47,7 +50,4 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
         return view;
     }
 
-    class ViewHolder {
-        TextView listItem;
-    }
 }

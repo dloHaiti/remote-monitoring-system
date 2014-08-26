@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
     private final Context context;
     private final List<CustomerAccount> accounts;
 
-    public CustomerAccountArrayAdapter(Context context, List<CustomerAccount> accounts) {
+    public CustomerAccountArrayAdapter(Context context, CustomerAccounts accounts) {
         super(context, R.layout.layout_sales_channel_list_item, accounts);
         this.context = context;
         this.accounts = accounts;
@@ -31,6 +32,7 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.layout_customer_account_list_item, parent, false);
+            holder.listItem = view.findViewById(R.id.customer_list_item);
             holder.customerName = (TextView) view.findViewById(R.id.customer_name);
             holder.contactName = (TextView) view.findViewById(R.id.contact_name);
             view.setTag(holder);
@@ -47,7 +49,7 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
             holder.contactName.setVisibility(View.INVISIBLE);
         }
 
-        holder.customerName.setBackgroundColor(
+        holder.listItem.setBackgroundColor(
                 accounts.get(position).isSelected()
                         ? context.getResources().getColor(android.R.color.holo_blue_light)
                         : Color.TRANSPARENT);
@@ -55,8 +57,8 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
     }
 
     class CustomerAccountViewHolder {
+        View listItem;
         TextView customerName;
         TextView contactName;
     }
-
 }

@@ -64,7 +64,7 @@ public class SelectCustomerActivity extends RoboActivity implements AdapterView.
         allAccounts = new ArrayList<CustomerAccount>(customerAccountRepository.findAll());
         salesChannelAccounts = new ArrayList<CustomerAccount>();
         for (CustomerAccount account : allAccounts) {
-            if (account.canBeServedByChannel(selectedSalesChannel)) {
+            if (account.canBeServedByChannel(Long.parseLong(selectedSalesChannel))) {
                 salesChannelAccounts.add(account);
             }
         }

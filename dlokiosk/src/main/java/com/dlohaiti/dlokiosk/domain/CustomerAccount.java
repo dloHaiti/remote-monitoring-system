@@ -76,9 +76,12 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         return upperCase(defaultString(name)).compareTo(upperCase(defaultString(another.name)));
     }
 
-    public boolean canBeServedByChannel(String channel) {
+    public boolean canBeServedByChannel(long channelId) {
+        if (channels == null || channels.isEmpty()) {
+            return false;
+        }
         for (SalesChannel salesChannel : channels) {
-            if (salesChannel.name().equalsIgnoreCase(channel)) {
+            if (salesChannel.id() == channelId) {
                 return true;
             }
         }

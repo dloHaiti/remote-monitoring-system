@@ -57,8 +57,6 @@
     <string name="continue_text">Continuer</string>
     <string name="back_text">Arrière</string>
     <string name="view_new_sale_button">Nouveau flux de vente</string>
-    <string name="sales_channel_list_header">Sélectionnez Channel Sales</string>
-    <string name="customer_list_header">Sélectionnez la clientèle</string>
     <string name="all_customers_text">Voir tous les clients</string>
     <string name="search_customer_text">Recherche client</string>
     <string name="no_configuration_error_title">

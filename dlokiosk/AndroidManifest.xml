@@ -83,22 +83,6 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".SelectSalesChannelActivity"
-                android:label="@string/new_sale_button">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectSalesChannelActivity"/>
-        </activity>
-        <activity
-                android:screenOrientation="landscape"
-                android:name=".SelectCustomerActivity"
-                android:label="@string/new_sale_button">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectCustomerActivity"/>
-        </activity>
-        <activity
-                android:screenOrientation="landscape"
                 android:name=".SelectSalesChannelAndCustomerActivity"
                 android:label="SELECT SALES CHANNEL AND CUSTOMER">
             <meta-data

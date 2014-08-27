@@ -57,8 +57,6 @@
     <string name="continue_text">Continue</string>
     <string name="back_text">Back</string>
     <string name="view_new_sale_button">New Sale Flow</string>
-    <string name="sales_channel_list_header">Select Sales Channel</string>
-    <string name="customer_list_header">Select Customer</string>
     <string name="all_customers_text">Show All Customers</string>
     <string name="search_customer_text">Search Customer</string>
     <string name="no_configuration_error_title">

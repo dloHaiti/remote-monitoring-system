@@ -10,12 +10,11 @@
                 tools:context=".MainActivity">
 
     <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="120dp"
-            android:gravity="center_horizontal"
-            android:id="@+id/relativeLayout">
+        android:gravity="top"
+            android:id="@+id/relativeLayout"
+        android:layout_alignParentTop="true">
 
         <ImageView
                 android:layout_width="37dp"
@@ -45,7 +44,7 @@
     </RelativeLayout>
 
     <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -55,7 +54,9 @@
                 style="@style/home_screen_button"
                 android:onClick="moveToNewSaleScreen"
                 android:text="@string/new_sale_button"
-                android:id="@+id/new_sale_button"/>
+                android:id="@+id/new_sale_button"
+                android:drawableLeft="@drawable/ic_menu_all_customers"
+            />
 
         <Button
                 style="@style/home_screen_button"

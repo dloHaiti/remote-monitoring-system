@@ -65,4 +65,8 @@
     <string name="no_configuration_error_message">
         S\'il vous plaît mettre à jour la configuration de passer à la page principale -> Paramètres -> Configuration -> Configuration de mise à jour
     </string>
+    <string name="cancel_sale_confirm_dialog_message">Êtes-vous sûr de vouloir annuler la vente?</string>
+    <string name="cancel_sale_confirm_dialog_title">Confirmer</string>
+    <string name="yes_button_label">Oui</string>
+    <string name="no_button_label">Aucun</string>
 </resources>

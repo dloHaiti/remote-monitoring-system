@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
@@ -36,7 +36,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     private ListView customerListView;
 
     @InjectView(R.id.continue_button)
-    private Button continueButton;
+    private ImageButton continueButton;
 
     private CustomerAccountArrayAdapter customerListAdapter;
     private SalesChannelArrayAdapter salesChannelAdapter;
@@ -174,7 +174,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String text) {
-                menu.findItem(R.id.search_customer).getActionView().clearFocus();
+                searchView.clearFocus();
                 return true;
             }
 
@@ -209,7 +209,31 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         customerListAdapter.notifyDataSetChanged();
     }
 
+    public void onCancel(View view) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.cancel_sale_confirm_dialog_message)
+                .setTitle(R.string.cancel_sale_confirm_dialog_title)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes_button_label,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        })
+                .setNegativeButton(R.string.no_button_label,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                            }
+                        })
+                .show();
+    }
+
     public void onBack(View view) {
         finish();
+    }
+
+    public void onContinue(View view) {
     }
 }

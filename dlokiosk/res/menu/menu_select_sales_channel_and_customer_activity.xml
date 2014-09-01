@@ -5,8 +5,8 @@
             android:id="@+id/search_customer"
             android:orderInCategory="1"
             android:showAsAction="always"
-            android:icon="@drawable/ic_menu_search"
             android:actionViewClass="android.widget.SearchView"
+            android:icon="@drawable/ic_menu_search"
             android:title="@string/search_customer_text"/>
     <item
             android:id="@+id/sales_channel_customer_toggle"

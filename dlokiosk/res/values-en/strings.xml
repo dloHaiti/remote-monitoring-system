@@ -66,4 +66,8 @@
         Please update configuration from go to Main -> Settings -> Configuration -> Update
         Configuration
     </string>
+    <string name="cancel_sale_confirm_dialog_message">Are you sure you want to cancel the Sale?</string>
+    <string name="cancel_sale_confirm_dialog_title">Confirm</string>
+    <string name="yes_button_label">Yes</string>
+    <string name="no_button_label">No</string>
 </resources>

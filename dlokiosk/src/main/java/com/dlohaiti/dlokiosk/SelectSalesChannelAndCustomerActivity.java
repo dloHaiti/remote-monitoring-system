@@ -23,6 +23,8 @@ import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
@@ -50,7 +52,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     private CustomerAccounts filteredCustomerList = new CustomerAccounts();
     private SalesChannel selectedSalesChannel;
     private CustomerAccount selectedCustomerAccount;
-    private boolean showAllCustomers = true;
+    private boolean showingAllCustomers = false;
     private MenuItem salesChannelCustomerToggle;
     private SearchView searchView;
 
@@ -121,7 +123,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     }
 
     private void updateSalesChannelCustomerToggleButtonStatus() {
-        showAllCustomers = true;
+        showingAllCustomers = false;
         salesChannelCustomerToggle.setTitle(R.string.all_customers_text);
     }
 
@@ -179,7 +181,11 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             @Override
             public boolean onQueryTextChange(String text) {
                 filteredCustomerList.clear();
-                filteredCustomerList.addAll(allCustomerList.filterAccountsBy(text, selectedSalesChannel));
+                List<CustomerAccount> filteredList;
+                filteredList = !showingAllCustomers
+                        ? allCustomerList.filterAccountsBy(text, selectedSalesChannel)
+                        : allCustomerList.filterAccountsBy(text);
+                filteredCustomerList.addAll(filteredList);
                 customerListAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -190,7 +196,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
     public void onShowAllCustomersButtonClick(MenuItem item) {
         clearCustomerSearch();
 
-        if (showAllCustomers) {
+        if (!showingAllCustomers) {
             item.setTitle(selectedSalesChannel.name());
             filteredCustomerList.clear();
             filteredCustomerList.addAll(allCustomerList);
@@ -199,7 +205,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             updateCustomerList();
         }
 
-        showAllCustomers = !showAllCustomers;
+        showingAllCustomers = !showingAllCustomers;
         customerListAdapter.notifyDataSetChanged();
     }
 

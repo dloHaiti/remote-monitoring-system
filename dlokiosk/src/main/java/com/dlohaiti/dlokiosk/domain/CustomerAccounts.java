@@ -29,9 +29,20 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
 
         for (CustomerAccount account : this) {
-            if ((selectedSalesChannel != null && account.canBeServedByChannel(selectedSalesChannel.id()))
-                    && (containsIgnoreCase(account.name(), text)
-                    || containsIgnoreCase(account.contactName(), text))) {
+            if ((containsIgnoreCase(account.name(), text)
+                    || containsIgnoreCase(account.contactName(), text)) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
+                newFilteredCustomerList.add(account);
+            }
+        }
+        return newFilteredCustomerList;
+    }
+
+    public List<CustomerAccount> filterAccountsBy(String text) {
+        List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
+
+        for (CustomerAccount account : this) {
+            if (containsIgnoreCase(account.name(), text)
+                    || containsIgnoreCase(account.contactName(), text)) {
                 newFilteredCustomerList.add(account);
             }
         }

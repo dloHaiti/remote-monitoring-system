@@ -16,15 +16,17 @@ public class Parameter implements Comparable<Parameter> {
     private final BigDecimal maximum;
     private final boolean hasRange;
     private final boolean isOkNotOk;
+    private final boolean isUsedInTotalizer;
     private final Integer priority;
 
-    public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk, Integer priority) {
+    public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk, boolean isUsedInTotalizer, Integer priority) {
         this.name = defaultString(name);
         this.unitOfMeasure = unitOfMeasure;
         this.minimum = parseBigDecimal(minimum, null);
         this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
+        this.isUsedInTotalizer=isUsedInTotalizer;
         this.priority = ObjectUtils.defaultIfNull(priority, Integer.MAX_VALUE);
     }
 
@@ -63,6 +65,9 @@ public class Parameter implements Comparable<Parameter> {
         return priority;
     }
 
+    public boolean isUsedInTotalizer() {
+        return isUsedInTotalizer;
+    }
 
     public CharSequence getRange() {
         return minimum.toString() + " - " + maximum.toString();
@@ -104,6 +109,7 @@ public class Parameter implements Comparable<Parameter> {
 
         if (hasRange != parameter.hasRange) return false;
         if (isOkNotOk != parameter.isOkNotOk) return false;
+        if (isUsedInTotalizer != parameter.isUsedInTotalizer) return false;
         if (maximum != null ? !maximum.equals(parameter.maximum) : parameter.maximum != null) return false;
         if (minimum != null ? !minimum.equals(parameter.minimum) : parameter.minimum != null) return false;
         if (name != null ? !name.equals(parameter.name) : parameter.name != null) return false;
@@ -122,6 +128,7 @@ public class Parameter implements Comparable<Parameter> {
         result = 31 * result + (maximum != null ? maximum.hashCode() : 0);
         result = 31 * result + (hasRange ? 1 : 0);
         result = 31 * result + (isOkNotOk ? 1 : 0);
+        result = 31 * result + (isUsedInTotalizer ? 1 : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         return result;
     }

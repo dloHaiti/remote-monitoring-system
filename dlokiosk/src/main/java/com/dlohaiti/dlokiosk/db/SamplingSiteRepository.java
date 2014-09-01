@@ -4,14 +4,21 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.dlohaiti.dlokiosk.domain.FlowMeterReading;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+import static java.lang.String.format;
 
 public class SamplingSiteRepository {
     private final static String TAG = SamplingSiteRepository.class.getSimpleName();
@@ -25,6 +32,7 @@ public class SamplingSiteRepository {
     public SamplingSiteRepository(KioskDatabase db) {
         this.db = db;
     }
+
 
     public SortedSet<SamplingSite> list() {
         SortedSet<SamplingSite> sites = new TreeSet<SamplingSite>();
@@ -90,5 +98,57 @@ public class SamplingSiteRepository {
             c.close();
             wdb.endTransaction();
         }
+    }
+
+    public ArrayList<FlowMeterReading> ListAllFlowMeterSites(){
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.rawQuery(format(
+                        "SELECT %s FROM " +
+                                "%s,%s,%s " +
+                                " WHERE %s.%s = %s" +
+                                " AND %s.%s=%s.id" +
+                                " AND %s.id=%s.%s" +
+                                " ORDER BY %s.%s",
+                        getFieldNames(),
+                        KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                        KioskDatabase.ParametersTable.TABLE_NAME,
+
+                        KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID,
+                        parameterQuery(),
+                        KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesParametersTable.SITE_ID,
+                        KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                        KioskDatabase.ParametersTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID,
+                        KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                        KioskDatabase.SamplingSitesTable.NAME),null);
+        ArrayList<FlowMeterReading> flowMeterReadings=new ArrayList<FlowMeterReading>();
+        try {
+            Log.d("SIZE:", String.valueOf( cursor.getCount()));
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                flowMeterReadings.add(new FlowMeterReading(cursor.getLong(0),cursor.getLong(2), cursor.getString(1),cursor.getString(3), ""));
+                cursor.moveToNext();
+            }
+            rdb.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to Flow reading from database", e);
+        } finally {
+            cursor.close();
+            rdb.endTransaction();
+        }
+        return flowMeterReadings;
+    }
+
+    private String getFieldNames() {
+        return  KioskDatabase.SamplingSitesTable.TABLE_NAME +".*,"+KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID +","+KioskDatabase.ParametersTable.TABLE_NAME+"."+KioskDatabase.ParametersTable.NAME+" as paramater_name";
+    }
+
+    private String parameterQuery() {
+       return format("(SELECT id from %s where %s = 'true') ",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
     }
 }

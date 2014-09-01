@@ -108,4 +108,11 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="btnStyleOrange">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/btn_orange</item>
+    </style>
+
+
 </resources>

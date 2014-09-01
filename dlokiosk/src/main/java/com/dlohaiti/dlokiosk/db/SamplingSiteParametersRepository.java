@@ -54,8 +54,9 @@ public class SamplingSiteParametersRepository {
                 String minimum = query.getString(2);
                 String maximum = query.getString(3);
                 boolean isOkNotOk = Boolean.parseBoolean(query.getString(4));
-                Integer priority = query.getInt(5);
-                parameters.add(new Parameter(name, unitOfMeasure, minimum, maximum, isOkNotOk, priority));
+                boolean isUsedInTotalizer = Boolean.parseBoolean(query.getString(5));
+                Integer priority = query.getInt(6);
+                parameters.add(new Parameter(name, unitOfMeasure, minimum, maximum, isOkNotOk,isUsedInTotalizer, priority));
                 query.moveToNext();
             }
             query.close();
@@ -123,6 +124,7 @@ public class SamplingSiteParametersRepository {
                     parameterValues.put(KioskDatabase.ParametersTable.MAXIMUM, String.valueOf(parameter.getMaximum()));
                 }
                 parameterValues.put(KioskDatabase.ParametersTable.IS_OK_NOT_OK, String.valueOf(parameter.isOkNotOk()));
+                parameterValues.put(KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER, String.valueOf(parameter.isUsedInTotalizer()));
                 parameterValues.put(KioskDatabase.ParametersTable.PRIORITY, parameter.getPriority());
                 long parameterId = wdb.insert(KioskDatabase.ParametersTable.TABLE_NAME, null, parameterValues);
                 if (parameterId == -1) {

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:windowSoftInputMode="stateHidden|adjustPan"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:padding="16dp">
+        <TextView
+            android:layout_height="wrap_content"
+            android:text="Site"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_width="250dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/flow_channel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/black"
+            android:text="Value"
+            android:textStyle="bold"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/flow_value"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="Unit"
+            android:textStyle="bold"
+            android:id="@+id/textView2"
+            android:layout_marginRight="16dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/list_pane"
+        android:layout_width="fill_parent"
+        android:weightSum="100"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/bottom_pane"
+        android:baselineAligned="false">
+        <ListView
+            android:id="@+id/flow_meter_list"
+            android:layout_width="fill_parent"
+            android:descendantFocusability="beforeDescendants"
+            android:layout_weight="20"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/bottom_pane"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:background="#F9F9F9">
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="cancelClick"
+            style="@style/btnStyleOrange"
+            android:text="Cancel"/>
+
+        <Button
+            android:id="@+id/save_flow"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:text="Save"/>
+    </RelativeLayout>
+</RelativeLayout>

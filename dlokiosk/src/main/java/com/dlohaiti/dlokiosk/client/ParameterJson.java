@@ -4,12 +4,21 @@ import java.util.List;
 
 public class ParameterJson {
     private boolean isOkNotOk;
+    private boolean isUsedInTotalizer;
     private String minimum;
     private String maximum;
     private String name;
     private String unit;
     private Integer priority;
     private List<SamplingSiteJson> samplingSites;
+
+    public boolean isUsedInTotalizer() {
+        return isUsedInTotalizer;
+    }
+
+    public void setIsUsedInTotalizer(boolean isUsedInTotalizer) {
+        this.isUsedInTotalizer = isUsedInTotalizer;
+    }
 
     public boolean isOkNotOk() {
         return isOkNotOk;

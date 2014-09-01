@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Water Quality"
+            android:id="@+id/waterQualitybtn"
+            android:layout_gravity="center_vertical|center_horizontal" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Flow Meter"
+            android:onClick="moveToFlowMeterScreen"
+            android:id="@+id/flowMeterbtn"
+            android:layout_gravity="center_vertical|center_horizontal"  />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_pane"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F9F9F9">
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="cancelClick"
+            android:text="Cancel"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -60,19 +60,10 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         setContentView(R.layout.activity_select_sales_channel_and_customer);
 
         loadSalesChannels();
-        loadCustomerAccounts();
-        initialiseSalesChannelList();
-        initialiseCustomerList();
     }
 
     private void loadSalesChannels() {
         salesChannels = new SalesChannels(salesChannelRepository.findAll());
-        terminateIfThereIsNoConfiguration();
-        salesChannels.get(0).select();
-        selectedSalesChannel = salesChannels.get(0);
-    }
-
-    private void terminateIfThereIsNoConfiguration() {
         if (salesChannels.isEmpty()) {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.no_configuration_error_message)
@@ -86,6 +77,12 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
                                 }
                             })
                     .show();
+        } else {
+            salesChannels.get(0).select();
+            selectedSalesChannel = salesChannels.get(0);
+            loadCustomerAccounts();
+            initialiseSalesChannelList();
+            initialiseCustomerList();
         }
     }
 

@@ -18,11 +18,24 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
 
     private final Context context;
     private final List<FlowMeterReading> listItems;
+    private boolean isDisplayError;
 
     public FlowMeterAdapter(Context context, FlowMeterReadings listItems) {
         super(context, R.layout.parameter_row, listItems);
         this.context = context;
         this.listItems = listItems;
+        this.isDisplayError=false;
+    }
+
+    public void setDisplayError(boolean isDisplayError) {
+        this.isDisplayError = isDisplayError;
+    }
+
+    public void cleanQuantity(){
+        for(FlowMeterReading r: listItems){
+            r.setQuantity("");
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -48,7 +61,11 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         holder.listItem.setText(flowMeterReading.getQuantity());
 
         TextView label = (TextView) convertView.findViewById(R.id.flow_channel);
-
+        if(isDisplayError && String.valueOf(holder.listItem.getText()).isEmpty()){
+            holder.listItem.setError("Can't be blank");
+        }else {
+            holder.listItem.setError(null);
+        }
         holder.listItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {

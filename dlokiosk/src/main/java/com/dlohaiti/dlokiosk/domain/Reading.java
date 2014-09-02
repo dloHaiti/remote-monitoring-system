@@ -36,6 +36,15 @@ public class Reading {
         return measurements;
     }
 
+    public Measurement getMeasurement(String parameterName){
+        for(Measurement m: measurements){
+          if(m.getParameterName().equalsIgnoreCase(parameterName)){
+              return m;
+          }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

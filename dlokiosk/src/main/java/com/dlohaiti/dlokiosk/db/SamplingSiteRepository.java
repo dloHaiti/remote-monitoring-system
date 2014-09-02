@@ -128,7 +128,6 @@ public class SamplingSiteRepository {
                         KioskDatabase.SamplingSitesTable.NAME),null);
         ArrayList<FlowMeterReading> flowMeterReadings=new ArrayList<FlowMeterReading>();
         try {
-            Log.d("SIZE:", String.valueOf( cursor.getCount()));
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 flowMeterReadings.add(new FlowMeterReading(cursor.getLong(0),cursor.getLong(2), cursor.getString(1),cursor.getString(3), ""));

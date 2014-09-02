@@ -71,12 +71,12 @@
             android:onClick="cancelClick"
             style="@style/btnStyleOrange"
             android:text="Cancel"/>
-
         <Button
             android:id="@+id/save_flow"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onSaveReadings"
             android:enabled="true"
             android:text="Save"/>
     </RelativeLayout>

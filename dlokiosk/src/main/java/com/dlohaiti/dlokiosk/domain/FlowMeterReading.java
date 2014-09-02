@@ -6,15 +6,19 @@ public class FlowMeterReading  implements Comparable<FlowMeterReading>  {
     private Long id;
     private Long parameterId;
     private String samplingName;
-    private String parameter_name;
+    private String parameterName;
     private String quantity;
 
-    public FlowMeterReading(Long id, Long parameterId, String sampling_name, String parameter_name,String quantity) {
+    public FlowMeterReading(Long id, Long parameterId, String sampling_name, String parameterName,String quantity) {
         this.id = id;
         this.parameterId = parameterId;
         this.samplingName = sampling_name;
-        this.parameter_name=parameter_name;
+        this.parameterName =parameterName;
         this.quantity = quantity;
+    }
+
+    public String getParameterName() {
+        return parameterName;
     }
 
     public String getQuantity() {

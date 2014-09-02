@@ -35,8 +35,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
     @InjectView(R.id.flow_meter_list)
     private ListView flowMeterList;
-    @InjectView(R.id.draft_flow)
-    private Button draftButton;
+
     @InjectResource(R.string.saved_message)
     private String savedMessage;
     @InjectResource(R.string.error_not_saved_message)
@@ -89,10 +88,8 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         if(tab.getPosition()==0){
             fillQuantity(clock.today());
-            draftButton.setVisibility(View.VISIBLE);
         }else{
             fillQuantity(clock.yesterday());
-            draftButton.setVisibility(View.INVISIBLE);
         }
     }
 

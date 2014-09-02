@@ -62,6 +62,8 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="45dip"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:background="#F9F9F9">
         <Button
             android:id="@+id/cancel_button"

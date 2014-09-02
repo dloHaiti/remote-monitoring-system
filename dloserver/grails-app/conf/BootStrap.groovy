@@ -97,7 +97,8 @@ class BootStrap {
                     price             : [
                             amount      : p.price.amount,
                             currencyCode: p.price.currency.currencyCode
-                    ]
+                    ],
+                    category          : p.category.id
             ]
         }
 

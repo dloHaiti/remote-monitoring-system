@@ -15,6 +15,7 @@ public class SalesChannels extends ArrayList<SalesChannel> {
                 return salesChannel;
             }
         }
-        throw new RuntimeException("Unable to find sales channel with id: " + id);
+        throw new NoSalesChannelWithGivenIdException(id);
     }
+
 }

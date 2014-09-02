@@ -14,10 +14,15 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
     public CustomerAccounts() {
     }
 
+    public void unSelectAll() {
+        for (CustomerAccount account : this) {
+            account.unSelect();
+        }
+    }
+
     public ArrayList<CustomerAccount> findAccountsThatCanBeServedByChannel(long channelId) {
         ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         for (CustomerAccount account : this) {
-            account.unSelect();
             if (account.canBeServedByChannel(channelId)) {
                 accounts.add(account);
             }

@@ -2,7 +2,6 @@ package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -66,7 +65,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         return this;
     }
 
-    public CustomerAccount withChannels(ArrayList<SalesChannel> channels) {
+    public CustomerAccount withChannels(List<SalesChannel> channels) {
         this.channels = channels;
         return this;
     }

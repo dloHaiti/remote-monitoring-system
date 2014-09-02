@@ -154,6 +154,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
 
     private void updateFilteredCustomerList() {
         filteredCustomerList.clear();
+        allCustomerList.unSelectAll();
         filteredCustomerList.addAll(
                 allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.id()));
         selectedCustomerAccount = null;

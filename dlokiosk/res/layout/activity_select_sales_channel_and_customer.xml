@@ -37,7 +37,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_cancel"
+                android:src="@drawable/cancel_button"
+                style="?android:attr/borderlessButtonStyle"
                 android:onClick="onCancel"/>
 
         <ImageButton
@@ -47,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50sp"
                 android:enabled="false"
-                android:background="@drawable/ic_next"
+                android:src="@drawable/next_button"
+                style="?android:attr/borderlessButtonStyle"
                 android:onClick="onContinue"/>
 
         <ImageButton
@@ -55,7 +57,8 @@
                 android:layout_toLeftOf="@id/continue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_back"
+                android:src="@drawable/back_button"
+                style="?android:attr/borderlessButtonStyle"
                 android:onClick="onBack"/>
 
     </RelativeLayout>

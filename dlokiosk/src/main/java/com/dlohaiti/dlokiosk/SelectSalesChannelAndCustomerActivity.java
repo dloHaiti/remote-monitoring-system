@@ -85,6 +85,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             loadCustomerAccounts();
             initialiseSalesChannelList();
             initialiseCustomerList();
+            continueButton.setEnabled(false);
         }
     }
 

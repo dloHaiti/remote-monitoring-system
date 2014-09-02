@@ -4,12 +4,12 @@
     <color name="list_header_background_color">#e6e6e6</color>
     <color name="released_button_color">#cdcdcd</color>
     <color name="activity_background">@android:color/white</color>
-    <color name="blue_background">#a1c2f7</color>
-    <color name="list_divider_gray">#dddee0</color>
-    <color name="list_divider_blue">#56a9f6</color>
+    <color name="left_pane_background">#E6E6E6</color>
+    <color name="customer_account_list_divider">#D5D6D9</color>
+    <color name="sales_channel_list_divider">#969A99</color>
     <color name="search_box_border_color">#b3b3b3</color>
     <color name="search_box_text_color">#8fb2f7</color>
     <color name="toggle_button_color">#5a5a5a</color>
-    <color name="selected_sales_channel_background">#4394f7</color>
+    <color name="selected_list_item_background">#4394F7</color>
     <color name="bottom_navigation_pane_background">#41464D</color>
 </resources>

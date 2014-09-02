@@ -42,7 +42,7 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
         holder.id = salesChannel.id();
         if (salesChannel.isSelected()) {
             holder.listItem.setTextAppearance(getContext(), R.style.selected_sales_channel_list_item);
-            holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_sales_channel_background));
+            holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_list_item_background));
         } else {
             holder.listItem.setTextAppearance(getContext(), R.style.list_item);
             holder.listItem.setBackgroundColor(Color.TRANSPARENT);

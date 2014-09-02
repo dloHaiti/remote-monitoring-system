@@ -49,10 +49,16 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
             holder.contactName.setVisibility(View.INVISIBLE);
         }
 
-        holder.listItem.setBackgroundColor(
-                accounts.get(position).isSelected()
-                        ? context.getResources().getColor(android.R.color.holo_blue_light)
-                        : Color.TRANSPARENT);
+        if (accounts.get(position).isSelected()) {
+            holder.customerName.setTextAppearance(getContext(), R.style.selected_customer_account_list_item);
+            holder.contactName.setTextAppearance(getContext(), R.style.selected_customer_account_list_item);
+            holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_list_item_background));
+        } else {
+            holder.customerName.setTextAppearance(getContext(), R.style.list_item);
+            holder.contactName.setTextAppearance(getContext(), R.style.list_item);
+
+            holder.listItem.setBackgroundColor(Color.TRANSPARENT);
+        }
         return view;
     }
 

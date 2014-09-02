@@ -109,6 +109,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="selected_customer_account_list_item" parent="list_item">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="btnStyleOrange">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">@drawable/btn_orange</item>

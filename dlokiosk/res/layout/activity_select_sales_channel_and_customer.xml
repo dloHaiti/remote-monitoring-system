@@ -16,15 +16,15 @@
                 android:layout_weight="20"
                 android:layout_height="match_parent"
                 android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_blue"
-                android:background="@color/blue_background"/>
+                android:divider="@color/sales_channel_list_divider"
+                android:background="@color/left_pane_background"/>
         <ListView
                 android:id="@+id/customer_list"
                 android:layout_width="0dp"
                 android:layout_weight="80"
                 android:layout_height="match_parent"
                 android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_gray"/>
+                android:divider="@color/customer_account_list_divider"/>
     </LinearLayout>
 
     <RelativeLayout

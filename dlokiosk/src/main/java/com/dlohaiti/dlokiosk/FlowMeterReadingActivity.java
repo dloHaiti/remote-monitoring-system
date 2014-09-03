@@ -2,7 +2,9 @@ package com.dlohaiti.dlokiosk;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +49,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
 
     private FlowMeterAdapter flowMeterAdapter;
-
+    private boolean isToday=true;
     @Inject
     private Clock clock;
 
@@ -87,16 +89,18 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         if(tab.getPosition()==0){
             fillQuantity(clock.today());
+            isToday=true;
         }else{
             fillQuantity(clock.yesterday());
+            isToday=false;
         }
     }
 
     private void fillQuantity(Date date) {
         if(flowMeterAdapter==null)return;
         List<Reading> readingWithDate = readingsRepository.getReadingsWithDate(date);
+        flowMeterAdapter.cleanQuantity();
         if (readingWithDate.size()==0){
-            flowMeterAdapter.cleanQuantity();
             return;
         }
         for(int i=0;i<flowMeterAdapter.getCount();i++) {
@@ -132,7 +136,22 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     }
 
     public void onSaveReadings(View view) {
-        if(validateAllFields()){
+        if(!validateAllFields() && isToday){
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Save")
+                    .setMessage("There are empty fields , are you sure you want to save?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveReadings();
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }else {
             saveReadings();
         }
     }
@@ -140,11 +159,18 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     private void saveReadings() {
         Set<Measurement> measurements = new HashSet<Measurement>();
         boolean successful=true;
-
-        List<Reading> readingsWithDate = readingsRepository.getReadingsWithDate(clock.today());
+        List<Reading> readingsWithDate;
+        if(isToday) {
+            readingsWithDate = readingsRepository.getReadingsWithDate(clock.today());
+        }else{
+            readingsWithDate = readingsRepository.getReadingsWithDate(clock.yesterday());
+        }
 
         for(int i=0;i<flowMeterAdapter.getCount();i++){
             FlowMeterReading flowMeterReading = flowMeterAdapter.getItem(i);
+            if(flowMeterReading.getQuantity().isEmpty()){
+                continue;
+            }
             Reading readingWithSite = findReadingWithSite(readingsWithDate, flowMeterReading.getSamplingName());
             if(readingWithSite==null){
                 measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));

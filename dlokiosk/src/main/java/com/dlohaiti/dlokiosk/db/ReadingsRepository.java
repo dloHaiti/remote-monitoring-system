@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,8 +53,8 @@ public class ReadingsRepository {
         List<Reading> readings = new ArrayList<Reading>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        String createdDate = kioskDate.getFormat().format(date);
-        createdDate= createdDate.split(" ")[0];
+        String createdDate = kioskDate.getFormat().format(removeTime(date));
+//        createdDate= createdDate.split(" ")[0];
 
         Cursor rc = rdb.rawQuery(format(
                 "SELECT %s FROM " +
@@ -109,7 +110,7 @@ public class ReadingsRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME, reading.getSamplingSiteName());
-        values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(clock.now()));
+        values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
         wdb.beginTransaction();
         try {
             long readingId ;
@@ -174,6 +175,10 @@ public class ReadingsRepository {
     }
 
     public boolean remove(Reading reading) {
+        Date yesterday =removeTime(clock.yesterday());
+        if (!reading.getCreatedDate().before(yesterday)){
+            return false;
+        }
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
@@ -187,6 +192,16 @@ public class ReadingsRepository {
         } finally {
             wdb.endTransaction();
         }
+    }
+
+    private Date removeTime(Date date){
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(date);
+        gc.set(Calendar.HOUR_OF_DAY, 0);
+        gc.set(Calendar.MINUTE, 0);
+        gc.set(Calendar.SECOND, 0);
+        gc.set(Calendar.MILLISECOND, 0);
+        return gc.getTime();
     }
 
     public boolean isNotEmpty() {

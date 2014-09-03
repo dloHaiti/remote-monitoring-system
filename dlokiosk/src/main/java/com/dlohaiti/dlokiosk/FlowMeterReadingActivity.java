@@ -88,12 +88,12 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         if(tab.getPosition()==0){
-            fillQuantity(clock.today());
             isToday=true;
         }else{
-            fillQuantity(clock.yesterday());
             isToday=false;
         }
+        Date date = isToday? clock.today():clock.yesterday();
+        fillQuantity(date);
     }
 
     private void fillQuantity(Date date) {
@@ -160,11 +160,8 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         Set<Measurement> measurements = new HashSet<Measurement>();
         boolean successful=true;
         List<Reading> readingsWithDate;
-        if(isToday) {
-            readingsWithDate = readingsRepository.getReadingsWithDate(clock.today());
-        }else{
-            readingsWithDate = readingsRepository.getReadingsWithDate(clock.yesterday());
-        }
+        Date date = isToday? clock.today() : clock.yesterday();
+        readingsWithDate = readingsRepository.getReadingsWithDate(date);
 
         for(int i=0;i<flowMeterAdapter.getCount();i++){
             FlowMeterReading flowMeterReading = flowMeterAdapter.getItem(i);
@@ -174,7 +171,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
             Reading readingWithSite = findReadingWithSite(readingsWithDate, flowMeterReading.getSamplingName());
             if(readingWithSite==null){
                 measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));
-                readingWithSite= new Reading(null,flowMeterReading.getSamplingName(), measurements, clock.now());
+                readingWithSite= new Reading(null,flowMeterReading.getSamplingName(), measurements, date);
             }else{
                 Measurement measurement = readingWithSite.getMeasurement(flowMeterReading.getParameterName());
                 if(measurement!=null){

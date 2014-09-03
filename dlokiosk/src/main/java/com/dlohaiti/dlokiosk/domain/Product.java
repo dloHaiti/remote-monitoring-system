@@ -14,6 +14,7 @@ public class Product implements VisibleGridItem {
     private final Money price;
     private final String description;
     private final Integer gallons;
+    private Long categoryId;
 
     public Product(Long id,
                    String sku,
@@ -24,7 +25,8 @@ public class Product implements VisibleGridItem {
                    Integer maximumQuantity,
                    Money price,
                    String description,
-                   Integer gallons) {
+                   Integer gallons,
+                   Long categoryId) {
         this.id = id;
         this.sku = sku;
         this.imageResource = imageResource;
@@ -35,10 +37,12 @@ public class Product implements VisibleGridItem {
         this.price = price;
         this.description = description;
         this.gallons = gallons;
+        this.categoryId = categoryId;
     }
 
     public Product withQuantity(int quantity) {
-        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity, maximumQuantity, price, description, gallons);
+        return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity,
+                maximumQuantity, price, description, gallons, categoryId);
     }
 
     @Override
@@ -83,6 +87,10 @@ public class Product implements VisibleGridItem {
         return gallons;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,6 +111,7 @@ public class Product implements VisibleGridItem {
         if (price != null ? !price.equals(product.price) : product.price != null) return false;
         if (quantity != null ? !quantity.equals(product.quantity) : product.quantity != null) return false;
         if (sku != null ? !sku.equals(product.sku) : product.sku != null) return false;
+        if (categoryId != null ? !categoryId.equals(product.categoryId) : product.categoryId != null) return false;
 
         return true;
     }
@@ -119,6 +128,7 @@ public class Product implements VisibleGridItem {
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (gallons != null ? gallons.hashCode() : 0);
+        result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         return result;
     }
 }

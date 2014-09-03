@@ -1,6 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
+import com.dlohaiti.dlokiosk.SelectableListItem;
 
 import java.util.List;
 

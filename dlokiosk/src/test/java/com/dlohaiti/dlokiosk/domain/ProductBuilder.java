@@ -16,6 +16,7 @@ public class ProductBuilder {
     private Money price = new Money(BigDecimal.ONE);
     private String description = "10 Gallon";
     private Integer gallons = 0;
+    private Long categoryId = 1L;
 
     private ProductBuilder() {
     }
@@ -79,7 +80,13 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
     public Product build() {
-        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum, price, description, gallons);
+        return new Product(id, sku, resource, requiresQuantity, quantity, minimum, maximum,
+                price, description, gallons, categoryId);
     }
 }

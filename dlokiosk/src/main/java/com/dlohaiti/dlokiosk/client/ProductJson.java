@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.client;
 
 public class ProductJson {
+    private long id;
     private String sku;
     private String description;
     private Integer gallons;
@@ -9,6 +10,15 @@ public class ProductJson {
     private boolean requiresQuantity;
     private MoneyJson price;
     private String base64EncodedImage;
+    private long category;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getSku() {
         return sku;
@@ -72,5 +82,13 @@ public class ProductJson {
 
     public void setBase64EncodedImage(String base64EncodedImage) {
         this.base64EncodedImage = base64EncodedImage;
+    }
+
+    public long getCategory() {
+        return id;
+    }
+
+    public void setCategory(long id) {
+        this.id = id;
     }
 }

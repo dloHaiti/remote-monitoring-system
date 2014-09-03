@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import com.dlohaiti.dlokiosk.domain.FlowMeterReading;
 import com.dlohaiti.dlokiosk.domain.FlowMeterReadings;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.Reading;
-import com.dlohaiti.dlokiosk.widgets.FlowMeterAdapter;
+import com.dlohaiti.dlokiosk.adapter.FlowMeterAdapter;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.domain;
+package com.dlohaiti.dlokiosk.exception;
 
 public class NoSalesChannelWithGivenIdException extends RuntimeException {
     public NoSalesChannelWithGivenIdException(long id) {

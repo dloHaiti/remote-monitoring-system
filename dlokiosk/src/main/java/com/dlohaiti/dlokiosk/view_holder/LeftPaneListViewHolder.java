@@ -1,8 +1,8 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk.view_holder;
 
 import android.widget.TextView;
 
-public class SalesChannelViewHolder {
+public class LeftPaneListViewHolder {
     public long id;
     public TextView listItem;
 }

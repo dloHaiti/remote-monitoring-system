@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.exception.NoSalesChannelWithGivenIdException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 

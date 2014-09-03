@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.FlowMeterReading;
 import com.dlohaiti.dlokiosk.domain.FlowMeterReadings;
+import com.dlohaiti.dlokiosk.view_holder.FlowMeterViewHolder;
 
 import java.util.List;
 

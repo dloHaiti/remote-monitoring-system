@@ -104,7 +104,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="selected_sales_channel_list_item" parent="list_item">
+    <style name="selected_left_pane_list_item" parent="list_item">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
     </style>

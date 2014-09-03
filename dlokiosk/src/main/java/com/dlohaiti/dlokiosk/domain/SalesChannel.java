@@ -1,7 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
 
-import com.dlohaiti.dlokiosk.widgets.SelectableListItem;
+import com.dlohaiti.dlokiosk.SelectableListItem;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;

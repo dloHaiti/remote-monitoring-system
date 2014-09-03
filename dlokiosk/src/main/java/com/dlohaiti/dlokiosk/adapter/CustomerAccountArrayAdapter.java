@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -19,7 +19,7 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
     private final List<CustomerAccount> accounts;
 
     public CustomerAccountArrayAdapter(Context context, CustomerAccounts accounts) {
-        super(context, R.layout.layout_sales_channel_list_item, accounts);
+        super(context, R.layout.layout_left_pane_list_item, accounts);
         this.context = context;
         this.accounts = accounts;
     }

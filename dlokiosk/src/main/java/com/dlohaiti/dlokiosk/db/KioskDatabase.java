@@ -59,6 +59,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s INTEGER," +
                         "%s INTEGER," +
+                        "%s INTEGER," +
                         "%s INTEGER" +
                         ")",
                 ProductsTable.TABLE_NAME,
@@ -71,8 +72,20 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsTable.REQUIRES_QUANTITY,
                 ProductsTable.MINIMUM_QUANTITY,
                 ProductsTable.MAXIMUM_QUANTITY,
-                ProductsTable.GALLONS
+                ProductsTable.GALLONS,
+                ProductsTable.CATEGORY_ID
         );
+        String createProductCategories = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                        ")",
+                ProductsCategoryTable.TABLE_NAME,
+                ProductsCategoryTable.ID,
+                ProductsCategoryTable.NAME,
+                ProductsCategoryTable.ICON
+                );
         String createConfiguration = String.format(
                 "CREATE TABLE %s(" +
                         "%s TEXT," +
@@ -252,6 +265,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createReceipts);
         db.execSQL(createReceiptLineItems);
         db.execSQL(createProducts);
+        db.execSQL(createProductCategories);
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
         db.execSQL(createPromotions);
@@ -294,6 +308,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String MAXIMUM_QUANTITY = "MAXIMUM_QUANTITY";
         public static final String DESCRIPTION = "DESCRIPTION";
         public static final String GALLONS = "GALLONS";
+        public static final String CATEGORY_ID = "CATEGORY_ID";
+    }
+
+    public static class ProductsCategoryTable {
+        public static final String TABLE_NAME = "PRODUCT_CATEGORIES";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
+        public static final String ICON = "ICON";
     }
 
     public static class ReceiptsTable {

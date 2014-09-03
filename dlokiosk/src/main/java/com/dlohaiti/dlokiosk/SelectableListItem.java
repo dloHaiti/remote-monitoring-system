@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk;
 
 public class SelectableListItem {
     private long id;

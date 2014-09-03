@@ -5,8 +5,8 @@
     <color name="released_button_color">#cdcdcd</color>
     <color name="activity_background">@android:color/white</color>
     <color name="left_pane_background">#E6E6E6</color>
-    <color name="customer_account_list_divider">#D5D6D9</color>
-    <color name="sales_channel_list_divider">#969A99</color>
+    <color name="right_pane_list_divider">#D5D6D9</color>
+    <color name="left_pane_list_divider">#969A99</color>
     <color name="search_box_border_color">#b3b3b3</color>
     <color name="search_box_text_color">#8fb2f7</color>
     <color name="toggle_button_color">#5a5a5a</color>

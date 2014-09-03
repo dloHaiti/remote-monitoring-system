@@ -22,7 +22,7 @@ public class ProductRepositoryTest {
     @Before
     public void setUp() {
         Context applicationContext = Robolectric.application.getApplicationContext();
-        repository = new ProductRepository(applicationContext, db, new Base64ImageConverter(applicationContext));
+        repository = new ProductRepository(db, new Base64ImageConverter(applicationContext));
     }
 
     @Test

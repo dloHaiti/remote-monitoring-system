@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.exception.NoSalesChannelWithGivenIdException;
 import org.junit.Before;
 import org.junit.Test;
 

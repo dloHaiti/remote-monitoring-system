@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.SalesChannels;
+import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
 
 import java.util.List;
 
@@ -18,30 +19,30 @@ public class SalesChannelArrayAdapter extends ArrayAdapter<SalesChannel> {
     private final List<SalesChannel> listItems;
 
     public SalesChannelArrayAdapter(Context context, SalesChannels listItems) {
-        super(context, R.layout.layout_sales_channel_list_item, listItems);
+        super(context, R.layout.layout_left_pane_list_item, listItems);
         this.context = context;
         this.listItems = listItems;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        SalesChannelViewHolder holder;
+        LeftPaneListViewHolder holder;
         if (view == null) {
-            holder = new SalesChannelViewHolder();
+            holder = new LeftPaneListViewHolder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.layout_sales_channel_list_item, parent, false);
+            view = inflater.inflate(R.layout.layout_left_pane_list_item, parent, false);
             holder.listItem = (TextView) view.findViewById(R.id.list_item);
             view.setTag(holder);
         } else {
-            holder = (SalesChannelViewHolder) view.getTag();
+            holder = (LeftPaneListViewHolder) view.getTag();
         }
 
         SalesChannel salesChannel = listItems.get(position);
         holder.listItem.setText(salesChannel.name());
         holder.id = salesChannel.id();
         if (salesChannel.isSelected()) {
-            holder.listItem.setTextAppearance(getContext(), R.style.selected_sales_channel_list_item);
+            holder.listItem.setTextAppearance(getContext(), R.style.selected_left_pane_list_item);
             holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_list_item_background));
         } else {
             holder.listItem.setTextAppearance(getContext(), R.style.list_item);

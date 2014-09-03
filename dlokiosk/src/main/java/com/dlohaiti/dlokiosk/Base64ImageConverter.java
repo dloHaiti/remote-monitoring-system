@@ -30,6 +30,9 @@ public class Base64ImageConverter {
     }
 
     public String toBase64EncodedString(Bitmap imageResource) {
+        if (imageResource == null) {
+            return "";
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageResource.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.DEFAULT);

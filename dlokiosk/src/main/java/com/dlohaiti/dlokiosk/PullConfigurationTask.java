@@ -36,6 +36,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject
     private ConfigurationRepository configurationRepository;
     @Inject
+    private ProductCategoryRepository productCategoryRepository;
+    @Inject
     private KioskDate kioskDate;
     @Inject
     private Base64ImageConverter imageConverter;
@@ -68,7 +70,14 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (ProductJson p : c.getProducts()) {
             Money price = new Money(p.getPrice().getAmount());
             Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
-            products.add(new Product(null, p.getSku(), imageResource, p.isRequiresQuantity(), 1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons()));
+            products.add(new Product(p.getId(), p.getSku(), imageResource, p.isRequiresQuantity(),
+                    1, p.getMinimumQuantity(), p.getMaximumQuantity(), price, p.getDescription(), p.getGallons(),
+                    p.getCategory()));
+        }
+        List<ProductCategory> productCategories = new ArrayList<ProductCategory>();
+        for (ProductCategoryJson p : c.getProductCategories()) {
+            Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
+            productCategories.add(new ProductCategory(p.getId(), p.getName(), imageResource));
         }
         List<Promotion> promotions = new ArrayList<Promotion>();
         for (PromotionJson p : c.getPromotions()) {
@@ -80,7 +89,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         }
         List<ParameterSamplingSites> samplingSiteParameters = new ArrayList<ParameterSamplingSites>();
         for (ParameterJson p : c.getParameters()) {
-            Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk(),p.isUsedInTotalizer() ,p.getPriority());
+            Parameter parameter = new Parameter(p.getName(), p.getUnit(), p.getMinimum(), p.getMaximum(), p.isOkNotOk(), p.isUsedInTotalizer(), p.getPriority());
             List<SamplingSite> samplingSites = new ArrayList<SamplingSite>();
             for (SamplingSiteJson site : p.getSamplingSites()) {
                 samplingSites.add(new SamplingSite(site.getName()));
@@ -110,6 +119,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         return configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MIN, configuration.getMinimum()) &&
                 configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MAX, configuration.getMaximum()) &&
                 configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_DEFAULT, configuration.getDefault()) &&
+                productCategoryRepository.replaceAll(productCategories) &&
                 productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&
                 samplingSiteParametersRepository.replaceAll(samplingSiteParameters) &&

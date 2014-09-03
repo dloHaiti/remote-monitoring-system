@@ -1,4 +1,4 @@
-package com.dlohaiti.dlokiosk.widgets;
+package com.dlohaiti.dlokiosk.view_holder;
 
 
 import android.widget.EditText;

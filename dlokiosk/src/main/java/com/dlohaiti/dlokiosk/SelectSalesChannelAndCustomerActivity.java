@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
@@ -16,27 +15,23 @@ import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.SalesChannels;
-import com.dlohaiti.dlokiosk.widgets.CustomerAccountArrayAdapter;
-import com.dlohaiti.dlokiosk.widgets.SalesChannelArrayAdapter;
-import com.dlohaiti.dlokiosk.widgets.SalesChannelViewHolder;
+import com.dlohaiti.dlokiosk.adapter.CustomerAccountArrayAdapter;
+import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
+import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
 import com.google.inject.Inject;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
+public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
 
     @InjectView(R.id.sales_channel_list)
     private ListView salesChannelListView;
 
     @InjectView(R.id.customer_list)
     private ListView customerListView;
-
-    @InjectView(R.id.continue_button)
-    private ImageButton continueButton;
 
     private CustomerAccountArrayAdapter customerListAdapter;
     private SalesChannelArrayAdapter salesChannelAdapter;
@@ -102,7 +97,7 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 clearCustomerSearch();
                 SalesChannel tappedSalesChannel = salesChannels
-                        .findSalesChannelById(((SalesChannelViewHolder) view.getTag()).id);
+                        .findSalesChannelById(((LeftPaneListViewHolder) view.getTag()).id);
                 if (selectedSalesChannel != null) {
                     selectedSalesChannel.unSelect();
                 }
@@ -211,31 +206,8 @@ public class SelectSalesChannelAndCustomerActivity extends RoboActivity {
         customerListAdapter.notifyDataSetChanged();
     }
 
-    public void onCancel(View view) {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.cancel_sale_confirm_dialog_message)
-                .setTitle(R.string.cancel_sale_confirm_dialog_title)
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes_button_label,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-                                finish();
-                            }
-                        })
-                .setNegativeButton(R.string.no_button_label,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-                            }
-                        })
-                .show();
-    }
-
-    public void onBack(View view) {
-        finish();
-    }
-
-    public void onContinue(View view) {
+    @Override
+    protected Class<? extends SaleActivity> nextActivity() {
+        return AddProductsToSaleActivity.class;
     }
 }

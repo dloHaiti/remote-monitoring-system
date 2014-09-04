@@ -70,4 +70,5 @@
     <string name="cancel_sale_confirm_dialog_title">Confirm</string>
     <string name="yes_button_label">Yes</string>
     <string name="no_button_label">No</string>
+    <string name="enter_quantity_hint">Quantity</string>
 </resources>

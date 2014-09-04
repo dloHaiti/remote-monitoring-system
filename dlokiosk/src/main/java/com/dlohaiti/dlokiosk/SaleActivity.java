@@ -14,6 +14,21 @@ public abstract class SaleActivity extends RoboActivity {
 
     protected abstract Class<? extends SaleActivity> nextActivity();
 
+    protected void showNoConfigurationAlert() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.no_configuration_error_message)
+                .setTitle(R.string.no_configuration_error_title)
+                .setCancelable(false)
+                .setNeutralButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        })
+                .show();
+    }
+
     public void onCancel(View view) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.cancel_sale_confirm_dialog_message)

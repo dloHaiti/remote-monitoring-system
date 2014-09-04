@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/product_list_row"
+              android:orientation="horizontal"
+              android:weightSum="100">
+    <ImageView
+            android:id="@+id/icon"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            android:src="@drawable/five_g"/>
+    <TextView
+            android:id="@+id/sku"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            style="@style/product_list_text_item"
+            android:text="5 Gallons"/>
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="25">
+        <EditText
+                android:id="@+id/quantity"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/product_list_text_item"
+                android:inputType="number"
+                android:hint="@string/enter_quantity_hint"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="25">
+        <Button
+                android:id="@+id/add_product"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/product_list_text_item"
+                android:text="ADD"/>
+    </LinearLayout>
+
+</LinearLayout>

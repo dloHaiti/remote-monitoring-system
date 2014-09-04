@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
+import com.dlohaiti.dlokiosk.SelectableListItem;
 import com.dlohaiti.dlokiosk.VisibleGridItem;
 
 public class Product implements VisibleGridItem {

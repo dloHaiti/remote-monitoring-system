@@ -69,4 +69,5 @@
     <string name="cancel_sale_confirm_dialog_title">Confirmer</string>
     <string name="yes_button_label">Oui</string>
     <string name="no_button_label">Aucun</string>
+    <string name="enter_quantity_hint">Quantité</string>
 </resources>

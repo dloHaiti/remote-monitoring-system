@@ -1,15 +1,16 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import com.dlohaiti.dlokiosk.adapter.ProductArrayAdapter;
 import com.dlohaiti.dlokiosk.adapter.ProductCategoryArrayAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
+import com.dlohaiti.dlokiosk.db.ProductRepository;
 import com.dlohaiti.dlokiosk.domain.ProductCategories;
 import com.dlohaiti.dlokiosk.domain.ProductCategory;
+import com.dlohaiti.dlokiosk.domain.Products;
 import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
 import com.google.inject.Inject;
 import roboguice.inject.InjectView;
@@ -19,12 +20,21 @@ public class AddProductsToSaleActivity extends SaleActivity {
     @InjectView(R.id.product_category_list)
     private ListView productCategoryListView;
 
+    @InjectView(R.id.product_list)
+    private ListView productListView;
+
     @Inject
     private ProductCategoryRepository productCategoryRepository;
 
+    @Inject
+    private ProductRepository productRepository;
+
     private ProductCategories productCategories;
+    private Products allProducts;
+    private Products filteredProductList = new Products();
     private ProductCategory selectedProductCategory;
     private ProductCategoryArrayAdapter productCategoryAdapter;
+    private ProductArrayAdapter productListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +46,13 @@ public class AddProductsToSaleActivity extends SaleActivity {
     private void loadProductCategories() {
         productCategories = new ProductCategories(productCategoryRepository.findAll());
         if (productCategories.isEmpty()) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.no_configuration_error_message)
-                    .setTitle(R.string.no_configuration_error_title)
-                    .setCancelable(false)
-                    .setNeutralButton(R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int whichButton) {
-                                    finish();
-                                }
-                            })
-                    .show();
+            showNoConfigurationAlert();
         } else {
             productCategories.get(0).select();
             selectedProductCategory = productCategories.get(0);
+            loadProducts();
             initialiseProductCategoryList();
+            initialiseProductsList();
             continueButton.setEnabled(false);
         }
     }
@@ -76,6 +77,22 @@ public class AddProductsToSaleActivity extends SaleActivity {
 //                updateSalesChannelCustomerToggleButtonStatus();
             }
         });
+    }
+
+    private void loadProducts() {
+        allProducts = new Products(productRepository.list());
+        updateFilteredProductList();
+    }
+
+    private void updateFilteredProductList() {
+        filteredProductList.clear();
+        filteredProductList.addAll(
+                allProducts.findAccountsByCategoryId(selectedProductCategory.id()));
+    }
+
+    private void initialiseProductsList() {
+        productListAdapter = new ProductArrayAdapter(getApplicationContext(), filteredProductList);
+        productListView.setAdapter(productListAdapter);
     }
 
     @Override

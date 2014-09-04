@@ -1,7 +1,5 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,14 +7,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import com.dlohaiti.dlokiosk.adapter.CustomerAccountArrayAdapter;
+import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.SalesChannels;
-import com.dlohaiti.dlokiosk.adapter.CustomerAccountArrayAdapter;
-import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
 import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
 import com.google.inject.Inject;
 import roboguice.inject.InjectView;
@@ -62,18 +60,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
     private void loadSalesChannels() {
         salesChannels = new SalesChannels(salesChannelRepository.findAll());
         if (salesChannels.isEmpty()) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.no_configuration_error_message)
-                    .setTitle(R.string.no_configuration_error_title)
-                    .setCancelable(false)
-                    .setNeutralButton(R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int whichButton) {
-                                    finish();
-                                }
-                            })
-                    .show();
+            showNoConfigurationAlert();
         } else {
             salesChannels.get(0).select();
             selectedSalesChannel = salesChannels.get(0);

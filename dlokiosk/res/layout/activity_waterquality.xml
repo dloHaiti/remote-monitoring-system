@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/list_pane"
+        android:layout_width="match_parent"
+        android:weightSum="100"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
+        <ListView
+            android:id="@+id/site_list"
+            android:layout_width="0dp"
+            android:layout_weight="20"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:divider="@color/left_pane_list_divider"
+            android:background="@color/left_pane_background"/>
+        <ListView
+            android:id="@+id/parameter_list"
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:divider="@color/right_pane_list_divider"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_pane"
+        android:layout_alignParentBottom="true"
+        style="@style/bottom_navigation_pane">
+
+        <ImageButton
+            android:id="@+id/cancel_button"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cancel_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="onCancel"/>
+
+        <ImageButton
+            android:id="@+id/save_button"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50sp"
+            android:enabled="false"
+            android:src="@drawable/next_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="onSave"/>
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_toLeftOf="@id/continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="onBack"/>
+
+    </RelativeLayout>
+</RelativeLayout>

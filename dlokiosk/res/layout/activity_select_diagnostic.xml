@@ -14,6 +14,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Water Quality"
+            android:onClick="moveToWaterQualityScreen"
             android:id="@+id/waterQualitybtn"
             android:layout_gravity="center_vertical|center_horizontal" />
         <Button

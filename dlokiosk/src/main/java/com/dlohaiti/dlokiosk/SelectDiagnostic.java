@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,5 +19,9 @@ public class SelectDiagnostic extends RoboActivity {
 
     public void moveToFlowMeterScreen(View view) {
         startActivity(new Intent(this, FlowMeterReadingActivity.class));
+    }
+
+    public void moveToWaterQualityScreen(View view) {
+        startActivity(new Intent(this,WaterQualityActivity.class));
     }
 }

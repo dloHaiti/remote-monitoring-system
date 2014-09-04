@@ -118,6 +118,13 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectSalesChannelAndCustomerActivity"/>
         </activity>
+        <activity android:name=".WaterQualityActivity"
+            android:screenOrientation="landscape"
+            android:label="SELECT PRODUCTS">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
+        </activity>
     </application>
 
 </manifest>

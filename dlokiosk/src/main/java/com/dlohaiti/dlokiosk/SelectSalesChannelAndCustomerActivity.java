@@ -165,8 +165,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
             @Override
             public boolean onQueryTextChange(String text) {
                 filteredCustomerList.clear();
-                List<CustomerAccount> filteredList;
-                filteredList = !showingAllCustomers
+                List<CustomerAccount> filteredList = !showingAllCustomers
                         ? allCustomerList.filterAccountsBy(text, selectedSalesChannel)
                         : allCustomerList.filterAccountsBy(text);
                 filteredCustomerList.addAll(filteredList);

@@ -32,19 +32,19 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.layout_product_list_item, parent, false);
             holder.icon = (ImageView) view.findViewById(R.id.icon);
-            holder.sku = (TextView) view.findViewById(R.id.sku);
+            holder.description = (TextView) view.findViewById(R.id.description);
             view.setTag(holder);
         } else {
             holder = (ProductViewHolder) view.getTag();
         }
 
-//        holder.icon.setImageBitmap(products.get(position).getImageResource());
-        holder.sku.setText(products.get(position).getSku());
+        holder.icon.setImageBitmap(products.get(position).getImageResource());
+        holder.description.setText(products.get(position).getDescription());
         return view;
     }
 
     class ProductViewHolder {
         public ImageView icon;
-        public TextView sku;
+        public TextView description;
     }
 }

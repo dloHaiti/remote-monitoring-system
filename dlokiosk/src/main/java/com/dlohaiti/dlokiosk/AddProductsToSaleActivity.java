@@ -1,9 +1,13 @@
 package com.dlohaiti.dlokiosk;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 import com.dlohaiti.dlokiosk.adapter.ProductArrayAdapter;
 import com.dlohaiti.dlokiosk.adapter.ProductCategoryArrayAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
@@ -35,6 +39,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     private ProductCategory selectedProductCategory;
     private ProductCategoryArrayAdapter productCategoryAdapter;
     private ProductArrayAdapter productListAdapter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +78,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
                 selectedProductCategory = tappedProductCategory;
                 productCategoryAdapter.notifyDataSetChanged();
                 continueButton.setEnabled(false);
-//                updateCustomerList();
-//                updateSalesChannelCustomerToggleButtonStatus();
+                updateProductList();
             }
         });
     }
@@ -90,6 +94,11 @@ public class AddProductsToSaleActivity extends SaleActivity {
                 allProducts.findAccountsByCategoryId(selectedProductCategory.id()));
     }
 
+    private void updateProductList() {
+        updateFilteredProductList();
+        productListAdapter.notifyDataSetChanged();
+    }
+
     private void initialiseProductsList() {
         productListAdapter = new ProductArrayAdapter(getApplicationContext(), filteredProductList);
         productListView.setAdapter(productListAdapter);
@@ -98,5 +107,33 @@ public class AddProductsToSaleActivity extends SaleActivity {
     @Override
     protected Class<? extends SaleActivity> nextActivity() {
         return null;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_product_to_cart_activity, menu);
+
+        searchView = ((SearchView) menu.findItem(R.id.search_product).getActionView());
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                filteredProductList.clear();
+                filteredProductList.addAll(allProducts.filterBy(text, selectedProductCategory.id()));
+                productListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    public void onCartButtonClick(MenuItem item) {
+        Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT);
     }
 }

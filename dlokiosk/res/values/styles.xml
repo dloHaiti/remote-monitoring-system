@@ -118,6 +118,15 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="product_list_add_button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:background">@drawable/add_product_to_cart_button</item>
+    </style>
+
     <style name="selected_left_pane_list_item" parent="list_item">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>

@@ -71,4 +71,6 @@
     <string name="yes_button_label">Yes</string>
     <string name="no_button_label">No</string>
     <string name="enter_quantity_hint">Quantity</string>
+    <string name="add_product_to_cart">ADD</string>
+    <string name="search_product_text">Search Product</string>
 </resources>

@@ -39,6 +39,7 @@
         <Button
                 android:id="@+id/add_product"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:layout_width="wrap_content"
                 style="@style/product_list_add_button"
                 android:text="@string/add_product_to_cart"/>

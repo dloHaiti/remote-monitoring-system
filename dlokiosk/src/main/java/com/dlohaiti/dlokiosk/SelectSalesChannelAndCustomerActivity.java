@@ -43,8 +43,6 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
     private SalesChannels salesChannels;
     private CustomerAccounts allCustomerList;
     private CustomerAccounts filteredCustomerList = new CustomerAccounts();
-    private SalesChannel selectedSalesChannel;
-    private CustomerAccount selectedCustomerAccount;
     private boolean showingAllCustomers = false;
     private MenuItem salesChannelCustomerToggle;
     private SearchView searchView;
@@ -63,7 +61,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
             showNoConfigurationAlert();
         } else {
             salesChannels.get(0).select();
-            selectedSalesChannel = salesChannels.get(0);
+            cart.setSalesChannel(salesChannels.get(0));
             loadCustomerAccounts();
             initialiseSalesChannelList();
             initialiseCustomerList();
@@ -85,11 +83,11 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
                 clearCustomerSearch();
                 SalesChannel tappedSalesChannel = salesChannels
                         .findSalesChannelById(((LeftPaneListViewHolder) view.getTag()).id);
-                if (selectedSalesChannel != null) {
-                    selectedSalesChannel.unSelect();
+                if (cart.salesChannel() != null) {
+                    cart.salesChannel().unSelect();
                 }
                 tappedSalesChannel.select();
-                selectedSalesChannel = tappedSalesChannel;
+                cart.setSalesChannel(tappedSalesChannel);
                 salesChannelAdapter.notifyDataSetChanged();
                 continueButton.setEnabled(false);
                 updateCustomerList();
@@ -119,14 +117,14 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
                 CustomerAccount tappedCustomerAccount = filteredCustomerList.get(position);
                 if (tappedCustomerAccount.isSelected()) {
                     tappedCustomerAccount.unSelect();
-                    selectedCustomerAccount = null;
+                    cart.setCustomerAccount(null);
                     continueButton.setEnabled(false);
                 } else {
                     tappedCustomerAccount.select();
-                    if (selectedCustomerAccount != null) {
-                        selectedCustomerAccount.unSelect();
+                    if (cart.customerAccount() != null) {
+                        cart.customerAccount().unSelect();
                     }
-                    selectedCustomerAccount = tappedCustomerAccount;
+                    cart.setCustomerAccount(tappedCustomerAccount);
                     continueButton.setEnabled(true);
                 }
                 customerListAdapter.notifyDataSetChanged();
@@ -138,12 +136,12 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         filteredCustomerList.clear();
         allCustomerList.unSelectAll();
         filteredCustomerList.addAll(
-                allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.id()));
-        selectedCustomerAccount = null;
+                allCustomerList.findAccountsThatCanBeServedByChannel(cart.salesChannel().id()));
+        cart.setCustomerAccount(null);
     }
 
     private void updateCustomerList() {
-        selectedCustomerAccount = null;
+        cart.setCustomerAccount(null);
         updateFilteredCustomerList();
         customerListAdapter.notifyDataSetChanged();
     }
@@ -166,7 +164,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
             public boolean onQueryTextChange(String text) {
                 filteredCustomerList.clear();
                 List<CustomerAccount> filteredList = !showingAllCustomers
-                        ? allCustomerList.filterAccountsBy(text, selectedSalesChannel)
+                        ? allCustomerList.filterAccountsBy(text, cart.salesChannel())
                         : allCustomerList.filterAccountsBy(text);
                 filteredCustomerList.addAll(filteredList);
                 customerListAdapter.notifyDataSetChanged();
@@ -180,7 +178,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         clearCustomerSearch();
 
         if (!showingAllCustomers) {
-            item.setTitle(selectedSalesChannel.name());
+            item.setTitle(cart.salesChannel().name());
             filteredCustomerList.clear();
             filteredCustomerList.addAll(allCustomerList);
         } else {

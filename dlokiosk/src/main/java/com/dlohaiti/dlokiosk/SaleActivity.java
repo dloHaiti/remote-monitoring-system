@@ -5,12 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
+import com.dlohaiti.dlokiosk.domain.ShoppingCartNew;
+import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 public abstract class SaleActivity extends RoboActivity {
     @InjectView(R.id.continue_button)
     protected ImageButton continueButton;
+
+    @Inject
+    protected ShoppingCartNew cart;
 
     protected abstract Class<? extends SaleActivity> nextActivity();
 
@@ -38,6 +43,7 @@ public abstract class SaleActivity extends RoboActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
+                                cart.clear();
                                 finish();
                             }
                         })
@@ -58,7 +64,6 @@ public abstract class SaleActivity extends RoboActivity {
         if (nextActivity() == null) {
             return;
         }
-
         Intent intent = new Intent(getApplicationContext(), nextActivity());
         startActivity(intent);
     }

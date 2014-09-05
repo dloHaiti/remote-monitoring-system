@@ -12,12 +12,17 @@ import com.dlohaiti.dlokiosk.adapter.ProductArrayAdapter;
 import com.dlohaiti.dlokiosk.adapter.ProductCategoryArrayAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
+import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.ProductCategories;
 import com.dlohaiti.dlokiosk.domain.ProductCategory;
 import com.dlohaiti.dlokiosk.domain.Products;
 import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
 import com.google.inject.Inject;
 import roboguice.inject.InjectView;
+
+import java.text.MessageFormat;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AddProductsToSaleActivity extends SaleActivity {
 
@@ -40,6 +45,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     private ProductCategoryArrayAdapter productCategoryAdapter;
     private ProductArrayAdapter productListAdapter;
     private SearchView searchView;
+    private MenuItem cartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
         productCategoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                clearCustomerSearch();
+                clearProductSearch();
                 ProductCategory tappedProductCategory = productCategories
                         .findProductCategoryById(((LeftPaneListViewHolder) view.getTag()).id);
                 if (selectedProductCategory != null) {
@@ -81,6 +87,13 @@ public class AddProductsToSaleActivity extends SaleActivity {
                 updateProductList();
             }
         });
+    }
+
+    private void clearProductSearch() {
+        if (isNotBlank(searchView.getQuery())) {
+            searchView.setQuery("", true);
+        }
+        searchView.setIconified(true);
     }
 
     private void loadProducts() {
@@ -100,7 +113,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     private void initialiseProductsList() {
-        productListAdapter = new ProductArrayAdapter(getApplicationContext(), filteredProductList);
+        productListAdapter = new ProductArrayAdapter(this, filteredProductList);
         productListView.setAdapter(productListAdapter);
     }
 
@@ -114,6 +127,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
         getMenuInflater().inflate(R.menu.menu_add_product_to_cart_activity, menu);
 
         searchView = ((SearchView) menu.findItem(R.id.search_product).getActionView());
+        cartView = menu.findItem(R.id.cart);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -135,5 +149,10 @@ public class AddProductsToSaleActivity extends SaleActivity {
 
     public void onCartButtonClick(MenuItem item) {
         Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT);
+    }
+
+    public void onAddProduct(Product product, int quantity) {
+        cart.addOrProduct(product.withQuantity(quantity));
+        cartView.setTitle(MessageFormat.format("Cart ({0})", cart.getProducts().size()));
     }
 }

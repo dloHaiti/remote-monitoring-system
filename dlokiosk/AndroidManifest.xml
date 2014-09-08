@@ -116,14 +116,22 @@
                 android:label="SELECT PRODUCTS">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectSalesChannelAndCustomerActivity"/>
+                    android:value="com.dlohaiti.dlokiosk.AddProductsToSaleActivity"/>
+        </activity>
+        <activity
+                android:screenOrientation="landscape"
+                android:name=".ShoppingCartActivity"
+                android:label="SELECT PROMOTIONS">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.ShoppingCartActivity"/>
         </activity>
         <activity android:name=".WaterQualityActivity"
-            android:screenOrientation="landscape"
-            android:label="SELECT PRODUCTS">
+                  android:screenOrientation="landscape"
+                  android:label="SELECT PRODUCTS">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
         </activity>
     </application>
 

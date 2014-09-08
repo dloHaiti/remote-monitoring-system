@@ -73,4 +73,6 @@
     <string name="enter_quantity_hint">Quantity</string>
     <string name="add_product_to_cart">ADD</string>
     <string name="search_product_text">Search Product</string>
+    <string name="order_for_label">ORDER FOR: </string>
+    <string name="choose_promotion_label">CHOOSE PROMOTIONS AVAILABLE FOR THIS ORDER</string>
 </resources>

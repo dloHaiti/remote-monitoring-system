@@ -64,7 +64,6 @@ public class AddProductsToSaleActivity extends SaleActivity {
             loadProducts();
             initialiseProductCategoryList();
             initialiseProductsList();
-            continueButton.setEnabled(false);
         }
     }
 
@@ -119,7 +118,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
 
     @Override
     protected Class<? extends SaleActivity> nextActivity() {
-        return null;
+        return ShoppingCartActivity.class;
     }
 
     @Override
@@ -148,7 +147,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     public void onCartButtonClick(MenuItem item) {
-        Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT).show();
     }
 
     public void onAddProduct(Product product, int quantity) {

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="25"
-            style="@style/product_list_text_item"
+            style="@style/normal_text"
             android:text="5 Gallons"/>
 
     <LinearLayout
@@ -27,7 +27,7 @@
                 android:id="@+id/quantity"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                style="@style/product_list_text_item"
+                style="@style/normal_text"
                 android:inputType="number"
                 android:hint="@string/enter_quantity_hint"/>
     </LinearLayout>

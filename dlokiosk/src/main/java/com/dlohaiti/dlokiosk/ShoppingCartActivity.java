@@ -1,31 +1,33 @@
 package com.dlohaiti.dlokiosk;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
+import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
+import com.dlohaiti.dlokiosk.domain.ProductCategories;
 import com.google.inject.Inject;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 import roboguice.inject.InjectView;
-
-import static java.util.Arrays.asList;
 
 public class ShoppingCartActivity extends SaleActivity {
 
     @Inject
     private ProductRepository productRepository;
 
-    @InjectView(R.id.product_list)
-    private ListView productList;
+    @Inject
+    private ProductCategoryRepository productCategoryRepository;
+
+    @InjectView(R.id.product_grid)
+    private StickyGridHeadersGridView productGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, asList("Product 1", "Product 2", "Product 3", "Product 4", "Product 5", "Product 6", "Product 7", "Product 8", "Product 9"));
-        productList.setAdapter(adapter);
+        productGrid.setAdapter(new ProductGridAdapter(
+                getApplicationContext(), productRepository.list(), new ProductCategories(productCategoryRepository.findAll()),
+                R.layout.layout_product_grid_header, R.layout.layout_product_grid_item));
     }
 
     @Override

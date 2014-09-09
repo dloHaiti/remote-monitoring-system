@@ -86,12 +86,16 @@
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.robolectric</groupId>
             <artifactId>robolectric</artifactId>
             <version>2.1.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tonicartos</groupId>
+            <artifactId>stickygridheaders</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

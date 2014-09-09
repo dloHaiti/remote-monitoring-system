@@ -13,6 +13,6 @@
     <color name="selected_list_item_background">#4394F7</color>
     <color name="bottom_navigation_pane_background">#41464D</color>
     <color name="add_product_to_cart_button">#5B616C</color>
-    <color name="order_summary_background">#F7F7F7</color>
-    <color name="product_grid_header">#3C464D</color>
+    <color name="order_summary_background">#ffebebeb</color>
+    <color name="product_grid_header">#ff97a8af</color>
 </resources>

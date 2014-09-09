@@ -9,5 +9,4 @@
         android:background="@color/product_grid_header"
         android:textColor="@android:color/white"
         android:textSize="15sp"
-        android:textStyle="bold"
         android:text="Water"/>

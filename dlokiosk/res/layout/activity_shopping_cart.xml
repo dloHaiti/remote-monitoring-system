@@ -28,7 +28,7 @@
                         android:id="@+id/order_for_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/order_for_label_text"
+                        style="@style/all_caps_text"
                         android:text="@string/order_for_label"/>
                 <TextView
                         android:id="@+id/sales_channel"
@@ -38,21 +38,21 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:maxWidth="200dp"
-                        style="@style/order_for_label_text"
+                        style="@style/all_caps_text"
                         android:text="Over the counter Really Long"/>
                 <TextView
                         android:id="@+id/sales_channel_account_separator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/sales_channel"
-                        style="@style/order_for_label_text"
+                        style="@style/all_caps_text"
                         android:text=" | "/>
                 <TextView
                         android:id="@+id/customer_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/sales_channel_account_separator"
-                        style="@style/order_for_label_text"
+                        style="@style/all_caps_text"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="John Doe Really Long"/>
@@ -84,10 +84,12 @@
                       android:orientation="vertical"
                       android:layout_marginLeft="20dp">
             <TextView
+                    android:paddingTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/choose_promotion_label"
-                    style="@style/order_for_label_text"/>
+                    android:layout_gravity="center_horizontal"
+                    style="@style/all_caps_text"/>
 
         </LinearLayout>
     </LinearLayout>

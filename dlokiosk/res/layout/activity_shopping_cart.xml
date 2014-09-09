@@ -22,6 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/order_summary_height"
                     android:gravity="center_vertical"
+                    android:paddingLeft="2dp"
                     android:background="@color/order_summary_background">
                 <TextView
                         android:id="@+id/order_for_label"
@@ -35,10 +36,10 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/order_for_label"
                         android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="175dp"
+                        android:singleLine="true"
+                        android:maxWidth="200dp"
                         style="@style/order_for_label_text"
-                        android:text="Over the counter"/>
+                        android:text="Over the counter Really Long"/>
                 <TextView
                         android:id="@+id/sales_channel_account_separator"
                         android:layout_width="wrap_content"
@@ -53,9 +54,8 @@
                         android:layout_toRightOf="@id/sales_channel_account_separator"
                         style="@style/order_for_label_text"
                         android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="250dp"
-                        android:text="John Doe"/>
+                        android:singleLine="true"
+                        android:text="John Doe Really Long"/>
             </RelativeLayout>
 
             <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView

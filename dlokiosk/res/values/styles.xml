@@ -115,7 +115,7 @@
 
     <style name="normal_text">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="order_for_label_text" parent="normal_text">

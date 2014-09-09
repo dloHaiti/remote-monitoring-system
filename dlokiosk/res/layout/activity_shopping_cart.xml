@@ -55,7 +55,7 @@
                         style="@style/all_caps_text"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="John Doe Really Long"/>
+                        android:text="John Doe Really Really Long"/>
             </RelativeLayout>
 
             <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
@@ -65,9 +65,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:columnWidth="100dip"
-                    android:numColumns="auto_fit"
-                    android:paddingTop="10dp"
+                    android:columnWidth="120dip"
+                    android:numColumns="3"
+                    android:layout_marginTop="10dp"
                     tools:context=".ItemListFragment"/>
 
         </LinearLayout>
@@ -90,6 +90,15 @@
                     android:text="@string/choose_promotion_label"
                     android:layout_gravity="center_horizontal"
                     style="@style/all_caps_text"/>
+
+            <GridView
+                    android:id="@+id/right_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:columnWidth="50dp"/>
 
         </LinearLayout>
     </LinearLayout>

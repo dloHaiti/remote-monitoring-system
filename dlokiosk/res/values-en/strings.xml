@@ -75,4 +75,6 @@
     <string name="search_product_text">Search Product</string>
     <string name="order_for_label">ORDER FOR: </string>
     <string name="choose_promotion_label">CHOOSE PROMOTIONS AVAILABLE FOR THIS ORDER</string>
+    <string name="total_price_label">Total Price:</string>
+    <string name="discounted_price_label">Discounted Price:</string>
 </resources>

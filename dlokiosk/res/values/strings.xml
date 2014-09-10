@@ -75,4 +75,6 @@
     <string name="search_product_text">Recherche Produit</string>
     <string name="order_for_label">ORDONNANCE DE:</string>
     <string name="choose_promotion_label">CHOISIR PROMOTIONS DISPONIBLES POUR CETTE ORDONNANCE</string>
+    <string name="total_price_label">Prix ​​Total:</string>
+    <string name="discounted_price_label">Prix ​​Réduit:</string>
 </resources>

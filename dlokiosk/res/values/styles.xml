@@ -179,4 +179,14 @@
         <item name="android:src">@drawable/green_checkmark</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
+
+    <style name="price_text" parent="all_caps_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@color/product_grid_header</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>

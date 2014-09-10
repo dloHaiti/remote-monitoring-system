@@ -84,6 +84,7 @@
                       android:orientation="vertical"
                       android:layout_marginLeft="20dp">
             <TextView
+                    android:id="@+id/choose_promotion_label"
                     android:paddingTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,11 +95,63 @@
             <GridView
                     android:id="@+id/right_grid"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/promotions_grid_height"
                     android:gravity="center"
                     android:numColumns="3"
                     android:stretchMode="columnWidth"
-                    android:columnWidth="50dp"/>
+                    android:columnWidth="@dimen/promotions_grid_column_width"/>
+
+            <LinearLayout
+                    android:padding="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:text="@string/total_price_label"
+                        android:paddingTop="@dimen/price_label_space"
+                        android:paddingBottom="@dimen/price_label_space"
+                        android:paddingLeft="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+                <TextView
+                        android:id="@+id/total_price"
+                        android:text="220"
+                        android:padding="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+                <TextView
+                        android:id="@+id/total_price_currency"
+                        android:text="HTG"
+                        android:paddingTop="@dimen/price_label_space"
+                        android:paddingRight="@dimen/price_label_space"
+                        android:paddingBottom="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+                <TextView
+                        android:text="@string/discounted_price_label"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="@dimen/price_label_space"
+                        android:paddingBottom="@dimen/price_label_space"
+                        android:paddingLeft="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+                <TextView
+                        android:id="@+id/discounted_price"
+                        android:text="180"
+                        android:padding="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+                <TextView
+                        android:id="@+id/discounted_price_currency"
+                        android:text="HTG"
+                        android:paddingTop="@dimen/price_label_space"
+                        android:paddingRight="@dimen/price_label_space"
+                        android:paddingBottom="@dimen/price_label_space"
+                        style="@style/price_text"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

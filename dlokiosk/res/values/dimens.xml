@@ -8,5 +8,8 @@
     <dimen name="row_height">60sp</dimen>
     <dimen name="order_summary_height">40sp</dimen>
     <dimen name="product_row_height">100sp</dimen>
+    <dimen name="price_label_space">5dp</dimen>
+    <dimen name="promotions_grid_height">270dp</dimen>
+    <dimen name="promotions_grid_column_width">50dp</dimen>
 
 </resources>

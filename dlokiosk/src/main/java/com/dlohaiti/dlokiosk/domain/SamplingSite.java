@@ -1,11 +1,14 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.SelectableListItem;
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
 public class SamplingSite implements Comparable<SamplingSite> {
     private final Long id;
     private final String name;
+    private boolean selected;
 
     public SamplingSite(String name) {
         this(null, name);
@@ -36,7 +39,19 @@ public class SamplingSite implements Comparable<SamplingSite> {
 
         return true;
     }
+    public boolean isSelected() {
+        return selected;
+    }
 
+    public SamplingSite select() {
+        this.selected = true;
+        return this;
+    }
+
+    public SamplingSite unSelect() {
+        this.selected = false;
+        return this;
+    }
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;

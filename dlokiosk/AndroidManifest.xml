@@ -127,8 +127,8 @@
                     android:value="com.dlohaiti.dlokiosk.ShoppingCartActivity"/>
         </activity>
         <activity android:name=".WaterQualityActivity"
-                  android:screenOrientation="landscape"
-                  android:label="SELECT PRODUCTS">
+            android:screenOrientation="landscape"
+            android:label="Water Quality Readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>

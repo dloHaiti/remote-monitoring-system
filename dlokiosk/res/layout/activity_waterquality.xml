@@ -4,14 +4,15 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/list_pane"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:weightSum="100"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_pane"
         android:baselineAligned="false">
         <ListView
             android:id="@+id/site_list"
             android:layout_width="0dp"
-            android:layout_weight="20"
+            android:layout_weight="25"
             android:layout_height="match_parent"
             android:dividerHeight="@dimen/list_divider_height"
             android:divider="@color/left_pane_list_divider"
@@ -19,7 +20,7 @@
         <ListView
             android:id="@+id/parameter_list"
             android:layout_width="0dp"
-            android:layout_weight="80"
+            android:layout_weight="75"
             android:layout_height="match_parent"
             android:dividerHeight="@dimen/list_divider_height"
             android:divider="@color/right_pane_list_divider"/>

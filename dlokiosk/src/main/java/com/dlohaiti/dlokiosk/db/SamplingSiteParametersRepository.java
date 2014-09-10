@@ -10,6 +10,7 @@ import com.dlohaiti.dlokiosk.domain.SamplingSite;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -27,6 +28,7 @@ public class SamplingSiteParametersRepository {
             KioskDatabase.ParametersTable.MINIMUM,
             KioskDatabase.ParametersTable.MAXIMUM,
             KioskDatabase.ParametersTable.IS_OK_NOT_OK,
+            KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER,
             KioskDatabase.ParametersTable.PRIORITY
     };
 
@@ -36,8 +38,8 @@ public class SamplingSiteParametersRepository {
         this.samplingSiteRepository = samplingSiteRepository;
     }
 
-    public SortedSet<Parameter> findBySamplingSite(SamplingSite samplingSite) {
-        SortedSet<Parameter> parameters = new TreeSet<Parameter>();
+    public ArrayList<Parameter> findBySamplingSite(SamplingSite samplingSite) {
+        ArrayList<Parameter> parameters = new ArrayList<Parameter>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
@@ -56,7 +58,9 @@ public class SamplingSiteParametersRepository {
                 boolean isOkNotOk = Boolean.parseBoolean(query.getString(4));
                 boolean isUsedInTotalizer = Boolean.parseBoolean(query.getString(5));
                 Integer priority = query.getInt(6);
-                parameters.add(new Parameter(name, unitOfMeasure, minimum, maximum, isOkNotOk,isUsedInTotalizer, priority));
+                if(isUsedInTotalizer==false) {
+                    parameters.add(new Parameter(name, unitOfMeasure, minimum, maximum, isOkNotOk, isUsedInTotalizer, priority));
+                }
                 query.moveToNext();
             }
             query.close();
@@ -64,7 +68,7 @@ public class SamplingSiteParametersRepository {
             return parameters;
         } catch (Exception e) {
             Log.e(TAG, String.format("Problem loading parameters for sampling site %s", samplingSite.getName()), e);
-            return new TreeSet<Parameter>();
+            return new ArrayList<Parameter>();
         } finally {
             rdb.endTransaction();
         }

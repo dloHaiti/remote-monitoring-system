@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -149,5 +150,27 @@ public class SamplingSiteRepository {
 
     private String parameterQuery() {
        return format("(SELECT id from %s where %s = 'true') ",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
+    }
+
+    public ArrayList<SamplingSite> listAllWaterQualityChannel() {
+        ArrayList<SamplingSite> sites=new ArrayList<SamplingSite>();
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        try {
+            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                sites.add(new SamplingSite(c.getLong(0), c.getString(1)));
+                c.moveToNext();
+            }
+            c.close();
+            rdb.setTransactionSuccessful();
+            return sites;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load sampling sites from database.", e);
+            return new ArrayList<SamplingSite>();
+        } finally {
+            rdb.endTransaction();
+        }
     }
 }

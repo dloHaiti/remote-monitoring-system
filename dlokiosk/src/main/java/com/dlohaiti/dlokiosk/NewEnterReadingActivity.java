@@ -55,44 +55,44 @@ public class NewEnterReadingActivity extends RoboActivity {
         Bundle extras = this.getIntent().getExtras();
         samplingSite = samplingSiteRepository.findByName(extras.getString("samplingSiteName"));
         heading.setText(samplingSite.getName());
-        SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for (Parameter p : parameters) {
-            View row = inflater.inflate(R.layout.parameter_row, null);
-            TextView label = (TextView) row.findViewById(R.id.parameter_label);
-            TextView units = (TextView) row.findViewById(R.id.parameter_units);
-            TextView range = (TextView) row.findViewById(R.id.parameter_range);
-            final EditText input = (EditText) row.findViewById(R.id.parameter_input);
-            values.put(p, input);
-
-            if (p.isOkNotOk()) {
-                input.setVisibility(View.GONE);
-                RadioGroup okGroup = (RadioGroup) row.findViewById(R.id.ok_group);
-                okGroup.setVisibility(View.VISIBLE);
-                okGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if (R.id.radio_ok == checkedId) {
-                            input.setText("1");
-                        } else if (R.id.radio_not_ok == checkedId) {
-                            input.setText("0");
-                        } else {
-                            input.setText("");
-                        }
-                    }
-                });
-            }
-
-            label.setText(p.getName());
-            units.setText(p.getUnitOfMeasure());
-            if (p.hasRange() && !p.isOkNotOk()) {
-                range.setText(p.getRange());
-            }
-            parametersList.addView(row);
-        }
-        boolean hasSeveralParameters = parametersList.getChildCount() > 1;
-        nextParameterButton.setEnabled(hasSeveralParameters);
-        previousParameterButton.setEnabled(hasSeveralParameters);
+//        SortedSet<Parameter> parameters = repository.findBySamplingSite(samplingSite);
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        for (Parameter p : parameters) {
+//            View row = inflater.inflate(R.layout.parameter_row, null);
+//            TextView label = (TextView) row.findViewById(R.id.parameter_label);
+//            TextView units = (TextView) row.findViewById(R.id.parameter_units);
+//            TextView range = (TextView) row.findViewById(R.id.parameter_range);
+//            final EditText input = (EditText) row.findViewById(R.id.parameter_input);
+//            values.put(p, input);
+//
+//            if (p.isOkNotOk()) {
+//                input.setVisibility(View.GONE);
+//                RadioGroup okGroup = (RadioGroup) row.findViewById(R.id.ok_group);
+//                okGroup.setVisibility(View.VISIBLE);
+//                okGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                        if (R.id.radio_ok == checkedId) {
+//                            input.setText("1");
+//                        } else if (R.id.radio_not_ok == checkedId) {
+//                            input.setText("0");
+//                        } else {
+//                            input.setText("");
+//                        }
+//                    }
+//                });
+//            }
+//
+//            label.setText(p.getName());
+//            units.setText(p.getUnitOfMeasure());
+//            if (p.hasRange() && !p.isOkNotOk()) {
+//                range.setText(p.getRange());
+//            }
+//            parametersList.addView(row);
+//        }
+//        boolean hasSeveralParameters = parametersList.getChildCount() > 1;
+//        nextParameterButton.setEnabled(hasSeveralParameters);
+//        previousParameterButton.setEnabled(hasSeveralParameters);
     }
 
     @Override

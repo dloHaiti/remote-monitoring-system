@@ -18,6 +18,8 @@ public class Parameter implements Comparable<Parameter> {
     private final boolean isOkNotOk;
     private final boolean isUsedInTotalizer;
     private final Integer priority;
+    private String value;
+
 
     public Parameter(String name, String unitOfMeasure, String minimum, String maximum, boolean isOkNotOk, boolean isUsedInTotalizer, Integer priority) {
         this.name = defaultString(name);
@@ -28,6 +30,7 @@ public class Parameter implements Comparable<Parameter> {
         this.isOkNotOk = isOkNotOk;
         this.isUsedInTotalizer=isUsedInTotalizer;
         this.priority = ObjectUtils.defaultIfNull(priority, Integer.MAX_VALUE);
+        this.value="";
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
@@ -35,6 +38,14 @@ public class Parameter implements Comparable<Parameter> {
             return new BigDecimal(candidate).setScale(2);
         }
         return defaultValue;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public String getName() {

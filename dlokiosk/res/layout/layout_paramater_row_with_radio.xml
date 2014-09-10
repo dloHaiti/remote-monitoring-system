@@ -12,16 +12,26 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black" />
-
-    <EditText
-        android:id="@+id/parameter_input"
+    <RadioGroup
+        android:id="@+id/ok_group"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/edit_text"
-        android:inputType="numberDecimal"
-        android:textColor="@android:color/black" />
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textColor="@android:color/black" />
+
+        <RadioButton
+            android:id="@+id/radio_not_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_ok"
+            android:textColor="@android:color/black" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/parameter_units"

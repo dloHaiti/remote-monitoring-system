@@ -151,13 +151,39 @@ public class SamplingSiteRepository {
     private String parameterQuery() {
        return format("(SELECT id from %s where %s = 'true') ",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
     }
+//
+//    select distinct(sampling_site.*) from sampling_site,PARAMETER_SAMPLING_SITES
+//    where sampling_site.id=PARAMETER_SAMPLING_SITES.sampling_site_id
+//    and PARAMETER_SAMPLING_SITES.parameter_id  != 19 ;
 
     public ArrayList<SamplingSite> listAllWaterQualityChannel() {
         ArrayList<SamplingSite> sites=new ArrayList<SamplingSite>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        try {
-            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+        try {  Cursor c = rdb.rawQuery(format(
+                "SELECT distinct %s.* FROM " +
+                        "%s,%s" +
+                        " WHERE %s.%s = %s.%s" +
+                        " AND %s.%s != %s" +
+                        " GROUP BY %s.%s" +
+                        " ORDER BY %s.%s",
+                KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+
+                KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesTable.ID,
+                KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesParametersTable.SITE_ID,
+
+                KioskDatabase.SamplingSitesParametersTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesParametersTable.PARAMETER_ID,
+                parameterQuery(),
+                KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesTable.ID,
+                KioskDatabase.SamplingSitesTable.TABLE_NAME,
+                KioskDatabase.SamplingSitesTable.NAME),null);
+//            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 sites.add(new SamplingSite(c.getLong(0), c.getString(1)));

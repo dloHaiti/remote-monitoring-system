@@ -1,6 +1,8 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +25,7 @@ import java.util.List;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-public class WaterQualityActivity extends RoboActivity {
+public class WaterQualityActivity extends RoboActivity implements ActionBar.TabListener{
 
     @InjectView(R.id.site_list)
     private ListView samplingSiteListView;
@@ -48,7 +50,17 @@ public class WaterQualityActivity extends RoboActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waterquality);
+        createActionBarTabs();
         loadSamplingSites();
+    }
+
+    private void createActionBarTabs() {
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.addTab(actionBar.newTab().setText("Today")
+                .setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Yesterday")
+                .setTabListener(this));
     }
 
     private void loadSamplingSites() {
@@ -111,5 +123,20 @@ public class WaterQualityActivity extends RoboActivity {
     }
 
     public void onSave(View view) {
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
 }

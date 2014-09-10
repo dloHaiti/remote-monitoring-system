@@ -58,16 +58,11 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flowmeter);
+        createActionBarTabs();
+        loadFlowMeterReading();
+    }
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        // for each of the sections in the app, add a tab to the action bar.
-        actionBar.addTab(actionBar.newTab().setText("Today")
-                .setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText("Yesterday")
-                .setTabListener(this));
-
+    private void loadFlowMeterReading() {
         FlowMeterReadings samplingSites = new FlowMeterReadings(repository.ListAllFlowMeterSites());
 
         flowMeterAdapter = new FlowMeterAdapter(getApplicationContext(), samplingSites);
@@ -75,11 +70,18 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         flowMeterList.setAdapter(flowMeterAdapter);
 
         fillQuantity(clock.today());
+    }
 
+    private void createActionBarTabs() {
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.addTab(actionBar.newTab().setText("Today")
+                .setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Yesterday")
+                .setTabListener(this));
     }
 
     public void cancelClick(View view) {
-//        SamplingSite item = flowMeterAdapter.getItem(0);
         Intent intent = new Intent(FlowMeterReadingActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

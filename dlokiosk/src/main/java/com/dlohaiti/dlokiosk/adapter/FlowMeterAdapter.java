@@ -72,21 +72,7 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
                 if (!hasFocus) {
                     final int position = v.getId();
                     final EditText Caption = (EditText) v;
-                    String val = Caption.getText().toString();  // you have the value here
-
-//                    if (val.compareTo("") != 0) {
-//                        String accountName = "";
-//                        if (Caption.getTag() != null) {
-//                            accountName = Caption.getTag().toString();  // get the tag
-//                        }
-//
-////                        for (int i = 0; i < listItems.size(); i++) {
-////                            if (accountName.compareToIgnoreCase(ealist.get(i).savingAccountName) == 0) {
-////                                ealist.get(i).paymentAmount = val;
-////                            }
-////                        }
-//
-//                    }
+                    String val = Caption.getText().toString();
                     ((FlowMeterReading) listItems.get(position)).setQuantity(val);
                 }
 

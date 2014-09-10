@@ -27,34 +27,6 @@
                 android:divider="@color/right_pane_list_divider"/>
     </LinearLayout>
 
-    <RelativeLayout
-            android:id="@+id/bottom_pane"
-            android:layout_alignParentBottom="true"
-            style="@style/bottom_navigation_pane"
-            android:gravity="center">
-
-        <ImageButton
-                android:id="@+id/cancel_button"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/cancel_button"
-                style="@style/navigation_button"
-                android:onClick="onCancel"/>
-
-        <ImageButton
-                android:id="@+id/continue_button"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="50sp"
-                android:src="@drawable/next_button"
-                style="@style/navigation_button"
-                android:onClick="onContinue"/>
-
-        <ImageButton
-                android:id="@+id/back_button"
-                android:layout_toLeftOf="@id/continue_button"
-                android:src="@drawable/back_button"
-                style="@style/navigation_button"
-                android:onClick="onBack"/>
-
-    </RelativeLayout>
+    <include layout="@layout/layout_sale_bottom_pane"/>
 
 </RelativeLayout>

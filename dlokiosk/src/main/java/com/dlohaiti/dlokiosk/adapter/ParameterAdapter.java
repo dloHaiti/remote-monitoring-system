@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,16 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
     private static final int RADIO_FORM = 1;
     private final Context context;
     private final List<Parameter> listItems;
+    private boolean isDisplayError=false;
 
     public ParameterAdapter(Context context, List<Parameter> parameters) {
         super(context, R.layout.parameter_row, parameters);
         this.context = context;
         this.listItems = parameters;
+    }
+
+    public void setDisplayError(boolean isDisplayError) {
+        this.isDisplayError = isDisplayError;
     }
 
     @Override
@@ -73,6 +79,8 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
             meterToggleHolder.radioGroup.check(R.id.radio_ok);
         }else if(parameter.getValue().equalsIgnoreCase("0")){
             meterToggleHolder.radioGroup.check(R.id.radio_not_ok);
+        }else{
+            meterToggleHolder.radioGroup.clearCheck();
         }
         meterToggleHolder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -111,13 +119,24 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         }
         setTextValues(view,parameter);
         holder.listItem.setId(position);
+        if(parameter.considersInvalid(holder.listItem.getText().toString()) && !holder.listItem.getText().toString().isEmpty() ){
+                holder.listItem.setError("Please enter valid input");
+        }else {
+            holder.listItem.setError(null);
+        }
         holder.listItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     final int position = v.getId();
                     final EditText Caption = (EditText) v;
                     String val = Caption.getText().toString();
-                    ((Parameter) listItems.get(position)).setValue(val);
+                    Parameter parameter = (Parameter) listItems.get(position);
+                    parameter.setValue(val);
+                    if(!val.isEmpty() && parameter.considersInvalid(val)) {
+                        Caption.setError("Please enter valid input");
+                    }else{
+                        Caption.setError(null);
+                    }
                 }
 
             }

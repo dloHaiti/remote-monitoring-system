@@ -151,10 +151,6 @@ public class SamplingSiteRepository {
     private String parameterQuery() {
        return format("(SELECT id from %s where %s = 'true') ",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
     }
-//
-//    select distinct(sampling_site.*) from sampling_site,PARAMETER_SAMPLING_SITES
-//    where sampling_site.id=PARAMETER_SAMPLING_SITES.sampling_site_id
-//    and PARAMETER_SAMPLING_SITES.parameter_id  != 19 ;
 
     public ArrayList<SamplingSite> listAllWaterQualityChannel() {
         ArrayList<SamplingSite> sites=new ArrayList<SamplingSite>();
@@ -183,7 +179,6 @@ public class SamplingSiteRepository {
                 KioskDatabase.SamplingSitesTable.ID,
                 KioskDatabase.SamplingSitesTable.TABLE_NAME,
                 KioskDatabase.SamplingSitesTable.NAME),null);
-//            Cursor c = rdb.query(KioskDatabase.SamplingSitesTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 sites.add(new SamplingSite(c.getLong(0), c.getString(1)));

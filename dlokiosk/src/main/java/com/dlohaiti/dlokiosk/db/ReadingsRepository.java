@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Clock;
 import com.dlohaiti.dlokiosk.domain.Measurement;
@@ -49,7 +50,7 @@ public class ReadingsRepository {
         this.clock = clock;
     }
 
-    public List<Reading> getReadingsWithDate(Date date){
+    public List<Reading> getReadingsWithDate(Date date) {
         List<Reading> readings = new ArrayList<Reading>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
@@ -65,7 +66,7 @@ public class ReadingsRepository {
                 KioskDatabase.ReadingsTable.CREATED_DATE,
                 createdDate,
                 getNextDay(date)
-                ),null);
+        ), null);
         try {
             if (rc.moveToFirst()) {
                 while (!rc.isAfterLast()) {
@@ -74,7 +75,7 @@ public class ReadingsRepository {
                     Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
                     if (mc.moveToFirst()) {
                         while (!mc.isAfterLast()) {
-                            measurements.add(new Measurement(mc.getLong(0),mc.getString(1), new BigDecimal(mc.getString(2))));
+                            measurements.add(new Measurement(mc.getLong(0), mc.getString(1), new BigDecimal(mc.getString(2))));
                             mc.moveToNext();
                         }
                     } else {
@@ -87,13 +88,59 @@ public class ReadingsRepository {
                 rc.close();
                 rdb.setTransactionSuccessful();
             }
-                return readings;
+            return readings;
         } catch (Exception e) {
             Log.e(TAG, "Failed to load readings from database.", e);
             return new ArrayList<Reading>();
-        }finally {
+        } finally {
             rdb.endTransaction();
         }
+    }
+
+    public Reading getReadingsWithDateAndSamplingSite(Date date, String samplingSiteName) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        String createdDate = kioskDate.getFormat().format(removeTime(date));
+
+        Cursor rc = rdb.rawQuery(format(
+                "SELECT %s FROM " +
+                        "%s" +
+                        " WHERE %s BETWEEN '%s' AND '%s'" +
+                        " AND %s like '%s'",
+                StringUtils.join(READINGS_COLUMNS, ","),
+                KioskDatabase.ReadingsTable.TABLE_NAME,
+                KioskDatabase.ReadingsTable.CREATED_DATE,
+                createdDate,
+                getNextDay(date),
+                KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME,
+                samplingSiteName
+        ), null);
+        try {
+            if (rc.moveToFirst()) {
+                long readingId = rc.getLong(0);
+                Set<Measurement> measurements = new HashSet<Measurement>();
+                Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
+                if (mc.moveToFirst()) {
+                    while (!mc.isAfterLast()) {
+                        measurements.add(new Measurement(mc.getLong(0), mc.getString(1), new BigDecimal(mc.getString(2))));
+                        mc.moveToNext();
+                    }
+                } else {
+                    Log.d("QUERY", "Unable to find reading");
+                }
+                Reading reading = new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)));
+                mc.close();
+                rc.close();
+                rdb.setTransactionSuccessful();
+                return reading;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load readings from database.", e);
+        } finally {
+            rdb.endTransaction();
+        }
+        return null;
+
     }
 
     private String getNextDay(Date date) {
@@ -102,7 +149,7 @@ public class ReadingsRepository {
         c.setTime(date);
         c.add(Calendar.DATE, 1);  // number of days to add
         String nextDay = kioskDate.getFormat().format(c.getTime());
-        nextDay= nextDay.split(" ")[0];
+        nextDay = nextDay.split(" ")[0];
         return nextDay;
     }
 
@@ -113,21 +160,21 @@ public class ReadingsRepository {
         values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
         wdb.beginTransaction();
         try {
-            long readingId ;
-            if(reading.getId()==null) {
-                readingId=wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
-            }else{
-                readingId=reading.getId();
+            long readingId;
+            if (reading.getId() == null) {
+                readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
+            } else {
+                readingId = reading.getId();
             }
             for (Measurement m : reading.getMeasurements()) {
                 ContentValues cv = new ContentValues();
                 cv.put(KioskDatabase.MeasurementsTable.PARAMETER_NAME, m.getParameterName());
                 cv.put(KioskDatabase.MeasurementsTable.VALUE, m.getValue().toString());
                 cv.put(KioskDatabase.MeasurementsTable.READING_ID, readingId);
-                if(m.getId()==null) {
+                if (m.getId() == null) {
                     wdb.insert(KioskDatabase.MeasurementsTable.TABLE_NAME, null, cv);
-                }else{
-                    wdb.update(KioskDatabase.MeasurementsTable.TABLE_NAME,cv,"id "+"="+m.getId(),null);
+                } else {
+                    wdb.update(KioskDatabase.MeasurementsTable.TABLE_NAME, cv, "id " + "=" + m.getId(), null);
                 }
             }
             wdb.setTransactionSuccessful();
@@ -154,7 +201,7 @@ public class ReadingsRepository {
                     Cursor mc = rdb.query(KioskDatabase.MeasurementsTable.TABLE_NAME, MEASUREMENTS_COLUMNS, where(KioskDatabase.MeasurementsTable.READING_ID), matches(readingId), null, null, null);
                     if (mc.moveToFirst()) {
                         while (!mc.isAfterLast()) {
-                            measurements.add(new Measurement(mc.getLong(0),mc.getString(1), new BigDecimal(mc.getString(2))));
+                            measurements.add(new Measurement(mc.getLong(0), mc.getString(1), new BigDecimal(mc.getString(2))));
                             mc.moveToNext();
                         }
                     }
@@ -175,8 +222,8 @@ public class ReadingsRepository {
     }
 
     public boolean remove(Reading reading) {
-        Date yesterday =removeTime(clock.yesterday());
-        if (!reading.getCreatedDate().before(yesterday)){
+        Date yesterday = removeTime(clock.yesterday());
+        if (!reading.getCreatedDate().before(yesterday)) {
             return false;
         }
         SQLiteDatabase wdb = db.getWritableDatabase();
@@ -194,7 +241,7 @@ public class ReadingsRepository {
         }
     }
 
-    private Date removeTime(Date date){
+    private Date removeTime(Date date) {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(date);
         gc.set(Calendar.HOUR_OF_DAY, 0);

@@ -105,6 +105,7 @@
         </activity>
         <activity android:name=".FlowMeterReadingActivity"
                   android:screenOrientation="landscape"
+                  android:windowSoftInputMode="adjustPan"
                   android:label="Flow Meter Readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -113,6 +114,7 @@
         <activity
                 android:screenOrientation="landscape"
                 android:name=".AddProductsToSaleActivity"
+                android:windowSoftInputMode="adjustPan"
                 android:label="SELECT PRODUCTS">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -128,6 +130,7 @@
         </activity>
         <activity android:name=".WaterQualityActivity"
             android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"
             android:label="Water Quality Readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

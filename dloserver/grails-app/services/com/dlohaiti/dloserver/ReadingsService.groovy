@@ -15,15 +15,24 @@ class ReadingsService {
         if(samplingSite == null) {
           throw new MissingSamplingSiteException()
         }
-        Reading reading = new Reading([createdDate: createdDate, samplingSite: samplingSite, username: "${params.kiosk.name} operator"])
-          for(it in params.measurements) {
-              Measurement measurement = new Measurement()
-              measurement.parameter = Parameter.findByNameIlike(it.parameterName)
-              measurement.value = new BigDecimal(it.value as Double)
-              reading.addToMeasurements(measurement)
+        Reading reading =  Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate,  params.kiosk, samplingSite)
+        if(reading==null) {
+            reading = new Reading([createdDate: createdDate, samplingSite: samplingSite,kiosk: params.kiosk, username: "${params.kiosk.name} operator"])
+        }
+        for(it in params.measurements) {
+              def parameter =  Parameter.findByNameIlike(it.parameterName)
+              def m=reading?.measurements.find({m -> m.parameter == parameter})
+              if(m != null) {
+                 m.value= new BigDecimal(it.value as Double)
+                 m.save(flush: true)
+              }else {
+                  Measurement measurement = new Measurement()
+                  measurement.parameter = parameter
+                  measurement.value = new BigDecimal(it.value as Double)
+                  reading.addToMeasurements(measurement)
+              }
           }
 
-        reading.kiosk = params.kiosk
         reading.save(flush: true)
         return reading
     }

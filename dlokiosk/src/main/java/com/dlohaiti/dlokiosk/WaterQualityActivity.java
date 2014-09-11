@@ -179,7 +179,6 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
         if (reading == null) {
             reading = new Reading(null, selectedSamplingSite.getName(), new HashSet<Measurement>(), date);
         }
-
         measurements = reading.getMeasurements();
         ParameterAdapter parameterAdapter = (ParameterAdapter) parameterListView.getAdapter();
 
@@ -195,10 +194,11 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
                 measurement.setValue(new BigDecimal(parameter.getValue()));
             }
         }
+        reading.setSynced(false);
         boolean successful = readingsRepository.save(reading);
         if (successful) {
             Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
-//            finish();
+            finish();
         } else {
             Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
         }

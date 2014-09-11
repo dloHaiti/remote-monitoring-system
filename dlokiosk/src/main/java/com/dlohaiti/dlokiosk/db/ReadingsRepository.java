@@ -32,7 +32,9 @@ public class ReadingsRepository {
     private final static String[] READINGS_COLUMNS = new String[]{
             KioskDatabase.ReadingsTable.ID,
             KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME,
-            KioskDatabase.ReadingsTable.CREATED_DATE
+            KioskDatabase.ReadingsTable.CREATED_DATE,
+            KioskDatabase.ReadingsTable.IS_SYNCED,
+
     };
     private final static String[] MEASUREMENTS_COLUMNS = new String[]{
             KioskDatabase.MeasurementsTable.ID,
@@ -81,7 +83,8 @@ public class ReadingsRepository {
                     } else {
                         Log.d("QUERY", "Unable to find reading");
                     }
-                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2))));
+                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)), Boolean.parseBoolean(rc.getString(3))));
+
                     mc.close();
                     rc.moveToNext();
                 }
@@ -128,7 +131,7 @@ public class ReadingsRepository {
                 } else {
                     Log.d("QUERY", "Unable to find reading");
                 }
-                Reading reading = new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)));
+                Reading reading = new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)),Boolean.parseBoolean(rc.getString(3)));
                 mc.close();
                 rc.close();
                 rdb.setTransactionSuccessful();
@@ -155,16 +158,21 @@ public class ReadingsRepository {
 
     public boolean save(Reading reading) {
         SQLiteDatabase wdb = db.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME, reading.getSamplingSiteName());
-        values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
+
         wdb.beginTransaction();
         try {
             long readingId;
+            ContentValues values = new ContentValues();
             if (reading.getId() == null) {
+                values.put(KioskDatabase.ReadingsTable.SAMPLING_SITE_NAME, reading.getSamplingSiteName());
+                values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
+                values.put(KioskDatabase.ReadingsTable.IS_SYNCED, String.valueOf(reading.isSynced()));
                 readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
             } else {
                 readingId = reading.getId();
+                values.put(KioskDatabase.ReadingsTable.IS_SYNCED, String.valueOf(reading.isSynced()));
+                Log.d("UPDATE",String.valueOf(reading.isSynced()));
+                wdb.update(KioskDatabase.ReadingsTable.TABLE_NAME,values, "id " + "=" + readingId,null);
             }
             for (Measurement m : reading.getMeasurements()) {
                 ContentValues cv = new ContentValues();
@@ -192,7 +200,7 @@ public class ReadingsRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, null, null, null, null, null);
+            Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, whereSyncFalse(), null, null, null, null);
             Log.i(TAG, "Found readings: " + rc.getCount());
             if (rc.moveToFirst()) {
                 while (!rc.isAfterLast()) {
@@ -206,7 +214,7 @@ public class ReadingsRepository {
                         }
                     }
                     mc.close();
-                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2))));
+                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)),Boolean.parseBoolean(rc.getString(3))));
                     rc.moveToNext();
                 }
             }
@@ -221,9 +229,15 @@ public class ReadingsRepository {
         }
     }
 
+    private String whereSyncFalse() {
+        return format("%s is '%s'",KioskDatabase.ReadingsTable.IS_SYNCED,"false");
+    }
+
     public boolean remove(Reading reading) {
         Date yesterday = removeTime(clock.yesterday());
         if (!reading.getCreatedDate().before(yesterday)) {
+            reading.setSynced(true);
+            this.save(reading);
             return false;
         }
         SQLiteDatabase wdb = db.getWritableDatabase();

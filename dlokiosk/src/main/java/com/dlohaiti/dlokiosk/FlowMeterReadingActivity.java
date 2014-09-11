@@ -182,6 +182,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
                     measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));
                 }
             }
+            readingWithSite.setSynced(false);
             successful = readingsRepository.save(readingWithSite);
             if(!successful){
                 break;

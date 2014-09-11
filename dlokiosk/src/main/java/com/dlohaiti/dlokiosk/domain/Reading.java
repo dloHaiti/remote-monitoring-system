@@ -8,6 +8,7 @@ public class Reading {
     private final String samplingSiteName;
     private final Date createdDate;
     private final Set<Measurement> measurements;
+    private boolean isSynced;
 
     public Reading(SamplingSite samplingSite, Set<Measurement> measurements, Date createdDate) {
         this(null, samplingSite.getName(), measurements, createdDate);
@@ -18,6 +19,15 @@ public class Reading {
         this.samplingSiteName = samplingSiteName;
         this.measurements = measurements;
         this.createdDate = createdDate;
+        this.isSynced=false;
+    }
+
+    public Reading(Long id, String samplingSiteName, Set<Measurement> measurements, Date createdDate,boolean synced) {
+        this.id = id;
+        this.samplingSiteName = samplingSiteName;
+        this.measurements = measurements;
+        this.createdDate = createdDate;
+        this.isSynced=synced;
     }
 
     public Long getId() {
@@ -69,5 +79,13 @@ public class Reading {
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (measurements != null ? measurements.hashCode() : 0);
         return result;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        this.isSynced = synced;
     }
 }

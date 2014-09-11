@@ -187,12 +187,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ReadingsTable.TABLE_NAME,
                 ReadingsTable.ID,
                 ReadingsTable.SAMPLING_SITE_NAME,
-                ReadingsTable.CREATED_DATE
+                ReadingsTable.CREATED_DATE,
+                ReadingsTable.IS_SYNCED
         );
         String createMeasurementLineItems = String.format(
                 "CREATE TABLE %s(" +
@@ -384,6 +386,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String ID = "ID";
         public static final String SAMPLING_SITE_NAME = "SAMPLING_SITE_NAME";
         public static final String CREATED_DATE = "CREATED_DATE";
+        public static final String IS_SYNCED = "IS_SYNCED";
     }
 
     public static class MeasurementsTable {

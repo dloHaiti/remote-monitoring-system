@@ -75,33 +75,32 @@ class ReadingsService {
         if(parser.isSolarFile(allLines[0])) {
           readingsToSave = parser.parse(allLines)
         } else {
-          for(String[] line in allLines) {
+          for(String[] line in allLines.tail()) {
             if(line.length != 3) {
               log.error("Rejecting file [${filename}] because of invalid line:\n\t\t${line}")
               return false
             }
 
-            String sensorId = line[0]
-            String timestamp = line[1]
+            String sensorId = line[1]
+            String timestamp = line[0]
             String value = line[2]
-            Date createdDate = new SimpleDateFormat(grailsApplication.config.dloserver.measurement.timeformat.toString()).parse(timestamp)
+            Date createdDate = new SimpleDateFormat("yyyy/MM/dd_HH:mm:ss").parse(timestamp)
             Sensor sensor = Sensor.findBySensorId(sensorId)
             if(sensor == null) {
               log.error("Rejecting file [${filename}] because line references invalid SensorId [${sensorId}]")
               return false
             }
 
-            def existingReading = Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate, sensor.kiosk, sensor.samplingSite)
-            if(existingReading?.measurements.find({m -> m.parameter == sensor.parameter})) {
+            def reading = Reading.findByCreatedDateAndKioskAndSamplingSite(createdDate, sensor.kiosk, sensor.samplingSite)
+            if(reading?.measurements.find({m -> m.parameter == sensor.parameter})) {
               log.warn("Ignoring duplicate line from file [${filename}]. line:\n\t\t${line}")
               continue
             }
-
+            if(reading==null) {
+                  reading = new Reading([createdDate: createdDate, samplingSite: sensor.samplingSite,kiosk:  sensor.kiosk, username: "sensor"])
+            }
             Measurement measurement = new Measurement(parameter: sensor.parameter, value: parseValue(value))
-            Reading reading = new Reading(createdDate: createdDate)
             reading.addToMeasurements(measurement)
-            reading.samplingSite = sensor.samplingSite
-            reading.kiosk = sensor.kiosk
             if(reading.validate()) {
               readingsToSave.add(reading)
             } else {

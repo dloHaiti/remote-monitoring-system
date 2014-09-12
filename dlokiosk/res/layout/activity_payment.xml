@@ -40,10 +40,10 @@
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingBottom="10dp"
-            android:weightSum="10">
+            android:weightSum="100">
         <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="7"
+                android:layout_weight="65"
                 android:orientation="vertical"
                 android:layout_height="match_parent"
                 android:paddingTop="10dp">
@@ -52,23 +52,21 @@
                 <TextView
                         android:id="@+id/payment_type_label"
                         style="@style/payment_form_field"
-                        android:text="Payment Type"/>
+                        android:text="@string/payment_type_label"/>
                 <TextView
                         android:id="@+id/payment_type"
                         style="@style/payment_form_field"
                         android:text="Cash"/>
             </LinearLayout>
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/right_pane_list_divider"/>
+
+            <ImageView style="@style/horizontal_divider"/>
+
             <LinearLayout
                     style="@style/payment_form_row">
                 <TextView
                         android:id="@+id/select_payee_label"
                         style="@style/payment_form_field"
-                        android:text="Select Payee"/>
+                        android:text="@string/select_payee_label"/>
                 <TextView
                         android:id="@+id/select_payee"
                         style="@style/payment_form_field"
@@ -79,7 +77,7 @@
                 <TextView
                         android:id="@+id/select_sponsor_label"
                         style="@style/payment_form_field"
-                        android:text="Select Sponsor"/>
+                        android:text="@string/select_sponsor_label"/>
                 <TextView
                         android:id="@+id/select_sponsor"
                         style="@style/payment_form_field"
@@ -90,40 +88,35 @@
                 <TextView
                         android:id="@+id/payment_amount_label"
                         style="@style/payment_form_field"
-                        android:text="Enter Sponsor's Payment Amount"/>
+                        android:text="@string/sponsor_payment_amount_label"/>
                 <TextView
                         android:id="@+id/payment_amount"
                         style="@style/payment_form_field"
                         android:text="0"/>
             </LinearLayout>
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/right_pane_list_divider"/>
+
+            <ImageView style="@style/horizontal_divider"/>
+
             <LinearLayout
                     style="@style/payment_form_row">
                 <TextView
                         android:id="@+id/payment_done_through_label"
                         style="@style/payment_form_field"
-                        android:text="Payment done through"/>
+                        android:text="@string/payment_done_through_label"/>
                 <TextView
                         android:id="@+id/payment_done_through"
                         style="@style/payment_form_field"
                         android:text="Pre-Pay"/>
             </LinearLayout>
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/right_pane_list_divider"/>
+
+            <ImageView style="@style/horizontal_divider"/>
 
             <LinearLayout
                     style="@style/payment_form_row">
                 <TextView
                         android:id="@+id/amount_label"
                         style="@style/payment_form_field"
-                        android:text="Amount"/>
+                        android:text="@string/amount_label"/>
                 <TextView
                         android:id="@+id/amount_through"
                         style="@style/payment_form_field"
@@ -133,10 +126,98 @@
         </LinearLayout>
         <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="35"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@color/payment_confirmation_pane_background">
+
+            <TextView
+                    android:text="@string/payment_summary_label"
+                    style="@style/payment_summary_heading"/>
+
+            <TextView
+                    android:text="@string/customer_payment_label"
+                    style="@style/payment_summary_text"/>
+
+            <LinearLayout
+                    style="@style/payment_value_container">
+
+                <TextView
+                        android:id="@+id/customer_payment_value"
+                        style="@style/payment_summary_field_value"
+                        android:text="200"/>
+
+                <TextView
+                        android:id="@+id/customer_payment_currency"
+                        android:paddingLeft="5dp"
+                        style="@style/payment_summary_field_value"
+                        android:text="HTG"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:text="@string/sponsor_payment_label"
+                    style="@style/payment_summary_text"/>
+
+            <LinearLayout
+                    style="@style/payment_value_container">
+
+                <TextView
+                        android:id="@+id/sponsor_payment_value"
+                        style="@style/payment_summary_field_value"
+                        android:text="0"/>
+
+                <TextView
+                        android:id="@+id/sponsor_payment_currency"
+                        android:paddingLeft="5dp"
+                        style="@style/payment_summary_field_value"
+                        android:text="HTG"/>
+
+            </LinearLayout>
+
+            <ImageView style="@style/payment_summary_divider"/>
+
+            <TextView
+                    android:text="@string/total_price_summary_label"
+                    style="@style/payment_summary_text"/>
+
+            <LinearLayout
+                    style="@style/payment_value_container"
+                    android:background="@color/total_price_summary_label_background">
+
+                <TextView
+                        android:id="@+id/total_price_value"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="200"/>
+
+                <TextView
+                        android:id="@+id/total_price_currency"
+                        android:paddingLeft="5dp"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="HTG"/>
+
+            </LinearLayout>
+
+            <TextView
+                    android:text="@string/amount_due_summary_label"
+                    style="@style/payment_summary_text"/>
+
+            <LinearLayout
+                    style="@style/payment_value_container"
+                    android:background="@color/amount_due_summary_label_background">
+
+                <TextView
+                        android:id="@+id/amount_due_value"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="200"/>
+
+                <TextView
+                        android:id="@+id/amount_due_currency"
+                        android:paddingLeft="5dp"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="HTG"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

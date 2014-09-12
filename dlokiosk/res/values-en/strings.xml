@@ -73,8 +73,20 @@
     <string name="enter_quantity_hint">Quantity</string>
     <string name="add_product_to_cart">ADD</string>
     <string name="search_product_text">Search Product</string>
-    <string name="order_for_label">ORDER FOR: </string>
+    <string name="order_for_label">ORDER FOR:</string>
     <string name="choose_promotion_label">CHOOSE PROMOTIONS AVAILABLE FOR THIS ORDER</string>
     <string name="total_price_label">Total Price:</string>
     <string name="discounted_price_label">Discounted Price:</string>
+
+    <string name="payment_type_label">Payment Type</string>
+    <string name="select_payee_label">Select Payee</string>
+    <string name="select_sponsor_label">Select Sponsor</string>
+    <string name="sponsor_payment_amount_label">Enter Sponsor\'s Payment Amount</string>
+    <string name="payment_done_through_label">Payment done through</string>
+    <string name="amount_label">Amount</string>
+    <string name="payment_summary_label">PAYMENT SUMMARY</string>
+    <string name="customer_payment_label">CUSTOMER PAYMENT</string>
+    <string name="sponsor_payment_label">SPONSOR PAYMENT</string>
+    <string name="total_price_summary_label">TOTAL PRICE FOR THE ORDER</string>
+    <string name="amount_due_summary_label">AMOUNT DUE</string>
 </resources>

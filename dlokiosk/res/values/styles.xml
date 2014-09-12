@@ -115,7 +115,11 @@
 
     <style name="normal_text">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="white_text" parent="normal_text">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="all_caps_text">
@@ -218,7 +222,50 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="horizontal_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:background">@color/right_pane_list_divider</item>
+    </style>
+
+    <style name="payment_summary_divider" parent="horizontal_divider">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@color/list_divider_dark</item>
+    </style>
+
+    <style name="payment_summary_text" parent="normal_text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="payment_summary_heading" parent="payment_summary_text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="payment_value_container" parent="payment_summary_text">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/bottom_navigation_pane_background</item>
+    </style>
+
+    <style name="payment_summary_field_value" parent="white_text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="strong_payment_summary_field_value" parent="payment_summary_field_value">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="table_header">

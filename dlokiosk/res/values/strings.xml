@@ -77,4 +77,16 @@
     <string name="choose_promotion_label">CHOISIR PROMOTIONS DISPONIBLES POUR CETTE ORDONNANCE</string>
     <string name="total_price_label">Prix ​​Total:</string>
     <string name="discounted_price_label">Prix ​​Réduit:</string>
+
+    <string name="payment_type_label">Type de Paiement</string>
+    <string name="select_payee_label">Sélectionnez bénéficiaire</string>
+    <string name="select_sponsor_label">Sélectionnez commanditaire</string>
+    <string name="sponsor_payment_amount_label">Entrez Paiement Montant du commanditaire</string>
+    <string name="payment_done_through_label">Paiement fait par</string>
+    <string name="amount_label">Montant</string>
+    <string name="payment_summary_label">PAIEMENT RÉSUMÉ</string>
+    <string name="customer_payment_label">PAIEMENT À LA CLIENTÈLE</string>
+    <string name="sponsor_payment_label">SPONSOR PAIEMENT</string>
+    <string name="total_price_summary_label">PRIX TOTAL POUR L\'ORDRE</string>
+    <string name="amount_due_summary_label">MONTANT DÛ</string>
 </resources>

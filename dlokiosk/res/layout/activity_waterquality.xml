@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+                android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout
-        android:id="@+id/list_pane"
-        android:layout_width="fill_parent"
-        android:weightSum="100"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom_pane"
-        android:baselineAligned="false">
+            android:id="@+id/list_pane"
+            android:layout_width="fill_parent"
+            android:weightSum="100"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/bottom_pane"
+            android:baselineAligned="false">
         <ListView
-            android:id="@+id/site_list"
-            android:layout_width="0dp"
-            android:layout_weight="25"
-            android:layout_height="match_parent"
-            android:dividerHeight="@dimen/list_divider_height"
-            android:divider="@color/left_pane_list_divider"
-            android:background="@color/left_pane_background"/>
+                android:id="@+id/site_list"
+                android:layout_width="0dp"
+                android:layout_weight="25"
+                android:layout_height="match_parent"
+                android:dividerHeight="@dimen/list_divider_height"
+                android:divider="@color/list_divider_dark"
+                android:background="@color/left_pane_background"/>
         <ListView
-            android:id="@+id/parameter_list"
-            android:layout_width="0dp"
-            android:layout_weight="75"
-            android:layout_height="match_parent"
-            android:dividerHeight="@dimen/list_divider_height"
-            android:divider="@color/right_pane_list_divider"/>
+                android:id="@+id/parameter_list"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="match_parent"
+                android:dividerHeight="@dimen/list_divider_height"
+                android:divider="@color/right_pane_list_divider"/>
     </LinearLayout>
 
     <RelativeLayout

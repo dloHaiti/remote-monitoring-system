@@ -16,7 +16,7 @@
                 android:layout_weight="20"
                 android:layout_height="match_parent"
                 android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/left_pane_list_divider"
+                android:divider="@color/list_divider_dark"
                 android:background="@color/left_pane_background"/>
         <ListView
                 android:id="@+id/customer_list"

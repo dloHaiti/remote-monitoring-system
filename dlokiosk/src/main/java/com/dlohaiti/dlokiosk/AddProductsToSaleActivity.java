@@ -82,7 +82,6 @@ public class AddProductsToSaleActivity extends SaleActivity {
                 tappedProductCategory.select();
                 selectedProductCategory = tappedProductCategory;
                 productCategoryAdapter.notifyDataSetChanged();
-                continueButton.setEnabled(false);
                 updateProductList();
             }
         });

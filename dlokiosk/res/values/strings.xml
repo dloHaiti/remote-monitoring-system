@@ -89,4 +89,6 @@
     <string name="sponsor_payment_label">SPONSOR PAIEMENT</string>
     <string name="total_price_summary_label">PRIX TOTAL POUR L\'ORDRE</string>
     <string name="amount_due_summary_label">MONTANT DÛ</string>
+
+    <string name="sale_confirm_dialog_message">VOTRE COMMANDE A ÉTÉ CONFIRMÉ</string>
 </resources>

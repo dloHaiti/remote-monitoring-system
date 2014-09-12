@@ -9,14 +9,12 @@
     <color name="list_divider_dark">#969A99</color>
     <color name="search_box_border_color">#b3b3b3</color>
     <color name="search_box_text_color">#8fb2f7</color>
-    <color name="toggle_button_color">#5a5a5a</color>
     <color name="selected_list_item_background">#4394F7</color>
     <color name="bottom_navigation_pane_background">#41464D</color>
     <color name="add_product_to_cart_button">#5B616C</color>
     <color name="order_summary_background">#FFEBEBEB</color>
     <color name="product_grid_header">#FF97A8AF</color>
-    <color name="submit_button">#7AE100</color>
     <color name="payment_confirmation_pane_background">#D5D6D9</color>
-    <color name="total_price_summary_label_background">#7DDE14</color>
+    <color name="medium_spring_green">#7DDE14</color>
     <color name="amount_due_summary_label_background">#E54546</color>
 </resources>

@@ -157,6 +157,7 @@
         <item name="android:layout_height">@dimen/row_height</item>
         <item name="android:padding">8dp</item>
         <item name="android:background">@color/bottom_navigation_pane_background</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="navigation_button" parent="android:Widget.Holo.Button.Borderless">
@@ -168,6 +169,19 @@
         <item name="android:paddingRight">20dp</item>
     </style>
 
+    <style name="confirm_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColor">@color/bottom_navigation_pane_background</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+    </style>
+
     <style name="submit_button" parent="android:Widget.Holo.Button.Borderless">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -175,7 +189,7 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
-        <item name="android:background">@color/submit_button</item>
+        <item name="android:background">@color/medium_spring_green</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 

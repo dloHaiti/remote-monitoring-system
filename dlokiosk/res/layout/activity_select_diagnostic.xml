@@ -31,14 +31,15 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F9F9F9">
-        <Button
+        style="@style/bottom_navigation_pane"
+      >
+
+        <ImageButton
             android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:onClick="cancelClick"
-            android:text="Cancel"/>
+            android:src="@drawable/cancel_button"
+            style="@style/navigation_button"
+            android:onClick="cancelClick"/>
 
     </RelativeLayout>
 

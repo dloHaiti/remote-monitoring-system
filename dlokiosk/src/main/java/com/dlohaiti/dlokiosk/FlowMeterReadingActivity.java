@@ -218,4 +218,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         return !isError;
     }
 
+    public void onBack(View view) {
+        super.onBackPressed();
+    }
 }

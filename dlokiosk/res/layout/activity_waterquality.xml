@@ -29,35 +29,34 @@
     <RelativeLayout
         android:id="@+id/bottom_pane"
         android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
         style="@style/bottom_navigation_pane">
 
         <ImageButton
             android:id="@+id/cancel_button"
             android:layout_alignParentLeft="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:src="@drawable/cancel_button"
-            style="?android:attr/borderlessButtonStyle"
+            style="@style/navigation_button"
             android:onClick="onCancel"/>
 
-        <ImageButton
-            android:id="@+id/save_button"
+        <Button
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50sp"
-            android:enabled="false"
-            android:src="@drawable/next_button"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="Submit"
+            android:id="@+id/save_button"
+            android:layout_centerVertical="true"
+            style="@style/submit_button"
             android:onClick="onSave"/>
 
         <ImageButton
             android:id="@+id/back_button"
-            android:layout_toLeftOf="@id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@id/save_button"
             android:src="@drawable/back_button"
-            style="?android:attr/borderlessButtonStyle"
+            style="@style/navigation_button"
             android:onClick="onBack"/>
 
     </RelativeLayout>

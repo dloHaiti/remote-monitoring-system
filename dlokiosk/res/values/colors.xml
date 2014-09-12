@@ -16,4 +16,5 @@
     <color name="order_summary_background">#FFEBEBEB</color>
     <color name="product_grid_header">#FF97A8AF</color>
     <color name="payment_confirmation_pane_background">#D5D6D9</color>
+    <color name="submit_button">#7AE100</color>
 </resources>

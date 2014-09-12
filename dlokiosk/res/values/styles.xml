@@ -151,6 +151,7 @@
     <style name="bottom_navigation_pane">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/row_height</item>
+        <item name="android:padding">8dp</item>
         <item name="android:background">@color/bottom_navigation_pane_background</item>
     </style>
 
@@ -161,6 +162,17 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
+    </style>
+
+    <style name="submit_button" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:background">@color/submit_button</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="remove_button" parent="android:Widget.Holo.Button.Borderless">
@@ -209,4 +221,13 @@
         <item name="android:gravity">start</item>
     </style>
 
+    <style name="table_header">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/table_header_background</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+
+    <color name="table_header_background">#004BB6</color>
 </resources>

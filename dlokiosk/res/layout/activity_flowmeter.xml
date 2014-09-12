@@ -10,34 +10,27 @@
         android:id="@+id/header"
         android:padding="16dp">
         <TextView
+            style="@style/table_header"
             android:layout_height="wrap_content"
             android:text="Site"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
             android:layout_width="250dp"
             android:layout_marginLeft="16dp"
             android:id="@+id/flow_channel" />
 
         <TextView
+            style="@style/table_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black"
             android:text="Value"
-            android:textStyle="bold"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:id="@+id/flow_value"
             android:layout_weight="1"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            style="@style/table_header"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
             android:text="Unit"
-            android:textStyle="bold"
-            android:id="@+id/textView2"
-            android:layout_marginRight="16dp"/>
+            android:id="@+id/textView2"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/list_pane"
@@ -60,26 +53,32 @@
     <RelativeLayout
         android:id="@+id/bottom_pane"
         android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="45dip"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:background="#F9F9F9">
-        <Button
+        style="@style/bottom_navigation_pane"
+        android:gravity="center_vertical">
+
+        <ImageButton
             android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:onClick="cancelClick"
-            style="@style/btnStyleOrange"
-            android:text="Cancel"/>
+            android:src="@drawable/cancel_button"
+            style="@style/navigation_button"
+            android:onClick="cancelClick"/>
+
         <Button
-            android:id="@+id/save_flow"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onSaveReadings"
-            android:enabled="true"
-            android:text="Save"/>
+            android:text="Submit"
+            android:id="@+id/save_button"
+            android:layout_centerVertical="true"
+            style="@style/submit_button"
+            android:onClick="onSaveReadings"/>
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_toLeftOf="@id/save_button"
+            android:src="@drawable/back_button"
+            style="@style/navigation_button"
+            android:onClick="onBack"/>
+
     </RelativeLayout>
 </RelativeLayout>

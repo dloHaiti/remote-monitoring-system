@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -170,6 +171,9 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
     }
 
     public void onCancel(View view) {
+        Intent intent = new Intent(WaterQualityActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void onSave(View view) {

@@ -195,7 +195,7 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
-        <item name="android:background">@color/medium_spring_green</item>
+        <item name="android:background">@drawable/submit_buttom</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 

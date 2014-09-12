@@ -53,7 +53,7 @@
 
         <ImageButton
             android:id="@+id/back_button"
-            android:layout_toLeftOf="@id/continue_button"
+            android:layout_toLeftOf="@id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/back_button"

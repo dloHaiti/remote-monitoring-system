@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/activity_background">
+    <LinearLayout
+            android:id="@+id/order_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/order_summary_background">
+        <TextView
+                android:id="@+id/order_for_label"
+                style="@style/order_summary_text"
+                android:text="@string/order_for_label"/>
+        <TextView
+                android:id="@+id/sales_channel"
+                style="@style/order_summary_text"
+                android:text="Over the counter"/>
+        <TextView
+                android:id="@+id/sales_channel_account_separator"
+                style="@style/order_summary_text"
+                android:text=" | "/>
+        <TextView
+                android:id="@+id/customer_account"
+                style="@style/order_summary_text"
+                android:text="John Doe"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/order_summary"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingBottom="10dp"
+            android:weightSum="10">
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="7"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp">
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/payment_type_label"
+                        style="@style/payment_form_field"
+                        android:text="Payment Type"/>
+                <TextView
+                        android:id="@+id/payment_type"
+                        style="@style/payment_form_field"
+                        android:text="Cash"/>
+            </LinearLayout>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/right_pane_list_divider"/>
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/select_payee_label"
+                        style="@style/payment_form_field"
+                        android:text="Select Payee"/>
+                <TextView
+                        android:id="@+id/select_payee"
+                        style="@style/payment_form_field"
+                        android:text="Customer / Sponsor"/>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/select_sponsor_label"
+                        style="@style/payment_form_field"
+                        android:text="Select Sponsor"/>
+                <TextView
+                        android:id="@+id/select_sponsor"
+                        style="@style/payment_form_field"
+                        android:text="Sponsor Name"/>
+            </LinearLayout>
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/payment_amount_label"
+                        style="@style/payment_form_field"
+                        android:text="Enter Sponsor's Payment Amount"/>
+                <TextView
+                        android:id="@+id/payment_amount"
+                        style="@style/payment_form_field"
+                        android:text="0"/>
+            </LinearLayout>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/right_pane_list_divider"/>
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/payment_done_through_label"
+                        style="@style/payment_form_field"
+                        android:text="Payment done through"/>
+                <TextView
+                        android:id="@+id/payment_done_through"
+                        style="@style/payment_form_field"
+                        android:text="Pre-Pay"/>
+            </LinearLayout>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/right_pane_list_divider"/>
+
+            <LinearLayout
+                    style="@style/payment_form_row">
+                <TextView
+                        android:id="@+id/amount_label"
+                        style="@style/payment_form_field"
+                        android:text="Amount"/>
+                <TextView
+                        android:id="@+id/amount_through"
+                        style="@style/payment_form_field"
+                        android:text="0"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/payment_confirmation_pane_background">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/layout_sale_bottom_pane"/>
+
+</RelativeLayout>

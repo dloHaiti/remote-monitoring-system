@@ -50,6 +50,6 @@ public class ShoppingCartActivity extends SaleActivity {
 
     @Override
     protected Class<? extends SaleActivity> nextActivity() {
-        return null;
+        return PaymentActivity.class;
     }
 }

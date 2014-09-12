@@ -129,12 +129,20 @@
                     android:value="com.dlohaiti.dlokiosk.ShoppingCartActivity"/>
         </activity>
         <activity android:name=".WaterQualityActivity"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustPan"
-            android:label="Water Quality Readings">
+                  android:screenOrientation="landscape"
+                  android:windowSoftInputMode="adjustPan"
+                  android:label="Water Quality Readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
+        </activity>
+        <activity android:name=".PaymentActivity"
+                  android:screenOrientation="landscape"
+                  android:windowSoftInputMode="adjustPan"
+                  android:label="Payment">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.dlohaiti.dlokiosk.PaymentActivity"/>
         </activity>
     </application>
 

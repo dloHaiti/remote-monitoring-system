@@ -189,4 +189,24 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="order_summary_text" parent="all_caps_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="payment_form_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:weightSum">2</item>
+    </style>
+
+    <style name="payment_form_field" parent="normal_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">start</item>
+    </style>
+
 </resources>

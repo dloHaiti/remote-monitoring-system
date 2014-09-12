@@ -81,56 +81,62 @@
         <item name="android:stretchMode">columnWidth</item>
     </style>
 
-    <style name="list_item">
+    <style name="list_item" parent="standard_black_text">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/row_height</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="customer_account_list_item">
+    <style name="customer_account_list_item" parent="standard_black_text">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">50</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="product_list_row">
+    <style name="product_list_row" parent="standard_black_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/product_row_height</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
 
-    <style name="normal_text">
+    <style name="standard_text">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="white_text" parent="normal_text">
-        <item name="android:textColor">@android:color/white</item>
+    <style name="small_text">
+        <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="all_caps_text">
-        <item name="android:textAllCaps">true</item>
+    <style name="standard_black_text" parent="standard_text">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="product_list_add_button">
+    <style name="small_black_text" parent="small_text">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="small_white_text" parent="small_text">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="standard_white_text" parent="standard_black_text">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="all_caps_text" parent="small_black_text">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="product_list_add_button" parent="standard_white_text">
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
@@ -210,13 +216,12 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="price_text" parent="all_caps_text">
+    <style name="price_text" parent="small_white_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/product_grid_header</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="order_summary_text" parent="all_caps_text">
@@ -232,7 +237,7 @@
         <item name="android:weightSum">2</item>
     </style>
 
-    <style name="payment_form_field" parent="normal_text">
+    <style name="payment_form_field" parent="standard_black_text">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -252,7 +257,7 @@
         <item name="android:background">@color/list_divider_dark</item>
     </style>
 
-    <style name="payment_summary_text" parent="normal_text">
+    <style name="payment_summary_text" parent="standard_black_text">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">3dp</item>
@@ -272,7 +277,7 @@
         <item name="android:background">@color/bottom_navigation_pane_background</item>
     </style>
 
-    <style name="payment_summary_field_value" parent="white_text">
+    <style name="payment_summary_field_value" parent="standard_white_text">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>

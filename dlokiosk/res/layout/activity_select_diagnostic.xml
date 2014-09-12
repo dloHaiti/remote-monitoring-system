@@ -7,23 +7,30 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
         <Button
+            style="@style/selection_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Water Quality"
+            android:drawableLeft="@drawable/ic_waterdrop"
             android:onClick="moveToWaterQualityScreen"
             android:id="@+id/waterQualitybtn"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center_vertical|center_horizontal" />
         <Button
+            style="@style/selection_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Flow Meter"
             android:onClick="moveToFlowMeterScreen"
             android:id="@+id/flowMeterbtn"
-            android:layout_gravity="center_vertical|center_horizontal"  />
+            android:drawableLeft="@drawable/ic_water_meter"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
     </LinearLayout>
 
     <RelativeLayout

@@ -1,5 +1,7 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -152,5 +154,24 @@ public class AddProductsToSaleActivity extends SaleActivity {
     public void onAddProduct(Product product, int quantity) {
         cart.addOrProduct(product.withQuantity(quantity));
         cartView.setTitle(MessageFormat.format("Cart ({0})", cart.getProducts().size()));
+    }
+
+    @Override
+    public void onContinue(View view) {
+        if (cart.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.no_products_in_cart_error_message)
+                    .setTitle(R.string.no_products_in_cart_error_title)
+                    .setCancelable(false)
+                    .setNeutralButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                }
+                            })
+                    .show();
+        } else {
+            super.onContinue(view);
+        }
     }
 }

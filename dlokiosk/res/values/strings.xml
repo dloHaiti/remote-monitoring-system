@@ -91,4 +91,8 @@
     <string name="amount_due_summary_label">MONTANT DÛ</string>
 
     <string name="sale_confirm_dialog_message">VOTRE COMMANDE A ÉTÉ CONFIRMÉ</string>
+
+    <string name="no_products_in_cart_error_message">S\'il vous plaît ajouter des produits à procéder.</string>
+    <string name="no_products_in_cart_error_title">Aucun produit n\'a été ajouté</string>
+
 </resources>

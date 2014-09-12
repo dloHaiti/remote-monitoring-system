@@ -91,5 +91,9 @@
     <string name="amount_due_summary_label">AMOUNT DUE</string>
 
     <string name="sale_confirm_dialog_message">YOUR ORDER HAS BEEN CONFIRMED</string>
+    <string name="no_products_in_cart_error_message">Please add products to proceed.</string>
+    <string name="no_products_in_cart_error_title">
+        No products added
+    </string>
 
 </resources>

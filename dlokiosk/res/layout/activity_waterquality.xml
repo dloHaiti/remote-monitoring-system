@@ -1,63 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout
-            android:id="@+id/list_pane"
-            android:layout_width="fill_parent"
-            android:weightSum="100"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/bottom_pane"
-            android:baselineAligned="false">
+        android:id="@+id/list_pane"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_pane"
+        android:baselineAligned="false"
+        android:weightSum="100">
+
         <ListView
-                android:id="@+id/site_list"
-                android:layout_width="0dp"
-                android:layout_weight="25"
-                android:layout_height="match_parent"
-                android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_dark"
-                android:background="@color/left_pane_background"/>
-        <ListView
+            android:id="@+id/site_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:background="@color/left_pane_background"
+            android:divider="@color/list_divider_dark"
+            android:dividerHeight="@dimen/list_divider_height" />
+
+        <LinearLayout
+            android:id="@+id/list_pane_header"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="75"
+            android:baselineAligned="false"
+            android:divider="@color/right_pane_list_divider"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/header_parameter_label"
+                    style="@style/table_header"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Parameter" />
+
+                <TextView
+                    android:id="@+id/header_parameter_input"
+                    style="@style/table_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="80"
+                    android:text="Value" />
+
+                <TextView
+                    android:id="@+id/header_parameter_units"
+                    style="@style/table_header"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Unit" />
+
+                <TextView
+                    android:id="@+id/header_parameter_range"
+                    style="@style/table_header"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Range" />
+            </LinearLayout>
+
+            <ListView
                 android:id="@+id/parameter_list"
-                android:layout_width="0dp"
-                android:layout_weight="75"
-                android:layout_height="match_parent"
-                android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/right_pane_list_divider"/>
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/bottom_pane"
+        style="@style/bottom_navigation_pane"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        style="@style/bottom_navigation_pane">
+        android:gravity="center_vertical">
 
         <ImageButton
             android:id="@+id/cancel_button"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/cancel_button"
             style="@style/navigation_button"
-            android:onClick="onCancel"/>
+            android:layout_alignParentLeft="true"
+            android:onClick="onCancel"
+            android:src="@drawable/cancel_button" />
 
         <Button
-            android:layout_alignParentRight="true"
+            android:id="@+id/save_button"
+            style="@style/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit"
-            android:id="@+id/save_button"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            style="@style/submit_button"
-            android:onClick="onSave"/>
+            android:onClick="onSave"
+            android:text="Submit" />
 
         <ImageButton
             android:id="@+id/back_button"
+            style="@style/navigation_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_toLeftOf="@id/save_button"
-            android:src="@drawable/back_button"
-            style="@style/navigation_button"
-            android:onClick="onBack"/>
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:src="@drawable/back_button" />
 
     </RelativeLayout>
 </RelativeLayout>

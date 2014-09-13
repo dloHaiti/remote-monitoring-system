@@ -5,45 +5,31 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="horizontal"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/parameter_label"
+        android:id="@+id/header_parameter_label"
         android:layout_width="200dp"
-        android:paddingLeft="5dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black" />
-    <RadioGroup
-        android:id="@+id/ok_group"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radio_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ok"
-            android:textColor="@android:color/black" />
-
-        <RadioButton
-            android:id="@+id/radio_not_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/not_ok"
-            android:textColor="@android:color/black" />
-    </RadioGroup>
 
     <TextView
-        android:id="@+id/parameter_units"
+        android:id="@+id/header_parameter_input"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/header_parameter_units"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:layout_marginRight="16dp" />
 
     <TextView
-        android:id="@+id/parameter_range"
+        android:id="@+id/header_parameter_range"
         android:layout_width="wrap_content"
         android:textColor="@android:color/black"
         android:layout_height="wrap_content" />

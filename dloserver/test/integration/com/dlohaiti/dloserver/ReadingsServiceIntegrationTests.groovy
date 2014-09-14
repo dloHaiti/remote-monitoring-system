@@ -51,13 +51,14 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
     @Test
     void shouldImportValidFile() {
         createIncomingFile("file1.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8
 """
         readingsService.importIncomingFiles()
 
         assert Reading.count() == 2
-        assert Reading.first().createdDate == sdf.parse("2013-12-12 00:01:02 EDT")
+        assert Reading.first().createdDate == sdf.parse("2013-12-12 00:01:02")
         assert Measurement.findByParameter(ph).value == 8
         assert Measurement.findByParameter(temperature).value == 20
     }
@@ -77,12 +78,14 @@ k1,5/4/2013,0.4,23:59,04:26,0.46,32.6,108,60.6,,"""
     @Test
     void shouldIgnoreAlreadyImportedMeasurements() {
         createIncomingFile("file1.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8
 """
         createIncomingFile("file_with_duplicated_measurement.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,25
-s2,2013-12-12 05:00:00 EDT,9
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_05:00:00,s2,9
 """
         readingsService.importIncomingFiles()
 
@@ -94,12 +97,14 @@ s2,2013-12-12 05:00:00 EDT,9
     @Test
     void shouldProcessAllValidFiles() {
         createIncomingFile("file1.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8
 """
         createIncomingFile("file2.csv") <<
-                """s1,2013-12-12 00:02:00 EDT,25
-s2,2013-12-12 00:02:00 EDT,9
+                """Time,Sensor,Value
+2013/12/12_05:01:02,s1,21
+2013/12/12_05:01:02,s2,9
 """
         readingsService.importIncomingFiles()
 
@@ -110,12 +115,14 @@ s2,2013-12-12 00:02:00 EDT,9
     @Test
     void shouldRejectInvalidFilesButImportGoodOnes() {
         createIncomingFile("bad_file.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8000
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8000
 """
         createIncomingFile("good_file.csv") <<
-                """s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8
 """
         readingsService.importIncomingFiles()
 
@@ -128,9 +135,10 @@ s2,2013-12-12 00:01:02 EDT,8
     @Test
     void shouldRejectFilesWithEmptyLines() {
         createIncomingFile("file_with_empty_line.csv") <<
-                """
-s1,2013-12-12 00:01:02 EDT,20
-s2,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+
+2013/12/12_00:01:02,s1,20
+2013/12/12_00:01:02,s2,8
 """
         readingsService.importIncomingFiles()
 
@@ -141,8 +149,9 @@ s2,2013-12-12 00:01:02 EDT,8
     @Test
     void shouldRejectFilesWithInvalidData() {
         createIncomingFile("file1.csv") <<
-                """s4,2013-12-12 00:01:02 EDT,20
-s5,2013-12-12 00:01:02 EDT,8
+                """Time,Sensor,Value
+2013/12/12_00:01:02,s4,20
+2013/12/12_00:01:02,s5,8
 """
         readingsService.importIncomingFiles()
 

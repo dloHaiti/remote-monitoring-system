@@ -42,7 +42,7 @@
                     style="@style/table_header"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Parameter" />
+                    android:text="@string/parameter_header" />
 
                 <TextView
                     android:id="@+id/header_parameter_input"
@@ -50,21 +50,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="80"
-                    android:text="Value" />
+                    android:text="@string/flow_header_value" />
 
                 <TextView
                     android:id="@+id/header_parameter_units"
                     style="@style/table_header"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Unit" />
+                    android:text="@string/flow_header_unit" />
 
                 <TextView
                     android:id="@+id/header_parameter_range"
                     style="@style/table_header"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Range" />
+                    android:text="@string/range_header" />
             </LinearLayout>
 
             <ListView
@@ -95,7 +95,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:onClick="onSave"
-            android:text="Submit" />
+            android:text="@string/submit_button" />
 
         <ImageButton
             android:id="@+id/back_button"

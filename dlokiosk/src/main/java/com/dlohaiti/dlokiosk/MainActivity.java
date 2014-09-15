@@ -137,4 +137,8 @@ public class MainActivity extends RoboActivity implements StatusView {
                 receiptsRepository.isNotEmpty() ||
                 deliveryRepository.isNotEmpty();
     }
+
+    public void moveToAccountsScreen(View view) {
+        startActivity(new Intent(this, AccountsActivity.class));
+    }
 }

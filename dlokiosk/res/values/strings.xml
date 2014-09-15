@@ -27,6 +27,7 @@
     <string name="title_activity_configuration">Configuration du kiosque</string>
     <string name="kiosk_password_hint">Mot de passe</string>
     <string name="delivery_tracking_button">Suivi des livraisons</string>
+    <string name="accounts_button">Comptes</string>
     <string name="title_activity_delivery_tracking">Suivi des livraisons</string>
     <string name="out_for_delivery_button">Sortie pour livraison</string>
     <string name="returned_button">Retour</string>
@@ -94,5 +95,13 @@
 
     <string name="no_products_in_cart_error_message">S\'il vous plaît ajouter des produits à procéder.</string>
     <string name="no_products_in_cart_error_title">Aucun produit n\'a été ajouté</string>
+    <string name="waterQualityBtn">Qualité de leau</string>
+    <string name="flowMeter">débitmètre</string>
+    <string name="flow_header_site">Site</string>
+    <string name="flow_header_value">valeur</string>
+    <string name="flow_header_unit">unité</string>
+    <string name="submit_button">soumettre</string>
+    <string name="parameter_header">Paramètre</string>
+    <string name="range_header">gamme</string>
 
 </resources>

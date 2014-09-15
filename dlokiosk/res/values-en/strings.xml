@@ -3,7 +3,7 @@
 
     <string name="app_name">dloHaiti</string>
     <string name="action_configuration">Configuration</string>
-    <string name="record_new_reading_button">Diagnostic</string>
+    <string name="record_new_reading_button">Diagnostique</string>
     <string name="manual_sync_button">Manual Sync</string>
     <string name="title_activity_enter_reading">Enter Reading</string>
     <string name="ok">OK</string>
@@ -27,6 +27,7 @@
     <string name="title_activity_configuration">Configuring the booth</string>
     <string name="kiosk_password_hint">Password</string>
     <string name="delivery_tracking_button">Delivery tracking</string>
+    <string name="accounts_button">Accounts</string>
     <string name="title_activity_delivery_tracking">Delivery tracking</string>
     <string name="out_for_delivery_button">Output for delivery</string>
     <string name="returned_button">Return</string>
@@ -95,5 +96,13 @@
     <string name="no_products_in_cart_error_title">
         No products added
     </string>
+    <string name="waterQualityBtn">Water Quality</string>
+    <string name="flowMeter">Flow Meter</string>
+    <string name="flow_header_site">Site</string>
+    <string name="flow_header_value">Value</string>
+    <string name="flow_header_unit">Unit</string>
+    <string name="submit_button">Submit</string>
+    <string name="parameter_header">Parameter</string>
+    <string name="range_header">Range</string>
 
 </resources>

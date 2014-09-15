@@ -103,5 +103,6 @@
     <string name="submit_button">soumettre</string>
     <string name="parameter_header">Paramètre</string>
     <string name="range_header">gamme</string>
+    <string name="add_customer_account" />
 
 </resources>

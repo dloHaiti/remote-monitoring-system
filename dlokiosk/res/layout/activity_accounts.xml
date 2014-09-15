@@ -1,62 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
+    <LinearLayout
+        android:id="@+id/list_pane"
+        android:layout_width="match_parent"
+        android:weightSum="100"
+        android:layout_height="match_parent"
+        android:baselineAligned="false">
+        <ListView
+            android:id="@+id/sales_channel_list"
+            android:layout_width="0dp"
+            android:layout_weight="20"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:divider="@color/list_divider_dark"
+            android:background="@color/left_pane_background"/>
+        <ListView
+            android:id="@+id/customer_list"
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:divider="@color/right_pane_list_divider"/>
+    </LinearLayout>
 
-    <TabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+    <include layout="@layout/layout_sale_bottom_pane"/>
 
-                <TextView
-                    android:tag="tab0"
-                    android:text="Tab 1"
-                    android:background="@android:drawable/btn_star_big_on"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    />
-                <TextView
-                    android:tag="tab1"
-                    android:text="Tab 2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    />
-                <TextView
-                    android:tag="tab2"
-                    android:text="Tab 3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    />
-
-            </TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TextView
-                    android:text="Hallo1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-                <TextView
-                    android:text="Hallo2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-                <TextView
-                    android:text="Hallo3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
 </RelativeLayout>

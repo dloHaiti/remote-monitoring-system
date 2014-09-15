@@ -60,9 +60,9 @@
 
         <Button
                 style="@style/home_screen_button"
-                android:onClick="moveToDeliveryTrackingScreen"
-                android:text="@string/delivery_tracking_button"
-                android:id="@+id/delivery_tracking_button"/>
+                android:onClick="moveToAccountsScreen"
+                android:text="@string/accounts_button"
+                android:id="@+id/accounts_button"/>
 
         <Button
                 style="@style/home_screen_button"

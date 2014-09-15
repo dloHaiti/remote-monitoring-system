@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/customer_list_item"
+    style="@style/customer_list"
+    android:weightSum="100">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pencil"
+        android:background="@drawable/edit_button"
+        android:id="@+id/imageButton" />
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_name"
+        style="@style/customer_account_edit_item"
+         android:layout_weight="25"
+        android:text="Customer name"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contact_name"
+        android:layout_weight="25"
+        style="@style/customer_account_edit_item"
+        android:text="Contact name"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_phone"
+        style="@style/customer_account_edit_item"
+        android:layout_weight="10"
+        android:text="Phone"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_address"
+        android:layout_weight="20"
+        style="@style/customer_account_edit_item"
+        android:text="Address"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_balance"
+        style="@style/customer_account_edit_item"
+        android:layout_weight="10"
+        android:text="Balance"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_add"
+        android:id="@+id/imageButton2" />
+</LinearLayout>
+

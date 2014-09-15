@@ -104,5 +104,6 @@
     <string name="submit_button">Submit</string>
     <string name="parameter_header">Parameter</string>
     <string name="range_header">Range</string>
+    <string name="add_customer_account">Add Customer</string>
 
 </resources>

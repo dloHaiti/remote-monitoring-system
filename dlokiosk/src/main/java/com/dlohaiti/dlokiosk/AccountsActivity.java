@@ -2,67 +2,207 @@ package com.dlohaiti.dlokiosk;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by jijeshm on 27/08/14.
- */
-public class AccountsActivity extends Activity {
+import com.dlohaiti.dlokiosk.adapter.CustomerAccountArrayAdapter;
+import com.dlohaiti.dlokiosk.adapter.CustomerAccountEditAdapter;
+import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.SalesChannels;
+import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
+import com.google.inject.Inject;
+
+import java.util.List;
+
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+
+public class AccountsActivity extends RoboActivity {
+    @InjectView(R.id.sales_channel_list)
+    private ListView salesChannelListView;
+
+    @InjectView(R.id.customer_list)
+    private ListView customerListView;
+
+    private CustomerAccountEditAdapter customerListAdapter;
+    private SalesChannelArrayAdapter salesChannelAdapter;
+
+    @InjectView(R.id.continue_button)
+    protected ImageButton continueButton;
+
+    @Inject
+    private SalesChannelRepository salesChannelRepository;
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
+
+    private SalesChannels salesChannels;
+    private SalesChannel selectedSalesChannel;
+    private CustomerAccounts allCustomerList;
+    private CustomerAccounts filteredCustomerList = new CustomerAccounts();
+    private SearchView searchView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_accounts);
-        TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
-        tabHost.setup();
 
-        final TabWidget tabWidget = tabHost.getTabWidget();
-        final FrameLayout tabContent = tabHost.getTabContentView();
+        loadSalesChannels();
+    }
 
-        // Get the original tab textviews and remove them from the viewgroup.
-        TextView[] originalTextViews = new TextView[tabWidget.getTabCount()];
-        for (int index = 0; index < tabWidget.getTabCount(); index++) {
-            originalTextViews[index] = (TextView) tabWidget.getChildTabViewAt(index);
-        }
-        tabWidget.removeAllViews();
-
-        // Ensure that all tab content childs are not visible at startup.
-        for (int index = 0; index < tabContent.getChildCount(); index++) {
-            tabContent.getChildAt(index).setVisibility(View.GONE);
-        }
-
-        // Create the tabspec based on the textview childs in the xml file.
-        // Or create simple tabspec instances in any other way...
-        for (int index = 0; index < originalTextViews.length; index++) {
-            final TextView tabWidgetTextView = originalTextViews[index];
-            final View tabContentView = tabContent.getChildAt(index);
-            TabHost.TabSpec tabSpec = tabHost.newTabSpec((String) tabWidgetTextView.getTag());
-            tabSpec.setContent(new TabHost.TabContentFactory() {
-                @Override
-                public View createTabContent(String tag) {
-                    return tabContentView;
-                }
-            });
-            if (tabWidgetTextView.getBackground() == null) {
-                tabSpec.setIndicator(tabWidgetTextView.getText());
-            } else {
-                tabSpec.setIndicator(tabWidgetTextView.getText(), tabWidgetTextView.getBackground());
-            }
-            tabHost.addTab(tabSpec);
-        }
-
-//		tabHost.setCurrentTab(0);
+    private void loadCustomerAccounts() {
+        allCustomerList = new CustomerAccounts(customerAccountRepository.findAll());
+        updateFilteredCustomerList();
     }
 
 
+    private void updateFilteredCustomerList() {
+        filteredCustomerList.clear();
+        allCustomerList.unSelectAll();
+        filteredCustomerList.addAll(
+                allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.id()));
+    }
 
+    private void loadSalesChannels() {
+        salesChannels = new SalesChannels(salesChannelRepository.findAll());
+        if (salesChannels.isEmpty()) {
+            showNoConfigurationAlert();
+        } else {
+            selectedSalesChannel=salesChannels.get(0);
+            selectedSalesChannel.select();
+            loadCustomerAccounts();
+            initialiseSalesChannelList();
+            initialiseCustomerList();
+            continueButton.setEnabled(false);
+        }
+    }
+
+    private void initialiseCustomerList() {
+        customerListAdapter = new CustomerAccountEditAdapter(getApplicationContext(), filteredCustomerList);
+        customerListView.setAdapter(customerListAdapter);
+        customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                CustomerAccount tappedCustomerAccount = filteredCustomerList.get(position);
+                if (tappedCustomerAccount.isSelected()) {
+                    tappedCustomerAccount.unSelect();
+//                    cart.setCustomerAccount(null);
+                    continueButton.setEnabled(false);
+                } else {
+                    tappedCustomerAccount.select();
+//                    if (cart.customerAccount() != null) {
+//                        cart.customerAccount().unSelect();
+//                    }
+//                    cart.setCustomerAccount(tappedCustomerAccount);
+                    continueButton.setEnabled(true);
+                }
+                customerListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initialiseSalesChannelList() {
+        salesChannelAdapter = new SalesChannelArrayAdapter(getApplicationContext(), salesChannels);
+        salesChannelListView.setAdapter(salesChannelAdapter);
+        salesChannelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                clearCustomerSearch();
+                SalesChannel tappedSalesChannel = salesChannels
+                        .findSalesChannelById(((LeftPaneListViewHolder) view.getTag()).id);
+                if (selectedSalesChannel != null) {
+                    selectedSalesChannel.unSelect();
+                }
+                tappedSalesChannel.select();
+                selectedSalesChannel = tappedSalesChannel;
+                salesChannelAdapter.notifyDataSetChanged();
+                continueButton.setEnabled(false);
+                updateCustomerList();
+            }
+        });
+    }
+
+
+    private void updateCustomerList() {
+        updateFilteredCustomerList();
+        customerListAdapter.notifyDataSetChanged();
+    }
+
+    private void clearCustomerSearch() {
+        if (isNotBlank(searchView.getQuery())) {
+            searchView.setQuery("", true);
+        }
+        searchView.setIconified(true);
+    }
+
+    public void onCancel(View view) {
+        finish();
+    }
+
+
+    protected void showNoConfigurationAlert() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.no_configuration_error_message)
+                .setTitle(R.string.no_configuration_error_title)
+                .setCancelable(false)
+                .setNeutralButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        })
+                .show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_accounts_activity, menu);
+
+        searchView = ((SearchView) menu.findItem(R.id.search_customer).getActionView());
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                filteredCustomerList.clear();
+                List<CustomerAccount> filteredList = allCustomerList.filterAccountsBy(text, selectedSalesChannel);
+                filteredCustomerList.addAll(filteredList);
+                customerListAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    public void onAddCustomerAccount(MenuItem item) {
+    }
 }

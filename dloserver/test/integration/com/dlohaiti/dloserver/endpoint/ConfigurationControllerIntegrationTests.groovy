@@ -44,7 +44,7 @@ def region
   }
 
   @Test void shouldOnlyReturnActiveProducts() {
-    def category = new ProductCategory(name: "Category1",base64EncodedImage: "").save(failOnError: true)
+    def category = new ProductCategory(name: "Category1").save(failOnError: true)
     def one = new Product(sku: 'ACTIVE-ABC', active: true, description: 'abc', gallons: 1, price: new Money(amount: 10G), base64EncodedImage: 'abc',category: category).save(failOnError: true)
     def two = new Product(sku: 'ACTIVE-XYZ', active: true, description: 'xyz', gallons: 5, price: new Money(amount: 1G), base64EncodedImage: 'xyz',category: category).save(failOnError: true)
     new Product(sku: 'INACTIVE-LLL', active: false, description: 'lll', gallons: 10, price: new Money(amount: 5G), base64EncodedImage: 'lll',category: category).save(failOnError: true)
@@ -57,10 +57,16 @@ def region
   }
 
   @Test void shouldOnlyReturnActiveAndManualParameters() {
+      new SamplingSite(name: "site1",isUsedForTotalizer: true).save(failOnError: true)
     def one = new Parameter(name: 'manual-active', manual: true, active: true, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
-    new Parameter(name: 'manual-inactive', manual: true, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
-    new Parameter(name: 'automatic-active', manual: false, active: true, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
-    new Parameter(name: 'automatic-inactive', manual: false, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    def two = new Parameter(name: 'manual-inactive', manual: true, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    def three = new Parameter(name: 'automatic-active', manual: false, active: true, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+    def four = new Parameter(name: 'automatic-inactive', manual: false, active: false, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
+
+    new KioskWiseParameter(kiosk: Kiosk.first(),parameter: one,samplingSite: SamplingSite.first()).save(failOnError: true)
+    new KioskWiseParameter(kiosk: Kiosk.first(),parameter: two,samplingSite: SamplingSite.first()).save(failOnError: true)
+    new KioskWiseParameter(kiosk: Kiosk.first(),parameter: three,samplingSite: SamplingSite.first()).save(failOnError: true)
+    new KioskWiseParameter(kiosk: Kiosk.first(),parameter: four,samplingSite: SamplingSite.first()).save(failOnError: true)
 
     controller.index()
 
@@ -70,7 +76,7 @@ def region
   }
     @Test void shouldOnlyReturnRebatesBasedtoKioskRegion(){
 
-        def category = new ProductCategory(name: "Category1",base64EncodedImage: "").save(failOnError: true)
+        def category = new ProductCategory(name: "Category1").save(failOnError: true)
         def one = new Product(sku: 'ACTIVE-ABC', active: true, description: 'abc', gallons: 1, price: new Money(amount: 10G), base64EncodedImage: 'abc',category: category).save(failOnError: true)
 
         def differentRegion = new Region(name: "region2",country: country).save(failOnError: true)

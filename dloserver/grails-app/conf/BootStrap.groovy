@@ -70,8 +70,7 @@ class BootStrap {
         JSON.registerObjectMarshaller(ProductCategory) { ProductCategory c ->
             return [
                     id: c.id,
-                    name              : c.name,
-                    base64EncodedImage: c.base64EncodedImage
+                    name              : c.name
             ]
         }
 

@@ -17,4 +17,5 @@
     <color name="payment_confirmation_pane_background">#D5D6D9</color>
     <color name="medium_spring_green">#7DDE14</color>
     <color name="amount_due_summary_label_background">#E54546</color>
+    <color name="table_header_background">#004BB6</color>
 </resources>

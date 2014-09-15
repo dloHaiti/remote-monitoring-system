@@ -9,7 +9,7 @@ import java.util.List;
 
 @Singleton
 public class ShoppingCartNew {
-    private final List<Product> products = new ArrayList<Product>();
+    private final Products products = new Products();
     private final List<Promotion> promotions = new ArrayList<Promotion>();
     private SalesChannel salesChannel;
     private CustomerAccount customerAccount;
@@ -39,7 +39,7 @@ public class ShoppingCartNew {
         products.remove(position);
     }
 
-    public List<Product> getProducts() {
+    public Products getProducts() {
         return products;
     }
 
@@ -111,5 +111,13 @@ public class ShoppingCartNew {
 
     public void setCustomerAccount(CustomerAccount account) {
         this.customerAccount = account;
+    }
+
+    public void addPromotions(List<Promotion> promotions) {
+        this.promotions.addAll(promotions);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
     }
 }

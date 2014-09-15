@@ -1,13 +1,14 @@
 package com.dlohaiti.dlokiosk.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
+import com.dlohaiti.dlokiosk.ShoppingCartActivity;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.ProductCategories;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleAdapter;
@@ -16,18 +17,21 @@ import java.util.List;
 
 public class ProductGridAdapter extends BaseAdapter implements StickyGridHeadersSimpleAdapter {
 
+    private ShoppingCartActivity activity;
     private final List<Product> products;
     private final ProductCategories productCategories;
     private final int headerResId;
     private final int itemResId;
     private final LayoutInflater inflater;
 
-    public ProductGridAdapter(Context context, List<Product> products, ProductCategories productCategories, int headerResId, int itemResId) {
+    public ProductGridAdapter(ShoppingCartActivity activity, List<Product> products, ProductCategories productCategories,
+                              int headerResId, int itemResId) {
+        this.activity = activity;
         this.products = products;
         this.productCategories = productCategories;
         this.headerResId = headerResId;
         this.itemResId = itemResId;
-        inflater = LayoutInflater.from(context);
+        inflater = LayoutInflater.from(activity);
 
     }
 
@@ -73,19 +77,25 @@ public class ProductGridAdapter extends BaseAdapter implements StickyGridHeaders
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(itemResId, parent, false);
             holder = new ViewHolder();
-            holder.productIcon = (ImageView) convertView.findViewById(R.id.product_icon);
+            holder.productIcon = (ImageView) convertView.findViewById(R.id.icon);
+            holder.removeProductButton = (ImageButton) convertView.findViewById(R.id.remove_item_button);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Product product = (Product) getItem(position);
+        final Product product = (Product) getItem(position);
         holder.productIcon.setImageBitmap(product.getImageResource());
-
+        holder.removeProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.onProductRemoveButtonClick(product);
+            }
+        });
         return convertView;
     }
 
@@ -95,5 +105,6 @@ public class ProductGridAdapter extends BaseAdapter implements StickyGridHeaders
 
     protected class ViewHolder {
         public ImageView productIcon;
+        public ImageButton removeProductButton;
     }
 }

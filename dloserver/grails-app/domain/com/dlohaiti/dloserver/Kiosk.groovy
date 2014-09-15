@@ -2,6 +2,7 @@ package com.dlohaiti.dloserver
 
 import groovy.transform.EqualsAndHashCode
 
+
 @EqualsAndHashCode
 class Kiosk {
 
@@ -9,7 +10,7 @@ class Kiosk {
     String apiKey
 
     static belongsTo = [region:Region]
-    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount,productMrps: ProductMrp]
+    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount,productMrps: ProductMrp,kioskWiseParameters: KioskWiseParameter]
 
     static constraints = {
         name(blank: false, unique: true)
@@ -20,6 +21,16 @@ class Kiosk {
     @Override
     public String toString() {
         name
+    }
+
+    List<SamplingSite> getSamplingSites(Parameter p) {
+        KioskWiseParameter.findAllByKioskAndParameter(this,p)*.samplingSite
+    }
+
+    List<Parameter> getParameters() {
+       def parameters = KioskWiseParameter.findAllByKiosk(this)*.getActiveAndManualParameter().unique()
+        parameters.removeAll([null])
+        return parameters
     }
 
     List<SalesChannel> getSalesChannels() {

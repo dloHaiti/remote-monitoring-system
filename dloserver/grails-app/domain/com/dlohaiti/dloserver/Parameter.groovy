@@ -17,7 +17,10 @@ class Parameter {
   Boolean active
   Integer priority
 
-  static hasMany = [samplingSites: SamplingSite]
+  static transients = [ "samplingSites" ]
+
+  List<SamplingSite> samplingSites;
+
 
   static constraints = {
     name(blank: false, unique: true)
@@ -30,7 +33,7 @@ class Parameter {
   // eager loading of the sampling sites, for serializing to JSON in configuration controller
   // http://blog.springsource.org/2010/07/28/gorm-gotchas-part-3/
   static mapping = {
-    samplingSites lazy: false
+//    samplingSites lazy: false
   }
 
   public String toString() {
@@ -40,4 +43,6 @@ class Parameter {
   boolean hasRange() {
     return minimum != null || maximum != null;
   }
+
+
 }

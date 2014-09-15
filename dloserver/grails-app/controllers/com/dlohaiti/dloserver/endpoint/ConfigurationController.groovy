@@ -9,7 +9,7 @@ class ConfigurationController {
   def index() {
 
     List<Product> products = Product.findAllByActive(true)
-    List<Parameter> parameters = Parameter.findAllByActiveAndManual(true, true)
+    List<Parameter> parameters =  request.kiosk.getParameters()
     List<Promotion> promotions = request.kiosk.getPromotions()
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
     List<ProductCategory> productCategories=ProductCategory.all

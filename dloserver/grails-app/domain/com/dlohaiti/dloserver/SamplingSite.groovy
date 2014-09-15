@@ -10,8 +10,7 @@ class SamplingSite {
   boolean isUsedForTotalizer
   SamplingSite followupToSite
 
-  static hasMany = [readings: Reading, parameters: Parameter]
-  static belongsTo = Parameter
+  static hasMany = [readings: Reading]
   static constraints = {
     followupToSite(nullable: true)
   }

@@ -1,22 +1,22 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.dlohaiti.dlokiosk.AddProductsToSaleActivity;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Products;
 
-import java.util.List;
-
 public class ProductArrayAdapter extends ArrayAdapter<Product> {
     private final AddProductsToSaleActivity context;
-    private final List<Product> products;
+    private final Products products;
 
     public ProductArrayAdapter(AddProductsToSaleActivity context, Products products) {
         super(context, R.layout.layout_left_pane_list_item, products);
@@ -42,60 +42,67 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
         }
 
         Product product = products.get(position);
-        holder.product = product;
+        holder.productId = product.getId();
         holder.icon.setImageBitmap(product.getImageResource());
         holder.description.setText(product.getDescription());
         initialiseAddProductButton(holder);
-        initialiseQuantityView(holder, position);
+        initialiseQuantityView(holder, product);
 
         return view;
     }
 
-    private void initialiseQuantityView(final ProductViewHolder holder, int position) {
-//        holder.quantityView.setId(position);
-//        holder.quantityView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    final EditText quantityView = (EditText) view;
-//                    String newQuantity = quantityView.getText().toString();
-//                    holder.quantity = tryParse(newQuantity, 0);
-//                }
-//            }
-//        });
-        holder.quantityView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                int newQuantity = tryParse(holder.quantityView.getText().toString(), 0);
-                holder.addProduct.setEnabled(newQuantity > 0 && newQuantity != holder.quantity);
+    private void initialiseQuantityView(final ProductViewHolder holder, final Product product) {
+        holder.quantityView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    Integer newQuantity = tryParse(((EditText) view).getText().toString(), 0);
+                    Product product = products.findById((long) view.getId());
+                    if (product == null) {
+                        return;
+                    }
+                    if (newQuantity != 0 && !newQuantity.equals(product.getQuantity())) {
+                        product.hasQuantityBeenModified = true;
+                        product.setQuantity(newQuantity);
+                        holder.addProduct.setEnabled(true);
+                    }
+                }
             }
         });
+
+        holder.quantityView.setId(Integer.valueOf(holder.productId.toString()));
+        holder.quantityView.setText(
+                product.getQuantity() == null
+                        ? null
+                        : String.valueOf(product.getQuantity()));
     }
 
     private void initialiseAddProductButton(final ProductViewHolder holder) {
+        holder.addProduct.setEnabled(products.findById(holder.productId).hasQuantityBeenModified);
         holder.addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.quantity = tryParse(holder.quantityView.getText().toString(), 0);
+                Integer quantity = tryParse(holder.quantityView.getText().toString(), 0);
+                Product product = products.findById(holder.productId);
+                product.hasQuantityBeenModified = false;
                 holder.addProduct.setEnabled(false);
-                context.onAddProduct(holder.product, holder.quantity);
+                context.onAddProduct(product, quantity, holder.productId);
             }
         });
     }
 
-    private int tryParse(String text, Integer defaultValue) {
+    private Integer tryParse(String text, Integer defaultValue) {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
             return defaultValue;
         }
+    }
+
+    class ProductViewHolder {
+        public ImageView icon;
+        public TextView description;
+        public EditText quantityView;
+        public Button addProduct;
+        public Long productId;
     }
 }

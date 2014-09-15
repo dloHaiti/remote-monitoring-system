@@ -74,7 +74,7 @@ public class ProductRepository {
         long category = cursor.getInt(10);
         Bitmap resource = imageConverter.fromBase64EncodedString(cursor.getString(2));
         long id = cursor.getLong(0);
-        return new Product(id, sku, resource, requiresQuantity, 1, minimum, maximum, price, description, gallons,
+        return new Product(id, sku, resource, requiresQuantity, null, minimum, maximum, price, description, gallons,
                 category);
     }
 

@@ -20,16 +20,11 @@ public class ShoppingCartNew {
         this.register = register;
     }
 
-    public void addOrProduct(Product newProduct) {
-        Integer existingProduct = null;
-        for (int index = 0; index < products.size(); index++) {
-            if (products.get(index).getId().equals(newProduct.getId())) {
-                existingProduct = index;
-            }
-        }
-        if (existingProduct != null) {
-            int updatedQuantity = newProduct.getQuantity() + products.get(existingProduct).getQuantity();
-            products.set(existingProduct, newProduct.withQuantity(updatedQuantity));
+    public void addOrUpdateProduct(Product newProduct) {
+        Integer existingProductIndex = products.getIndexOf(newProduct);
+        if (existingProductIndex != null) {
+            Integer updatedQuantity = newProduct.getQuantity() + products.get(existingProductIndex).getQuantity();
+            products.set(existingProductIndex, newProduct.withQuantity(updatedQuantity));
         } else {
             products.add(newProduct);
         }

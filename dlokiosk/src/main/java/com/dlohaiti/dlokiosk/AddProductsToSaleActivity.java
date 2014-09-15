@@ -151,9 +151,13 @@ public class AddProductsToSaleActivity extends SaleActivity {
         Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT).show();
     }
 
-    public void onAddProduct(Product product, int quantity) {
-        cart.addOrProduct(product.withQuantity(quantity));
+    public void onAddProduct(Product product, Integer quantity, Long id) {
+        Product newProduct = product.withQuantity(quantity);
+        filteredProductList.updateProductById(id, newProduct);
+        allProducts.updateProductById(newProduct.getId(), newProduct);
+        cart.addOrUpdateProduct(newProduct);
         cartView.setTitle(MessageFormat.format("Cart ({0})", cart.getProducts().size()));
+        productListAdapter.notifyDataSetChanged();
     }
 
     @Override

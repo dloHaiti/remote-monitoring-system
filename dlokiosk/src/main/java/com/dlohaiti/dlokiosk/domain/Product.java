@@ -1,21 +1,21 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import android.graphics.Bitmap;
-import com.dlohaiti.dlokiosk.SelectableListItem;
 import com.dlohaiti.dlokiosk.VisibleGridItem;
 
-public class Product implements VisibleGridItem {
+public class Product implements VisibleGridItem, Comparable<Product> {
     private final Long id;
     private final String sku;
     private final Bitmap imageResource;
     private final boolean requiresQuantity;
-    private final Integer quantity;
+    private Integer quantity;
     private final Integer minimumQuantity;
     private final Integer maximumQuantity;
     private final Money price;
     private final String description;
     private final Integer gallons;
     private Long categoryId;
+    public boolean hasQuantityBeenModified;
 
     public Product(Long id,
                    String sku,
@@ -41,7 +41,7 @@ public class Product implements VisibleGridItem {
         this.categoryId = categoryId;
     }
 
-    public Product withQuantity(int quantity) {
+    public Product withQuantity(Integer quantity) {
         return new Product(id, sku, imageResource, requiresQuantity, quantity, minimumQuantity,
                 maximumQuantity, price, description, gallons, categoryId);
     }
@@ -64,7 +64,7 @@ public class Product implements VisibleGridItem {
         return requiresQuantity;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -131,5 +131,14 @@ public class Product implements VisibleGridItem {
         result = 31 * result + (gallons != null ? gallons.hashCode() : 0);
         result = 31 * result + (categoryId != null ? categoryId.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(Product product) {
+        return categoryId.compareTo(product.categoryId);
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

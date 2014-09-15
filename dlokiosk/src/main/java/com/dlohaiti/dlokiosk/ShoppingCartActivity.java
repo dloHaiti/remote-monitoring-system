@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 import roboguice.inject.InjectView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ShoppingCartActivity extends SaleActivity {
@@ -39,16 +40,19 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
+    private ProductCategories productCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
+        productCategories = new ProductCategories(productCategoryRepository.findAll());
+        Collections.sort(cart.getProducts());
         productAdapter = new ProductGridAdapter(
                 this,
                 cart.getProducts(),
-                new ProductCategories(productCategoryRepository.findAll()),
+                productCategories,
                 R.layout.layout_product_grid_header,
                 R.layout.layout_product_grid_item);
         productGrid.setAdapter(productAdapter);

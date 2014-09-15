@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import com.dlohaiti.dlokiosk.adapter.ProductArrayAdapter;
 import com.dlohaiti.dlokiosk.adapter.ProductCategoryArrayAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
@@ -148,7 +147,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     public void onCartButtonClick(MenuItem item) {
-        Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_SHORT).show();
+        onContinue(null);
     }
 
     public void onAddProduct(Product product, Integer quantity, Long id) {

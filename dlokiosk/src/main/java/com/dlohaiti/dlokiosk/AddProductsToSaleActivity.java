@@ -156,9 +156,9 @@ public class AddProductsToSaleActivity extends SaleActivity {
         filteredProductList.updateProductById(id, newProduct);
         allProducts.updateProductById(newProduct.getId(), newProduct);
         cart.addOrUpdateProduct(newProduct);
-        cartView.setTitle(MessageFormat.format("Cart ({0})", cart.getProducts().size()));
+        cartView.setTitle(MessageFormat.format(getString(R.string.cart_menu_item_title), cart.getProducts().size()));
         productListAdapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(), "Product added to Cart", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.product_added_message), Toast.LENGTH_SHORT).show();
     }
 
     @Override

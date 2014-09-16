@@ -103,6 +103,8 @@
     <string name="submit_button">soumettre</string>
     <string name="parameter_header">Paramètre</string>
     <string name="range_header">gamme</string>
-    <string name="add_customer_account" />
+    <string name="add_customer_account">Ajouter à la clientèle</string>
+    <string name="cart_menu_item_title">Panier ({0})</string>
+    <string name="product_added_message">Produit ajouté au Panier</string>
 
 </resources>

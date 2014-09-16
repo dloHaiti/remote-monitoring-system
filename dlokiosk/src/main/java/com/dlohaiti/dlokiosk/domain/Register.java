@@ -86,6 +86,9 @@ public class Register {
     }
 
     private Money retailPriceFor(Product product) {
+        if (product.getQuantity() == null) {
+            return product.getPrice().times(1);
+        }
         return product.getPrice().times(product.getQuantity());
     }
 

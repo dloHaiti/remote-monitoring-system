@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk;
 
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.TextView;
 import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
 import com.dlohaiti.dlokiosk.adapter.PromotionGridAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
@@ -38,6 +39,12 @@ public class ShoppingCartActivity extends SaleActivity {
     @InjectView(R.id.right_grid)
     private GridView promotionGrid;
 
+    @InjectView(R.id.total_price)
+    private TextView totalPriceView;
+
+    @InjectView(R.id.discounted_price)
+    private TextView discountedPriceView;
+
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
     private ProductCategories productCategories;
@@ -46,7 +53,17 @@ public class ShoppingCartActivity extends SaleActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
+        initialiseProductGrid();
+        initialisePromotionGrid();
+        updatePrices();
+    }
 
+    private void updatePrices() {
+        totalPriceView.setText(String.valueOf(cart.getSubtotal().getAmount()));
+        discountedPriceView.setText(String.valueOf(cart.getTotal()));
+    }
+
+    private void initialiseProductGrid() {
         productCategories = new ProductCategories(productCategoryRepository.findAll());
         Collections.sort(cart.getProducts());
         productAdapter = new ProductGridAdapter(
@@ -56,9 +73,13 @@ public class ShoppingCartActivity extends SaleActivity {
                 R.layout.layout_product_grid_header,
                 R.layout.layout_product_grid_item);
         productGrid.setAdapter(productAdapter);
+    }
 
+    private void initialisePromotionGrid() {
         List<Promotion> promotions = promotionRepository.list();
-        cart.addPromotions(promotions);
+        if (cart.getPromotions().isEmpty()) {
+            cart.addPromotions(promotions);
+        }
         promotionAdapter = new PromotionGridAdapter(this, cart.getPromotions());
         promotionGrid.setAdapter(promotionAdapter);
     }
@@ -71,10 +92,12 @@ public class ShoppingCartActivity extends SaleActivity {
     public void onProductRemoveButtonClick(Product product) {
         cart.removeProduct(product);
         productAdapter.notifyDataSetChanged();
+        updatePrices();
     }
 
     public void onPromotionRemoveButtonClick(Promotion promotion) {
         cart.removePromotion(promotion);
         promotionAdapter.notifyDataSetChanged();
+        updatePrices();
     }
 }

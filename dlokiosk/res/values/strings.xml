@@ -106,5 +106,6 @@
     <string name="add_customer_account">Ajouter à la clientèle</string>
     <string name="cart_menu_item_title">Panier ({0})</string>
     <string name="product_added_message">Produit ajouté au Panier</string>
-
+    <string name="sponsor_payment_amount_hint">Commanditaire de Paiement Montant</string>
+    <string name="amount_hint">Montant</string>
 </resources>

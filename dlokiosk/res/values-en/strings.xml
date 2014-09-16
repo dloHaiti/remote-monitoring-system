@@ -107,5 +107,7 @@
     <string name="add_customer_account">Add Customer</string>
     <string name="cart_menu_item_title">Cart ({0})</string>
     <string name="product_added_message">Product added to Cart</string>
+    <string name="sponsor_payment_amount_hint">Sponsor\'s Payment Amount</string>
+    <string name="amount_hint">Amount</string>
 
 </resources>

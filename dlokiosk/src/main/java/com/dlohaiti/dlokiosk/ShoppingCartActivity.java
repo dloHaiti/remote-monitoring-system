@@ -47,7 +47,6 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
-    private ProductCategories productCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     private void initialiseProductGrid() {
-        productCategories = new ProductCategories(productCategoryRepository.findAll());
+        ProductCategories productCategories = new ProductCategories(productCategoryRepository.findAll());
         Collections.sort(cart.getProducts());
         productAdapter = new ProductGridAdapter(
                 this,

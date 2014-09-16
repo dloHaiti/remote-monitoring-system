@@ -38,6 +38,7 @@ class ConfigurationController {
               currency: configurationService.getCurrencyCode(),
               locale: configurationService.getLocale(),
               dateformat: configurationService.getDateFormat(),
+              paymentType: configurationService.getPaymentType(),
               configuration: DeliveryConfiguration.first(), //there should only be one, always grab the first one
               agents: deliveryAgents
             ]

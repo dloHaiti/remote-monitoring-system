@@ -112,6 +112,8 @@ dloserver {
     locale.country="HT"
 
     measurement.unitOfMeasure="gallon"
+
+    payment.type = "cash,mobile"
 }
 environments {
     test {

@@ -23,6 +23,7 @@ public class CustomerAccountRepository {
             CustomerAccountsTable.ADDRESS,
             CustomerAccountsTable.PHONE_NUMBER,
             CustomerAccountsTable.KIOSK_ID,
+            CustomerAccountsTable.DUE_AMOUNT
     };
     private final KioskDatabase db;
     private SalesChannelRepository salesChannelRepository;
@@ -45,6 +46,7 @@ public class CustomerAccountRepository {
                 values.put(CustomerAccountsTable.ADDRESS, account.address());
                 values.put(CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
+                values.put(CustomerAccountsTable.DUE_AMOUNT, account.dueAmount());
 
                 wdb.insert(TABLE_NAME, null, values);
             }
@@ -83,7 +85,8 @@ public class CustomerAccountRepository {
                         cursor.getString(1),
                         cursor.getString(2), cursor.getString(3),
                         cursor.getString(4),
-                        cursor.getLong(5));
+                        cursor.getLong(5),
+                        cursor.getInt(6));
                 accounts.add(account);
                 account.withChannels(salesChannelRepository.findByCustomerId(account.id()));
                 cursor.moveToNext();

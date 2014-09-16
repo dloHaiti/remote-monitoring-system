@@ -5,31 +5,26 @@
     android:id="@+id/customer_list_item"
     style="@style/customer_list"
     android:weightSum="100">
-
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:src="@drawable/ic_pencil"
+        android:layout_weight="5"
         android:background="@drawable/edit_button"
         android:id="@+id/imageButton" />
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_name"
         style="@style/customer_account_edit_item"
-         android:layout_weight="25"
+         android:layout_weight="35"
         android:text="Customer name"/>
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/contact_name"
-        android:layout_weight="25"
-        style="@style/customer_account_edit_item"
-        android:text="Contact name"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_phone"
         style="@style/customer_account_edit_item"
-        android:layout_weight="10"
+        android:layout_weight="15"
         android:text="Phone"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_address"
-        android:layout_weight="20"
+        android:layout_weight="30"
         style="@style/customer_account_edit_item"
         android:text="Address"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"

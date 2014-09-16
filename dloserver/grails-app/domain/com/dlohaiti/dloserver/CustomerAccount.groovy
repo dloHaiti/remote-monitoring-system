@@ -5,6 +5,7 @@ class CustomerAccount {
     String phoneNumber
     String address
     String contactName
+    Integer dueAmount = 0
 
     CustomerType customerType
     Kiosk kiosk

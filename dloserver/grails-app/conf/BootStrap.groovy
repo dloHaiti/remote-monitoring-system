@@ -59,6 +59,7 @@ class BootStrap {
                     address    : a.address,
                     phoneNumber: a.phoneNumber,
                     kiosk_id   : a.kiosk.id,
+                    dueAmount: a.dueAmount,
                     sponsors   : a.sponsors.collect{
                         Sponsor s -> [id: s.id]
                     },

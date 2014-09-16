@@ -11,6 +11,15 @@ public class CustomerAccountJson {
     private long kiosk_id;
     private List<SalesChannelIdJson> channels;
     private String contactName;
+    private int dueAmount;
+
+    public int getDueAmount() {
+        return dueAmount;
+    }
+
+    public void setDueAmount(int dueAmount) {
+        this.dueAmount = dueAmount;
+    }
 
     public long getId() {
         return id;

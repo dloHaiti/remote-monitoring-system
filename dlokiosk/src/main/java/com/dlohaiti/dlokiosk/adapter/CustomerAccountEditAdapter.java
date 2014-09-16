@@ -36,7 +36,6 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
             view = inflater.inflate(R.layout.layout_customer_account_edit_item, parent, false);
             holder.listItem = view.findViewById(R.id.customer_list_item);
             holder.customerName = (TextView) view.findViewById(R.id.customer_name);
-            holder.contactName = (TextView) view.findViewById(R.id.contact_name);
             view.setTag(holder);
         } else {
             holder = (CustomerAccountViewHolder) view.getTag();
@@ -44,13 +43,10 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
 
         CustomerAccount customerAccount = accounts.get(position);
 
-        holder.customerName.setText(customerAccount.name());
-
         if (StringUtils.isNotBlank(customerAccount.contactName())) {
-            holder.contactName.setText(customerAccount.contactName());
-            holder.contactName.setVisibility(View.VISIBLE);
+            holder.customerName.setText(customerAccount.contactName());
         } else {
-            holder.contactName.setVisibility(View.INVISIBLE);
+            holder.customerName.setText(customerAccount.name());
         }
 
         TextView phone = (TextView) view.findViewById(R.id.customer_phone);
@@ -59,13 +55,16 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
         TextView address = (TextView) view.findViewById(R.id.customer_address);
         address.setText(customerAccount.address());
 
+        TextView balance = (TextView) view.findViewById(R.id.customer_balance);
+        balance.setText(String.valueOf(customerAccount.dueAmount()));
+
         if (customerAccount.isSelected()) {
             holder.customerName.setTextAppearance(getContext(), R.style.selected_customer_account_list_item);
-            holder.contactName.setTextAppearance(getContext(), R.style.selected_customer_account_list_item);
+//            holder.contactName.setTextAppearance(getContext(), R.style.selected_customer_account_list_item);
             holder.listItem.setBackgroundColor(context.getResources().getColor(R.color.selected_list_item_background));
         } else {
             holder.customerName.setTextAppearance(getContext(), R.style.list_item);
-            holder.contactName.setTextAppearance(getContext(), R.style.list_item);
+//            holder.contactName.setTextAppearance(getContext(), R.style.list_item);
 
             holder.listItem.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -75,7 +74,6 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
     class CustomerAccountViewHolder {
         View listItem;
         TextView customerName;
-        TextView contactName;
     }
 
 }

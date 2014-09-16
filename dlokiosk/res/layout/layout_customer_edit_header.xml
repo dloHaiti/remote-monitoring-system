@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/customer_list_item"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="2dip"
+    android:gravity="center"
+    android:paddingRight="1dip"
+    android:weightSum="100">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_edit"
+        style="@style/table_header"
+        android:text="Edit"
+        android:layout_width="wrap_content"
+        android:layout_weight="5"
+        android:layout_height="match_parent" />
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_name"
+        style="@style/table_header"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="35"
+        android:text="Customer"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_phone"
+        style="@style/table_header"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:text="Phone"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_address"
+        android:layout_weight="30"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        style="@style/table_header"
+        android:text="Address"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customer_balance"
+        style="@style/table_header"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="15"
+        android:text="Balance"/>
+
+</LinearLayout>

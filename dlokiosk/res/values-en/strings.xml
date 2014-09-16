@@ -3,7 +3,7 @@
 
     <string name="app_name">dloHaiti</string>
     <string name="action_configuration">Configuration</string>
-    <string name="record_new_reading_button">Diagnostique</string>
+    <string name="record_new_reading_button">Diagnostics</string>
     <string name="manual_sync_button">Manual Sync</string>
     <string name="title_activity_enter_reading">Enter Reading</string>
     <string name="ok">OK</string>

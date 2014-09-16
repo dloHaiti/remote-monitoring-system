@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
 public class CustomerAccount extends SelectableListItem implements Comparable<CustomerAccount> {
+    private int dueAmount;
     private long id;
     private String name;
     private String address;
@@ -18,7 +19,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
 
     private List<SalesChannel> channels;
 
-    public CustomerAccount(long id, String name, String contactName, String address, String phoneNumber, long kiosk_id) {
+    public CustomerAccount(long id, String name, String contactName, String address, String phoneNumber, long kiosk_id,int amount) {
         super(id, name);
         this.id = id;
         this.name = name;
@@ -26,6 +27,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
+        this.dueAmount=amount;
     }
 
     public long id() {
@@ -113,5 +115,9 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         result = 31 * result + (int) (kiosk_id ^ (kiosk_id >>> 32));
         result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
         return result;
+    }
+
+    public int dueAmount() {
+        return dueAmount;
     }
 }

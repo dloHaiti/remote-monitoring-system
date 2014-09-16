@@ -53,7 +53,7 @@ public class CustomerAccountBuilder {
     }
 
     public CustomerAccount build() {
-        CustomerAccount account = new CustomerAccount(id, name, contactName, address, phoneNumber, kioskId)
+        CustomerAccount account = new CustomerAccount(id, name, contactName, address, phoneNumber, kioskId,0)
                 .withChannels(salesChannels);
         if (selected) {
             account.select();

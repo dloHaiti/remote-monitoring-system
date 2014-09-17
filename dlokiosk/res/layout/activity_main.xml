@@ -51,36 +51,36 @@
             android:layout_centerVertical="true">
 
         <Button
-                style="@style/home_screen_button"
-                android:onClick="moveToNewSaleScreen"
-                android:text="@string/new_sale_button"
-                android:id="@+id/new_sale_button"
-                android:drawableLeft="@drawable/ic_menu_all_customers"
-            />
-
+            style="@style/home_screen_button"
+            android:drawableLeft="@drawable/ic_new_sale"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:onClick="moveToSelectSalesChannelScreen"
+            android:text="@string/view_new_sale_button"
+            android:id="@+id/view_new_sale"/>
         <Button
+            android:drawableLeft="@drawable/ic_accounts"
+            android:layout_gravity="center_vertical|center_horizontal"
                 style="@style/home_screen_button"
                 android:onClick="moveToAccountsScreen"
                 android:text="@string/accounts_button"
                 android:id="@+id/accounts_button"/>
 
         <Button
+            android:drawableLeft="@drawable/ic_diagnostics"
+            android:layout_gravity="center_vertical|center_horizontal"
                 style="@style/home_screen_button"
                 android:onClick="moveToSelectSamplingSite"
                 android:text="@string/record_new_reading_button"
                 android:id="@+id/button"/>
 
         <Button
+            android:drawableLeft="@drawable/ic_reports"
+            android:layout_gravity="center_vertical|center_horizontal"
                 style="@style/home_screen_button"
                 android:onClick="moveToViewReports"
                 android:text="@string/view_reports_button"
                 android:id="@+id/view_reports"/>
 
-        <Button
-                style="@style/home_screen_button"
-                android:onClick="moveToSelectSalesChannelScreen"
-                android:text="@string/view_new_sale_button"
-                android:id="@+id/view_new_sale"/>
     </LinearLayout>
 
 </RelativeLayout>

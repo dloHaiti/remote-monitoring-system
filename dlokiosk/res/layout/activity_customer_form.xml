@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:padding="10dp"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/customer_name_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/customer_name_label"/>
+                <EditText
+                    android:id="@+id/customer_name"
+                    style="@style/payment_form_field"
+                    android:hint="@string/customer_name_hint"/>
+            </LinearLayout>
+
+            <ImageView style="@style/horizontal_divider"/>
+
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/customer_phone_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/customer_phone_label"/>
+                <EditText
+                    android:id="@+id/customer_phone"
+                    style="@style/payment_form_field"
+                    android:hint="@string/customer_phone_hint"/>
+            </LinearLayout>
+
+            <ImageView style="@style/horizontal_divider"/>
+
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/customer_gps_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/customer_GPS_label"/>
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    >
+                    <EditText
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/latitude_degres" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/latitude_degres_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="O"
+                        android:layout_toRightOf="@+id/latitude_degres"
+                        android:layout_alignTop="@+id/latitude_degres" />
+                    <EditText
+                        android:layout_toRightOf="@+id/latitude_degres_label"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/latitude_minutes" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/latitude_minutes_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="'"
+                        android:layout_toRightOf="@+id/latitude_minutes"
+                        android:layout_alignTop="@+id/latitude_minutes" />
+                    <EditText
+                        android:layout_toRightOf="@+id/latitude_minutes_label"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/latitude_secondes" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/latitude_secondes_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="''"
+                        android:layout_toRightOf="@+id/latitude_secondes"
+                        android:layout_alignTop="@+id/latitude_secondes" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/latitude_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Latitude"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/latitude_secondes_label"
+                        android:layout_alignTop="@+id/latitude_secondes_label" />
+
+                    <EditText
+                        android:layout_below="@id/latitude_degres"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/longitude_degres" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/longitude_degres_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="O"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignTop="@+id/longitude_degres"
+                        android:layout_toRightOf="@+id/longitude_degres" />
+                    <EditText
+                        android:layout_below="@id/latitude_minutes"
+                        android:layout_toRightOf="@+id/longitude_degres_label"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/longitude_minutes" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/longitude_minutes_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="'"
+
+                        android:layout_alignTop="@+id/longitude_minutes"
+                        android:layout_toRightOf="@+id/longitude_minutes" />
+                    <EditText
+                        android:layout_toRightOf="@+id/longitude_minutes_label"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/longitude_secondes"
+                        android:layout_alignTop="@+id/longitude_minutes_label" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/longitude_secondes_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="''"
+                        android:layout_toRightOf="@+id/longitude_secondes"
+                        android:layout_alignTop="@+id/longitude_secondes" />
+                    <TextView
+                        android:padding="5dp"
+                        android:id="@+id/longitude_label"
+                        style="@style/standard_black_text"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Longitude"
+                        android:layout_toRightOf="@+id/longitude_secondes_label"
+                        android:layout_alignTop="@+id/longitude_secondes_label" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView style="@style/horizontal_divider"/>
+
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/customer_address_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/customer_address_label"/>
+                <EditText
+                    android:id="@+id/customer_address"
+                    style="@style/payment_form_field"
+                    android:hint="@string/customer_address_hint"/>
+            </LinearLayout>
+            <ImageView style="@style/horizontal_divider"/>
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/organisation_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/organisation_label"/>
+                <EditText
+                    android:id="@+id/organisation"
+                    style="@style/payment_form_field"
+                    android:hint="@string/organisation_hint"/>
+            </LinearLayout>
+            <ImageView style="@style/horizontal_divider"/>
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/sales_channel_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/sales_channel_label"/>
+                <Spinner
+                    android:id="@+id/sales_channel"
+                    style="@style/payment_form_field"/>
+            </LinearLayout>
+
+            <ImageView style="@style/horizontal_divider"/>
+
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:id="@+id/bottom_pane"
+        style="@style/bottom_navigation_pane"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/cancel_button"
+            style="@style/navigation_button"
+            android:layout_alignParentLeft="true"
+            android:onClick="onCancel"
+            android:src="@drawable/cancel_button" />
+
+        <Button
+            android:id="@+id/save_button"
+            style="@style/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="onSave"
+            android:text="@string/submit_button" />
+
+        <ImageButton
+            android:id="@+id/back_button"
+            style="@style/navigation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/save_button"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:src="@drawable/back_button" />
+
+    </RelativeLayout>
+</RelativeLayout>

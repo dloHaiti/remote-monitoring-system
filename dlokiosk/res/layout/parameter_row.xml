@@ -26,13 +26,13 @@
 
     <TextView
         android:id="@+id/parameter_units"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/parameter_range"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:textColor="@android:color/black"
         android:layout_height="wrap_content" />
 </LinearLayout>

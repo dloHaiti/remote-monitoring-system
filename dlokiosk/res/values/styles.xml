@@ -41,10 +41,11 @@
     </style>
 
     <style name="home_screen_button">
-        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_width">260dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="right_grid">
@@ -109,8 +110,8 @@
     <style name="customer_account_edit_item" parent="standard_black_text">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
-        <item name="android:paddingLeft">1dip</item>
-        <item name="android:paddingRight">1dip</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -239,6 +240,14 @@
     </style>
 
     <style name="payment_form_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:weightSum">2</item>
+    </style>
+
+    <style name="customer_form_row">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>

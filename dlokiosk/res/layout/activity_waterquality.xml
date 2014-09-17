@@ -55,14 +55,14 @@
                 <TextView
                     android:id="@+id/header_parameter_units"
                     style="@style/table_header"
-                    android:layout_width="200dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="@string/flow_header_unit" />
 
                 <TextView
                     android:id="@+id/header_parameter_range"
                     style="@style/table_header"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="@string/range_header" />
             </LinearLayout>

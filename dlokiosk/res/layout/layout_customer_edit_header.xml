@@ -15,8 +15,8 @@
         android:id="@+id/customer_edit"
         style="@style/table_header"
         android:text="Edit"
-        android:layout_width="wrap_content"
-        android:layout_weight="5"
+        android:layout_width="0dp"
+        android:layout_weight="10"
         android:layout_height="match_parent" />
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_name"
@@ -44,7 +44,7 @@
         style="@style/table_header"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="15"
+        android:layout_weight="10"
         android:text="Balance"/>
 
 </LinearLayout>

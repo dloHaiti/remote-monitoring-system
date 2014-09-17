@@ -204,5 +204,7 @@ public class AccountsActivity extends RoboActivity {
     }
 
     public void onAddCustomerAccount(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), CustomerFormActivity.class);
+        startActivity(intent);
     }
 }

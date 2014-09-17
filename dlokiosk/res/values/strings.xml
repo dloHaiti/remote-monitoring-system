@@ -108,4 +108,14 @@
     <string name="product_added_message">Produit ajouté au Panier</string>
     <string name="sponsor_payment_amount_hint">Commanditaire de Paiement Montant</string>
     <string name="amount_hint">Montant</string>
+    <string name="customer_name_label">Customer</string>
+    <string name="customer_name_hint">entrez le nom du client</string>
+    <string name="customer_phone_label">téléphone</string>
+    <string name="customer_phone_hint">entrer le numéro de téléphone</string>
+    <string name="customer_GPS_label">adresse (GPS)</string>
+    <string name="customer_address_label">Adresse ( Notes / repère )</string>
+    <string name="customer_address_hint" />
+    <string name="organisation_label">Organisation</string>
+    <string name="organisation_hint">Enter Organisation</string>
+    <string name="sales_channel_label">Sales Channel</string>
 </resources>

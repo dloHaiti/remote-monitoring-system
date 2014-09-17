@@ -9,7 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:src="@drawable/ic_pencil"
-        android:layout_weight="5"
+        android:layout_weight="10"
+        android:padding="5dp"
         android:background="@drawable/edit_button"
         android:id="@+id/imageButton" />
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,12 +31,13 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_balance"
         style="@style/customer_account_edit_item"
-        android:layout_weight="10"
+        android:layout_weight="5"
         android:text="Balance"/>
 
     <ImageButton
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="5"
         android:src="@android:drawable/ic_menu_add"
         android:id="@+id/imageButton2" />
 </LinearLayout>

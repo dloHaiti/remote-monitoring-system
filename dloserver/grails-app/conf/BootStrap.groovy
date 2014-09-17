@@ -271,8 +271,14 @@ class BootStrap {
                 new Parameter(active: true, manual: false, name: "Vin", unit: '', minimum: null, maximum: null, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
                 new Parameter(active: true, manual: false, name: "Vbatt", unit: '', minimum: null, maximum: null, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
             }
+
+            if(KioskWiseParameter.count()==0){
+                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(1)).save(failOnError: true)
+                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(2)).save(failOnError: true)
+                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(19)).save(failOnError: true)
+            }
         }
     }
     def destroy = {
-    }
+    }   
 }

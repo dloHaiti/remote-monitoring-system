@@ -84,4 +84,5 @@ public class CustomerAccountJson {
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
 }

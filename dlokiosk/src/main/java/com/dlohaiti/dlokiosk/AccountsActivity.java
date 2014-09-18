@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -102,7 +103,7 @@ public class AccountsActivity extends RoboActivity {
     }
 
     private void initialiseCustomerList() {
-        customerListAdapter = new CustomerAccountEditAdapter(getApplicationContext(), filteredCustomerList);
+        customerListAdapter = new CustomerAccountEditAdapter(this, filteredCustomerList);
         customerListView.setAdapter(customerListAdapter);
         customerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -149,7 +150,9 @@ public class AccountsActivity extends RoboActivity {
 
     private void updateCustomerList() {
         updateFilteredCustomerList();
-        customerListAdapter.notifyDataSetChanged();
+        customerListAdapter = new CustomerAccountEditAdapter(this, filteredCustomerList);
+        customerListView.setAdapter(customerListAdapter);
+//        customerListAdapter.notifyDataSetChanged();
     }
 
     private void clearCustomerSearch() {
@@ -194,9 +197,10 @@ public class AccountsActivity extends RoboActivity {
             @Override
             public boolean onQueryTextChange(String text) {
                 filteredCustomerList.clear();
-                List<CustomerAccount> filteredList = allCustomerList.filterAccountsBy(text, selectedSalesChannel);
+                List<CustomerAccount> filteredList = allCustomerList.filterAccountsByContactName(text, selectedSalesChannel);
                 filteredCustomerList.addAll(filteredList);
-                customerListAdapter.notifyDataSetChanged();
+                customerListAdapter = new CustomerAccountEditAdapter(AccountsActivity.this, filteredCustomerList);
+                customerListView.setAdapter(customerListAdapter);
                 return true;
             }
         });
@@ -207,4 +211,18 @@ public class AccountsActivity extends RoboActivity {
         Intent intent = new Intent(getApplicationContext(), CustomerFormActivity.class);
         startActivity(intent);
     }
+
+    public void onBack(View view) {
+        finish();
+    }
+
+    public void addBalanceAmount(CustomerAccount account, Double amount) {
+        account.setDueAmount(account.dueAmount()-amount);
+        customerAccountRepository.save(account);
+        Log.d("BALANCE", String.valueOf(account));
+        customerListAdapter = new CustomerAccountEditAdapter(AccountsActivity.this, filteredCustomerList);
+        customerListView.setAdapter(customerListAdapter);
+        customerListAdapter.notifyDataSetChanged();
+    }
 }
+

@@ -8,9 +8,11 @@ import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.PostResponse;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.DeliveryRepository;
 import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.Receipt;
@@ -18,6 +20,7 @@ import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
 import java.util.Collection;
+import java.util.SortedSet;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
@@ -33,6 +36,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     private DeliveryRepository deliveriesRepository;
     @Inject
     private ReadingsRepository readingsRepository;
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
 
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -59,6 +64,7 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         Collection<Receipt> receipts = receiptsRepository.list();
         Collection<Delivery> deliveries = deliveriesRepository.list();
         Collection<Reading> readings = readingsRepository.list();
+        SortedSet<CustomerAccount> customerAccounts = customerAccountRepository.findAll();
 
         if (receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);

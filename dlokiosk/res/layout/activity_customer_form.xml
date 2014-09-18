@@ -55,9 +55,10 @@
                     >
                     <EditText
                     android:layout_alignParentLeft="true"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/latitude_degres" />
+                    android:id="@+id/latitude_degres"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/latitude_degres_label"
@@ -70,9 +71,10 @@
                         android:layout_alignTop="@+id/latitude_degres" />
                     <EditText
                         android:layout_toRightOf="@+id/latitude_degres_label"
-                        android:layout_width="50dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/latitude_minutes" />
+                        android:id="@+id/latitude_minutes"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/latitude_minutes_label"
@@ -85,9 +87,10 @@
                         android:layout_alignTop="@+id/latitude_minutes" />
                     <EditText
                         android:layout_toRightOf="@+id/latitude_minutes_label"
-                        android:layout_width="50dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/latitude_secondes" />
+                        android:id="@+id/latitude_secondes"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/latitude_secondes_label"
@@ -112,9 +115,10 @@
 
                     <EditText
                         android:layout_below="@id/latitude_degres"
-                        android:layout_width="50dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/longitude_degres" />
+                        android:id="@+id/longitude_degres"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/longitude_degres_label"
@@ -129,9 +133,10 @@
                     <EditText
                         android:layout_below="@id/latitude_minutes"
                         android:layout_toRightOf="@+id/longitude_degres_label"
-                        android:layout_width="50dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/longitude_minutes" />
+                        android:id="@+id/longitude_minutes"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/longitude_minutes_label"
@@ -145,10 +150,11 @@
                         android:layout_toRightOf="@+id/longitude_minutes" />
                     <EditText
                         android:layout_toRightOf="@+id/longitude_minutes_label"
-                        android:layout_width="50dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/longitude_secondes"
-                        android:layout_alignTop="@+id/longitude_minutes_label" />
+                        android:layout_alignTop="@+id/longitude_minutes_label"
+                        android:inputType="number" />
                     <TextView
                         android:padding="5dp"
                         android:id="@+id/longitude_secondes_label"

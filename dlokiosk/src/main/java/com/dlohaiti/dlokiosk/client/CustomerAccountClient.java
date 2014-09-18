@@ -1,19 +1,17 @@
 package com.dlohaiti.dlokiosk.client;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.Reading;
 import com.google.inject.Inject;
 
-public class ReadingsClient {
+public class CustomerAccountClient{
     private final RestClient restClient;
 
     @Inject
-    public ReadingsClient(RestClient restClient) {
+    public CustomerAccountClient(RestClient restClient) {
         this.restClient = restClient;
     }
 
-    public PostResponse send(Reading reading) {
-        return restClient.post("/readings", reading);
+    public PostResponse send(CustomerAccount account) {
+        return restClient.post("/account", account);
     }
 }
-

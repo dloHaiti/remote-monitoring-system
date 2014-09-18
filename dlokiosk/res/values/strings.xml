@@ -118,4 +118,8 @@
     <string name="organisation_label">Organisation</string>
     <string name="organisation_hint">Enter Organisation</string>
     <string name="sales_channel_label">Sales Channel</string>
+    <string name="balance_amount_label">Enter payment amount</string>
+    <string name="balance_amount_button">OK</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="do_manual_sync_msg">There are un synced items. Please do manual sync</string>
 </resources>

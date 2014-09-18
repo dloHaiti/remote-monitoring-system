@@ -4,6 +4,7 @@ import com.dlohaiti.dlokiosk.exception.NoCustomerAccountWithGivenIdException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
@@ -63,5 +64,17 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
             }
         }
         throw new NoCustomerAccountWithGivenIdException(id);
+    }
+
+    public List<CustomerAccount> filterAccountsByContactName(String contactName, SalesChannel selectedSalesChannel) {
+        List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
+
+        for (CustomerAccount account : this) {
+            if (containsIgnoreCase(account.contactName(), contactName) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
+                newFilteredCustomerList.add(account);
+            }
+        }
+        return newFilteredCustomerList;
+
     }
 }

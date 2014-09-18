@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.dlohaiti.dlokiosk.client.ConfigurationClient;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.google.inject.Inject;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 public class ConfigurationActivity extends RoboActivity {
@@ -26,6 +30,12 @@ public class ConfigurationActivity extends RoboActivity {
     private ConfigurationRepository config;
     @Inject
     private ConfigurationClient client;
+
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
+
+    @InjectResource(R.string.do_manual_sync_msg)
+    private String do_manual_sync_msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +58,13 @@ public class ConfigurationActivity extends RoboActivity {
     }
 
     public void updateConfiguration(View v) {
-        new PullConfigurationTask(this).execute();
-        config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(ISODateTimeFormat.basicDate()));
+        if(customerAccountRepository.getNonSyncItemsCount()==0) {
+            new PullConfigurationTask(this).execute();
+            config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(ISODateTimeFormat.basicDate()));
+        }
+        else{
+            Toast.makeText(this, do_manual_sync_msg, Toast.LENGTH_LONG).show();
+        }
     }
 
     public void doManualSync(View view) {

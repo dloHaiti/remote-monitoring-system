@@ -109,7 +109,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             customerAccounts.add(
                     new CustomerAccount(account.getId(), account.getName(),
                             account.getContactName(), account.getAddress(), account.getPhoneNumber(),
-                            account.getKiosk_id(),account.getDueAmount())
+                            account.getKiosk_id(),account.getDueAmount(),true)
                             .withChannelIds(account.channelIds()));
         }
 

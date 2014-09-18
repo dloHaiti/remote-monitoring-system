@@ -230,7 +230,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s INTEGER," +
-                        "%s INTEGER" +
+                        "%s INTEGER," +
+                        "%s TEXT" +
                         ")",
                 CustomerAccountsTable.TABLE_NAME,
                 CustomerAccountsTable.ID,
@@ -239,7 +240,8 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 CustomerAccountsTable.ADDRESS,
                 CustomerAccountsTable.PHONE_NUMBER,
                 CustomerAccountsTable.KIOSK_ID,
-                CustomerAccountsTable.DUE_AMOUNT
+                CustomerAccountsTable.DUE_AMOUNT,
+                CustomerAccountsTable.IS_SYNCED
         );
 
         String createSalesChannelCustomerAccounts = String.format(
@@ -421,6 +423,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
         public static final String KIOSK_ID = "KIOSK_ID";
         public static final String DUE_AMOUNT = "DUE_DATE";
+        public static final String IS_SYNCED = "IS_SYNCED";
     }
 
     public static class SalesChannelCustomerAccountsTable {

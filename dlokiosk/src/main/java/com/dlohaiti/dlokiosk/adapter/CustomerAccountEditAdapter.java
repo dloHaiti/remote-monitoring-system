@@ -55,7 +55,7 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
 
     private void handleBalanceAmount(int position, CustomerAccountViewHolder holder, CustomerAccount customerAccount) {
         holder.balanceButton.setId(position);
-        if(customerAccount.dueAmount()==0){
+        if(customerAccount.getDueAmount()==0){
             holder.balanceButton.setVisibility(View.INVISIBLE);
         }else{
             holder.balanceButton.setVisibility(View.VISIBLE);
@@ -78,7 +78,7 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
             public void onClick(View view) {
                 CustomerAccount account = accounts.get(view.getId());
                 Intent intent = new Intent(context, CustomerFormActivity.class);
-                intent.putExtra("account_id",String.valueOf(account.id()));
+                intent.putExtra("account_id",String.valueOf(account.getId()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
             }
@@ -86,20 +86,20 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
     }
 
     private void fillCustomerDetails(View view, CustomerAccountViewHolder holder, CustomerAccount customerAccount) {
-        if (StringUtils.isNotBlank(customerAccount.contactName())) {
-            holder.customerName.setText(customerAccount.contactName());
+        if (StringUtils.isNotBlank(customerAccount.getContactName())) {
+            holder.customerName.setText(customerAccount.getContactName());
         } else {
-            holder.customerName.setText(customerAccount.name());
+            holder.customerName.setText(customerAccount.getName());
         }
 
         TextView phone = (TextView) view.findViewById(R.id.customer_phone);
-        phone.setText(customerAccount.phoneNumber());
+        phone.setText(customerAccount.getPhoneNumber());
 
         TextView address = (TextView) view.findViewById(R.id.customer_address);
-        address.setText(customerAccount.address());
+        address.setText(customerAccount.getAddress());
 
         TextView balance = (TextView) view.findViewById(R.id.customer_balance);
-        balance.setText( String.format( "%.2f",customerAccount.dueAmount()));
+        balance.setText( String.format( "%.2f",customerAccount.getDueAmount()));
 
     }
 

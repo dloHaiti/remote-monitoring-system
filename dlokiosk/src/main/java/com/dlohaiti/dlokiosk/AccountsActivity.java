@@ -1,10 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dlohaiti.dlokiosk.adapter.CustomerAccountArrayAdapter;
 import com.dlohaiti.dlokiosk.adapter.CustomerAccountEditAdapter;
 import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
@@ -217,7 +207,7 @@ public class AccountsActivity extends RoboActivity {
     }
 
     public void addBalanceAmount(CustomerAccount account, Double amount) {
-        account.setDueAmount(account.dueAmount()-amount);
+        account.setDueAmount(account.getDueAmount()-amount);
         customerAccountRepository.save(account);
         Log.d("BALANCE", String.valueOf(account));
         customerListAdapter = new CustomerAccountEditAdapter(AccountsActivity.this, filteredCustomerList);

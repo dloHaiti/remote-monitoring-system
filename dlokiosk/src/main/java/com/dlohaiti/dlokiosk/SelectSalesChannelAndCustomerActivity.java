@@ -82,7 +82,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         if (cart.customerAccount() == null) {
             cart.setCustomerAccount(null);
         } else {
-            CustomerAccount customerAccountToSelect = filteredCustomerList.findById(cart.customerAccount().id());
+            CustomerAccount customerAccountToSelect = filteredCustomerList.findById(cart.customerAccount().getId());
             customerAccountToSelect.select();
             cart.setCustomerAccount(customerAccountToSelect);
         }

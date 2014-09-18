@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -47,12 +46,12 @@ public class CustomerAccountRepository {
             wdb.delete(TABLE_NAME, null, null);
             for (CustomerAccount account : accounts) {
                 ContentValues values = new ContentValues();
-                values.put(CustomerAccountsTable.NAME, account.name());
-                values.put(CustomerAccountsTable.CONTACT_NAME, account.contactName());
-                values.put(CustomerAccountsTable.ADDRESS, account.address());
-                values.put(CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
+                values.put(CustomerAccountsTable.NAME, account.getName());
+                values.put(CustomerAccountsTable.CONTACT_NAME, account.getContactName());
+                values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
+                values.put(CustomerAccountsTable.PHONE_NUMBER, account.getPhoneNumber());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
-                values.put(CustomerAccountsTable.DUE_AMOUNT, account.dueAmount());
+                values.put(CustomerAccountsTable.DUE_AMOUNT, account.getDueAmount());
                 values.put(CustomerAccountsTable.IS_SYNCED, String.valueOf(true));
                 wdb.insert(TABLE_NAME, null, values);
             }
@@ -72,7 +71,7 @@ public class CustomerAccountRepository {
         for (CustomerAccount account : accounts) {
             for (long channelId : account.channelIds()) {
                 ContentValues values = new ContentValues();
-                values.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.id());
+                values.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
                 values.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID, channelId);
                 wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, values);
             }
@@ -95,7 +94,7 @@ public class CustomerAccountRepository {
                         cursor.getInt(6),
                         Boolean.valueOf(cursor.getString(7)));
                 accounts.add(account);
-                account.withChannels(salesChannelRepository.findByCustomerId(account.id()));
+                account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();
@@ -135,23 +134,23 @@ public class CustomerAccountRepository {
         }
     }
 
-    public boolean save(CustomerAccount account){
+    public boolean save(CustomerAccount account) {
         SQLiteDatabase wdb = db.getWritableDatabase();
 
         wdb.beginTransaction();
         try {
             long accountId;
             ContentValues values = new ContentValues();
-            if (account.id() == null) {
-//                values.put(CustomerAccountsTable.NAME, account.name());
+            if (account.getId() == null) {
+//                values.put(CustomerAccountsTable.NAME, account.getName());
 //                values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
 //                values.put(KioskDatabase.ReadingsTable.IS_SYNCED, String.valueOf(reading.isSynced()));
 //                readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
             } else {
-                accountId = account.id();
-                values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.dueAmount()));
+                accountId = account.getId();
+                values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
                 values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
-                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME,values, "id " + "=" + accountId,null);
+                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
             }
 //            for (Measurement m : reading.getMeasurements()) {
 //                ContentValues cv = new ContentValues();
@@ -161,7 +160,7 @@ public class CustomerAccountRepository {
 //                if (m.getId() == null) {
 //                    wdb.insert(KioskDatabase.MeasurementsTable.TABLE_NAME, null, cv);
 //                } else {
-//                    wdb.update(KioskDatabase.MeasurementsTable.TABLE_NAME, cv, "id " + "=" + m.getId(), null);
+//                    wdb.update(KioskDatabase.MeasurementsTable.TABLE_NAME, cv, "getId " + "=" + m.getId(), null);
 //                }
 //            }
             wdb.setTransactionSuccessful();
@@ -174,7 +173,7 @@ public class CustomerAccountRepository {
         }
     }
 
-    public List<CustomerAccount>  getNonSyncAccounts() {
+    public List<CustomerAccount> getNonSyncAccounts() {
         List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
@@ -190,7 +189,7 @@ public class CustomerAccountRepository {
                         cursor.getInt(6),
                         Boolean.valueOf(cursor.getString(7)));
                 accounts.add(account);
-                account.withChannels(salesChannelRepository.findByCustomerId(account.id()));
+                account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();
@@ -201,5 +200,24 @@ public class CustomerAccountRepository {
             rdb.endTransaction();
         }
         return accounts;
+    }
+
+    public boolean synced(CustomerAccount account) {
+        SQLiteDatabase wdb = db.getWritableDatabase();
+        wdb.beginTransaction();
+        try {
+            long accountId;
+            ContentValues values = new ContentValues();
+            accountId = account.getId();
+            values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(true));
+            wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
+            wdb.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to save customer account to database.", e);
+            return false;
+        } finally {
+            wdb.endTransaction();
+        }
     }
 }

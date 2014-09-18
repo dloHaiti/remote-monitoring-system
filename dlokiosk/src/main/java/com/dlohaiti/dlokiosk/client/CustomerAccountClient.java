@@ -12,6 +12,6 @@ public class CustomerAccountClient{
     }
 
     public PostResponse send(CustomerAccount account) {
-        return restClient.post("/account", account);
+        return restClient.post("/accounts", account);
     }
 }

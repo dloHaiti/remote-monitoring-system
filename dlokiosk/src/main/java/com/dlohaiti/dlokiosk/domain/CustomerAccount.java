@@ -31,19 +31,19 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.synced=synced;
     }
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public String address() {
+    public String getAddress() {
         return address;
     }
 
-    public String phoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -59,7 +59,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         return channels;
     }
 
-    public String contactName() {
+    public String getContactName() {
         return contactName;
     }
 
@@ -118,7 +118,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         return result;
     }
 
-    public double dueAmount() {
+    public double getDueAmount() {
         return dueAmount;
     }
 

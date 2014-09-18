@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.widget.Toast;
+
+import com.dlohaiti.dlokiosk.client.CustomerAccountClient;
 import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.PostResponse;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
@@ -20,6 +22,7 @@ import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedSet;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
@@ -30,6 +33,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     private DeliveriesClient deliveriesClient;
     @Inject
     private ReadingsClient readingsClient;
+    @Inject
+    private CustomerAccountClient accountClient;
     @Inject
     private ReceiptsRepository receiptsRepository;
     @Inject
@@ -64,13 +69,22 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         Collection<Receipt> receipts = receiptsRepository.list();
         Collection<Delivery> deliveries = deliveriesRepository.list();
         Collection<Reading> readings = readingsRepository.list();
-        SortedSet<CustomerAccount> customerAccounts = customerAccountRepository.findAll();
+        List<CustomerAccount> accounts = customerAccountRepository.getNonSyncAccounts();
 
-        if (receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
+        if (accounts.isEmpty() && receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
 
         Failures failures = new Failures();
+
+        for (CustomerAccount account : accounts) {
+            PostResponse response = accountClient.send(account);
+            if (response.isSuccess()) {
+                customerAccountRepository.synced(account);
+            } else {
+                failures.add(new Failure(FailureKind.READING, response.getErrors()));
+            }
+        }
 
         for (Reading reading : readings) {
             PostResponse response = readingsClient.send(reading);

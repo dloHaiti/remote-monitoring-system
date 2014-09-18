@@ -36,8 +36,8 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         CustomerAccounts newFilteredCustomerList = new CustomerAccounts();
 
         for (CustomerAccount account : this) {
-            if ((containsIgnoreCase(account.name(), text)
-                    || containsIgnoreCase(account.contactName(), text))
+            if ((containsIgnoreCase(account.getName(), text)
+                    || containsIgnoreCase(account.getContactName(), text))
                     && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
                 newFilteredCustomerList.add(account);
             }
@@ -49,8 +49,8 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         CustomerAccounts newFilteredCustomerList = new CustomerAccounts();
 
         for (CustomerAccount account : this) {
-            if (containsIgnoreCase(account.name(), text)
-                    || containsIgnoreCase(account.contactName(), text)) {
+            if (containsIgnoreCase(account.getName(), text)
+                    || containsIgnoreCase(account.getContactName(), text)) {
                 newFilteredCustomerList.add(account);
             }
         }
@@ -59,7 +59,7 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
 
     public CustomerAccount findById(long id) {
         for (CustomerAccount account : this) {
-            if (account.id() == id) {
+            if (account.getId() == id) {
                 return account;
             }
         }
@@ -70,7 +70,7 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
 
         for (CustomerAccount account : this) {
-            if (containsIgnoreCase(account.contactName(), contactName) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
+            if (containsIgnoreCase(account.getContactName(), contactName) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
                 newFilteredCustomerList.add(account);
             }
         }

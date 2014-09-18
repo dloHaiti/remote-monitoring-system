@@ -3,11 +3,9 @@ package com.dlohaiti.dlokiosk;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
@@ -66,10 +64,10 @@ public class CustomerFormActivity extends RoboActivity {
         if(account==null) {
             return;
         }
-        customerName.setText(account.contactName());
-        customerPhone.setText(account.phoneNumber());
-        customerAddress.setText(account.address());
-        organization.setText(account.name());
+        customerName.setText(account.getContactName());
+        customerPhone.setText(account.getPhoneNumber());
+        customerAddress.setText(account.getAddress());
+        organization.setText(account.getName());
 //        account.channelIds();
     }
 

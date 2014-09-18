@@ -90,16 +90,16 @@ public class CustomerAccountRepositoryTest {
     private void saveCustomerAccounts(SQLiteDatabase wdb, List<CustomerAccount> customerAccounts) {
         for (CustomerAccount account : customerAccounts) {
             ContentValues values = new ContentValues();
-            values.put(CustomerAccountsTable.ID, account.id());
-            values.put(CustomerAccountsTable.NAME, account.name());
-            values.put(CustomerAccountsTable.CONTACT_NAME, account.contactName());
-            values.put(CustomerAccountsTable.ADDRESS, account.address());
-            values.put(CustomerAccountsTable.PHONE_NUMBER, account.phoneNumber());
+            values.put(CustomerAccountsTable.ID, account.getId());
+            values.put(CustomerAccountsTable.NAME, account.getName());
+            values.put(CustomerAccountsTable.CONTACT_NAME, account.getContactName());
+            values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
+            values.put(CustomerAccountsTable.PHONE_NUMBER, account.getPhoneNumber());
             values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
             wdb.insert(CustomerAccountsTable.TABLE_NAME, null, values);
 
             ContentValues mapTableValues = new ContentValues();
-            mapTableValues.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.id());
+            mapTableValues.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
             mapTableValues.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID, account.channelIds().get(0));
             wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, mapTableValues);
         }

@@ -40,10 +40,10 @@ public class CustomerAccountArrayAdapter extends ArrayAdapter<CustomerAccount> {
             holder = (CustomerAccountViewHolder) view.getTag();
         }
 
-        holder.customerName.setText(accounts.get(position).name());
+        holder.customerName.setText(accounts.get(position).getName());
 
-        if (StringUtils.isNotBlank(accounts.get(position).contactName())) {
-            holder.contactName.setText(accounts.get(position).contactName());
+        if (StringUtils.isNotBlank(accounts.get(position).getContactName())) {
+            holder.contactName.setText(accounts.get(position).getContactName());
             holder.contactName.setVisibility(View.VISIBLE);
         } else {
             holder.contactName.setVisibility(View.INVISIBLE);

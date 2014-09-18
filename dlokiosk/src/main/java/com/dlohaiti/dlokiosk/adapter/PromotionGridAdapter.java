@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.ShoppingCartActivity;
 import com.dlohaiti.dlokiosk.domain.Promotion;
@@ -36,16 +37,18 @@ public class PromotionGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         PromotionGridViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(activity).inflate(R.layout.layout_product_grid_item, parent, false);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.layout_removable_grid_item, parent, false);
             holder = new PromotionGridViewHolder();
             holder.promotionIcon = (ImageView) convertView.findViewById(R.id.icon);
             holder.removePromotionButton = (ImageButton) convertView.findViewById(R.id.remove_item_button);
+            holder.quantity = (TextView) convertView.findViewById(R.id.quantity);
             convertView.setTag(holder);
         } else {
             holder = (PromotionGridViewHolder) convertView.getTag();
         }
 
         final Promotion promotion = (Promotion) getItem(position);
+        holder.quantity.setVisibility(View.GONE);
         holder.promotionIcon.setImageBitmap(promotion.getImageResource());
         holder.removePromotionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +62,7 @@ public class PromotionGridAdapter extends BaseAdapter {
 
     class PromotionGridViewHolder {
         ImageView promotionIcon;
-        public ImageButton removePromotionButton;
+        ImageButton removePromotionButton;
+        TextView quantity;
     }
 }

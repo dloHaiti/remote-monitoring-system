@@ -23,8 +23,7 @@ public class ShoppingCartNew {
     public void addOrUpdateProduct(Product newProduct) {
         Integer existingProductIndex = products.getIndexOf(newProduct);
         if (existingProductIndex != null) {
-            Integer updatedQuantity = newProduct.getQuantity() + products.get(existingProductIndex).getQuantity();
-            products.set(existingProductIndex, newProduct.withQuantity(updatedQuantity));
+            products.set(existingProductIndex, newProduct);
         } else {
             products.add(newProduct);
         }

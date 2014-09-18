@@ -70,7 +70,7 @@ public class ShoppingCartActivity extends SaleActivity {
                 cart.getProducts(),
                 productCategories,
                 R.layout.layout_product_grid_header,
-                R.layout.layout_product_grid_item);
+                R.layout.layout_removable_grid_item);
         productGrid.setAdapter(productAdapter);
     }
 

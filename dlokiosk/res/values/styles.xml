@@ -345,4 +345,15 @@
         <item name="android:textSize">@dimen/standard_font_size</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+
+    <style name="quantity_badge" parent="small_white_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:background">@drawable/badge</item>
+    </style>
 </resources>

@@ -83,6 +83,7 @@ public class ProductGridAdapter extends BaseAdapter implements StickyGridHeaders
             holder = new ViewHolder();
             holder.productIcon = (ImageView) convertView.findViewById(R.id.icon);
             holder.removeProductButton = (ImageButton) convertView.findViewById(R.id.remove_item_button);
+            holder.quantity = (TextView) convertView.findViewById(R.id.quantity);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -90,6 +91,7 @@ public class ProductGridAdapter extends BaseAdapter implements StickyGridHeaders
 
         final Product product = (Product) getItem(position);
         holder.productIcon.setImageBitmap(product.getImageResource());
+        holder.quantity.setText(String.valueOf(product.getQuantity()));
         holder.removeProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,5 +108,6 @@ public class ProductGridAdapter extends BaseAdapter implements StickyGridHeaders
     protected class ViewHolder {
         public ImageView productIcon;
         public ImageButton removeProductButton;
+        public TextView quantity;
     }
 }

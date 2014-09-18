@@ -9,6 +9,11 @@
             android:id="@+id/icon"
             style="@style/removable_grid_item"/>
 
+    <TextView
+            android:id="@+id/quantity"
+            style="@style/quantity_badge"
+            android:text="3"/>
+
     <ImageButton
             android:id="@+id/remove_item_button"
             style="@style/remove_button"/>

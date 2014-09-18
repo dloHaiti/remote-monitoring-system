@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
@@ -112,4 +113,10 @@ public class ShoppingCartActivity extends SaleActivity {
         promotionAdapter.notifyDataSetChanged();
         updatePrices();
     }
+
+    @Override
+    public void onContinue(View view) {
+        continueWhenCartIsNotEmpty();
+    }
+
 }

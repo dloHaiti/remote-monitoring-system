@@ -62,10 +62,32 @@ public abstract class SaleActivity extends RoboActivity {
     }
 
     public void onContinue(View view) {
+        navigateToNextActivity();
+    }
+
+    private void navigateToNextActivity() {
         if (nextActivity() == null) {
             return;
         }
         Intent intent = new Intent(getApplicationContext(), nextActivity());
         startActivity(intent);
+    }
+
+    protected void continueWhenCartIsNotEmpty() {
+        if (cart.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.no_products_in_cart_error_message)
+                    .setTitle(R.string.no_products_in_cart_error_title)
+                    .setCancelable(false)
+                    .setNeutralButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                }
+                            })
+                    .show();
+        } else {
+            navigateToNextActivity();
+        }
     }
 }

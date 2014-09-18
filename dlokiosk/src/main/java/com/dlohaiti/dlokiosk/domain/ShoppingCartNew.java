@@ -50,7 +50,7 @@ public class ShoppingCartNew {
     }
 
     public boolean isEmpty() {
-        return products.isEmpty() && promotions.isEmpty();
+        return products.isEmpty();
     }
 
     public List<Promotion> getPromotions() {

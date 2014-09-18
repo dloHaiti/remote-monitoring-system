@@ -50,6 +50,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cart.clear();
         setContentView(R.layout.activity_select_sales_channel_and_customer);
 
         loadSalesChannels();

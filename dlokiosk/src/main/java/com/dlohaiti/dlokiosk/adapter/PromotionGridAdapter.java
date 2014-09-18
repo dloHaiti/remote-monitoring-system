@@ -10,28 +10,27 @@ import android.widget.TextView;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.ShoppingCartActivity;
 import com.dlohaiti.dlokiosk.domain.Promotion;
-
-import java.util.List;
+import com.dlohaiti.dlokiosk.domain.Promotions;
 
 public class PromotionGridAdapter extends BaseAdapter {
     private final ShoppingCartActivity activity;
-    private final List<Promotion> items;
+    private final Promotions promotions;
 
-    public PromotionGridAdapter(ShoppingCartActivity activity, List<Promotion> promotions) {
+    public PromotionGridAdapter(ShoppingCartActivity activity, Promotions promotions) {
         this.activity = activity;
-        this.items = promotions;
+        this.promotions = promotions;
     }
 
     public int getCount() {
-        return items.size();
+        return promotions.size();
     }
 
     public Object getItem(int position) {
-        return items.get(position);
+        return promotions.get(position);
     }
 
     public long getItemId(int position) {
-        return items.get(position).getId();
+        return promotions.get(position).getId();
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {

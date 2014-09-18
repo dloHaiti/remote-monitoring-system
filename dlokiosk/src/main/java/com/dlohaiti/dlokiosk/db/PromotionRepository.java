@@ -11,10 +11,10 @@ import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Promotion;
 import com.dlohaiti.dlokiosk.domain.PromotionApplicationType;
 import com.dlohaiti.dlokiosk.domain.PromotionType;
+import com.dlohaiti.dlokiosk.domain.Promotions;
 import com.google.inject.Inject;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +47,8 @@ public class PromotionRepository {
         this.imageConverter = imageConverter;
     }
 
-    public List<Promotion> list() {
-        List<Promotion> promos = new ArrayList<Promotion>();
+    public Promotions list() {
+        Promotions promos = new Promotions();
 
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
@@ -64,7 +64,7 @@ public class PromotionRepository {
             return promos;
         } catch (Exception e) {
             Log.e(TAG, "Failed to load promotions from the database.", e);
-            return new ArrayList<Promotion>();
+            return new Promotions();
         } finally {
             rdb.endTransaction();
         }

@@ -12,13 +12,13 @@ import com.dlohaiti.dlokiosk.db.PromotionRepository;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.ProductCategories;
 import com.dlohaiti.dlokiosk.domain.Promotion;
+import com.dlohaiti.dlokiosk.domain.Promotions;
 import com.dlohaiti.dlokiosk.domain.ShoppingCartNew;
 import com.google.inject.Inject;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 import roboguice.inject.InjectView;
 
 import java.util.Collections;
-import java.util.List;
 
 public class ShoppingCartActivity extends SaleActivity {
 
@@ -54,6 +54,7 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
+    private Promotions allPromotions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +89,8 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     private void initialisePromotionGrid() {
-        List<Promotion> promotions = promotionRepository.list();
-        if (cart.getPromotions().isEmpty()) {
-            cart.addPromotions(promotions);
-        }
+        allPromotions = promotionRepository.list();
+        cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
         promotionAdapter = new PromotionGridAdapter(this, cart.getPromotions());
         promotionGridView.setAdapter(promotionAdapter);
     }
@@ -105,6 +104,8 @@ public class ShoppingCartActivity extends SaleActivity {
         product.setQuantity(null);
         cart.removeProduct(product);
         productAdapter.notifyDataSetChanged();
+        cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
+        promotionGridView.setAdapter(promotionAdapter);
         updatePrices();
     }
 

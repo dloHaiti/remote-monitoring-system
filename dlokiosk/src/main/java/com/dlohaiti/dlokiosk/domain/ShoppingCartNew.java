@@ -4,13 +4,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
 public class ShoppingCartNew {
     private final Products products = new Products();
-    private final List<Promotion> promotions = new ArrayList<Promotion>();
+    private final Promotions promotions = new Promotions();
     private SalesChannel salesChannel;
     private CustomerAccount customerAccount;
     private final RegisterNew register;
@@ -27,10 +26,6 @@ public class ShoppingCartNew {
         } else {
             products.add(newProduct);
         }
-    }
-
-    public void removeProduct(int position) {
-        products.remove(position);
     }
 
     public Products getProducts() {
@@ -53,12 +48,8 @@ public class ShoppingCartNew {
         return products.isEmpty();
     }
 
-    public List<Promotion> getPromotions() {
+    public Promotions getPromotions() {
         return promotions;
-    }
-
-    public void addPromotion(Promotion promotion) {
-        promotions.add(promotion);
     }
 
     public void removePromotion(Promotion promotion) {
@@ -81,10 +72,6 @@ public class ShoppingCartNew {
 
     public BigDecimal getTotal() {
         return register.total(this).getAmount();
-    }
-
-    public void removePromotion(int id) {
-        promotions.remove(id);
     }
 
     public void clearPromotions() {
@@ -113,5 +100,10 @@ public class ShoppingCartNew {
 
     public void removeProduct(Product product) {
         products.remove(product);
+    }
+
+    public void overwrite(Promotions applicablePromotions) {
+        clearPromotions();
+        addPromotions(applicablePromotions);
     }
 }

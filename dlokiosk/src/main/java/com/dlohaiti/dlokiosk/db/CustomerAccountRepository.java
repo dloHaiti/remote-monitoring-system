@@ -175,23 +175,6 @@ public class CustomerAccountRepository {
     }
 
     public List<CustomerAccount>  getNonSyncAccounts() {
-//        int count=0;
-//        SQLiteDatabase rdb = db.getReadableDatabase();
-//        rdb.beginTransaction();
-//        try {
-//            Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.IS_SYNCED), matches(String.valueOf(false)), null, null, null);
-//            count = cursor.getCount();
-//            cursor.close();
-//            rdb.setTransactionSuccessful();
-//
-//        } catch (Exception e) {
-//            Log.e(TAG, String.format("Could not find Customer Accounts with IS_SYNCED"), e);
-//        } finally {
-//            rdb.endTransaction();
-//        }
-//        return count;
-
-
         List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
@@ -212,7 +195,7 @@ public class CustomerAccountRepository {
             }
             rdb.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to load delivery agents from database", e);
+            Log.e(TAG, "Failed to load customer account from database", e);
         } finally {
             cursor.close();
             rdb.endTransaction();

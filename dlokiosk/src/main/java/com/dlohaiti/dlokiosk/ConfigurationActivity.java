@@ -58,7 +58,7 @@ public class ConfigurationActivity extends RoboActivity {
     }
 
     public void updateConfiguration(View v) {
-        if(customerAccountRepository.getNonSyncItemsCount()==0) {
+        if(customerAccountRepository.getNonSyncAccounts().size()==0) {
             new PullConfigurationTask(this).execute();
             config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(ISODateTimeFormat.basicDate()));
         }

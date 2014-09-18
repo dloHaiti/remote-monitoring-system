@@ -44,7 +44,8 @@ public abstract class SaleActivity extends RoboActivity {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
                                 cart.clear();
-                                finish();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                             }
                         })
                 .setNegativeButton(R.string.no_button_label,

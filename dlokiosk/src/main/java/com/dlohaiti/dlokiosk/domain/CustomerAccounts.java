@@ -1,8 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.exception.NoCustomerAccountWithGivenIdException;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
@@ -20,8 +21,8 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         }
     }
 
-    public ArrayList<CustomerAccount> findAccountsThatCanBeServedByChannel(long channelId) {
-        ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+    public CustomerAccounts findAccountsThatCanBeServedByChannel(long channelId) {
+        CustomerAccounts accounts = new CustomerAccounts();
         for (CustomerAccount account : this) {
             if (account.canBeServedByChannel(channelId)) {
                 accounts.add(account);
@@ -30,20 +31,21 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         return accounts;
     }
 
-    public List<CustomerAccount> filterAccountsBy(String text, SalesChannel selectedSalesChannel) {
-        List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
+    public CustomerAccounts filterAccountsBy(String text, SalesChannel selectedSalesChannel) {
+        CustomerAccounts newFilteredCustomerList = new CustomerAccounts();
 
         for (CustomerAccount account : this) {
             if ((containsIgnoreCase(account.name(), text)
-                    || containsIgnoreCase(account.contactName(), text)) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
+                    || containsIgnoreCase(account.contactName(), text))
+                    && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.id()))) {
                 newFilteredCustomerList.add(account);
             }
         }
         return newFilteredCustomerList;
     }
 
-    public List<CustomerAccount> filterAccountsBy(String text) {
-        List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
+    public CustomerAccounts filterAccountsBy(String text) {
+        CustomerAccounts newFilteredCustomerList = new CustomerAccounts();
 
         for (CustomerAccount account : this) {
             if (containsIgnoreCase(account.name(), text)
@@ -52,5 +54,14 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
             }
         }
         return newFilteredCustomerList;
+    }
+
+    public CustomerAccount findById(long id) {
+        for (CustomerAccount account : this) {
+            if (account.id() == id) {
+                return account;
+            }
+        }
+        throw new NoCustomerAccountWithGivenIdException(id);
     }
 }

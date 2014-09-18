@@ -50,7 +50,6 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cart.clear();
         setContentView(R.layout.activity_select_sales_channel_and_customer);
 
         loadSalesChannels();
@@ -60,19 +59,33 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         salesChannels = new SalesChannels(salesChannelRepository.findAll());
         if (salesChannels.isEmpty()) {
             showNoConfigurationAlert();
-        } else {
-            salesChannels.get(0).select();
-            cart.setSalesChannel(salesChannels.get(0));
-            loadCustomerAccounts();
-            initialiseSalesChannelList();
-            initialiseCustomerList();
-            continueButton.setEnabled(false);
+            return;
         }
+        selectSalesChannel();
+        loadCustomerAccounts();
+        initialiseSalesChannelList();
+        initialiseCustomerList();
+        continueButton.setEnabled(cart.customerAccount() != null);
+    }
+
+    private void selectSalesChannel() {
+        SalesChannel salesChannelToSelect = cart.salesChannel() == null
+                ? salesChannels.get(0)
+                : salesChannels.findSalesChannelById(cart.salesChannel().id());
+        salesChannelToSelect.select();
+        cart.setSalesChannel(salesChannelToSelect);
     }
 
     private void loadCustomerAccounts() {
         allCustomerList = new CustomerAccounts(customerAccountRepository.findAll());
         updateFilteredCustomerList();
+        if (cart.customerAccount() == null) {
+            cart.setCustomerAccount(null);
+        } else {
+            CustomerAccount customerAccountToSelect = filteredCustomerList.findById(cart.customerAccount().id());
+            customerAccountToSelect.select();
+            cart.setCustomerAccount(customerAccountToSelect);
+        }
     }
 
     private void initialiseSalesChannelList() {
@@ -138,7 +151,6 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         allCustomerList.unSelectAll();
         filteredCustomerList.addAll(
                 allCustomerList.findAccountsThatCanBeServedByChannel(cart.salesChannel().id()));
-        cart.setCustomerAccount(null);
     }
 
     private void updateCustomerList() {

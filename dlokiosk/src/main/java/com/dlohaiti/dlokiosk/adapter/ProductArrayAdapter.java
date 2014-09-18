@@ -13,15 +13,18 @@ import com.dlohaiti.dlokiosk.AddProductsToSaleActivity;
 import com.dlohaiti.dlokiosk.R;
 import com.dlohaiti.dlokiosk.domain.Product;
 import com.dlohaiti.dlokiosk.domain.Products;
+import com.dlohaiti.dlokiosk.domain.ShoppingCartNew;
 
 public class ProductArrayAdapter extends ArrayAdapter<Product> {
     private final AddProductsToSaleActivity context;
     private final Products products;
+    private ShoppingCartNew cart;
 
-    public ProductArrayAdapter(AddProductsToSaleActivity context, Products products) {
+    public ProductArrayAdapter(AddProductsToSaleActivity context, Products products, ShoppingCartNew cart) {
         super(context, R.layout.layout_left_pane_list_item, products);
         this.context = context;
         this.products = products;
+        this.cart = cart;
     }
 
     @Override
@@ -42,6 +45,10 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
         }
 
         Product product = products.get(position);
+        Product productInCart = cart.getProducts().findById(product.getId());
+        if (productInCart != null) {
+            product = productInCart;
+        }
         holder.productId = product.getId();
         holder.icon.setImageBitmap(product.getImageResource());
         holder.description.setText(product.getDescription());

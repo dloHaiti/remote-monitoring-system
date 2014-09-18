@@ -118,7 +118,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     private void initialiseProductsList() {
-        productListAdapter = new ProductArrayAdapter(this, filteredProductList);
+        productListAdapter = new ProductArrayAdapter(this, filteredProductList, cart);
         productListView.setAdapter(productListAdapter);
     }
 
@@ -133,6 +133,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
 
         searchView = ((SearchView) menu.findItem(R.id.search_product).getActionView());
         cartView = menu.findItem(R.id.cart);
+        setCartViewTitle();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -161,9 +162,13 @@ public class AddProductsToSaleActivity extends SaleActivity {
         filteredProductList.updateProductById(id, newProduct);
         allProducts.updateProductById(newProduct.getId(), newProduct);
         cart.addOrUpdateProduct(newProduct);
-        cartView.setTitle(MessageFormat.format(getString(R.string.cart_menu_item_title), cart.getProducts().size()));
+        setCartViewTitle();
         productListAdapter.notifyDataSetChanged();
         Toast.makeText(getApplicationContext(), getString(R.string.product_added_message), Toast.LENGTH_SHORT).show();
+    }
+
+    private void setCartViewTitle() {
+        cartView.setTitle(MessageFormat.format(getString(R.string.cart_menu_item_title), cart.getProducts().size()));
     }
 
     @Override

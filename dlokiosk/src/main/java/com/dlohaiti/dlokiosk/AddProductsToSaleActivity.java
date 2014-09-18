@@ -56,6 +56,13 @@ public class AddProductsToSaleActivity extends SaleActivity {
         loadProductCategories();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        productListAdapter.notifyDataSetChanged();
+    }
+
     private void loadProductCategories() {
         productCategories = new ProductCategories(productCategoryRepository.findAll());
         if (productCategories.isEmpty()) {

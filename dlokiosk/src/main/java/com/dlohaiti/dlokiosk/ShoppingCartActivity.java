@@ -89,6 +89,7 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     public void onProductRemoveButtonClick(Product product) {
+        product.setQuantity(null);
         cart.removeProduct(product);
         productAdapter.notifyDataSetChanged();
         updatePrices();

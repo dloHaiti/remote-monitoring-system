@@ -34,16 +34,22 @@ public class ShoppingCartActivity extends SaleActivity {
     private ProductCategoryRepository productCategoryRepository;
 
     @InjectView(R.id.product_grid)
-    private StickyGridHeadersGridView productGrid;
+    private StickyGridHeadersGridView productGridView;
 
     @InjectView(R.id.right_grid)
-    private GridView promotionGrid;
+    private GridView promotionGridView;
 
     @InjectView(R.id.total_price)
     private TextView totalPriceView;
 
     @InjectView(R.id.discounted_price)
     private TextView discountedPriceView;
+
+    @InjectView(R.id.sales_channel)
+    private TextView salesChannelView;
+
+    @InjectView(R.id.customer_account)
+    private TextView customerAccountView;
 
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
@@ -54,7 +60,13 @@ public class ShoppingCartActivity extends SaleActivity {
         setContentView(R.layout.activity_shopping_cart);
         initialiseProductGrid();
         initialisePromotionGrid();
+        initialiseOrderSummary();
         updatePrices();
+    }
+
+    private void initialiseOrderSummary() {
+        salesChannelView.setText(cart.salesChannel().name());
+        customerAccountView.setText(cart.customerAccount().name());
     }
 
     private void updatePrices() {
@@ -71,7 +83,7 @@ public class ShoppingCartActivity extends SaleActivity {
                 productCategories,
                 R.layout.layout_product_grid_header,
                 R.layout.layout_removable_grid_item);
-        productGrid.setAdapter(productAdapter);
+        productGridView.setAdapter(productAdapter);
     }
 
     private void initialisePromotionGrid() {
@@ -80,7 +92,7 @@ public class ShoppingCartActivity extends SaleActivity {
             cart.addPromotions(promotions);
         }
         promotionAdapter = new PromotionGridAdapter(this, cart.getPromotions());
-        promotionGrid.setAdapter(promotionAdapter);
+        promotionGridView.setAdapter(promotionAdapter);
     }
 
     @Override

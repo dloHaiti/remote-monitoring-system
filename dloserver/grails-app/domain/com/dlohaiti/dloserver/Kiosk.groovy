@@ -38,7 +38,7 @@ class Kiosk {
     }
 
     List<Sponsor> getSponsors(){
-        CustomerAccount.findAllByKiosk(this)*.sponsors.unique()
+        CustomerAccount.findAllByKiosk(this)*.sponsors.flatten().unique()
     }
 
     List<Promotion> getPromotions(){

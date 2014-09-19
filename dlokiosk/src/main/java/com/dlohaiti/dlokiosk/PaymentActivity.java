@@ -74,11 +74,17 @@ public class PaymentActivity extends SaleActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int selectedRadioButtonId) {
                 View selectedRadioButton = radioGroup.findViewById(selectedRadioButtonId);
-                cart.isSponsorSelected = selectedRadioButton.getId() == R.id.select_sponsor;
-                int sponsorInformationVisibility = selectedRadioButton.getId() == R.id.select_sponsor
-                        ? View.VISIBLE : View.GONE;
-                sponsorRowView.setVisibility(sponsorInformationVisibility);
-                sponsorAmountRowView.setVisibility(sponsorInformationVisibility);
+                if (selectedRadioButton.getId() == R.id.select_sponsor) {
+                    cart.isSponsorSelected = true;
+                    sponsorRowView.setVisibility(View.VISIBLE);
+                    sponsorAmountRowView.setVisibility(View.VISIBLE);
+
+                } else {
+                    cart.isSponsorSelected = false;
+                    cart.setSponsor(null);
+                    sponsorRowView.setVisibility(View.GONE);
+                    sponsorAmountRowView.setVisibility(View.GONE);
+                }
             }
         });
         selectCustomerView.setChecked(true);
@@ -117,6 +123,18 @@ public class PaymentActivity extends SaleActivity {
                 R.layout.layout_spinner_dropdown_item,
                 sponsors);
         sponsorView.setAdapter(adapter);
+        sponsorView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                cart.setSponsor((Sponsor) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     private void initialisePaymentModeList() {

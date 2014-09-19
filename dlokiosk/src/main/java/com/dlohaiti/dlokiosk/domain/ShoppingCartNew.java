@@ -15,6 +15,7 @@ public class ShoppingCartNew {
     private final RegisterNew register;
     private String paymentType;
     public boolean isSponsorSelected;
+    private Sponsor sponsor;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -111,5 +112,9 @@ public class ShoppingCartNew {
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public void setSponsor(Sponsor sponsor) {
+        this.sponsor = sponsor;
     }
 }

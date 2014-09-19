@@ -15,6 +15,7 @@ class AccountsService {
         account.contactName=params.contactName
         account.phoneNumber = params.phoneNumber
         account.dueAmount=new Double(params.dueAmount)
+        account.customerType = CustomerType.findById(params.customerTypeId)
         account.save(flush: true)
         return account
     }

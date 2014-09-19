@@ -85,7 +85,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductsCategoryTable.ID,
                 ProductsCategoryTable.NAME,
                 ProductsCategoryTable.ICON
-                );
+        );
         String createConfiguration = String.format(
                 "CREATE TABLE %s(" +
                         "%s TEXT," +
@@ -285,6 +285,10 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.SERVER_URL.name(), "http://10.0.2.2:8080/dloserver"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.LAST_UPDATE.name(), "20130615"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.UNIT_OF_MEASURE.name(), "gallon"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.CURRENCY.name(), "HTG"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.LOCALE.name(), "ht:HT"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.DATE_FORMAT.name(), "yyyy-MM-dd hh:mm:ss"});
     }
 
     @Override

@@ -109,7 +109,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             customerAccounts.add(
                     new CustomerAccount(account.getId(), account.getName(),
                             account.getContactName(), account.getAddress(), account.getPhoneNumber(),
-                            account.getKiosk_id(),account.getDueAmount(),true)
+                            account.getKiosk_id(), account.getDueAmount(), true)
                             .withChannelIds(account.channelIds()));
         }
 
@@ -119,6 +119,10 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         return configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MIN, configuration.getMinimum()) &&
                 configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MAX, configuration.getMaximum()) &&
                 configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_DEFAULT, configuration.getDefault()) &&
+                configurationRepository.save(ConfigurationKey.UNIT_OF_MEASURE, c.getConfiguration().getUnitOfMeasure()) &&
+                configurationRepository.save(ConfigurationKey.CURRENCY, c.getConfiguration().getCurrency()) &&
+                configurationRepository.save(ConfigurationKey.DATE_FORMAT, c.getConfiguration().getDateformat()) &&
+                configurationRepository.save(ConfigurationKey.LOCALE, c.getConfiguration().getLocale()) &&
                 productCategoryRepository.replaceAll(productCategories) &&
                 productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&

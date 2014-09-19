@@ -10,6 +10,7 @@ public class Configuration {
     private List<SalesChannelJson> salesChannels;
     private List<CustomerAccountJson> customerAccounts;
     private List<ProductCategoryJson> productCategories;
+    private ConfigurationJson configuration;
 
     public List<ProductJson> getProducts() {
         return products;
@@ -65,5 +66,13 @@ public class Configuration {
 
     public void setProductCategories(List<ProductCategoryJson> productCategories) {
         this.productCategories = productCategories;
+    }
+
+    public ConfigurationJson getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(ConfigurationJson configuration) {
+        this.configuration = configuration;
     }
 }

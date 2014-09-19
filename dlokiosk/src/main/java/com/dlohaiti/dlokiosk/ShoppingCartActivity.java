@@ -6,6 +6,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
 import com.dlohaiti.dlokiosk.adapter.PromotionGridAdapter;
+import com.dlohaiti.dlokiosk.db.ConfigurationKey;
+import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
@@ -34,6 +36,9 @@ public class ShoppingCartActivity extends SaleActivity {
     @Inject
     private ProductCategoryRepository productCategoryRepository;
 
+    @Inject
+    private ConfigurationRepository configurationRepository;
+
     @InjectView(R.id.product_grid)
     private StickyGridHeadersGridView productGridView;
 
@@ -43,8 +48,14 @@ public class ShoppingCartActivity extends SaleActivity {
     @InjectView(R.id.total_price)
     private TextView totalPriceView;
 
+    @InjectView(R.id.total_price_currency)
+    private TextView totalPriceCurrencyView;
+
     @InjectView(R.id.discounted_price)
     private TextView discountedPriceView;
+
+    @InjectView(R.id.discounted_price_currency)
+    private TextView discountedPriceCurrencyView;
 
     @InjectView(R.id.sales_channel)
     private TextView salesChannelView;
@@ -64,6 +75,12 @@ public class ShoppingCartActivity extends SaleActivity {
         initialisePromotionGrid();
         initialiseOrderSummary();
         updatePrices();
+        initialiseCurrency();
+    }
+
+    private void initialiseCurrency() {
+        totalPriceCurrencyView.setText(configurationRepository.get(ConfigurationKey.CURRENCY));
+        discountedPriceCurrencyView.setText(configurationRepository.get(ConfigurationKey.CURRENCY));
     }
 
     private void initialiseOrderSummary() {

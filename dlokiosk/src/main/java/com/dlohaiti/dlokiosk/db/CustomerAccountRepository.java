@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CustomerAccountRepository {
                 ContentValues values = new ContentValues();
                 values.put(CustomerAccountsTable.NAME, account.getName());
                 values.put(CustomerAccountsTable.CONTACT_NAME, account.getContactName());
-                values.put(CustomerAccountsTable.CUSTOMER_TYPE, account.getCustomerType());
+                values.put(CustomerAccountsTable.CUSTOMER_TYPE, account.getCustomerTypeId());
                 values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
                 values.put(CustomerAccountsTable.PHONE_NUMBER, account.getPhoneNumber());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
@@ -150,21 +151,21 @@ public class CustomerAccountRepository {
 //                readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
             } else {
                 accountId = account.getId();
+                values.put(CustomerAccountsTable.NAME, String.valueOf(account.getName()));
+                values.put(CustomerAccountsTable.CONTACT_NAME, String.valueOf(account.getContactName()));
+                values.put(CustomerAccountsTable.PHONE_NUMBER, String.valueOf(account.getPhoneNumber()));
+                values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
                 values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
                 values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
                 wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
+                wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
+                for(SalesChannel sc:account.channels()){
+                    ContentValues cv = new ContentValues();
+                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,accountId);
+                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.id());
+                    wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,null,cv);
+                }
             }
-//            for (Measurement m : reading.getMeasurements()) {
-//                ContentValues cv = new ContentValues();
-//                cv.put(KioskDatabase.MeasurementsTable.PARAMETER_NAME, m.getParameterName());
-//                cv.put(KioskDatabase.MeasurementsTable.VALUE, m.getValue().toString());
-//                cv.put(KioskDatabase.MeasurementsTable.READING_ID, readingId);
-//                if (m.getId() == null) {
-//                    wdb.insert(KioskDatabase.MeasurementsTable.TABLE_NAME, null, cv);
-//                } else {
-//                    wdb.update(KioskDatabase.MeasurementsTable.TABLE_NAME, cv, "getId " + "=" + m.getId(), null);
-//                }
-//            }
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {

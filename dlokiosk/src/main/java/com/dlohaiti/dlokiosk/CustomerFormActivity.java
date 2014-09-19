@@ -7,22 +7,20 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.CustomerTypeRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.CustomerType;
-import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.CustomerTypes;
+import com.dlohaiti.dlokiosk.domain.SalesChannels;
 import com.google.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 public class CustomerFormActivity extends RoboActivity {
@@ -35,8 +33,8 @@ public class CustomerFormActivity extends RoboActivity {
     @Inject
     private CustomerTypeRepository customerTypeRepository;
 
-    @InjectView(R.id.sales_channel)
-    protected Spinner salesChannel;
+
+    protected MultiSelectSpinner salesChannel;
 
 
     @InjectView(R.id.customer_type)
@@ -54,6 +52,13 @@ public class CustomerFormActivity extends RoboActivity {
     @InjectView(R.id.organisation)
     protected EditText organization;
     private CustomerAccount account;
+    CustomerTypes customerTypes;
+
+    @InjectResource(R.string.saved_message)
+    private String savedMessage;
+    @InjectResource(R.string.error_not_saved_message)
+    private String errorNotSavedMessage;
+    private SalesChannels salesChannels;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,51 +70,41 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     private void loadSalesChannels() {
-        ArrayAdapter<String> salesChannelAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                R.layout.layout_spinner_dropdown_item,getSalesChannelNames());
-        salesChannel.setAdapter(salesChannelAdapter);
+        salesChannels = new SalesChannels(salesChannelRepository.findAll());
+        salesChannel = (MultiSelectSpinner) findViewById(R.id.sales_channel);
+        salesChannel.setItems(salesChannels.getSalesChannelNames());
     }
 
     private void loadCustomerTypes() {
+        customerTypes = new CustomerTypes(customerTypeRepository.findAll());
         ArrayAdapter<String> customerTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                R.layout.layout_spinner_dropdown_item,getCustomerTypeNames());
+                R.layout.layout_spinner_dropdown_item, customerTypes.getCustomerTypeNames());
         customerType.setAdapter(customerTypeAdapter);
-    }
-
-    private List<String> getCustomerTypeNames() {
-        List<String> names=new ArrayList<String>();
-        for(CustomerType ct: customerTypeRepository.findAll()){
-            names.add(ct.getName());
-        }
-        return names;
     }
 
     private void fillCustomerDetails() {
         String accountId = getIntent().getStringExtra("account_id");
-        if(StringUtils.isEmpty(accountId)){
+        if (StringUtils.isEmpty(accountId)) {
+            account = null;
             return;
         }
+
         account = customerAccountRepository.findById(Long.valueOf(accountId));
-        if(account==null) {
+        if (account == null) {
             return;
         }
         customerName.setText(account.getContactName());
         customerPhone.setText(account.getPhoneNumber());
         customerAddress.setText(account.getAddress());
         organization.setText(account.getName());
+        SalesChannels channels = new SalesChannels(salesChannelRepository.findByCustomerId(account.getId()));
+        salesChannel.setSelection(channels.getSalesChannelNames());
+        String customerTypeName = customerTypes.getCustomerTypeNameById(account.getCustomerTypeId());
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) customerType.getAdapter();
-        int position = adapter.getPosition(account.getCustomerType());
+        int position = adapter.getPosition(customerTypeName);
         customerType.setSelection(position);
-//        account.channelIds();
     }
 
-    private  List<String> getSalesChannelNames() {
-        List<String> names=new ArrayList<String>();
-        for(SalesChannel sc: salesChannelRepository.findAll()){
-            names.add(sc.name());
-        }
-        return names;
-    }
 
     public void onCancel(View view) {
         Intent intent = new Intent(CustomerFormActivity.this, MainActivity.class);
@@ -121,4 +116,26 @@ public class CustomerFormActivity extends RoboActivity {
         finish();
     }
 
+    public void onSave(View view) {
+        boolean successful = (account == null) ? createNewAccount() : updateExistingAccount();
+        if (successful) {
+            Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean updateExistingAccount() {
+        account.setName(organization.getText().toString());
+        account.setContactName(customerName.getText().toString());
+        account.setPhoneNumber(customerPhone.getText().toString());
+        account.setCustomerTypeId(customerTypes.getCustomerTypeId(customerType.getSelectedItem().toString()));
+        account.withChannels(salesChannels.getSalesChannelsFromName(salesChannel.getSelectedStrings()));
+        return customerAccountRepository.save(account);
+    }
+
+    private boolean createNewAccount() {
+        return false;
+    }
 }

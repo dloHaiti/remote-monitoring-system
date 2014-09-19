@@ -18,19 +18,40 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     private String contactName;
     private boolean synced;
     private List<SalesChannel> channels;
-    private String customerType;
+    private String customerTypeId;
 
-    public CustomerAccount(long id, String name, String contactName, String customerType, String address, String phoneNumber, long kiosk_id,int amount,boolean synced) {
+    public CustomerAccount(long id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id,int amount,boolean synced) {
         super(id, name);
         this.id = id;
         this.name = name;
         this.contactName = contactName;
-        this.customerType=customerType;
+        this.customerTypeId = customerTypeId;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
         this.dueAmount=amount;
         this.synced=synced;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public void setCustomerTypeId(String customerTypeId) {
+        this.customerTypeId = customerTypeId;
     }
 
     public Long getId() {
@@ -128,7 +149,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.dueAmount = dueAmount;
     }
 
-    public String getCustomerType() {
-        return customerType;
+    public String getCustomerTypeId() {
+        return customerTypeId;
     }
 }

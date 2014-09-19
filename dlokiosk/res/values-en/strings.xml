@@ -123,5 +123,7 @@
     <string name="balance_amount_button">OK</string>
     <string name="make_payment">Make Payment</string>
     <string name="do_manual_sync_msg">There are un synced items. Please do manual sync</string>
+    <string name="customer_type_label">Customer Type</string>
+    <string name="customer_type_hint" />
 
 </resources>

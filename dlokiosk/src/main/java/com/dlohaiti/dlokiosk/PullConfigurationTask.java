@@ -32,6 +32,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject
     private SalesChannelRepository salesChannelRepository;
     @Inject
+    private CustomerTypeRepository customerTypeRepository;
+    @Inject
     private CustomerAccountRepository customerAccountRepository;
     @Inject
     private ConfigurationRepository configurationRepository;
@@ -79,6 +81,10 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
             productCategories.add(new ProductCategory(p.getId(), p.getName(), imageResource));
         }
+        List<CustomerType> customerTypes = new ArrayList<CustomerType>();
+        for (CustomerTypeJson p : c.getCustomerTypes()) {
+            customerTypes.add(new CustomerType(p.getId(), p.getName()));
+        }
         List<Promotion> promotions = new ArrayList<Promotion>();
         for (PromotionJson p : c.getPromotions()) {
             PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(p.getAppliesTo());
@@ -108,8 +114,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (CustomerAccountJson account : c.getCustomerAccounts()) {
             customerAccounts.add(
                     new CustomerAccount(account.getId(), account.getName(),
-                            account.getContactName(), account.getAddress(), account.getPhoneNumber(),
-                            account.getKiosk_id(), account.getDueAmount(), true)
+                            account.getContactName(),account.getCustomerType(), account.getAddress(), account.getPhoneNumber(),
+                            account.getKiosk_id(),account.getDueAmount(),true)
                             .withChannelIds(account.channelIds()));
         }
 
@@ -129,6 +135,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 samplingSiteParametersRepository.replaceAll(samplingSiteParameters) &&
                 deliveryAgentRepository.replaceAll(agents) &&
                 salesChannelRepository.replaceAll(salesChannels) &&
+                customerTypeRepository.replaceAll(customerTypes) &&
                 customerAccountRepository.replaceAll(customerAccounts);
     }
 

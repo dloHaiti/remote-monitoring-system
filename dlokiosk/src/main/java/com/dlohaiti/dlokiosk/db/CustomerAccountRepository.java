@@ -24,6 +24,7 @@ public class CustomerAccountRepository {
             CustomerAccountsTable.ID,
             CustomerAccountsTable.NAME,
             CustomerAccountsTable.CONTACT_NAME,
+            CustomerAccountsTable.CUSTOMER_TYPE,
             CustomerAccountsTable.ADDRESS,
             CustomerAccountsTable.PHONE_NUMBER,
             CustomerAccountsTable.KIOSK_ID,
@@ -48,6 +49,7 @@ public class CustomerAccountRepository {
                 ContentValues values = new ContentValues();
                 values.put(CustomerAccountsTable.NAME, account.getName());
                 values.put(CustomerAccountsTable.CONTACT_NAME, account.getContactName());
+                values.put(CustomerAccountsTable.CUSTOMER_TYPE, account.getCustomerType());
                 values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
                 values.put(CustomerAccountsTable.PHONE_NUMBER, account.getPhoneNumber());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
@@ -86,13 +88,7 @@ public class CustomerAccountRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                CustomerAccount account = new CustomerAccount(cursor.getLong(0),
-                        cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getLong(5),
-                        cursor.getInt(6),
-                        Boolean.valueOf(cursor.getString(7)));
+                CustomerAccount account = buildCustomerAccount(cursor);
                 accounts.add(account);
                 account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
@@ -116,13 +112,7 @@ public class CustomerAccountRepository {
                 throw new RecordNotFoundException();
             }
             cursor.moveToFirst();
-            CustomerAccount account = new CustomerAccount(cursor.getLong(0),
-                    cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getLong(5),
-                    cursor.getInt(6),
-                    Boolean.valueOf(cursor.getString(7)));
+            CustomerAccount account = buildCustomerAccount(cursor);
             cursor.close();
             rdb.setTransactionSuccessful();
             return account;
@@ -132,6 +122,18 @@ public class CustomerAccountRepository {
         } finally {
             rdb.endTransaction();
         }
+    }
+
+    private CustomerAccount buildCustomerAccount(Cursor cursor) {
+        return new CustomerAccount(cursor.getLong(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getLong(6),
+                cursor.getInt(7),
+                Boolean.valueOf(cursor.getString(8)));
     }
 
     public boolean save(CustomerAccount account) {
@@ -181,13 +183,7 @@ public class CustomerAccountRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                CustomerAccount account = new CustomerAccount(cursor.getLong(0),
-                        cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getLong(5),
-                        cursor.getInt(6),
-                        Boolean.valueOf(cursor.getString(7)));
+                CustomerAccount account = buildCustomerAccount(cursor);
                 accounts.add(account);
                 account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
@@ -219,5 +215,9 @@ public class CustomerAccountRepository {
         } finally {
             wdb.endTransaction();
         }
+    }
+
+    public boolean isNotEmpty() {
+       return this.getNonSyncAccounts().size() > 0;
     }
 }

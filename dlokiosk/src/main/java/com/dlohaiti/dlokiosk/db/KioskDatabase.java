@@ -3,6 +3,8 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.dlohaiti.dlokiosk.domain.CustomerType;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -222,9 +224,20 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 SalesChannelsTable.DESCRIPTION
         );
 
+        String createCustomerTypes = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT" +
+                        ")",
+                CustomerTypeTable.TABLE_NAME,
+                CustomerTypeTable.ID,
+                CustomerTypeTable.NAME
+        );
+
         String createCustomerAccounts = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
@@ -237,6 +250,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 CustomerAccountsTable.ID,
                 CustomerAccountsTable.NAME,
                 CustomerAccountsTable.CONTACT_NAME,
+                CustomerAccountsTable.CUSTOMER_TYPE,
                 CustomerAccountsTable.ADDRESS,
                 CustomerAccountsTable.PHONE_NUMBER,
                 CustomerAccountsTable.KIOSK_ID,
@@ -275,6 +289,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createConfiguration);
         db.execSQL(createDeliveries);
         db.execSQL(createPromotions);
+        db.execSQL(createCustomerTypes);
         db.execSQL(createSalesChannels);
         db.execSQL(createCustomerAccounts);
         db.execSQL(createSalesChannelCustomerAccounts);
@@ -418,11 +433,18 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String DESCRIPTION = "DESCRIPTION";
     }
 
+    public static class CustomerTypeTable {
+        public static final String TABLE_NAME = "CUSTOMER_TYPES";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
+    }
+
     public static class CustomerAccountsTable {
         public static final String TABLE_NAME = "CUSTOMER_ACCOUNTS";
         public static final String ID = "ID";
         public static final String NAME = "NAME";
         public static final String CONTACT_NAME = "CONTACT_NAME";
+        public static final String CUSTOMER_TYPE = "CUSTOMER_TYPE";
         public static final String ADDRESS = "ADDRESS";
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
         public static final String KIOSK_ID = "KIOSK_ID";

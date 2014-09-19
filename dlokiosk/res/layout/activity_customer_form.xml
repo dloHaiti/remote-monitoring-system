@@ -27,6 +27,30 @@
             </LinearLayout>
 
             <ImageView style="@style/horizontal_divider"/>
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/customer_type_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/customer_type_label"/>
+                <Spinner
+                    android:id="@+id/customer_type"
+                    style="@style/payment_form_field"/>
+            </LinearLayout>
+
+            <ImageView style="@style/horizontal_divider"/>
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/organisation_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/organisation_label"/>
+                <EditText
+                    android:id="@+id/organisation"
+                    style="@style/payment_form_field"
+                    android:hint="@string/organisation_hint"/>
+            </LinearLayout>
+            <ImageView style="@style/horizontal_divider"/>
 
             <LinearLayout
                 style="@style/customer_form_row">
@@ -192,18 +216,7 @@
                     android:hint="@string/customer_address_hint"/>
             </LinearLayout>
             <ImageView style="@style/horizontal_divider"/>
-            <LinearLayout
-                style="@style/customer_form_row">
-                <TextView
-                    android:id="@+id/organisation_label"
-                    style="@style/payment_form_field"
-                    android:text="@string/organisation_label"/>
-                <EditText
-                    android:id="@+id/organisation"
-                    style="@style/payment_form_field"
-                    android:hint="@string/organisation_hint"/>
-            </LinearLayout>
-            <ImageView style="@style/horizontal_divider"/>
+
             <LinearLayout
                 style="@style/customer_form_row">
                 <TextView

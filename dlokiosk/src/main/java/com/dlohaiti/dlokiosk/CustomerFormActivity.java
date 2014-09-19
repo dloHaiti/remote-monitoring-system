@@ -7,10 +7,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.CustomerTypeRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerType;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.google.inject.Inject;
 
@@ -29,8 +32,15 @@ public class CustomerFormActivity extends RoboActivity {
     @Inject
     private CustomerAccountRepository customerAccountRepository;
 
+    @Inject
+    private CustomerTypeRepository customerTypeRepository;
+
     @InjectView(R.id.sales_channel)
     protected Spinner salesChannel;
+
+
+    @InjectView(R.id.customer_type)
+    protected Spinner customerType;
 
     @InjectView(R.id.customer_name)
     protected EditText customerName;
@@ -49,10 +59,29 @@ public class CustomerFormActivity extends RoboActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_form);
+        loadSalesChannels();
+        loadCustomerTypes();
+        fillCustomerDetails();
+    }
+
+    private void loadSalesChannels() {
         ArrayAdapter<String> salesChannelAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,getSalesChannelNames());
         salesChannel.setAdapter(salesChannelAdapter);
-        fillCustomerDetails();
+    }
+
+    private void loadCustomerTypes() {
+        ArrayAdapter<String> customerTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                R.layout.layout_spinner_dropdown_item,getCustomerTypeNames());
+        customerType.setAdapter(customerTypeAdapter);
+    }
+
+    private List<String> getCustomerTypeNames() {
+        List<String> names=new ArrayList<String>();
+        for(CustomerType ct: customerTypeRepository.findAll()){
+            names.add(ct.getName());
+        }
+        return names;
     }
 
     private void fillCustomerDetails() {
@@ -68,6 +97,9 @@ public class CustomerFormActivity extends RoboActivity {
         customerPhone.setText(account.getPhoneNumber());
         customerAddress.setText(account.getAddress());
         organization.setText(account.getName());
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) customerType.getAdapter();
+        int position = adapter.getPosition(account.getCustomerType());
+        customerType.setSelection(position);
 //        account.channelIds();
     }
 

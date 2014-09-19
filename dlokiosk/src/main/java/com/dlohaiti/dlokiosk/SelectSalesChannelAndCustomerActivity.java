@@ -71,7 +71,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
     private void selectSalesChannel() {
         SalesChannel salesChannelToSelect = cart.salesChannel() == null
                 ? salesChannels.get(0)
-                : salesChannels.findSalesChannelById(cart.salesChannel().id());
+                : salesChannels.findSalesChannelById(cart.salesChannel().getId());
         salesChannelToSelect.select();
         cart.setSalesChannel(salesChannelToSelect);
     }
@@ -150,7 +150,7 @@ public class SelectSalesChannelAndCustomerActivity extends SaleActivity {
         filteredCustomerList.clear();
         allCustomerList.unSelectAll();
         filteredCustomerList.addAll(
-                allCustomerList.findAccountsThatCanBeServedByChannel(cart.salesChannel().id()));
+                allCustomerList.findAccountsThatCanBeServedByChannel(cart.salesChannel().getId()));
     }
 
     private void updateCustomerList() {

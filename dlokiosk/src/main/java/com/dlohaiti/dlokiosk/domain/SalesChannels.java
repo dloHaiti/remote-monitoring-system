@@ -14,7 +14,7 @@ public class SalesChannels extends ArrayList<SalesChannel> {
 
     public SalesChannel findSalesChannelById(long id) {
         for (SalesChannel salesChannel : this) {
-            if (salesChannel.id() == id) {
+            if (salesChannel.getId() == id) {
                 return salesChannel;
             }
         }

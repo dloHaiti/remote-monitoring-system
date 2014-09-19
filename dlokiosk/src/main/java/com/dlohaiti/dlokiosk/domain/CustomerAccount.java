@@ -78,7 +78,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         return channelIds;
     }
 
-    public List<SalesChannel> channels() {
+    public List<SalesChannel> getChannels() {
         return channels;
     }
 
@@ -106,7 +106,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
             return false;
         }
         for (SalesChannel salesChannel : channels) {
-            if (salesChannel.id() == channelId) {
+            if (salesChannel.getId() == channelId) {
                 return true;
             }
         }

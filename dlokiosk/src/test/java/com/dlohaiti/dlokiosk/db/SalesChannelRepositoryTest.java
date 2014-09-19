@@ -64,7 +64,7 @@ public class SalesChannelRepositoryTest {
     private void saveSalesChannels(SQLiteDatabase wdb, List<SalesChannel> salesChannels) {
         for (SalesChannel channel : salesChannels) {
             ContentValues values = new ContentValues();
-            values.put(KioskDatabase.SalesChannelsTable.ID, channel.id());
+            values.put(KioskDatabase.SalesChannelsTable.ID, channel.getId());
             values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
             values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
             wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);

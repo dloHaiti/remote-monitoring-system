@@ -26,8 +26,8 @@ public class SalesChannelsTest {
                 .build();
         SalesChannels salesChannels = new SalesChannels(asList(channel1, channel2));
 
-        assertEquals(channel1, salesChannels.findSalesChannelById(channel1.id()));
-        assertEquals(channel2, salesChannels.findSalesChannelById(channel2.id()));
+        assertEquals(channel1, salesChannels.findSalesChannelById(channel1.getId()));
+        assertEquals(channel2, salesChannels.findSalesChannelById(channel2.getId()));
     }
 
     @Test(expected = NoSalesChannelWithGivenIdException.class)

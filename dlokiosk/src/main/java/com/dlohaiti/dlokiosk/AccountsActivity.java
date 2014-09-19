@@ -75,7 +75,7 @@ public class AccountsActivity extends RoboActivity {
         filteredCustomerList.clear();
         allCustomerList.unSelectAll();
         filteredCustomerList.addAll(
-                allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.id()));
+                allCustomerList.findAccountsThatCanBeServedByChannel(selectedSalesChannel.getId()));
     }
 
     private void loadSalesChannels() {

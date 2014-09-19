@@ -38,7 +38,7 @@ public class SalesChannelRepository {
             wdb.delete(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, null);
             for (SalesChannel channel : channels) {
                 ContentValues values = new ContentValues();
-                values.put(KioskDatabase.SalesChannelsTable.ID, channel.id());
+                values.put(KioskDatabase.SalesChannelsTable.ID, channel.getId());
                 values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
                 values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
 

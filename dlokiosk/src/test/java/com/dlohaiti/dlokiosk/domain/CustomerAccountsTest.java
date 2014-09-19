@@ -32,8 +32,8 @@ public class CustomerAccountsTest {
                 .withChannels(asList(channel2)).build();
         CustomerAccounts customerAccounts = new CustomerAccounts(asList(customer1, customer2));
 
-        assertEquals(asList(customer1), customerAccounts.findAccountsThatCanBeServedByChannel(channel1.id()));
-        assertEquals(asList(customer2), customerAccounts.findAccountsThatCanBeServedByChannel(channel2.id()));
+        assertEquals(asList(customer1), customerAccounts.findAccountsThatCanBeServedByChannel(channel1.getId()));
+        assertEquals(asList(customer2), customerAccounts.findAccountsThatCanBeServedByChannel(channel2.getId()));
     }
 
     @Test

@@ -159,10 +159,10 @@ public class CustomerAccountRepository {
                 values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
                 wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
                 wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
-                for(SalesChannel sc:account.channels()){
+                for(SalesChannel sc:account.getChannels()){
                     ContentValues cv = new ContentValues();
                     cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,accountId);
-                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.id());
+                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.getId());
                     wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,null,cv);
                 }
             }

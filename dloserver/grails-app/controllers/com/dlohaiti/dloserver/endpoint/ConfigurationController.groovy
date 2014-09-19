@@ -18,6 +18,7 @@ class ConfigurationController {
     List<ProductMrp> productMrps = ProductMrp.findAllByKiosk(request.kiosk)
     List<Sponsor> sponsors = request.kiosk.getSponsors()
     List<Rebate> rebates = request.kiosk.getRebates()
+    List<CustomerType> customerTypes = CustomerType.all
 
     render(
         status: 200,
@@ -29,6 +30,7 @@ class ConfigurationController {
             parameters: parameters,
             salesChannels: salesChannels,
             productCategories: productCategories,
+            customerTypes: customerTypes,
             customerAccounts: accounts,
             productMrps: productMrps,
             sponsors: sponsors,

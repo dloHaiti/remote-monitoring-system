@@ -51,6 +51,12 @@ class BootStrap {
                     description: sc.description
             ]
         }
+        JSON.registerObjectMarshaller(CustomerType) { CustomerType t ->
+            return [
+                    id: t.id,
+                    name: t.name
+            ]
+        }
         JSON.registerObjectMarshaller(CustomerAccount) { CustomerAccount a ->
             return [
                     id: a.id,
@@ -60,6 +66,7 @@ class BootStrap {
                     phoneNumber: a.phoneNumber,
                     kiosk_id   : a.kiosk.id,
                     dueAmount: a.dueAmount,
+                    customerType: a.customerType.name,
                     sponsors   : a.sponsors.collect{
                         Sponsor s -> [id: s.id]
                     },

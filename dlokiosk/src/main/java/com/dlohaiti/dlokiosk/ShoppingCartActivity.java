@@ -6,8 +6,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
 import com.dlohaiti.dlokiosk.adapter.PromotionGridAdapter;
-import com.dlohaiti.dlokiosk.db.ConfigurationKey;
-import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
@@ -35,9 +33,6 @@ public class ShoppingCartActivity extends SaleActivity {
 
     @Inject
     private ProductCategoryRepository productCategoryRepository;
-
-    @Inject
-    private ConfigurationRepository configurationRepository;
 
     @InjectView(R.id.product_grid)
     private StickyGridHeadersGridView productGridView;
@@ -79,8 +74,8 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     private void initialiseCurrency() {
-        totalPriceCurrencyView.setText(configurationRepository.get(ConfigurationKey.CURRENCY));
-        discountedPriceCurrencyView.setText(configurationRepository.get(ConfigurationKey.CURRENCY));
+        totalPriceCurrencyView.setText(currency());
+        discountedPriceCurrencyView.setText(currency());
     }
 
     private void initialiseOrderSummary() {

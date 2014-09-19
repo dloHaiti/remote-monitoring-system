@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
+import com.dlohaiti.dlokiosk.db.ConfigurationKey;
+import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.domain.ShoppingCartNew;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
@@ -15,7 +17,14 @@ public abstract class SaleActivity extends RoboActivity {
     protected ImageButton continueButton;
 
     @Inject
+    protected ConfigurationRepository configurationRepository;
+
+    @Inject
     protected ShoppingCartNew cart;
+
+    protected String currency() {
+        return configurationRepository.get(ConfigurationKey.CURRENCY);
+    }
 
     protected abstract Class<? extends SaleActivity> nextActivity();
 

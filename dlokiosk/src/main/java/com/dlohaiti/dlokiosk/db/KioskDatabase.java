@@ -304,6 +304,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.CURRENCY.name(), "HTG"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.LOCALE.name(), "ht:HT"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DATE_FORMAT.name(), "yyyy-MM-dd hh:mm:ss"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.PAYMENT_TYPE.name(), "cash,mobile"});
     }
 
     @Override

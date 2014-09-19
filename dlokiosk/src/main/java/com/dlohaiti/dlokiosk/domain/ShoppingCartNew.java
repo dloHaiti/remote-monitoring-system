@@ -13,6 +13,7 @@ public class ShoppingCartNew {
     private SalesChannel salesChannel;
     private CustomerAccount customerAccount;
     private final RegisterNew register;
+    private String paymentType;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -105,5 +106,9 @@ public class ShoppingCartNew {
     public void overwrite(Promotions applicablePromotions) {
         clearPromotions();
         addPromotions(applicablePromotions);
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
     }
 }

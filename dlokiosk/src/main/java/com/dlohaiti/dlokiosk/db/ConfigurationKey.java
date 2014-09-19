@@ -11,5 +11,5 @@ public enum ConfigurationKey {
     UNIT_OF_MEASURE,
     CURRENCY,
     DATE_FORMAT,
-    LOCALE
+    PAYMENT_TYPE, LOCALE
 }

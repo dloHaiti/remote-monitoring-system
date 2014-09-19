@@ -115,7 +115,7 @@
     <string name="customer_phone_hint">Enter phone number</string>
     <string name="customer_GPS_label">Address (GPS)</string>
     <string name="customer_address_label">Address(Notes/Landmark)</string>
-    <string name="customer_address_hint" />
+    <string name="customer_address_hint"/>
     <string name="organisation_label">Organisation</string>
     <string name="organisation_hint">Enter Organisation</string>
     <string name="sales_channel_label">Sales Channel</string>
@@ -124,6 +124,8 @@
     <string name="make_payment">Make Payment</string>
     <string name="do_manual_sync_msg">There are un synced items. Please do manual sync</string>
     <string name="customer_type_label">Customer Type</string>
-    <string name="customer_type_hint" />
+    <string name="customer_type_hint"/>
+    <string name="customer_only_label">Customer Only</string>
+    <string name="with_sponsor_label">With Sponsor</string>
 
 </resources>

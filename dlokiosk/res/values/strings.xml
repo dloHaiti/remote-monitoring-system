@@ -114,7 +114,7 @@
     <string name="customer_phone_hint">entrer le numéro de téléphone</string>
     <string name="customer_GPS_label">adresse (GPS)</string>
     <string name="customer_address_label">Adresse ( Notes / repère )</string>
-    <string name="customer_address_hint" />
+    <string name="customer_address_hint"/>
     <string name="organisation_label">Organisation</string>
     <string name="organisation_hint">Enter Organisation</string>
     <string name="sales_channel_label">Sales Channel</string>
@@ -123,4 +123,6 @@
     <string name="make_payment">Make Payment</string>
     <string name="do_manual_sync_msg">There are un synced items. Please do manual sync</string>
     <string name="customer_type_label">Customer Type</string>
+    <string name="customer_only_label">Seulement Clientèle</string>
+    <string name="with_sponsor_label">Avec Commanditaire</string>
 </resources>

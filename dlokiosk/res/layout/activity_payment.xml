@@ -76,26 +76,30 @@
                             style="@style/payment_form_field"
                             android:orientation="horizontal">
                         <RadioButton
+                                android:id="@+id/select_customer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Customer"/>
+                                android:text="@string/customer_only_label"/>
                         <RadioButton
+                                android:id="@+id/select_sponsor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Sponsor"/>
+                                android:text="@string/with_sponsor_label"/>
                     </RadioGroup>
                 </LinearLayout>
                 <LinearLayout
+                        android:id="@+id/sponsor_row"
                         style="@style/payment_form_row">
                     <TextView
                             android:id="@+id/select_sponsor_label"
                             style="@style/payment_form_field"
                             android:text="@string/select_sponsor_label"/>
                     <Spinner
-                            android:id="@+id/select_sponsor"
+                            android:id="@+id/sponsor"
                             style="@style/payment_form_field"/>
                 </LinearLayout>
                 <LinearLayout
+                        android:id="@+id/sponsor_amount_row"
                         style="@style/payment_form_row">
                     <TextView
                             android:id="@+id/payment_amount_label"

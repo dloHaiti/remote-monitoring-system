@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
@@ -19,8 +22,23 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.payment_type)
     private Spinner paymentTypeView;
 
+    @InjectView(R.id.select_payee)
+    private RadioGroup selectPayeeView;
+
     @InjectView(R.id.select_sponsor)
-    private Spinner selectSponsorView;
+    private RadioButton selectSponsorView;
+
+    @InjectView(R.id.select_customer)
+    private RadioButton selectCustomerView;
+
+    @InjectView(R.id.sponsor_row)
+    private LinearLayout sponsorRowView;
+
+    @InjectView(R.id.sponsor_amount_row)
+    private LinearLayout sponsorAmountRowView;
+
+    @InjectView(R.id.sponsor)
+    private Spinner sponsorView;
 
     @InjectView(R.id.payment_mode)
     private Spinner paymentModeView;
@@ -45,10 +63,26 @@ public class PaymentActivity extends SaleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        initialiseCustomerOnlyOrWithSponsorPaymentOptions();
         initialiseSponsorList();
         initialisePaymentTypeList();
         initialisePaymentModeList();
         initialisePriceViews();
+    }
+
+    private void initialiseCustomerOnlyOrWithSponsorPaymentOptions() {
+        selectPayeeView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int selectedRadioButtonId) {
+                View selectedRadioButton = radioGroup.findViewById(selectedRadioButtonId);
+                cart.isSponsorSelected = selectedRadioButton.getId() == R.id.select_sponsor;
+                int sponsorInformationVisibility = selectedRadioButton.getId() == R.id.select_sponsor
+                        ? View.VISIBLE : View.GONE;
+                sponsorRowView.setVisibility(sponsorInformationVisibility);
+                sponsorAmountRowView.setVisibility(sponsorInformationVisibility);
+            }
+        });
+        selectCustomerView.setChecked(true);
     }
 
     private void initialisePriceViews() {
@@ -82,7 +116,7 @@ public class PaymentActivity extends SaleActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 asList("", "Sponsor 1", "Sponsor 2"));
-        selectSponsorView.setAdapter(adapter);
+        sponsorView.setAdapter(adapter);
     }
 
     private void initialisePaymentModeList() {

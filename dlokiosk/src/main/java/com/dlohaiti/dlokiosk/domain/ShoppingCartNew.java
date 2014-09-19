@@ -14,6 +14,7 @@ public class ShoppingCartNew {
     private CustomerAccount customerAccount;
     private final RegisterNew register;
     private String paymentType;
+    public boolean isSponsorSelected;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {

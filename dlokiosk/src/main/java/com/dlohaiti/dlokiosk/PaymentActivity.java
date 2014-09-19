@@ -4,20 +4,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
+import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.dlohaiti.dlokiosk.domain.PaymentTypes;
+import com.dlohaiti.dlokiosk.domain.Sponsor;
+import com.dlohaiti.dlokiosk.domain.Sponsors;
+import com.google.inject.Inject;
 import roboguice.inject.InjectView;
 
-import static java.util.Arrays.asList;
-
 public class PaymentActivity extends SaleActivity {
+
+    @Inject
+    private SponsorRepository sponsorRepository;
 
     @InjectView(R.id.payment_type)
     private Spinner paymentTypeView;
@@ -113,9 +112,10 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialiseSponsorList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+        Sponsors sponsors = sponsorRepository.findAll();
+        ArrayAdapter<Sponsor> adapter = new ArrayAdapter<Sponsor>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
-                asList("", "Sponsor 1", "Sponsor 2"));
+                sponsors);
         sponsorView.setAdapter(adapter);
     }
 

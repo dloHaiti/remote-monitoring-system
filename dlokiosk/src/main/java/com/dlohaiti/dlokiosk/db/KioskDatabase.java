@@ -3,8 +3,6 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.dlohaiti.dlokiosk.domain.CustomerType;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -275,6 +273,19 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ConfigurationTable.VALUE
         );
 
+        String createSponsors = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT" +
+                        ")",
+                SponsorsTable.TABLE_NAME,
+                SponsorsTable.ID,
+                SponsorsTable.NAME,
+                SponsorsTable.CONTACT_NAME,
+                SponsorsTable.DESCRIPTION
+        );
 
         db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
@@ -293,6 +304,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createSalesChannels);
         db.execSQL(createCustomerAccounts);
         db.execSQL(createSalesChannelCustomerAccounts);
+        db.execSQL(createSponsors);
+        insertKioskConfig(db, insertConfig);
+    }
+
+    private void insertKioskConfig(SQLiteDatabase db, String insertConfig) {
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "kiosk01"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
@@ -457,5 +473,13 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "SALES_CHANNEL_CUSTOMER_ACCOUNTS";
         public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
         public static final String SALES_CHANNEL_ID = "SALES_CHANNEL_ID";
+    }
+
+    public static class SponsorsTable {
+        public static final String TABLE_NAME = "SPONSORS";
+        public static final String ID = "ID";
+        public static final String NAME = "NAME";
+        public static final String CONTACT_NAME = "CONTACT_NAME";
+        public static final String DESCRIPTION = "DESCRIPTION";
     }
 }

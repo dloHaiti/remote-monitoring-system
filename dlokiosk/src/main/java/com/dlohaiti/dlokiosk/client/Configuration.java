@@ -1,7 +1,5 @@
 package com.dlohaiti.dlokiosk.client;
 
-import com.dlohaiti.dlokiosk.domain.CustomerType;
-
 import java.util.List;
 
 public class Configuration {
@@ -12,6 +10,7 @@ public class Configuration {
     private List<SalesChannelJson> salesChannels;
     private List<CustomerAccountJson> customerAccounts;
     private List<ProductCategoryJson> productCategories;
+    private List<SponsorJson> sponsors;
 
     private ConfigurationJson configuration;
 
@@ -87,5 +86,13 @@ public class Configuration {
 
     public void setConfiguration(ConfigurationJson configuration) {
         this.configuration = configuration;
+    }
+
+    public List<SponsorJson> getSponsors() {
+        return sponsors;
+    }
+
+    public void setSponsors(List<SponsorJson> sponsors) {
+        this.sponsors = sponsors;
     }
 }

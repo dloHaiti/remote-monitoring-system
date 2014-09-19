@@ -70,7 +70,7 @@ public class SalesChannelRepository {
             }
             rdb.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to Sales Channels from database", e);
+            Log.e(TAG, "Failed to load Sales Channels from database", e);
         } finally {
             cursor.close();
             rdb.endTransaction();

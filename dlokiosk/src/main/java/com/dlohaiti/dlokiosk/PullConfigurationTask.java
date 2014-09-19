@@ -40,6 +40,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject
     private ProductCategoryRepository productCategoryRepository;
     @Inject
+    private SponsorRepository sponsorRepository;
+    @Inject
     private KioskDate kioskDate;
     @Inject
     private Base64ImageConverter imageConverter;
@@ -114,9 +116,15 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (CustomerAccountJson account : c.getCustomerAccounts()) {
             customerAccounts.add(
                     new CustomerAccount(account.getId(), account.getName(),
-                            account.getContactName(),account.getCustomerType(), account.getAddress(), account.getPhoneNumber(),
-                            account.getKiosk_id(),account.getDueAmount(),true)
+                            account.getContactName(), account.getCustomerType(), account.getAddress(), account.getPhoneNumber(),
+                            account.getKiosk_id(), account.getDueAmount(), true)
                             .withChannelIds(account.channelIds()));
+        }
+        Sponsors sponsors = new Sponsors();
+        for (SponsorJson sponsorJson : c.getSponsors()) {
+            sponsors.add(
+                    new Sponsor(sponsorJson.getId(), sponsorJson.getName(),
+                            sponsorJson.getContactName(), sponsorJson.getDescription()));
         }
 
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
@@ -138,6 +146,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 deliveryAgentRepository.replaceAll(agents) &&
                 salesChannelRepository.replaceAll(salesChannels) &&
                 customerTypeRepository.replaceAll(customerTypes) &&
+                sponsorRepository.replaceAll(sponsors) &&
                 customerAccountRepository.replaceAll(customerAccounts);
     }
 

@@ -10,6 +10,8 @@ class CustomerAccount {
     CustomerType customerType
     Kiosk kiosk
 
+    Collection channels
+
     static belongsTo = [SalesChannel,CustomerType,Kiosk]
     static hasMany = [channels: SalesChannel,sponsors: Sponsor]
 

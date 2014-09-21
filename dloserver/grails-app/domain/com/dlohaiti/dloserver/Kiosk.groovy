@@ -10,7 +10,7 @@ class Kiosk {
     String apiKey
 
     static belongsTo = [region:Region]
-    static hasMany = [sensors: Sensor,customerAccounts: CustomerAccount,productMrps: ProductMrp,kioskWiseParameters: KioskWiseParameter]
+    static hasMany = [sensors: Sensor,sponsors: Sponsor,customerAccounts: CustomerAccount,productMrps: ProductMrp,kioskWiseParameters: KioskWiseParameter]
 
     static constraints = {
         name(blank: false, unique: true)
@@ -35,10 +35,6 @@ class Kiosk {
 
     List<SalesChannel> getSalesChannels() {
         ProductMrp.findAllByKiosk(this)*.salesChannel.unique()
-    }
-
-    List<Sponsor> getSponsors(){
-        CustomerAccount.findAllByKiosk(this)*.sponsors.flatten().unique()
     }
 
     List<Promotion> getPromotions(){

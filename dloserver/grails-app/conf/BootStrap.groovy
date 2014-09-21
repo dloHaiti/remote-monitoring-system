@@ -158,7 +158,7 @@ class BootStrap {
             }
 
             if (Sponsor.count() == 0) {
-                new Sponsor(name: "sponsor1", contactName: 'contact1').addToAccounts(CustomerAccount.first()).save(failOnError: true)
+                new Sponsor(name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
 
             }
             if (DeliveryAgent.count() == 0) {

@@ -5,16 +5,18 @@ class Sponsor {
     String contactName
     String description
 
-    static hasMany =[accounts: CustomerAccount]
-    static belongsTo=CustomerAccount
+    Kiosk kiosk
 
+    static belongsTo=[Kiosk,CustomerAccount]
+    static hasMany =[accounts: CustomerAccount]
 
     static mapping = {
         description type: "text"
     }
 
     static constraints = {
-        name(unique: true,blank:false)
+        name(nullable: false,unique: ['kiosk'])
         description(nullable: true)
+        kiosk(nullable: false)
     }
 }

@@ -287,6 +287,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 SponsorsTable.DESCRIPTION
         );
 
+        String createSponsorCustomerAccounts = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER ," +
+                        "%s INTEGER " +
+                        ")",
+                SponsorCustomerAccountsTable.TABLE_NAME,
+                SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
+                SponsorCustomerAccountsTable.SPONSOR_ID
+        );
         db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
         db.execSQL(createMeasurementLineItems);
@@ -305,6 +314,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createCustomerAccounts);
         db.execSQL(createSalesChannelCustomerAccounts);
         db.execSQL(createSponsors);
+        db.execSQL(createSponsorCustomerAccounts);
         insertKioskConfig(db, insertConfig);
     }
 
@@ -482,4 +492,11 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String CONTACT_NAME = "CONTACT_NAME";
         public static final String DESCRIPTION = "DESCRIPTION";
     }
+
+    public static class SponsorCustomerAccountsTable {
+        public static final String TABLE_NAME = "SPONSOR_CUSTOMER_ACCOUNTS";
+        public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
+        public static final String SPONSOR_ID = "SPONSOR_ID";
+    }
+
 }

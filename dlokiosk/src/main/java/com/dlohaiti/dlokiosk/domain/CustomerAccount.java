@@ -2,6 +2,7 @@ package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.SelectableListItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -19,8 +20,10 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     private boolean synced;
     private List<SalesChannel> channels;
     private String customerTypeId;
+    private List<Long> sponsorIds;
+    private Sponsors sponsors;
 
-    public CustomerAccount(long id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id,int amount,boolean synced) {
+    public CustomerAccount(long id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
         super(id, name);
         this.id = id;
         this.name = name;
@@ -29,10 +32,26 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
-        this.dueAmount=amount;
-        this.synced=synced;
+        this.dueAmount = amount;
+        this.synced = synced;
     }
 
+    public List<Long> getSponsorIds() {
+        try {
+            if (sponsorIds != null) {
+                return sponsorIds;
+            } else {
+                List<Long> ids = new ArrayList<Long>();
+                for (Sponsor s : sponsors) {
+                    ids.add(s.id());
+                }
+                return ids;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -123,9 +142,11 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         if (id != that.id) return false;
         if (kiosk_id != that.kiosk_id) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
+        if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null)
+            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null)
+            return false;
 
         return true;
     }
@@ -151,5 +172,18 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
 
     public String getCustomerTypeId() {
         return customerTypeId;
+    }
+
+    public CustomerAccount withSponsorIds(List<Long> sponsorIds) {
+        this.sponsorIds = sponsorIds;
+        return this;
+    }
+
+    public void withSponsors(Sponsors sponsors) {
+        this.sponsors = sponsors;
+    }
+
+    public Sponsors sponsors() {
+        return sponsors;
     }
 }

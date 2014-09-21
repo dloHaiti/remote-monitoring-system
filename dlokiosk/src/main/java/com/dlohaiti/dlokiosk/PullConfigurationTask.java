@@ -118,7 +118,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                     new CustomerAccount(account.getId(), account.getName(),
                             account.getContactName(), account.getCustomerType(), account.getAddress(), account.getPhoneNumber(),
                             account.getKiosk_id(), account.getDueAmount(), true)
-                            .withChannelIds(account.channelIds()));
+                            .withChannelIds(account.channelIds())
+                            .withSponsorIds(account.sponsorIds()));
         }
         Sponsors sponsors = new Sponsors();
         for (SponsorJson sponsorJson : c.getSponsors()) {

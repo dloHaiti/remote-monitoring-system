@@ -10,9 +10,18 @@ public class CustomerAccountJson {
     private String phoneNumber;
     private long kiosk_id;
     private List<SalesChannelIdJson> channels;
+    private List<SponsorIdJson> sponsors;
     private String contactName;
     private int dueAmount;
     private String customerType;
+
+    public List<SponsorIdJson> getSponsors() {
+        return sponsors;
+    }
+
+    public void setSponsors(List<SponsorIdJson> sponsors) {
+        this.sponsors = sponsors;
+    }
 
     public String getCustomerType() {
         return customerType;
@@ -82,6 +91,14 @@ public class CustomerAccountJson {
         ArrayList<Long> ids = new ArrayList<Long>();
         for (SalesChannelIdJson channel : channels) {
             ids.add(channel.getId());
+        }
+        return ids;
+    }
+
+    public List<Long> sponsorIds() {
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (SponsorIdJson sponsor : sponsors) {
+            ids.add(sponsor.getId());
         }
         return ids;
     }

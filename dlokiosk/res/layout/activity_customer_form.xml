@@ -231,6 +231,18 @@
 
             <ImageView style="@style/horizontal_divider"/>
 
+            <LinearLayout
+                style="@style/customer_form_row">
+                <TextView
+                    android:id="@+id/sponsor_label"
+                    style="@style/payment_form_field"
+                    android:text="@string/select_sponsor_label"/>
+                <com.dlohaiti.dlokiosk.MultiSelectSpinner
+                    android:id="@+id/sponsor"
+                    style="@style/payment_form_field"/>
+            </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
     <RelativeLayout

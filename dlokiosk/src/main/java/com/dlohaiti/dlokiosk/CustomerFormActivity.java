@@ -12,9 +12,11 @@ import android.widget.Toast;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.CustomerTypeRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
+import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.CustomerTypes;
 import com.dlohaiti.dlokiosk.domain.SalesChannels;
+import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +35,8 @@ public class CustomerFormActivity extends RoboActivity {
     @Inject
     private CustomerTypeRepository customerTypeRepository;
 
+    @Inject
+    private SponsorRepository sponsorRepository;
 
     protected MultiSelectSpinner salesChannel;
 
@@ -59,6 +63,9 @@ public class CustomerFormActivity extends RoboActivity {
     @InjectResource(R.string.error_not_saved_message)
     private String errorNotSavedMessage;
     private SalesChannels salesChannels;
+    private Sponsors sponsors;
+
+    private MultiSelectSpinner sponsor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,14 @@ public class CustomerFormActivity extends RoboActivity {
         setContentView(R.layout.activity_customer_form);
         loadSalesChannels();
         loadCustomerTypes();
+        loadSponsors();
         fillCustomerDetails();
+    }
+
+    private void loadSponsors() {
+        sponsors = sponsorRepository.findAll();
+        sponsor = (MultiSelectSpinner) findViewById(R.id.sponsor);
+        sponsor.setItems(sponsors.getSponsorNames());
     }
 
     private void loadSalesChannels() {
@@ -99,6 +113,8 @@ public class CustomerFormActivity extends RoboActivity {
         organization.setText(account.getName());
         SalesChannels channels = new SalesChannels(salesChannelRepository.findByCustomerId(account.getId()));
         salesChannel.setSelection(channels.getSalesChannelNames());
+        Sponsors mappedSponsors = sponsorRepository.findByCustomerId(account.getId());
+        sponsor.setSelection(mappedSponsors.getSponsorNames());
         String customerTypeName = customerTypes.getCustomerTypeNameById(account.getCustomerTypeId());
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) customerType.getAdapter();
         int position = adapter.getPosition(customerTypeName);
@@ -130,8 +146,10 @@ public class CustomerFormActivity extends RoboActivity {
         account.setName(organization.getText().toString());
         account.setContactName(customerName.getText().toString());
         account.setPhoneNumber(customerPhone.getText().toString());
+        account.setAddress(customerAddress.getText().toString());
         account.setCustomerTypeId(customerTypes.getCustomerTypeId(customerType.getSelectedItem().toString()));
         account.withChannels(salesChannels.getSalesChannelsFromName(salesChannel.getSelectedStrings()));
+        account.withSponsors(sponsors.getSponsorsFromName(sponsor.getSelectedStrings()));
         return customerAccountRepository.save(account);
     }
 

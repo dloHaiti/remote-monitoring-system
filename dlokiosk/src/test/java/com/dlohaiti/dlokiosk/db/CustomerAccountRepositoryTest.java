@@ -2,8 +2,10 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +28,13 @@ public class CustomerAccountRepositoryTest {
     KioskDatabase db = new KioskDatabase(Robolectric.application.getApplicationContext());
     CustomerAccountRepository repository;
     SalesChannelRepository salesChannelRepository;
+    private SponsorRepository sponsorRepository;
 
     @Before
     public void setUp() {
         salesChannelRepository = new SalesChannelRepository(db);
-        repository = new CustomerAccountRepository(db, salesChannelRepository);
+         sponsorRepository = new SponsorRepository(db);
+        repository = new CustomerAccountRepository(db, salesChannelRepository,sponsorRepository);
     }
 
     @Test
@@ -44,16 +48,16 @@ public class CustomerAccountRepositoryTest {
         SQLiteDatabase wdb = db.getWritableDatabase();
         saveSalesChannel();
         List<CustomerAccount> customerAccounts = asList(
-                new CustomerAccount(1L, "Name 1", "Contact Name 1","School", "Address 1", "Phone 1", (long) 11,0,true).withChannelIds(asList(1L)),
-                new CustomerAccount(2L, "Name 2", "Contact Name 2","School", "Address 2", "Phone 2", (long) 22,1,true).withChannelIds(asList(2L)));
+                new CustomerAccount(1L, "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 0, true).withChannelIds(asList(1L)),
+                new CustomerAccount(2L, "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 1, true).withChannelIds(asList(2L)));
         saveCustomerAccounts(wdb, customerAccounts);
 
         SortedSet<CustomerAccount> list = repository.findAll();
         assertThat(list.size(), is(2));
         assertThat(list,
                 is(sortedSet(
-                        new CustomerAccount(1L, "Name 1", "Contact Name 1","School", "Address 1", "Phone 1", (long) 11,1,true).withChannelIds(asList(1L)),
-                        new CustomerAccount(2L, "Name 2", "Contact Name 2","School", "Address 2", "Phone 2", (long) 22,0,true).withChannelIds(asList(2L)))));
+                        new CustomerAccount(1L, "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 1, true).withChannelIds(asList(1L)),
+                        new CustomerAccount(2L, "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L)))));
         assertThat(asList(new SalesChannel(1L, "Name 1", "Desc 1")), is(list.first().getChannels()));
         assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2")), is(list.last().getChannels()));
     }
@@ -63,26 +67,26 @@ public class CustomerAccountRepositoryTest {
         SQLiteDatabase wdb = db.getWritableDatabase();
         saveSalesChannel();
         saveCustomerAccounts(wdb, asList(
-                new CustomerAccount(1L, "Name 1", "Contact Name 1","School", "Address 1", "Phone 1", (long) 11,1,true).withChannelIds(asList(1L)),
-                new CustomerAccount(2L, "Name 2", "Contact Name 2","School", "Address 2", "Phone 2", (long) 22,0,true).withChannelIds(asList(2L))));
+                new CustomerAccount(1L, "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 1, true).withChannelIds(asList(1L)),
+                new CustomerAccount(2L, "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L))));
 
         SortedSet<CustomerAccount> initialList = repository.findAll();
         assertThat(initialList,
-                is(sortedSet(new CustomerAccount(1L, "Name 1", "Contact Name 1", "School","Address 1", "Phone 1", (long) 11,0,true).withChannelIds(asList(1L)),
-                        new CustomerAccount(2L, "Name 2", "Contact Name 2","School", "Address 2", "Phone 2", (long) 22,0,true).withChannelIds(asList(2L)))));
+                is(sortedSet(new CustomerAccount(1L, "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 0, true).withChannelIds(asList(1L)),
+                        new CustomerAccount(2L, "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L)))));
 
         assertThat(asList(new SalesChannel(1L, "Name 1", "Desc 1")), is(initialList.first().getChannels()));
         assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2")), is(initialList.last().getChannels()));
 
         boolean success = repository.replaceAll(asList(
-                new CustomerAccount(1L, "Name 3", "Contact Name 3","School", "Address 3", "Phone 3", (long) 33,0,true).withChannelIds(asList(3L)),
-                new CustomerAccount(2L, "Name 4", "Contact Name 4","School", "Address 4", "Phone 4", (long) 44,0,true).withChannelIds(asList(4L))));
+                new CustomerAccount(1L, "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)),
+                new CustomerAccount(2L, "Name 4", "Contact Name 4", "School", "Address 4", "Phone 4", (long) 44, 0, true).withChannelIds(asList(4L))));
 
         assertThat(success, is(true));
         SortedSet<CustomerAccount> updatedList = repository.findAll();
         assertThat(updatedList,
-                is(sortedSet(new CustomerAccount(1L, "Name 3", "Contact Name 3","School", "Address 3", "Phone 3", (long) 33,0,true).withChannelIds(asList(3L)),
-                        new CustomerAccount(2L, "Name 4", "Contact Name 4","School", "Address 4", "Phone 4", (long) 44,0,true).withChannelIds(asList(4L)))));
+                is(sortedSet(new CustomerAccount(1L, "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)),
+                        new CustomerAccount(2L, "Name 4", "Contact Name 4", "School", "Address 4", "Phone 4", (long) 44, 0, true).withChannelIds(asList(4L)))));
         assertThat(asList(new SalesChannel(3L, "Name 3", "Desc 3")), is(updatedList.first().getChannels()));
         assertThat(asList(new SalesChannel(4L, "Name 4", "Desc 4")), is(updatedList.last().getChannels()));
     }

@@ -9,9 +9,15 @@ import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+import static java.lang.String.format;
 
 public class SponsorRepository {
     private final static String TAG = SponsorRepository.class.getSimpleName();
@@ -76,5 +82,25 @@ public class SponsorRepository {
             rdb.endTransaction();
         }
         return new Sponsors(sponsors);
+    }
+
+    public Sponsors findByCustomerId(Long customerId) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.rawQuery(format(
+                        "SELECT %s FROM " +
+                                "%s s, " +
+                                "%s map " +
+                                "WHERE map.%s = ? and map.%s = s.%s " +
+                                "ORDER BY s.%s",
+                        StringUtils.join(COLUMNS, ","),
+                        SponsorsTable.TABLE_NAME,
+                        KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,
+                        KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
+                        KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID,
+                        KioskDatabase.SponsorsTable.ID,
+                        KioskDatabase.SponsorsTable.NAME),
+                new String[]{String.valueOf(customerId)});
+        return readAll(rdb, cursor);
     }
 }

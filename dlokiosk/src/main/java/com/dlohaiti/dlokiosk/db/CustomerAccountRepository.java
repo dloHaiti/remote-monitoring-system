@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -34,11 +35,13 @@ public class CustomerAccountRepository {
     };
     private final KioskDatabase db;
     private SalesChannelRepository salesChannelRepository;
+    private SponsorRepository sponsorRepository;
 
     @Inject
-    public CustomerAccountRepository(KioskDatabase db, SalesChannelRepository salesChannelRepository) {
+    public CustomerAccountRepository(KioskDatabase db, SalesChannelRepository salesChannelRepository,SponsorRepository sponsorRepository) {
         this.db = db;
         this.salesChannelRepository = salesChannelRepository;
+        this.sponsorRepository=sponsorRepository;
     }
 
     public boolean replaceAll(List<CustomerAccount> accounts) {
@@ -59,6 +62,7 @@ public class CustomerAccountRepository {
                 wdb.insert(TABLE_NAME, null, values);
             }
             replaceAllSalesChannelCustomerAccountMap(wdb, accounts);
+            replaceAllSponsorCustomerAccountMap(wdb, accounts);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -66,6 +70,18 @@ public class CustomerAccountRepository {
             return false;
         } finally {
             wdb.endTransaction();
+        }
+    }
+
+    private void replaceAllSponsorCustomerAccountMap(SQLiteDatabase wdb, List<CustomerAccount> accounts) {
+        wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, null, null);
+        for (CustomerAccount account : accounts) {
+            for (long channelId : account.getSponsorIds()) {
+                ContentValues values = new ContentValues();
+                values.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
+                values.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, channelId);
+                wdb.insert(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, null, values);
+            }
         }
     }
 
@@ -91,6 +107,7 @@ public class CustomerAccountRepository {
             while (!cursor.isAfterLast()) {
                 CustomerAccount account = buildCustomerAccount(cursor);
                 accounts.add(account);
+                account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
                 account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
             }
@@ -154,17 +171,13 @@ public class CustomerAccountRepository {
                 values.put(CustomerAccountsTable.NAME, String.valueOf(account.getName()));
                 values.put(CustomerAccountsTable.CONTACT_NAME, String.valueOf(account.getContactName()));
                 values.put(CustomerAccountsTable.PHONE_NUMBER, String.valueOf(account.getPhoneNumber()));
+                values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
                 values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
                 values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
                 values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
                 wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
-                wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
-                for(SalesChannel sc:account.getChannels()){
-                    ContentValues cv = new ContentValues();
-                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,accountId);
-                    cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.getId());
-                    wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,null,cv);
-                }
+                replaceSalesChannelCustomerAccountMap(account, wdb);
+                replaceSponsorCustomerAccountMap(wdb, account);
             }
             wdb.setTransactionSuccessful();
             return true;
@@ -173,6 +186,27 @@ public class CustomerAccountRepository {
             return false;
         } finally {
             wdb.endTransaction();
+        }
+    }
+
+    private void replaceSalesChannelCustomerAccountMap(CustomerAccount account, SQLiteDatabase wdb) {
+        long accountId = account.getId() ;
+        wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
+        for(SalesChannel sc:account.getChannels()){
+            ContentValues cv = new ContentValues();
+            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,accountId);
+            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.getId());
+            wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,null,cv);
+        }
+    }
+
+    private void replaceSponsorCustomerAccountMap(SQLiteDatabase wdb, CustomerAccount account) {
+        wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(account.getId()));
+        for(Sponsor s:account.sponsors()){
+            ContentValues cv = new ContentValues();
+            cv.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,account.getId());
+            cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID,s.id());
+            wdb.insert(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,null,cv);
         }
     }
 
@@ -186,6 +220,7 @@ public class CustomerAccountRepository {
             while (!cursor.isAfterLast()) {
                 CustomerAccount account = buildCustomerAccount(cursor);
                 accounts.add(account);
+                account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
                 account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
                 cursor.moveToNext();
             }

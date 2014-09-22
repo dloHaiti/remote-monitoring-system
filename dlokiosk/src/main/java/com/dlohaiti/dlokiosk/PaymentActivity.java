@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -130,6 +132,21 @@ public class PaymentActivity extends SaleActivity {
     private void initialisePriceViews() {
         totalPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
         customerPaymentValueView.setText(String.valueOf(cart.getTotal().getAmount()));
+        sponsorAmountView.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned destination,
+                                               int destinationStart, int destinationEnd) {
+                        try {
+                            Money input = new Money(new BigDecimal(destination.toString() + source.toString()));
+                            return input.isInRange(Money.ZERO, cart.getTotal()) ? null : "";
+
+                        } catch (NumberFormatException exception) {
+                            return "";
+                        }
+                    }
+                }
+        });
         sponsorAmountView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

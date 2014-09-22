@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 
-public class Money {
+public class Money implements Comparable<Money> {
+    public static final Money ZERO = new Money(BigDecimal.ZERO);
     private final BigDecimal amount;
     // Money without currency feels wrong, but this app is only used with HTG
     private final Currency currency = Currency.getInstance("HTG");
@@ -55,5 +56,22 @@ public class Money {
 
     public Money minus(BigDecimal amount) {
         return new Money(this.amount.subtract(amount));
+    }
+
+    @Override
+    public int compareTo(Money anotherMoney) {
+        return amount.compareTo(anotherMoney.amount);
+    }
+
+    public boolean greaterThanOrEqualTo(Money anotherMoney) {
+        return amount.compareTo(anotherMoney.amount) >= 0;
+    }
+
+    public boolean lessThanOrEqualTo(Money anotherMoney) {
+        return amount.compareTo(anotherMoney.amount) <= 0;
+    }
+
+    public boolean isInRange(Money minimum, Money maximum) {
+        return greaterThanOrEqualTo(minimum) && lessThanOrEqualTo(maximum);
     }
 }

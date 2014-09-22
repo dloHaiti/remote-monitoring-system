@@ -11,6 +11,7 @@
     <properties>
         <platform.version>4.1.1.4</platform.version>
         <powermock.version>1.5</powermock.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>

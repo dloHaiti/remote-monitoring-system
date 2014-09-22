@@ -15,6 +15,7 @@ class AccountsService {
         account.phoneNumber = params.phoneNumber
         account.dueAmount=new Double(params.dueAmount)
         account.customerType = CustomerType.findById(params.customerTypeId)
+        account.gpsCoordinates=params.gpsCoordinates
         def salesChannels = account.channels.toArray()
         if(salesChannels !=null ) {
             for (sc in salesChannels) {

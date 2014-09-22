@@ -3,15 +3,28 @@ package com.dlohaiti.dlokiosk;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
+import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.PaymentTypes;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import roboguice.inject.InjectView;
+
+import java.math.BigDecimal;
 
 public class PaymentActivity extends SaleActivity {
 
@@ -23,9 +36,6 @@ public class PaymentActivity extends SaleActivity {
 
     @InjectView(R.id.select_payee)
     private RadioGroup selectPayeeView;
-
-    @InjectView(R.id.select_sponsor)
-    private RadioButton selectSponsorView;
 
     @InjectView(R.id.select_customer)
     private RadioButton selectCustomerView;
@@ -39,14 +49,23 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.sponsor)
     private Spinner sponsorView;
 
+    @InjectView(R.id.sponsor_amount)
+    private EditText sponsorAmountView;
+
     @InjectView(R.id.payment_mode)
     private Spinner paymentModeView;
 
     @InjectView(R.id.total_price_value)
     private TextView totalPriceView;
 
+    @InjectView(R.id.customer_payment_value)
+    private TextView customerPaymentValueView;
+
     @InjectView(R.id.customer_payment_currency)
     private TextView customerPaymentCurrencyView;
+
+    @InjectView(R.id.sponsor_payment_value)
+    private TextView sponsorPaymentValueView;
 
     @InjectView(R.id.sponsor_payment_currency)
     private TextView sponsorPaymentCurrencyView;
@@ -91,7 +110,29 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialisePriceViews() {
-        totalPriceView.setText(String.valueOf(cart.getTotal()));
+        totalPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
+        customerPaymentValueView.setText(String.valueOf(cart.getTotal().getAmount()));
+        sponsorAmountView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Money sponsorAmount = StringUtils.isBlank(editable)
+                        ? new Money(BigDecimal.ZERO)
+                        : new Money(new BigDecimal(editable.toString()));
+                cart.setSponsorAmount(sponsorAmount);
+                sponsorPaymentValueView.setText(String.valueOf(cart.sponsorAmount().getAmount()));
+                customerPaymentValueView.setText(String.valueOf(cart.customerAmount().getAmount()));
+            }
+        });
 
         customerPaymentCurrencyView.setText(currency());
         sponsorPaymentCurrencyView.setText(currency());
@@ -118,7 +159,7 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialiseSponsorList() {
-        Sponsors sponsors = sponsorRepository.findAll();
+        Sponsors sponsors = sponsorRepository.findByCustomerId(cart.customerAccount().getId());
         ArrayAdapter<Sponsor> adapter = new ArrayAdapter<Sponsor>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 sponsors);
@@ -134,7 +175,6 @@ public class PaymentActivity extends SaleActivity {
 
             }
         });
-
     }
 
     private void initialisePaymentModeList() {

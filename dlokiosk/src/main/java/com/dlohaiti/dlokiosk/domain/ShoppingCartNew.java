@@ -3,7 +3,6 @@ package com.dlohaiti.dlokiosk.domain;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Singleton
@@ -16,6 +15,8 @@ public class ShoppingCartNew {
     private String paymentType;
     public boolean isSponsorSelected;
     private Sponsor sponsor;
+    private Money sponsorAmount;
+    private Money customerAmount;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -73,8 +74,8 @@ public class ShoppingCartNew {
         return currencyCode;
     }
 
-    public BigDecimal getTotal() {
-        return register.total(this).getAmount();
+    public Money getTotal() {
+        return register.total(this);
     }
 
     public void clearPromotions() {
@@ -116,5 +117,18 @@ public class ShoppingCartNew {
 
     public void setSponsor(Sponsor sponsor) {
         this.sponsor = sponsor;
+    }
+
+    public void setSponsorAmount(Money sponsorAmount) {
+        this.sponsorAmount = sponsorAmount;
+        this.customerAmount = getTotal().minus(sponsorAmount.getAmount());
+    }
+
+    public Money customerAmount() {
+        return customerAmount;
+    }
+
+    public Money sponsorAmount() {
+        return sponsorAmount;
     }
 }

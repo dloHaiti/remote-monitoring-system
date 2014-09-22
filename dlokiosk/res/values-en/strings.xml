@@ -127,5 +127,6 @@
     <string name="customer_type_hint"/>
     <string name="customer_only_label">Customer Only</string>
     <string name="with_sponsor_label">With Sponsor</string>
+    <string name="mandatory_field">This field is mandatory</string>
 
 </resources>

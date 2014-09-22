@@ -125,4 +125,5 @@
     <string name="customer_type_label">Customer Type</string>
     <string name="customer_only_label">Seulement Clientèle</string>
     <string name="with_sponsor_label">Avec Commanditaire</string>
+    <string name="mandatory_field">This field is mandatory</string>
 </resources>

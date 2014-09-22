@@ -78,6 +78,10 @@ public class CustomerFormActivity extends RoboActivity {
     private String savedMessage;
     @InjectResource(R.string.error_not_saved_message)
     private String errorNotSavedMessage;
+
+    @InjectResource(R.string.mandatory_field)
+    private String mandatoryFieldMessage;
+
     private SalesChannels salesChannels;
     private Sponsors sponsors;
 
@@ -165,6 +169,9 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     public void onSave(View view) {
+       if (!validateCustomerForm()){
+            return;
+        }
         boolean successful = (account == null) ? createNewAccount() : updateExistingAccount();
         if (successful) {
             Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
@@ -172,6 +179,22 @@ public class CustomerFormActivity extends RoboActivity {
         } else {
             Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean validateCustomerForm() {
+        boolean isValid=true;
+        if(customerName.getText().toString().isEmpty()){
+            customerName.setError(mandatoryFieldMessage);
+            isValid=false;
+        }
+        if(customerType.getSelectedItem()==null){
+
+        }
+        return isValid;
+    }
+
+    private void isValidField(EditText editText) {
+
     }
 
     private boolean updateExistingAccount() {

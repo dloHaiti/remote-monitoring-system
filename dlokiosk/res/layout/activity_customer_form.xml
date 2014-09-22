@@ -37,6 +37,7 @@
                 <Spinner
                     android:id="@+id/customer_type"
                     style="@style/payment_form_field"/>
+
             </LinearLayout>
 
             <ImageView style="@style/horizontal_divider"/>

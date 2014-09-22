@@ -67,6 +67,7 @@ class BootStrap {
                     kiosk_id   : a.kiosk.id,
                     dueAmount: a.dueAmount,
                     customerType: a.customerType.id,
+                    gpsCoordinates: a.gpsCoordinates,
                     sponsors   : a.sponsors.collect{
                         Sponsor s -> [id: s.id]
                     },

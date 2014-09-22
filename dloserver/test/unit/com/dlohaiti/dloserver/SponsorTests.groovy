@@ -25,11 +25,12 @@ class SponsorTests {
 
     def testForUnique(){
         mockForConstraintsTests(Sponsor)
-        Sponsor sponsor=new Sponsor(name:"sponsor1",contactName:"contact name")
+        Kiosk k1 = new Kiosk(name: "k4",apiKey: "sampleKey")
+        Sponsor sponsor=new Sponsor(name:"sponsor1",contactName:"contact name",kiosk: k1)
         assert sponsor.validate()
 
 
-        Sponsor sponsor2=new Sponsor(name:"sponsor1",contactName:"contact name")
+        Sponsor sponsor2=new Sponsor(name:"sponsor1",contactName:"contact name",kiosk: k1)
         mockForConstraintsTests(Sponsor, [sponsor,sponsor2])
         assert !sponsor2.validate()
         sponsor2.name="sponsor2"

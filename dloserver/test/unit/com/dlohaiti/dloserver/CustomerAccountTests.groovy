@@ -48,6 +48,21 @@ class CustomerAccountTests {
         assert !account2.validate()
     }
 
+    void testGPSValidations(){
+        mockForConstraintsTests(CustomerAccount)
+        mockForConstraintsTests(Kiosk)
+        mockForConstraintsTests(CustomerType)
+        Kiosk k1 = new Kiosk(name: "k4",apiKey: "sampleKey")
+        CustomerType type=(new CustomerType(name:"Schools"))
+
+        CustomerAccount account = (new CustomerAccount(name: "Customer2",customerType: type,kiosk: k1,gpsCoordinates:""))
+        assert account.validate()
+        account.gpsCoordinates="32:45:12.8,56:23:67.23"
+        assert account.validate()
+        account.gpsCoordinates="32:12.8,56:23:67.23"
+        assert !account.validate()
+
+    }
     void testCustomerTypeAssociation(){
         mockForConstraintsTests(CustomerAccount)
         CustomerType type=(new CustomerType(name:"School"))

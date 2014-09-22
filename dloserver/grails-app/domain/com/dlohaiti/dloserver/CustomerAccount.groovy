@@ -6,7 +6,7 @@ class CustomerAccount {
     String address
     String contactName
     Double dueAmount = 0
-
+    String gpsCoordinates
     CustomerType customerType
     Kiosk kiosk
 
@@ -32,7 +32,13 @@ class CustomerAccount {
         }, nullable: true, unique: ['kiosk'])
         address(nullable: true)
         phoneNumber(nullable: true)
-
+        gpsCoordinates(nullable: true,validator: { val, obj ->
+            if(val == null || val=="") return true
+            else {
+              def locs = val.split(",")
+              return  (locs.size() == 2) && (locs[0].split(":").size() == 3) &&  (locs[1].split(":").size() == 3)
+            }
+        })
     }
 
 }

@@ -63,9 +63,12 @@
                             style="@style/payment_form_field"/>
                 </LinearLayout>
 
-                <ImageView style="@style/horizontal_divider"/>
+                <ImageView
+                        android:id="@+id/sponsor_details_divider"
+                        style="@style/horizontal_divider"/>
 
                 <LinearLayout
+                        android:id="@+id/select_payee_row"
                         style="@style/payment_form_row">
                     <TextView
                             android:id="@+id/select_payee_label"

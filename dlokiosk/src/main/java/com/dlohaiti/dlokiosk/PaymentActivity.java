@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -39,6 +40,12 @@ public class PaymentActivity extends SaleActivity {
 
     @InjectView(R.id.select_customer)
     private RadioButton selectCustomerView;
+
+    @InjectView(R.id.sponsor_details_divider)
+    private ImageView sponsorDetailsDividerView;
+
+    @InjectView(R.id.select_payee_row)
+    private LinearLayout selectPayeeRowView;
 
     @InjectView(R.id.sponsor_row)
     private LinearLayout sponsorRowView;
@@ -75,20 +82,25 @@ public class PaymentActivity extends SaleActivity {
 
     @InjectView(R.id.amount_due_currency)
     private TextView amountDueCurrencyView;
+    private Sponsors sponsors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        initialiseCustomerOnlyOrWithSponsorPaymentOptions();
         initialiseSponsorList();
+        initialiseCustomerOnlyOrWithSponsorPaymentOptions();
         initialisePaymentTypeList();
         initialisePaymentModeList();
         initialisePriceViews();
     }
 
     private void initialiseCustomerOnlyOrWithSponsorPaymentOptions() {
+        if (sponsors.isEmpty()) {
+            hideAllSponsorViews();
+            return;
+        }
         selectPayeeView.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int selectedRadioButtonId) {
@@ -97,7 +109,6 @@ public class PaymentActivity extends SaleActivity {
                     cart.isSponsorSelected = true;
                     sponsorRowView.setVisibility(View.VISIBLE);
                     sponsorAmountRowView.setVisibility(View.VISIBLE);
-
                 } else {
                     cart.isSponsorSelected = false;
                     cart.setSponsor(null);
@@ -107,6 +118,13 @@ public class PaymentActivity extends SaleActivity {
             }
         });
         selectCustomerView.setChecked(true);
+    }
+
+    private void hideAllSponsorViews() {
+        sponsorDetailsDividerView.setVisibility(View.GONE);
+        selectPayeeRowView.setVisibility(View.GONE);
+        sponsorRowView.setVisibility(View.GONE);
+        sponsorAmountRowView.setVisibility(View.GONE);
     }
 
     private void initialisePriceViews() {
@@ -159,7 +177,7 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialiseSponsorList() {
-        Sponsors sponsors = sponsorRepository.findByCustomerId(cart.customerAccount().getId());
+        sponsors = sponsorRepository.findByCustomerId(cart.customerAccount().getId());
         ArrayAdapter<Sponsor> adapter = new ArrayAdapter<Sponsor>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 sponsors);

@@ -15,7 +15,6 @@ class AccountsService {
         account.phoneNumber = params.phoneNumber
         account.dueAmount=new Double(params.dueAmount)
         account.customerType = CustomerType.findById(params.customerTypeId)
-
         def salesChannels = account.channels.toArray()
         if(salesChannels !=null ) {
             for (sc in salesChannels) {
@@ -23,13 +22,29 @@ class AccountsService {
             }
         }
         for(sc in params.channels) {
-
           def channel = SalesChannel.get(sc.id)
             if(channel == null) {
                 log.debug "Unable to get sales channel"
                 throw new MissingSalesChannelException()
             }
           account.addToChannels(channel)
+        }
+        def sponsors = account.sponsors.toArray()
+        if(sponsors !=null ) {
+            for (s in sponsors) {
+                account.removeFromSponsors(s)
+            }
+        }
+        for(sId in params.sponsorIds) {
+            def sponsor = Sponsor.get(sId)
+            if(sponsor == null) {
+                log.debug "Unable to get sponsor"
+                throw new MissingSponsorException()
+            }
+            account.addToSponsors(sponsor)
+        }
+        if(!account.isAttached()) {
+            account.attach()
         }
         account.save(flush: true)
         return account

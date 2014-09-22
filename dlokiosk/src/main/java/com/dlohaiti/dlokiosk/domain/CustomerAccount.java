@@ -1,10 +1,13 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import android.text.TextUtils;
+
 import com.dlohaiti.dlokiosk.SelectableListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
@@ -22,6 +25,8 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     private String customerTypeId;
     private List<Long> sponsorIds;
     private Sponsors sponsors;
+    private String gpsCoordinates;
+
 
     public CustomerAccount(long id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
         super(id, name);
@@ -34,6 +39,24 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.kiosk_id = kiosk_id;
         this.dueAmount = amount;
         this.synced = synced;
+    }
+
+    public String getGpsCoordinates() {
+        return gpsCoordinates;
+    }
+
+    public String formatedGPS() {
+        if (TextUtils.isEmpty(gpsCoordinates))
+            return "";
+        String[] split = gpsCoordinates.split(",");
+        String[] latitude = split[0].split(":");
+        String[] longitude = split[1].split(":");
+        return format("%s° %s′ %s″,%s° %s′ %s″", latitude[0], latitude[1], latitude[2], longitude[0], longitude[1], longitude[2]);
+    }
+
+    public CustomerAccount setGpsCoordinates(String gpsCoordinates) {
+        this.gpsCoordinates = gpsCoordinates;
+        return this;
     }
 
     public List<Long> getSponsorIds() {

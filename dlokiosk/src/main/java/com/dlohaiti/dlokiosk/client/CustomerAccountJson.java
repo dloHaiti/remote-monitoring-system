@@ -14,6 +14,15 @@ public class CustomerAccountJson {
     private String contactName;
     private int dueAmount;
     private String customerType;
+    private String gpsCoordinates;
+
+    public String getGpsCoordinates() {
+        return gpsCoordinates;
+    }
+
+    public void setGpsCoordinates(String gpsCoordinates) {
+        this.gpsCoordinates = gpsCoordinates;
+    }
 
     public List<SponsorIdJson> getSponsors() {
         return sponsors;

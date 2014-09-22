@@ -240,6 +240,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s INTEGER," +
                         "%s INTEGER," +
                         "%s TEXT" +
@@ -251,6 +252,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 CustomerAccountsTable.CUSTOMER_TYPE,
                 CustomerAccountsTable.ADDRESS,
                 CustomerAccountsTable.PHONE_NUMBER,
+                CustomerAccountsTable.GPS_COORDINATES,
                 CustomerAccountsTable.KIOSK_ID,
                 CustomerAccountsTable.DUE_AMOUNT,
                 CustomerAccountsTable.IS_SYNCED
@@ -474,6 +476,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String CUSTOMER_TYPE = "CUSTOMER_TYPE";
         public static final String ADDRESS = "ADDRESS";
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
+        public static final String GPS_COORDINATES = "GPS_COORDINATES";
         public static final String KIOSK_ID = "KIOSK_ID";
         public static final String DUE_AMOUNT = "DUE_DATE";
         public static final String IS_SYNCED = "IS_SYNCED";

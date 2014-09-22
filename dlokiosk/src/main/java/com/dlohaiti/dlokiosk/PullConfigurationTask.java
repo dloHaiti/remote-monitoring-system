@@ -119,7 +119,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                             account.getContactName(), account.getCustomerType(), account.getAddress(), account.getPhoneNumber(),
                             account.getKiosk_id(), account.getDueAmount(), true)
                             .withChannelIds(account.channelIds())
-                            .withSponsorIds(account.sponsorIds()));
+                            .withSponsorIds(account.sponsorIds()).setGpsCoordinates(account.getGpsCoordinates()));
         }
         Sponsors sponsors = new Sponsors();
         for (SponsorJson sponsorJson : c.getSponsors()) {

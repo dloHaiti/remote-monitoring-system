@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -52,6 +53,21 @@ public class CustomerFormActivity extends RoboActivity {
 
     @InjectView(R.id.customer_address)
     protected EditText customerAddress;
+
+    @InjectView(R.id.latitude_degres)
+    protected EditText latitudeDegree;
+    @InjectView(R.id.latitude_minutes)
+    protected EditText latitudeMinute;
+    @InjectView(R.id.latitude_secondes)
+    protected EditText latitudeSecond;
+
+
+    @InjectView(R.id.longitude_degres)
+    protected EditText longitudeDegree;
+    @InjectView(R.id.longitude_minutes)
+    protected EditText longitudeMinute;
+    @InjectView(R.id.longitude_secondes)
+    protected EditText longitudeSecond;
 
     @InjectView(R.id.organisation)
     protected EditText organization;
@@ -111,6 +127,7 @@ public class CustomerFormActivity extends RoboActivity {
         customerPhone.setText(account.getPhoneNumber());
         customerAddress.setText(account.getAddress());
         organization.setText(account.getName());
+        fillGPSCoordinates(account.getGpsCoordinates());
         SalesChannels channels = new SalesChannels(salesChannelRepository.findByCustomerId(account.getId()));
         salesChannel.setSelection(channels.getSalesChannelNames());
         Sponsors mappedSponsors = sponsorRepository.findByCustomerId(account.getId());
@@ -119,6 +136,21 @@ public class CustomerFormActivity extends RoboActivity {
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) customerType.getAdapter();
         int position = adapter.getPosition(customerTypeName);
         customerType.setSelection(position);
+    }
+
+    private void fillGPSCoordinates(String gpsCoordinates) {
+        if(TextUtils.isEmpty(gpsCoordinates)) return;
+        String[] coordinates = gpsCoordinates.split(",");
+        String[] latitude = coordinates[0].split(":");
+        String[] longitude = coordinates[1].split(":");
+
+        latitudeDegree.setText(latitude[0]);
+        latitudeMinute.setText(latitude[1]);
+        latitudeSecond.setText(latitude[2]);
+
+        longitudeDegree.setText(longitude[0]);
+        longitudeMinute.setText(longitude[1]);
+        longitudeSecond.setText(longitude[2]);
     }
 
 
@@ -150,7 +182,36 @@ public class CustomerFormActivity extends RoboActivity {
         account.setCustomerTypeId(customerTypes.getCustomerTypeId(customerType.getSelectedItem().toString()));
         account.withChannels(salesChannels.getSalesChannelsFromName(salesChannel.getSelectedStrings()));
         account.withSponsors(sponsors.getSponsorsFromName(sponsor.getSelectedStrings()));
+        account.setGpsCoordinates(buildGpsCoordinate());
         return customerAccountRepository.save(account);
+    }
+
+    private String buildGpsCoordinate() {
+        if(isLatitudeEmpty() || isLongitudeEmpty()){
+            return "";
+        }else{
+            return String.format("%s:%s:%s,%s:%s:%s",
+                    latitudeDegree.getText(),
+                    latitudeMinute.getText(),
+                    latitudeSecond.getText(),
+                    longitudeDegree.getText(),
+                    longitudeMinute.getText(),
+                    longitudeSecond.getText()
+                    );
+        }
+    }
+
+    private boolean isLatitudeEmpty() {
+        return isEmptyField(latitudeDegree) || isEmptyField(latitudeMinute) || isEmptyField(latitudeSecond);
+    }
+
+
+    private boolean isLongitudeEmpty() {
+        return isEmptyField(longitudeDegree) || isEmptyField(longitudeMinute) || isEmptyField(longitudeSecond);
+    }
+
+    private boolean isEmptyField(EditText editable) {
+        return editable.getText().toString().isEmpty();
     }
 
     private boolean createNewAccount() {

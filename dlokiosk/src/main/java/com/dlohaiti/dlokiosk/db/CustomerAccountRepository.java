@@ -29,6 +29,7 @@ public class CustomerAccountRepository {
             CustomerAccountsTable.CUSTOMER_TYPE,
             CustomerAccountsTable.ADDRESS,
             CustomerAccountsTable.PHONE_NUMBER,
+            CustomerAccountsTable.GPS_COORDINATES,
             CustomerAccountsTable.KIOSK_ID,
             CustomerAccountsTable.DUE_AMOUNT,
             CustomerAccountsTable.IS_SYNCED
@@ -56,6 +57,7 @@ public class CustomerAccountRepository {
                 values.put(CustomerAccountsTable.CUSTOMER_TYPE, account.getCustomerTypeId());
                 values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
                 values.put(CustomerAccountsTable.PHONE_NUMBER, account.getPhoneNumber());
+                values.put(CustomerAccountsTable.GPS_COORDINATES, account.getGpsCoordinates());
                 values.put(CustomerAccountsTable.KIOSK_ID, account.kioskId());
                 values.put(CustomerAccountsTable.DUE_AMOUNT, account.getDueAmount());
                 values.put(CustomerAccountsTable.IS_SYNCED, String.valueOf(true));
@@ -149,9 +151,9 @@ public class CustomerAccountRepository {
                 cursor.getString(3),
                 cursor.getString(4),
                 cursor.getString(5),
-                cursor.getLong(6),
-                cursor.getInt(7),
-                Boolean.valueOf(cursor.getString(8)));
+                cursor.getLong(7),
+                cursor.getInt(8),
+                Boolean.valueOf(cursor.getString(9))).setGpsCoordinates(cursor.getString(6));
     }
 
     public boolean save(CustomerAccount account) {
@@ -171,6 +173,7 @@ public class CustomerAccountRepository {
                 values.put(CustomerAccountsTable.NAME, String.valueOf(account.getName()));
                 values.put(CustomerAccountsTable.CONTACT_NAME, String.valueOf(account.getContactName()));
                 values.put(CustomerAccountsTable.PHONE_NUMBER, String.valueOf(account.getPhoneNumber()));
+                values.put(CustomerAccountsTable.GPS_COORDINATES, account.getGpsCoordinates());
                 values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
                 values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
                 values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));

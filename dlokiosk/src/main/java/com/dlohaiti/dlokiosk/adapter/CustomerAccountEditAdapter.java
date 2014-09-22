@@ -96,7 +96,7 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
         phone.setText(customerAccount.getPhoneNumber());
 
         TextView address = (TextView) view.findViewById(R.id.customer_address);
-        address.setText(customerAccount.getAddress());
+        address.setText(customerAccount.formatedGPS());
 
         TextView balance = (TextView) view.findViewById(R.id.customer_balance);
         balance.setText( String.format( "%.2f",customerAccount.getDueAmount()));

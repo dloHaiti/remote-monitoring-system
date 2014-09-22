@@ -1,6 +1,8 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,19 +69,35 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         }else {
             holder.listItem.setError(null);
         }
-        holder.listItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    final int position = v.getId();
-                    final EditText Caption = (EditText) v;
-                    String val = Caption.getText().toString();
-                    ((FlowMeterReading) listItems.get(position)).setQuantity(val);
-                }
-
-            }
-        });
+        holder.listItem.addTextChangedListener(new CustomTextWatcher(holder.listItem));
         label.setText(flowMeterReading.getSamplingName());
         return convertView;
     }
+
+     class CustomTextWatcher implements TextWatcher {
+
+         private final EditText view;
+
+         public CustomTextWatcher(EditText listItem){
+            this.view=listItem;
+         }
+         @Override
+         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+         }
+
+         @Override
+         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+             final int position = view.getId();
+             final EditText Caption = (EditText) view;
+             String val = Caption.getText().toString();
+             ((FlowMeterReading) listItems.get(position)).setQuantity(val);
+         }
+
+         @Override
+         public void afterTextChanged(Editable editable) {
+
+         }
+     }
 }
 

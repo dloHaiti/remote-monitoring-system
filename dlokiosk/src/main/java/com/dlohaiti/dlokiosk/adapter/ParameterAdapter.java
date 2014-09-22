@@ -1,7 +1,9 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,23 +126,7 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         }else {
             holder.listItem.setError(null);
         }
-        holder.listItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    final int position = v.getId();
-                    final EditText Caption = (EditText) v;
-                    String val = Caption.getText().toString();
-                    Parameter parameter = (Parameter) listItems.get(position);
-                    parameter.setValue(val);
-                    if(!val.isEmpty() && parameter.considersInvalid(val)) {
-                        Caption.setError("Please enter valid input");
-                    }else{
-                        Caption.setError(null);
-                    }
-                }
-
-            }
-        });
+        holder.listItem.addTextChangedListener(new CustomTextWatcher(holder.listItem));
         return view;
     }
 
@@ -155,4 +141,35 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         }
     }
 
+    class CustomTextWatcher implements TextWatcher {
+
+        private final EditText v;
+
+        public CustomTextWatcher(EditText listItem){
+            this.v=listItem;
+        }
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            final int position = v.getId();
+            final EditText Caption = (EditText) v;
+            String val = Caption.getText().toString();
+            Parameter parameter = (Parameter) listItems.get(position);
+            parameter.setValue(val);
+            if(!val.isEmpty() && parameter.considersInvalid(val)) {
+                Caption.setError("Please enter valid input");
+            }else{
+                Caption.setError(null);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    }
 }

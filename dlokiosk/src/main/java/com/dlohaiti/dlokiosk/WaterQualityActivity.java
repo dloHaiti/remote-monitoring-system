@@ -187,7 +187,7 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
 
         for (int i = 0; i < parameterAdapter.getCount(); i++) {
             Parameter parameter = parameterAdapter.getItem(i);
-            if (parameter.getValue().isEmpty()) {
+            if (parameter.getValue().isEmpty() || parameter.considersInvalid(parameter.getValue())) {
                 continue;
             }
             Measurement measurement = reading.getMeasurement(parameter.getName());

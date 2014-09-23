@@ -11,9 +11,9 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
-public class CustomerAccount extends SelectableListItem implements Comparable<CustomerAccount> {
+public class CustomerAccount  implements Comparable<CustomerAccount> {
     private double dueAmount;
-    private Long id;
+    private String id;
     private String name;
     private String address;
     private String phoneNumber;
@@ -26,10 +26,10 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     private List<Long> sponsorIds;
     private Sponsors sponsors;
     private String gpsCoordinates;
+    private boolean selected;
 
 
-    public CustomerAccount(long id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
-        super(id, name);
+    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
@@ -41,7 +41,28 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.synced = synced;
     }
 
+    public String name() {
+        return name;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public CustomerAccount select() {
+        this.selected = true;
+        return this;
+    }
+
+    public CustomerAccount unSelect() {
+        this.selected = false;
+        return this;
+    }
+
     public String getGpsCoordinates() {
+        if(gpsCoordinates==null){
+            return "";
+        }
         return gpsCoordinates;
     }
 
@@ -96,7 +117,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
         this.customerTypeId = customerTypeId;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -105,10 +126,16 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
     }
 
     public String getAddress() {
+        if(address==null){
+            return "";
+        }
         return address;
     }
 
     public String getPhoneNumber() {
+        if(phoneNumber==null){
+            return "";
+        }
         return phoneNumber;
     }
 
@@ -176,7 +203,7 @@ public class CustomerAccount extends SelectableListItem implements Comparable<Cu
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (name != null ? name.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);

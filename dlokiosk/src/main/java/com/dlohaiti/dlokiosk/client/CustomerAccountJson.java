@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerAccountJson {
-    private long id;
+    private String id;
     private String name;
     private String address;
     private String phoneNumber;
@@ -48,11 +48,11 @@ public class CustomerAccountJson {
         this.dueAmount = dueAmount;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

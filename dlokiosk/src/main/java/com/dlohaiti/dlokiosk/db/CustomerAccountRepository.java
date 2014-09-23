@@ -124,7 +124,7 @@ public class CustomerAccountRepository {
         return accounts;
     }
 
-    public CustomerAccount findById(Long id) {
+    public CustomerAccount findById(String id) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
@@ -146,7 +146,7 @@ public class CustomerAccountRepository {
     }
 
     private CustomerAccount buildCustomerAccount(Cursor cursor) {
-        return new CustomerAccount(cursor.getLong(0),
+        return new CustomerAccount(cursor.getString(0),
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
@@ -162,7 +162,7 @@ public class CustomerAccountRepository {
 
         wdb.beginTransaction();
         try {
-            long accountId;
+            String accountId;
             ContentValues values = new ContentValues();
             if (account.getId() == null) {
 //                values.put(CustomerAccountsTable.NAME, account.getName());
@@ -179,7 +179,7 @@ public class CustomerAccountRepository {
                 values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
                 values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
                 values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
-                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
+                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId +"'", null);
                 replaceSalesChannelCustomerAccountMap(account, wdb);
                 replaceSponsorCustomerAccountMap(wdb, account);
             }
@@ -194,7 +194,7 @@ public class CustomerAccountRepository {
     }
 
     private void replaceSalesChannelCustomerAccountMap(CustomerAccount account, SQLiteDatabase wdb) {
-        long accountId = account.getId() ;
+        String accountId = account.getId() ;
         wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
         for(SalesChannel sc:account.getChannels()){
             ContentValues cv = new ContentValues();
@@ -242,11 +242,11 @@ public class CustomerAccountRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            long accountId;
+            String accountId;
             ContentValues values = new ContentValues();
             accountId = account.getId();
             values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(true));
-            wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "=" + accountId, null);
+            wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId+"'", null);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {

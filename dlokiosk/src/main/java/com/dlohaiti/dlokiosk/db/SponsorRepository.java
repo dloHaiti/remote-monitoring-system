@@ -84,7 +84,7 @@ public class SponsorRepository {
         return new Sponsors(sponsors);
     }
 
-    public Sponsors findByCustomerId(Long customerId) {
+    public Sponsors findByCustomerId(String customerId) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.rawQuery(format(

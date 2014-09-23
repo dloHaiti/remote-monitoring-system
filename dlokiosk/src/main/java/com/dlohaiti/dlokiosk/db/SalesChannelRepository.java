@@ -78,7 +78,7 @@ public class SalesChannelRepository {
         return channels;
     }
 
-    public ArrayList<SalesChannel> findByCustomerId(long customerId) {
+    public ArrayList<SalesChannel> findByCustomerId(String customerId) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.rawQuery(format(

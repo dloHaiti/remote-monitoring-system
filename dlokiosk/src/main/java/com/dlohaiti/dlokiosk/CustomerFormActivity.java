@@ -129,7 +129,7 @@ public class CustomerFormActivity extends RoboActivity {
             return;
         }
 
-        account = customerAccountRepository.findById(Long.valueOf(accountId));
+        account = customerAccountRepository.findById(accountId);
         if (account == null) {
             return;
         }

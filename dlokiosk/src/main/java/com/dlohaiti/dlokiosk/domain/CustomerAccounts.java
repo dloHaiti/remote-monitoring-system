@@ -57,9 +57,9 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         return newFilteredCustomerList;
     }
 
-    public CustomerAccount findById(long id) {
+    public CustomerAccount findById(String id) {
         for (CustomerAccount account : this) {
-            if (account.getId() == id) {
+            if (account.getId().equalsIgnoreCase(id)) {
                 return account;
             }
         }

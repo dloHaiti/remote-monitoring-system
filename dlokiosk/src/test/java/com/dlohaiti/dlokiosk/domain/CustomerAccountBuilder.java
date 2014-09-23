@@ -3,7 +3,7 @@ package com.dlohaiti.dlokiosk.domain;
 import java.util.List;
 
 public class CustomerAccountBuilder {
-    private long id = 1;
+    private String id = "1";
     private String name = "Name 1";
     private String contactName = "Contact Name 1";
     private String address = "Address 1";
@@ -12,7 +12,7 @@ public class CustomerAccountBuilder {
     private List<SalesChannel> salesChannels;
     private boolean selected = false;
 
-    public CustomerAccountBuilder withId(long id) {
+    public CustomerAccountBuilder withId(String id) {
         this.id = id;
         return this;
     }

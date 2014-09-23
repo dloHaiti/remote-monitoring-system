@@ -153,15 +153,17 @@ class BootStrap {
 
 
             if (CustomerAccount.count() == 0) {
-                CustomerType type = (new CustomerType(name: "School")).save(failOnError: true)
-                new CustomerAccount(name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true)
-
+                CustomerType type = (new CustomerType(name: "School")).save(failOnError: true,flush:true)
+                new CustomerAccount(id:"7878", name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true,flush: true)
+                new CustomerAccount(id:"7879", name: "Customer2", contactName: 'contact2', dueAmount: 4,customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true,flush: true)
+                new CustomerAccount(id:"9099", name: "Customer3", contactName: 'contact3', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true,flush: true)
+                new CustomerAccount(id:"909x", name: "Customer4", contactName: 'contact4', dueAmount: 10, customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true,flush: true)
             }
 
             if (Sponsor.count() == 0) {
                 new Sponsor(name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
-
             }
+
             if (DeliveryAgent.count() == 0) {
                 new DeliveryConfiguration(minimumValue: 0, maximumValue: 24, defaultValue: 24, gallons: 4, price: new Money(amount: 5G)).save(failOnError: true)
             }

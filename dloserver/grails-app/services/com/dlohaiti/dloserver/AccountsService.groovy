@@ -7,6 +7,7 @@ class AccountsService {
     def saveAccount(params) {
         Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
         CustomerAccount account =   CustomerAccount.findById(params.id)
+
         if(account == null) {
             throw new Exception()
         }
@@ -15,7 +16,7 @@ class AccountsService {
         account.phoneNumber = params.phoneNumber
         account.dueAmount=new Double(params.dueAmount)
         account.customerType = CustomerType.findById(params.customerTypeId)
-        account.gpsCoordinates=params.gpsCoordinates
+        account.gpsCoordinates= (params.gpsCoordinates==null) ? "" : params.gpsCoordinates
         def salesChannels = account.channels.toArray()
         if(salesChannels !=null ) {
             for (sc in salesChannels) {

@@ -1,6 +1,9 @@
 package com.dlohaiti.dloserver
 
+import java.sql.Timestamp
+
 class CustomerAccount {
+    String id
     String name
     String phoneNumber
     String address
@@ -16,6 +19,7 @@ class CustomerAccount {
     static hasMany = [channels: SalesChannel,sponsors: Sponsor]
 
     static mapping = {
+        id generator: 'assigned',column:'id', name: 'id', type: 'string'
         address type: "text"
 //        contactNames indexColumn: [name: "contact_name", type: String],
 //                joinTable: [column: "contactName"],lazy: false
@@ -24,6 +28,7 @@ class CustomerAccount {
     }
 
     static constraints = {
+        id bindable: true
         name(nullable: true,unique: ['kiosk'])
         contactName(validator: {
             val, obj,errors ->
@@ -32,13 +37,13 @@ class CustomerAccount {
         }, nullable: true, unique: ['kiosk'])
         address(nullable: true)
         phoneNumber(nullable: true)
-        gpsCoordinates(nullable: true,validator: { val, obj ->
+        gpsCoordinates(validator: { val, obj ->
             if(val == null || val=="") return true
             else {
               def locs = val.split(",")
               return  (locs.size() == 2) && (locs[0].split(":").size() == 3) &&  (locs[1].split(":").size() == 3)
             }
-        })
+        },nullable: true)
     }
 
 }

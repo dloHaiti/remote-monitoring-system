@@ -27,7 +27,7 @@ class ReportController {
       paramMap[parameter.name].add(header)
 
       for(day in previousWeek()) {
-        def row = [day.toString('MM/dd/yy')]
+        def row = [day.toString('dd-MMM-yy')]
         for(site in sitesForParameter) {
           row.add(readings.averageFor(site, parameter, day.toDate()))
         }
@@ -46,7 +46,7 @@ class ReportController {
 
     def tableHeader = ['']
     for(day in previousWeek()) {
-      tableHeader.add(day.toString('MM/dd/yy'))
+      tableHeader.add(day.toString('dd-MMM-yy'))
     }
     def tableData = [tableHeader]
     for(product in products) {
@@ -106,7 +106,7 @@ class ReportController {
   private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {
     def tableHeader = ['']
     for (day in previousWeek) {
-      tableHeader.add(day.toString('MM/dd/yy'))
+      tableHeader.add(day.toString('dd-MMM-yy'))
     }
     def tableData = [tableHeader]
     for (product in products) {

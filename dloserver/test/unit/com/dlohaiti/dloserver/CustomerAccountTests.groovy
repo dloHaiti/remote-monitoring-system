@@ -25,7 +25,7 @@ class CustomerAccountTests {
         assertNull account.errors['contactName']
         assertNull account.errors['name']
 
-        account.contactName=null
+        account.contactName="nam"
         account.name="name2"
         assert !account.validate()
         assertNull account.errors['contactName']
@@ -40,12 +40,22 @@ class CustomerAccountTests {
         Kiosk k1 = new Kiosk(name: "k4",apiKey: "sampleKey")
         CustomerType type=(new CustomerType(name:"Schools"))
 
-        CustomerAccount account = (new CustomerAccount(name: "Customer2",customerType: type,kiosk: k1))
+        CustomerAccount account = (new CustomerAccount(name: "Customer2",contactName:"c", customerType: type,kiosk: k1))
         assert account.validate()
 
-        CustomerAccount account2 = (new CustomerAccount(name: "Customer2",customerType: type,kiosk: k1))
+        CustomerAccount account2 = (new CustomerAccount(name: "Customer2",contactName:"c", customerType: type,kiosk: k1))
         mockForConstraintsTests(CustomerAccount,[account,account2])
         assert !account2.validate()
+
+        account2.name="AnotherOne"
+        assert account2.validate()
+
+        account2.name="Customer2"
+        account2.contactName="B"
+        assert account2.validate()
+
+        account2.name=""
+        assert account2.validate()
     }
 
     void testGPSValidations(){
@@ -55,7 +65,7 @@ class CustomerAccountTests {
         Kiosk k1 = new Kiosk(name: "k4",apiKey: "sampleKey")
         CustomerType type=(new CustomerType(name:"Schools"))
 
-        CustomerAccount account = (new CustomerAccount(name: "Customer2",customerType: type,kiosk: k1,gpsCoordinates:""))
+        CustomerAccount account = (new CustomerAccount(name: "Customer2",contactName:"c", customerType: type,kiosk: k1,gpsCoordinates:""))
         assert account.validate()
         account.gpsCoordinates="32:45:12.8,56:23:67.23"
         assert account.validate()

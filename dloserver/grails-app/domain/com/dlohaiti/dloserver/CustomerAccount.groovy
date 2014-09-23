@@ -29,12 +29,12 @@ class CustomerAccount {
 
     static constraints = {
         id bindable: true
-        name(nullable: true,unique: ['kiosk'])
+        name(nullable: true,unique: ['kiosk','contactName'])
         contactName(validator: {
             val, obj,errors ->
                 if(obj.name == null && val == null) return errors.rejectValue('contactName', 'can not be null')
                 else return true
-        }, nullable: true, unique: ['kiosk'])
+        }, unique: ['kiosk','name'])
         address(nullable: true)
         phoneNumber(nullable: true)
         gpsCoordinates(validator: { val, obj ->

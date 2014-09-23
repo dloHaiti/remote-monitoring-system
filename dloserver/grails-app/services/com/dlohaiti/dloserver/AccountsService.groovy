@@ -5,11 +5,14 @@ class AccountsService {
     def grailsApplication
 
     def saveAccount(params) {
+        def newAccount = false;
         Date createdDate = params.date("createdDate", grailsApplication.config.dloserver.measurement.timeformat.toString())
         CustomerAccount account =   CustomerAccount.findById(params.id)
 
         if(account == null) {
-            throw new Exception()
+            log.debug "Creating new customer account"
+            newAccount=true
+            account = new CustomerAccount(id: params.id,kiosk: params.kiosk)
         }
         account.name=params.name
         account.contactName=params.contactName
@@ -17,10 +20,19 @@ class AccountsService {
         account.dueAmount=new Double(params.dueAmount)
         account.customerType = CustomerType.findById(params.customerTypeId)
         account.gpsCoordinates= (params.gpsCoordinates==null) ? "" : params.gpsCoordinates
-        def salesChannels = account.channels.toArray()
-        if(salesChannels !=null ) {
-            for (sc in salesChannels) {
-                account.removeFromChannels(sc)
+        if(!newAccount) {
+            def salesChannels = account.channels.toArray()
+            if (salesChannels != null) {
+                for (sc in salesChannels) {
+                    account.removeFromChannels(sc)
+                }
+            }
+
+            def sponsors = account.sponsors.toArray()
+            if(sponsors !=null ) {
+                for (s in sponsors) {
+                    account.removeFromSponsors(s)
+                }
             }
         }
         for(sc in params.channels) {
@@ -31,12 +43,7 @@ class AccountsService {
             }
           account.addToChannels(channel)
         }
-        def sponsors = account.sponsors.toArray()
-        if(sponsors !=null ) {
-            for (s in sponsors) {
-                account.removeFromSponsors(s)
-            }
-        }
+
         for(sId in params.sponsorIds) {
             def sponsor = Sponsor.get(sId)
             if(sponsor == null) {
@@ -45,7 +52,7 @@ class AccountsService {
             }
             account.addToSponsors(sponsor)
         }
-        if(!account.isAttached()) {
+        if(!account.isAttached() && !newAccount) {
             account.attach()
         }
         account.save(flush: true)

@@ -79,12 +79,12 @@
     <string name="total_price_label">Prix ​​Total:</string>
     <string name="discounted_price_label">Prix ​​Réduit:</string>
 
-    <string name="payment_type_label">Type de Paiement</string>
+    <string name="payment_mode_label">Mode de Paiement</string>
     <string name="select_payee_label">Sélectionnez bénéficiaire</string>
     <string name="select_sponsor_label">Sélectionnez commanditaire</string>
     <string name="sponsor_payment_amount_label">Entrez Paiement Montant du commanditaire</string>
-    <string name="payment_done_through_label">Paiement fait par</string>
-    <string name="amount_label">Montant</string>
+    <string name="payment_type_label">Type de Paiement</string>
+    <string name="customer_amount_label">Montant à la clientèle</string>
     <string name="payment_summary_label">PAIEMENT RÉSUMÉ</string>
     <string name="customer_payment_label">PAIEMENT À LA CLIENTÈLE</string>
     <string name="sponsor_payment_label">SPONSOR PAIEMENT</string>
@@ -107,7 +107,7 @@
     <string name="cart_menu_item_title">Panier ({0})</string>
     <string name="product_added_message">Produit ajouté au Panier</string>
     <string name="sponsor_payment_amount_hint">Commanditaire de Paiement Montant</string>
-    <string name="amount_hint">Montant</string>
+    <string name="customer_amount_hint">Montant</string>
     <string name="customer_name_label">Customer</string>
     <string name="customer_name_hint">entrez le nom du client</string>
     <string name="customer_phone_label">téléphone</string>

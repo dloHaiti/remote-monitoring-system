@@ -113,7 +113,7 @@ dloserver {
 
     measurement.unitOfMeasure="gallon"
 
-    payment.type = "cash,mobile"
+    payment.modes = "cash,mobile"
 }
 environments {
     test {

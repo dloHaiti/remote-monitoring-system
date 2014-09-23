@@ -44,7 +44,7 @@ class ConfigurationController {
                     currency: configurationService.getCurrencyCode(),
                     locale: configurationService.getLocale(),
                     dateformat: configurationService.getDateFormat(),
-                    paymentType: configurationService.getPaymentType()
+                    paymentModes: configurationService.getPaymentModes()
             ]
         ] as JSON)
   }

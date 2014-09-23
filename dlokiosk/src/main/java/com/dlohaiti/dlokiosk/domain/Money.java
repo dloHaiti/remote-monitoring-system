@@ -54,8 +54,8 @@ public class Money implements Comparable<Money> {
                 '}';
     }
 
-    public Money minus(BigDecimal amount) {
-        return new Money(this.amount.subtract(amount));
+    public Money minus(Money amount) {
+        return new Money(this.amount.subtract(amount.getAmount()));
     }
 
     @Override

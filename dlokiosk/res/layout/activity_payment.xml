@@ -52,20 +52,6 @@
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="10dp">
-                <LinearLayout
-                        style="@style/payment_form_row">
-                    <TextView
-                            android:id="@+id/payment_type_label"
-                            style="@style/payment_form_field"
-                            android:text="@string/payment_type_label"/>
-                    <Spinner
-                            android:id="@+id/payment_type"
-                            style="@style/payment_form_field"/>
-                </LinearLayout>
-
-                <ImageView
-                        android:id="@+id/sponsor_details_divider"
-                        style="@style/horizontal_divider"/>
 
                 <LinearLayout
                         android:id="@+id/select_payee_row"
@@ -115,33 +101,44 @@
                             android:inputType="numberDecimal"/>
                 </LinearLayout>
 
-                <ImageView style="@style/horizontal_divider"/>
+                <ImageView
+                        android:id="@+id/sponsor_details_divider"
+                        style="@style/horizontal_divider"/>
 
                 <LinearLayout
                         style="@style/payment_form_row">
                     <TextView
-                            android:id="@+id/payment_done_through_label"
+                            android:id="@+id/payment_mode_label"
                             style="@style/payment_form_field"
-                            android:text="@string/payment_done_through_label"/>
+                            android:text="@string/payment_mode_label"/>
                     <Spinner
                             android:id="@+id/payment_mode"
                             style="@style/payment_form_field"/>
                 </LinearLayout>
 
-                <ImageView style="@style/horizontal_divider"/>
-
                 <LinearLayout
-                        android:id="@+id/amount_due_row"
                         style="@style/payment_form_row">
                     <TextView
-                            android:id="@+id/amount_label"
+                            android:id="@+id/payment_type_label"
                             style="@style/payment_form_field"
-                            android:text="@string/amount_label"/>
+                            android:text="@string/payment_type_label"/>
+                    <Spinner
+                            android:id="@+id/payment_type"
+                            style="@style/payment_form_field"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/customer_amount_row"
+                        style="@style/payment_form_row">
+                    <TextView
+                            android:id="@+id/customer_amount_label"
+                            style="@style/payment_form_field"
+                            android:text="@string/customer_amount_label"/>
 
                     <EditText
-                            android:id="@+id/amount_due"
+                            android:id="@+id/customer_amount"
                             style="@style/payment_form_field"
-                            android:hint="@string/amount_hint"
+                            android:hint="@string/customer_amount_hint"
                             android:inputType="numberDecimal"/>
                 </LinearLayout>
 
@@ -165,7 +162,7 @@
                     style="@style/payment_value_container">
 
                 <TextView
-                        android:id="@+id/customer_payment_value"
+                        android:id="@+id/customer_payment_summary"
                         style="@style/payment_summary_field_value"
                         android:text="200"/>
 
@@ -185,7 +182,7 @@
                     style="@style/payment_value_container">
 
                 <TextView
-                        android:id="@+id/sponsor_payment_value"
+                        android:id="@+id/sponsor_payment_summary"
                         style="@style/payment_summary_field_value"
                         android:text="0"/>
 
@@ -229,7 +226,7 @@
                     android:background="@color/amount_due_summary_label_background">
 
                 <TextView
-                        android:id="@+id/amount_due_value"
+                        android:id="@+id/amount_due_summary"
                         style="@style/strong_payment_summary_field_value"
                         android:text="0.00"/>
 

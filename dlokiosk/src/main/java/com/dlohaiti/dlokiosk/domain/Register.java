@@ -75,7 +75,7 @@ public class Register {
             for (Iterator<Discount> it = discounts.iterator(); it.hasNext(); ) {
                 Discount discount = it.next();
                 if (discount.isFor(product)) {
-                    actualPrice = actualPrice.minus(discount.getAmount());
+                    actualPrice = actualPrice.minus(discount.amountMoney());
                     it.remove();
                 }
             }

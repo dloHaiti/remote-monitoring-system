@@ -46,4 +46,8 @@ public class Discount {
     public BigDecimal getAmount() {
         return amount.getAmount();
     }
+
+    public Money amountMoney() {
+        return amount;
+    }
 }

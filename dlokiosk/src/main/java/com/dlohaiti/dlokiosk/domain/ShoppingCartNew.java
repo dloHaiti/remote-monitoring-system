@@ -12,12 +12,11 @@ public class ShoppingCartNew {
     private SalesChannel salesChannel;
     private CustomerAccount customerAccount;
     private final RegisterNew register;
-    private String paymentType;
+    private String paymentMode;
     public boolean isSponsorSelected;
     private Sponsor sponsor;
     private Money sponsorAmount = Money.ZERO;
-    private Money customerAmount;
-    private Money dueAmount = Money.ZERO;
+    private Money customerAmount = Money.ZERO;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -47,6 +46,11 @@ public class ShoppingCartNew {
         promotions.clear();
         salesChannel = null;
         customerAccount = null;
+        paymentMode = null;
+        isSponsorSelected = false;
+        sponsor = null;
+        sponsorAmount = Money.ZERO;
+        customerAmount = Money.ZERO;
     }
 
     public boolean isEmpty() {
@@ -112,8 +116,8 @@ public class ShoppingCartNew {
         addPromotions(applicablePromotions);
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
     public void setSponsor(Sponsor sponsor) {
@@ -122,7 +126,7 @@ public class ShoppingCartNew {
 
     public void setSponsorAmount(Money sponsorAmount) {
         this.sponsorAmount = sponsorAmount;
-        this.customerAmount = getTotal().minus(sponsorAmount.getAmount());
+        this.customerAmount = getTotal().minus(sponsorAmount);
     }
 
     public Money customerAmount() {
@@ -137,11 +141,15 @@ public class ShoppingCartNew {
         return sponsorAmount;
     }
 
-    public void setDueAmount(Money dueAmount) {
-        this.dueAmount = dueAmount;
+    public Money dueAmount() {
+        return getTotal().minus(sponsorAmount).minus(customerAmount);
     }
 
-    public Money dueAmount() {
-        return dueAmount;
+    public Sponsor sponsor() {
+        return sponsor;
+    }
+
+    public String paymentMode() {
+        return paymentMode;
     }
 }

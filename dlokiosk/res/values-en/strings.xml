@@ -79,12 +79,12 @@
     <string name="total_price_label">Total Price:</string>
     <string name="discounted_price_label">Discounted Price:</string>
 
-    <string name="payment_type_label">Payment Type</string>
+    <string name="payment_mode_label">Payment Mode</string>
     <string name="select_payee_label">Select Payee</string>
     <string name="select_sponsor_label">Select Sponsor</string>
     <string name="sponsor_payment_amount_label">Enter Sponsor\'s Payment Amount</string>
-    <string name="payment_done_through_label">Payment done through</string>
-    <string name="amount_label">Amount</string>
+    <string name="payment_type_label">Payment Type</string>
+    <string name="customer_amount_label">Customer Amount</string>
     <string name="payment_summary_label">PAYMENT SUMMARY</string>
     <string name="customer_payment_label">CUSTOMER PAYMENT</string>
     <string name="sponsor_payment_label">SPONSOR PAYMENT</string>
@@ -108,7 +108,7 @@
     <string name="cart_menu_item_title">Cart ({0})</string>
     <string name="product_added_message">Product added to Cart</string>
     <string name="sponsor_payment_amount_hint">Sponsor\'s Payment Amount</string>
-    <string name="amount_hint">Amount</string>
+    <string name="customer_amount_hint">Amount</string>
     <string name="customer_name_label">Customer Name</string>
     <string name="customer_name_hint">Enter customer name</string>
     <string name="customer_phone_label">Phone</string>

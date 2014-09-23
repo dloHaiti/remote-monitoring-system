@@ -22,8 +22,8 @@ class ConfigurationService {
         return grailsApplication.config.dloserver.measurement.timeformat.toString()
     }
 
-    public String[] getPaymentType(){
-        return grailsApplication.config.dloserver.payment.type.toString().split(",")
+    public String[] getPaymentModes(){
+        return grailsApplication.config.dloserver.payment.modes.toString().split(",")
     }
 
 }

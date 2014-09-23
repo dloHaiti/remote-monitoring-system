@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +30,7 @@ import java.math.BigDecimal;
 
 public class PaymentActivity extends SaleActivity {
 
+    public static final String POST_PAY_STRING = "Post-Pay";
     @Inject
     private SponsorRepository sponsorRepository;
 
@@ -64,6 +64,12 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.payment_mode)
     private Spinner paymentModeView;
 
+    @InjectView(R.id.amount_due_row)
+    private LinearLayout amountDueRowView;
+
+    @InjectView(R.id.amount_due)
+    private EditText amountDueView;
+
     @InjectView(R.id.total_price_value)
     private TextView totalPriceView;
 
@@ -82,8 +88,12 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.total_price_currency)
     private TextView totalPriceCurrencyView;
 
+    @InjectView(R.id.amount_due_value)
+    private TextView amountDueValueView;
+
     @InjectView(R.id.amount_due_currency)
     private TextView amountDueCurrencyView;
+
     private Sponsors sponsors;
 
     @Override
@@ -132,21 +142,41 @@ public class PaymentActivity extends SaleActivity {
     private void initialisePriceViews() {
         totalPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
         customerPaymentValueView.setText(String.valueOf(cart.getTotal().getAmount()));
-        sponsorAmountView.setFilters(new InputFilter[]{
-                new InputFilter() {
-                    @Override
-                    public CharSequence filter(CharSequence source, int start, int end, Spanned destination,
-                                               int destinationStart, int destinationEnd) {
-                        try {
-                            Money input = new Money(new BigDecimal(destination.toString() + source.toString()));
-                            return input.isInRange(Money.ZERO, cart.getTotal()) ? null : "";
+        initialiseSponsorAmountView();
+        initialiseAmountDueView();
 
-                        } catch (NumberFormatException exception) {
-                            return "";
-                        }
-                    }
-                }
+        customerPaymentCurrencyView.setText(currency());
+        sponsorPaymentCurrencyView.setText(currency());
+        totalPriceCurrencyView.setText(currency());
+        amountDueCurrencyView.setText(currency());
+    }
+
+    private void initialiseAmountDueView() {
+        amountDueView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Money dueAmount = StringUtils.isBlank(editable)
+                        ? new Money(BigDecimal.ZERO)
+                        : new Money(new BigDecimal(editable.toString()));
+                cart.setDueAmount(dueAmount);
+                amountDueValueView.setText(String.valueOf(cart.dueAmount().getAmount()));
+            }
         });
+        amountDueView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
+    }
+
+    private void initialiseSponsorAmountView() {
+        sponsorAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
         sponsorAmountView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -168,11 +198,6 @@ public class PaymentActivity extends SaleActivity {
                 customerPaymentValueView.setText(String.valueOf(cart.customerAmount().getAmount()));
             }
         });
-
-        customerPaymentCurrencyView.setText(currency());
-        sponsorPaymentCurrencyView.setText(currency());
-        totalPriceCurrencyView.setText(currency());
-        amountDueCurrencyView.setText(currency());
     }
 
     private void initialisePaymentTypeList() {
@@ -217,6 +242,18 @@ public class PaymentActivity extends SaleActivity {
                 R.layout.layout_spinner_dropdown_item,
                 getResources().getStringArray(R.array.payment_modes));
         paymentModeView.setAdapter(paymentModeAdapter);
+        paymentModeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String paymentMode = (String) parent.getItemAtPosition(position);
+                amountDueRowView.setVisibility(POST_PAY_STRING.equalsIgnoreCase(paymentMode) ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -244,4 +281,5 @@ public class PaymentActivity extends SaleActivity {
     protected Class<? extends SaleActivity> nextActivity() {
         return null;
     }
+
 }

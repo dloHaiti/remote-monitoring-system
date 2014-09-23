@@ -7,6 +7,9 @@ import java.math.RoundingMode
 class ReportController {
 
   def index() {
+      render(view: 'volumeByDay', model: volumeByDay())
+  }
+  def menu() {
     [kioskName: request.kiosk.name]
   }
 
@@ -14,7 +17,7 @@ class ReportController {
     Kiosk kiosk = Kiosk.findByName(params.kioskName)
     def readings = new Readings(readings: Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight()))
 
-    def parameters = Parameter.findAllByActive(true)
+    def parameters = kiosk.getParameters()
 
     def paramMap = [:]
     for(parameter in parameters) {
@@ -35,7 +38,7 @@ class ReportController {
       }
     }
 
-    [parameters: parameters, lastWeek: previousWeek().collect({d -> d.toDate()}), readings: readings, paramMap: paramMap]
+    [kioskName: request.kiosk.name, parameters: parameters, lastWeek: previousWeek().collect({d -> d.toDate()}), readings: readings, paramMap: paramMap]
   }
 
   def salesByDay() {
@@ -76,7 +79,7 @@ class ReportController {
     }
     tableData.add(totalRow)
 
-    [tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
+    [kioskName: request.kiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
   }
 
   def volumeByDay() {
@@ -88,7 +91,7 @@ class ReportController {
 
     def tableData = buildTableData(previousWeek(), products, receipts, deliveries, readings)
 
-    [chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+    [kioskName: request.kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
   }
 
   private Date oneWeekAgoMidnight() {

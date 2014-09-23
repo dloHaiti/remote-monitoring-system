@@ -23,8 +23,12 @@
         new google.visualization.Table(document.getElementById('table')).draw(tableData, options);
     }
 </script>
-
-<div id="chart" style="width:800px;height:400px;margin-left:auto;margin-right:auto;"></div>
-<div id="table" style="width:800px;margin-left:auto;margin-right:auto;"></div>
+<div>
+    <g:render template="menu"></g:render>
+</div>
+<div id="content">
+    <div id="chart" style="width:800px;height:400px;margin-left:auto;margin-right:auto;"></div>
+    <div id="table" style="width:800px;margin-left:auto;margin-right:auto;"></div>
+</div>
 </body>
 </html>

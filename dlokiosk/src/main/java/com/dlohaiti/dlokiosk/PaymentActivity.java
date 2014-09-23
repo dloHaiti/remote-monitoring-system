@@ -142,6 +142,7 @@ public class PaymentActivity extends SaleActivity {
     private void initialisePriceViews() {
         totalPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
         customerPaymentValueView.setText(String.valueOf(cart.getTotal().getAmount()));
+        cart.setCustomerAmount(cart.getTotal());
         initialiseSponsorAmountView();
         initialiseAmountDueView();
 

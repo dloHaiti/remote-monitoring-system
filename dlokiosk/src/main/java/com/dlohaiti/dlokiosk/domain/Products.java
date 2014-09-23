@@ -26,7 +26,7 @@ public class Products extends ArrayList<Product> {
     public Products filterBy(String text, long categoryId) {
         Products products = new Products();
         for (Product product : this) {
-            if (product.getCategoryId() == categoryId && containsIgnoreCase(product.getSku(), text)) {
+            if (product.getCategoryId() == categoryId && containsIgnoreCase(product.getDescription(), text)) {
                 products.add(product);
             }
         }

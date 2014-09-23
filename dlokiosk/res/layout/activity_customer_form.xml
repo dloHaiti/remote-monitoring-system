@@ -225,9 +225,18 @@
                     android:id="@+id/sales_channel_label"
                     style="@style/payment_form_field"
                     android:text="@string/sales_channel_label"/>
+                <EditText
+                    android:id="@+id/sales_channel_error"
+                    android:enabled="false"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
                 <com.dlohaiti.dlokiosk.MultiSelectSpinner
                     android:id="@+id/sales_channel"
                     style="@style/payment_form_field"/>
+
             </LinearLayout>
 
             <ImageView style="@style/horizontal_divider"/>

@@ -52,6 +52,7 @@ public class CustomerAccountRepository {
             wdb.delete(TABLE_NAME, null, null);
             for (CustomerAccount account : accounts) {
                 ContentValues values = new ContentValues();
+                values.put(CustomerAccountsTable.ID, account.getId());
                 values.put(CustomerAccountsTable.NAME, account.getName());
                 values.put(CustomerAccountsTable.CONTACT_NAME, account.getContactName());
                 values.put(CustomerAccountsTable.CUSTOMER_TYPE, account.getCustomerTypeId());
@@ -108,9 +109,9 @@ public class CustomerAccountRepository {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 CustomerAccount account = buildCustomerAccount(cursor);
-                accounts.add(account);
                 account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
                 account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
+                accounts.add(account);
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();

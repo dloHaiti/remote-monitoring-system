@@ -1,6 +1,8 @@
 package com.dlohaiti.dlokiosk;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -71,6 +73,10 @@ public class CustomerFormActivity extends RoboActivity {
 
     @InjectView(R.id.organisation)
     protected EditText organization;
+
+    @InjectView(R.id.sales_channel_error)
+    protected EditText salesChannelError;
+
     private CustomerAccount account;
     CustomerTypes customerTypes;
 
@@ -170,6 +176,19 @@ public class CustomerFormActivity extends RoboActivity {
 
     public void onSave(View view) {
        if (!validateCustomerForm()){
+           new AlertDialog.Builder(this)
+                   .setIcon(android.R.drawable.ic_dialog_alert)
+                   .setTitle("Save")
+                   .setMessage("There are validation errors")
+                   .setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                   {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+
+                       }
+
+                   })
+                   .show();
             return;
         }
         boolean successful = (account == null) ? createNewAccount() : updateExistingAccount();
@@ -186,16 +205,18 @@ public class CustomerFormActivity extends RoboActivity {
         if(customerName.getText().toString().isEmpty()){
             customerName.setError(mandatoryFieldMessage);
             isValid=false;
+        }else{
+            customerName.setError(null);
         }
-        if(customerType.getSelectedItem()==null){
-
+        if(salesChannel.getSelectedStrings().isEmpty()){
+            salesChannelError.setError("Atleast one sales channel is mandatory");
+            isValid=false;
+        }else{
+            salesChannelError.setError(null);
         }
         return isValid;
     }
 
-    private void isValidField(EditText editText) {
-
-    }
 
     private boolean updateExistingAccount() {
         account.setName(organization.getText().toString());

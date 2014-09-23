@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.CustomerTypeRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
@@ -23,6 +24,8 @@ import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;
@@ -37,6 +40,9 @@ public class CustomerFormActivity extends RoboActivity {
 
     @Inject
     private CustomerTypeRepository customerTypeRepository;
+
+    @Inject
+    private ConfigurationRepository config;
 
     @Inject
     private SponsorRepository sponsorRepository;
@@ -149,7 +155,7 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     private void fillGPSCoordinates(String gpsCoordinates) {
-        if(TextUtils.isEmpty(gpsCoordinates)) return;
+        if (TextUtils.isEmpty(gpsCoordinates)) return;
         String[] coordinates = gpsCoordinates.split(",");
         String[] latitude = coordinates[0].split(":");
         String[] longitude = coordinates[1].split(":");
@@ -175,23 +181,22 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     public void onSave(View view) {
-       if (!validateCustomerForm()){
-           new AlertDialog.Builder(this)
-                   .setIcon(android.R.drawable.ic_dialog_alert)
-                   .setTitle("Save")
-                   .setMessage("There are validation errors")
-                   .setPositiveButton("Ok", new DialogInterface.OnClickListener()
-                   {
-                       @Override
-                       public void onClick(DialogInterface dialog, int which) {
+        if (!validateCustomerForm()) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Save")
+                    .setMessage("There are validation errors")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                       }
+                        }
 
-                   })
-                   .show();
+                    })
+                    .show();
             return;
         }
-        boolean successful = (account == null) ? createNewAccount() : updateExistingAccount();
+        boolean successful = (account == null) ? createNewAccount() : updateAccount(account);
         if (successful) {
             Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
             finish();
@@ -201,39 +206,61 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     private boolean validateCustomerForm() {
-        boolean isValid=true;
-        if(customerName.getText().toString().isEmpty()){
+        boolean isValid = true;
+        if (customerName.getText().toString().isEmpty()) {
             customerName.setError(mandatoryFieldMessage);
-            isValid=false;
-        }else{
+            isValid = false;
+        } else {
             customerName.setError(null);
+            List<CustomerAccount> existingAccounts = customerAccountRepository.findByContactName(customerName.getText().toString());
+            CustomerAccount matchingAccount = getMatchingAccount(existingAccounts, organization.getText().toString());
+            if (matchingAccount != null) {
+                if(account==null || !account.getId().equalsIgnoreCase(matchingAccount.getId())){
+                    organization.setError("Already Exist");
+                    customerName.setError("Already Exist");
+                    isValid = false;
+                }
+            } else {
+                organization.setError(null);
+                customerName.setError(null);
+            }
         }
-        if(salesChannel.getSelectedStrings().isEmpty()){
+
+        if (salesChannel.getSelectedStrings().isEmpty()) {
             salesChannelError.setError("Atleast one sales channel is mandatory");
-            isValid=false;
-        }else{
+            isValid = false;
+        } else {
             salesChannelError.setError(null);
         }
         return isValid;
     }
 
+    private CustomerAccount getMatchingAccount(List<CustomerAccount> existingAccounts, String organizationName) {
+        for(CustomerAccount ca:existingAccounts){
+            if(ca.getName().equalsIgnoreCase(organizationName)){
+                return ca;
+            }
+        }
+        return null;
+    }
 
-    private boolean updateExistingAccount() {
-        account.setName(organization.getText().toString());
-        account.setContactName(customerName.getText().toString());
-        account.setPhoneNumber(customerPhone.getText().toString());
-        account.setAddress(customerAddress.getText().toString());
-        account.setCustomerTypeId(customerTypes.getCustomerTypeId(customerType.getSelectedItem().toString()));
-        account.withChannels(salesChannels.getSalesChannelsFromName(salesChannel.getSelectedStrings()));
-        account.withSponsors(sponsors.getSponsorsFromName(sponsor.getSelectedStrings()));
-        account.setGpsCoordinates(buildGpsCoordinate());
-        return customerAccountRepository.save(account);
+
+    private boolean updateAccount(CustomerAccount a) {
+        a.setName(organization.getText().toString());
+        a.setContactName(customerName.getText().toString());
+        a.setPhoneNumber(customerPhone.getText().toString());
+        a.setAddress(customerAddress.getText().toString());
+        a.setCustomerTypeId(customerTypes.getCustomerTypeId(customerType.getSelectedItem().toString()));
+        a.withChannels(salesChannels.getSalesChannelsFromName(salesChannel.getSelectedStrings()));
+        a.withSponsors(sponsors.getSponsorsFromName(sponsor.getSelectedStrings()));
+        a.setGpsCoordinates(buildGpsCoordinate());
+        return customerAccountRepository.save(a);
     }
 
     private String buildGpsCoordinate() {
-        if(isLatitudeEmpty() || isLongitudeEmpty()){
+        if (isLatitudeEmpty() || isLongitudeEmpty()) {
             return "";
-        }else{
+        } else {
             return String.format("%s:%s:%s,%s:%s:%s",
                     latitudeDegree.getText(),
                     latitudeMinute.getText(),
@@ -241,7 +268,7 @@ public class CustomerFormActivity extends RoboActivity {
                     longitudeDegree.getText(),
                     longitudeMinute.getText(),
                     longitudeSecond.getText()
-                    );
+            );
         }
     }
 
@@ -259,6 +286,7 @@ public class CustomerFormActivity extends RoboActivity {
     }
 
     private boolean createNewAccount() {
-        return false;
+        CustomerAccount newAccount = new CustomerAccount();
+        return updateAccount(newAccount);
     }
 }

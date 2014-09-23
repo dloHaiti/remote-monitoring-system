@@ -6,14 +6,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.google.inject.Inject;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
@@ -162,27 +166,28 @@ public class CustomerAccountRepository {
 
         wdb.beginTransaction();
         try {
-            String accountId;
+
             ContentValues values = new ContentValues();
+            values.put(CustomerAccountsTable.NAME, String.valueOf(account.getName()));
+            values.put(CustomerAccountsTable.CONTACT_NAME, String.valueOf(account.getContactName()));
+            values.put(CustomerAccountsTable.PHONE_NUMBER, String.valueOf(account.getPhoneNumber()));
+            values.put(CustomerAccountsTable.GPS_COORDINATES, account.getGpsCoordinates());
+            values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
+            values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
+            values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
+            values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
+
             if (account.getId() == null) {
-//                values.put(CustomerAccountsTable.NAME, account.getName());
-//                values.put(KioskDatabase.ReadingsTable.CREATED_DATE, kioskDate.getFormat().format(reading.getCreatedDate()));
-//                values.put(KioskDatabase.ReadingsTable.IS_SYNCED, String.valueOf(reading.isSynced()));
-//                readingId = wdb.insert(KioskDatabase.ReadingsTable.TABLE_NAME, null, values);
+                String generatedId =     UUID.randomUUID().toString();
+                values.put(CustomerAccountsTable.ID,generatedId);
+                account.setId(generatedId);
+                wdb.insert(KioskDatabase.CustomerAccountsTable.TABLE_NAME, null, values);
             } else {
-                accountId = account.getId();
-                values.put(CustomerAccountsTable.NAME, String.valueOf(account.getName()));
-                values.put(CustomerAccountsTable.CONTACT_NAME, String.valueOf(account.getContactName()));
-                values.put(CustomerAccountsTable.PHONE_NUMBER, String.valueOf(account.getPhoneNumber()));
-                values.put(CustomerAccountsTable.GPS_COORDINATES, account.getGpsCoordinates());
-                values.put(CustomerAccountsTable.ADDRESS, account.getAddress());
-                values.put(CustomerAccountsTable.CUSTOMER_TYPE, String.valueOf(account.getCustomerTypeId()));
-                values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
-                values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
+                String accountId = account.getId();
                 wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId +"'", null);
-                replaceSalesChannelCustomerAccountMap(account, wdb);
-                replaceSponsorCustomerAccountMap(wdb, account);
             }
+            replaceSalesChannelCustomerAccountMap(account, wdb);
+            replaceSponsorCustomerAccountMap(wdb, account);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -259,5 +264,29 @@ public class CustomerAccountRepository {
 
     public boolean isNotEmpty() {
        return this.getNonSyncAccounts().size() > 0;
+    }
+
+    public  List<CustomerAccount> findByContactName(String contactName) {
+        List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.CONTACT_NAME),matches(contactName), null, null, null);
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                CustomerAccount account = buildCustomerAccount(cursor);
+                accounts.add(account);
+                account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
+                account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
+                cursor.moveToNext();
+            }
+            rdb.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load customer account from database", e);
+        } finally {
+            cursor.close();
+            rdb.endTransaction();
+        }
+        return accounts;
     }
 }

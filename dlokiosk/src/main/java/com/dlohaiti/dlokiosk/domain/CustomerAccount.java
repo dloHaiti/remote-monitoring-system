@@ -28,6 +28,9 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     private String gpsCoordinates;
     private boolean selected;
 
+    public CustomerAccount(){
+
+    }
 
     public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
         this.id = id;
@@ -122,6 +125,9 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     }
 
     public String getName() {
+        if(name==null){
+            return "";
+        }
         return name;
     }
 
@@ -235,5 +241,9 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
 
     public Sponsors sponsors() {
         return sponsors;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

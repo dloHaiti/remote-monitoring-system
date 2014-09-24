@@ -105,7 +105,7 @@
         </activity>
         <activity android:name=".FlowMeterReadingActivity"
                   android:screenOrientation="landscape"
-                  android:windowSoftInputMode="adjustPan"
+                  android:windowSoftInputMode="adjustPan|stateHidden"
                   android:label="Flow Meter Readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

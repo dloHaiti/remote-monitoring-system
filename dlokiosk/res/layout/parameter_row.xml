@@ -20,9 +20,10 @@
         android:layout_width="0dp"
         android:layout_weight="10"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text"
         android:inputType="numberDecimal"
-        android:textColor="@android:color/black" />
+        android:textCursorDrawable="@null"
+        android:background="@drawable/edit_text"
+        style="@style/standard_black_text" />
 
     <TextView
         android:id="@+id/parameter_units"

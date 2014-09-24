@@ -54,7 +54,7 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
             EditText editText = (EditText) convertView.findViewById(R.id.flow_gallons);
 
             holder.listItem = editText;
-            editText.setHint("Enter Gallons");
+//            editText.setHint("Enter Gallons");
             convertView.setTag(holder);
         } else {
             holder = (FlowMeterViewHolder) convertView.getTag();

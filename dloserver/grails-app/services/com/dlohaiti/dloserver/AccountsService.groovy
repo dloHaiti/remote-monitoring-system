@@ -18,6 +18,7 @@ class AccountsService {
         account.contactName=params.contactName
         account.phoneNumber = params.phoneNumber
         account.dueAmount=new Double(params.dueAmount)
+        account.address=params.address
         account.customerType = CustomerType.findById(params.customerTypeId)
         account.gpsCoordinates= (params.gpsCoordinates==null) ? "" : params.gpsCoordinates
         if(!newAccount) {

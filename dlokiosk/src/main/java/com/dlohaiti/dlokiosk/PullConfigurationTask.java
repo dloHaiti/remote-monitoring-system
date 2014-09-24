@@ -138,8 +138,10 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 configurationRepository.save(ConfigurationKey.CURRENCY, c.getConfiguration().getCurrency()) &&
                 configurationRepository.save(ConfigurationKey.DATE_FORMAT, c.getConfiguration().getDateformat()) &&
                 configurationRepository.save(ConfigurationKey.LOCALE, c.getConfiguration().getLocale()) &&
-                configurationRepository.save(ConfigurationKey.PAYMENT_TYPE,
+                configurationRepository.save(ConfigurationKey.PAYMENT_MODE,
                         new PaymentModes(c.getConfiguration().getPaymentModes()).concatenatedString()) &&
+                configurationRepository.save(ConfigurationKey.PAYMENT_TYPE,
+                        new PaymentTypes(c.getConfiguration().getPaymentTypes()).concatenatedString()) &&
                 productCategoryRepository.replaceAll(productCategories) &&
                 productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&

@@ -107,13 +107,14 @@ dloserver {
     readings.processed = '/tmp/processed'
     readings.failed    = '/tmp/failed'
 
-    measurement.timeformat = "yyyy-MM-dd hh:mm:ss"
+    measurement.timeformat = "yyyy-MM-dd hh:mm:ss z"
     locale.language="ht"
     locale.country="HT"
 
     measurement.unitOfMeasure="gallon"
 
     payment.modes = "cash,mobile"
+    payment.types = "Now,Post-Pay"
 }
 environments {
     test {

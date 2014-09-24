@@ -26,4 +26,7 @@ class ConfigurationService {
         return grailsApplication.config.dloserver.payment.modes.toString().split(",")
     }
 
+    public String[] getPaymentTypes(){
+        return grailsApplication.config.dloserver.payment.types.toString().split(",")
+    }
 }

@@ -20,6 +20,7 @@ import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.PaymentModes;
+import com.dlohaiti.dlokiosk.domain.PaymentTypes;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
@@ -29,12 +30,11 @@ import roboguice.inject.InjectView;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-
 public class PaymentActivity extends SaleActivity {
 
     public static final String PAYMENT_TYPE_POST_PAY = "Post-Pay";
     public static final String PAYMENT_TYPE_NOW = "Now";
+
     @Inject
     private SponsorRepository sponsorRepository;
 
@@ -236,7 +236,7 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialisePaymentModeList() {
-        PaymentModes paymentModes = new PaymentModes(configurationRepository.get(ConfigurationKey.PAYMENT_TYPE));
+        PaymentModes paymentModes = new PaymentModes(configurationRepository.get(ConfigurationKey.PAYMENT_MODE));
         ArrayAdapter<String> paymentTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 paymentModes);
@@ -276,11 +276,11 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialisePaymentTypeList() {
-        List<String> paymentTypes = asList(getResources().getStringArray(R.array.payment_types));
-        ArrayAdapter<String> paymentModeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+        List<String> paymentTypes = new PaymentTypes(configurationRepository.get(ConfigurationKey.PAYMENT_TYPE));
+        ArrayAdapter<String> paymentTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 paymentTypes);
-        paymentTypeView.setAdapter(paymentModeAdapter);
+        paymentTypeView.setAdapter(paymentTypeAdapter);
         paymentTypeView.setSelection(paymentTypes.indexOf(cart.paymentType()));
         paymentTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

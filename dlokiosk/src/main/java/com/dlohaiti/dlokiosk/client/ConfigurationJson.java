@@ -7,7 +7,7 @@ public class ConfigurationJson {
     private String currency;
     private String locale;
     private String dateformat;
-    private List<String> paymentMode;
+    private List<String> paymentModes;
 
     public String getUnitOfMeasure() {
         return unitOfMeasure;
@@ -41,11 +41,11 @@ public class ConfigurationJson {
         this.dateformat = dateformat;
     }
 
-    public List<String> getPaymentMode() {
-        return paymentMode;
+    public List<String> getPaymentModes() {
+        return paymentModes;
     }
 
-    public void setPaymentMode(List<String> paymentMode) {
-        this.paymentMode = paymentMode;
+    public void setPaymentModes(List<String> paymentModes) {
+        this.paymentModes = paymentModes;
     }
 }

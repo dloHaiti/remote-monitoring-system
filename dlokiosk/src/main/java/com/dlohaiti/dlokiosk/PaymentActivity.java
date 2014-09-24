@@ -265,7 +265,6 @@ public class PaymentActivity extends SaleActivity {
                 R.layout.layout_spinner_dropdown_item,
                 getResources().getStringArray(R.array.payment_types));
         paymentTypeView.setAdapter(paymentModeAdapter);
-        paymentTypeView.setSelection();
         paymentTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

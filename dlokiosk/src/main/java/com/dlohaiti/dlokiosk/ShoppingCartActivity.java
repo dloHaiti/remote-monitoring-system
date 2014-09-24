@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
@@ -9,11 +10,7 @@ import com.dlohaiti.dlokiosk.adapter.PromotionGridAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
 import com.dlohaiti.dlokiosk.db.ProductRepository;
 import com.dlohaiti.dlokiosk.db.PromotionRepository;
-import com.dlohaiti.dlokiosk.domain.Product;
-import com.dlohaiti.dlokiosk.domain.ProductCategories;
-import com.dlohaiti.dlokiosk.domain.Promotion;
-import com.dlohaiti.dlokiosk.domain.Promotions;
-import com.dlohaiti.dlokiosk.domain.ShoppingCartNew;
+import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 import roboguice.inject.InjectView;
@@ -108,7 +105,7 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     @Override
-    protected Class<? extends SaleActivity> nextActivity() {
+    protected Class<? extends Activity> nextActivity() {
         return PaymentActivity.class;
     }
 

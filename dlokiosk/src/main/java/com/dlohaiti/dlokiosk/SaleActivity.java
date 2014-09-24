@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,7 +27,7 @@ public abstract class SaleActivity extends RoboActivity {
         return configurationRepository.get(ConfigurationKey.CURRENCY);
     }
 
-    protected abstract Class<? extends SaleActivity> nextActivity();
+    protected abstract Class<? extends Activity> nextActivity();
 
     protected void showNoConfigurationAlert() {
         new AlertDialog.Builder(this)

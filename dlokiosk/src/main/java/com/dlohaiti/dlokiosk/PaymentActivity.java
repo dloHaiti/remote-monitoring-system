@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,23 +8,10 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
-import com.dlohaiti.dlokiosk.domain.DeliveryTimes;
-import com.dlohaiti.dlokiosk.domain.Money;
-import com.dlohaiti.dlokiosk.domain.PaymentModes;
-import com.dlohaiti.dlokiosk.domain.PaymentTypes;
-import com.dlohaiti.dlokiosk.domain.Sponsor;
-import com.dlohaiti.dlokiosk.domain.Sponsors;
+import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import roboguice.inject.InjectView;
@@ -113,6 +101,9 @@ public class PaymentActivity extends SaleActivity {
 
     private Sponsors sponsors;
 
+    @Inject
+    private ShoppingCartValidator cartValidator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,11 +127,11 @@ public class PaymentActivity extends SaleActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int selectedRadioButtonId) {
                 View selectedRadioButton = radioGroup.findViewById(selectedRadioButtonId);
                 if (selectedRadioButton.getId() == R.id.select_sponsor) {
-                    cart.isSponsorSelected = true;
+                    cart.setIsSponsorSelected(true);
                     sponsorRowView.setVisibility(View.VISIBLE);
                     sponsorAmountRowView.setVisibility(View.VISIBLE);
                 } else {
-                    cart.isSponsorSelected = false;
+                    cart.setIsSponsorSelected(false);
                     cart.setSponsor(null);
                     sponsorRowView.setVisibility(View.GONE);
                     sponsorAmountRowView.setVisibility(View.GONE);
@@ -150,8 +141,8 @@ public class PaymentActivity extends SaleActivity {
                 }
             }
         });
-        selectCustomerView.setChecked(!cart.isSponsorSelected);
-        selectSponsorView.setChecked(cart.isSponsorSelected);
+        selectCustomerView.setChecked(!cart.isSponsorSelected());
+        selectSponsorView.setChecked(cart.isSponsorSelected());
     }
 
     private void hideAllSponsorViews() {
@@ -339,6 +330,20 @@ public class PaymentActivity extends SaleActivity {
 
     @Override
     public void onContinue(final View view) {
+        ValidationResult validateResult = cartValidator.validate(cart);
+        if (validateResult.hasError()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(validateResult.message())
+                    .setCancelable(true)
+                    .setNeutralButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                }
+                            })
+                    .show();
+            return;
+        }
         new AlertDialog.Builder(this)
                 .setMessage(R.string.sale_confirm_dialog_message)
                 .setCancelable(false)
@@ -346,20 +351,19 @@ public class PaymentActivity extends SaleActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
-                                callBaseOnContinue(view);
+                                cart.clear();
+                                callSuperOnContinue(view);
                             }
                         })
                 .show();
-
-        super.onContinue(view);
     }
 
-    private void callBaseOnContinue(View view) {
+    private void callSuperOnContinue(View view) {
         super.onContinue(view);
     }
 
     @Override
-    protected Class<? extends SaleActivity> nextActivity() {
-        return null;
+    protected Class<? extends Activity> nextActivity() {
+        return MainActivity.class;
     }
 }

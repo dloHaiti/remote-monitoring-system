@@ -131,4 +131,9 @@
     <string name="mandatory_field">This field is mandatory</string>
     <string name="customer_account">Customer Accounts</string>
     <string name="sponsors">Sponsors</string>
+    <string name="error_enter_sponsor_amount">Please enter Sponsor Amount</string>
+    <string name="error_enter_customer_amount">Please enter Customer Amount</string>
+    <string name="error_sponsor_customer_amount_greater_than_total">Sponsor amount plus Customer amount is greater than
+        total price. Please correct the values
+    </string>
 </resources>

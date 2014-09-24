@@ -129,4 +129,10 @@
     <string name="mandatory_field">This field is mandatory</string>
     <string name="customer_account">Customer Accounts</string>
     <string name="sponsors">Sponsors</string>
+    <string name="error_enter_sponsor_amount">S\'il vous plaît entrer commanditaire Montant</string>
+    <string name="error_enter_customer_amount">S\'il vous plaît entrer Montant à la clientèle</string>
+    <string name="error_sponsor_customer_amount_greater_than_total">Montant de commanditaire plus le montant de la
+        clientèle est plus grande que le prix total. S\'il vous plaît corriger les valeurs
+    </string>
+
 </resources>

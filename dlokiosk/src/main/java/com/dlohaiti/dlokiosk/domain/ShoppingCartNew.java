@@ -13,7 +13,7 @@ public class ShoppingCartNew {
     private CustomerAccount customerAccount;
     private final RegisterNew register;
     private String paymentMode;
-    public boolean isSponsorSelected;
+    private boolean isSponsorSelected;
     private Sponsor sponsor;
     private Money sponsorAmount = Money.ZERO;
     private Money customerAmount = Money.ZERO;
@@ -174,5 +174,13 @@ public class ShoppingCartNew {
 
     public void setDeliveryTime(String deliveryTime) {
         this.deliveryTime = deliveryTime;
+    }
+
+    public boolean isSponsorSelected() {
+        return isSponsorSelected;
+    }
+
+    public void setIsSponsorSelected(boolean isSponsorSelected) {
+        this.isSponsorSelected = isSponsorSelected;
     }
 }

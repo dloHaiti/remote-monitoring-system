@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -123,7 +124,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     @Override
-    protected Class<? extends SaleActivity> nextActivity() {
+    protected Class<? extends Activity> nextActivity() {
         return ShoppingCartActivity.class;
     }
 

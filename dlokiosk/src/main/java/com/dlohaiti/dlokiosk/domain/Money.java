@@ -78,4 +78,16 @@ public class Money implements Comparable<Money> {
     public String amountAsString() {
         return String.valueOf(getAmount());
     }
+
+    public static boolean hasValue(Money money) {
+        return !(money == null || ZERO.equals(money));
+    }
+
+    public Money plus(Money anotherMoney) {
+        return new Money(amount.add(anotherMoney.amount));
+    }
+
+    public boolean isGreaterThan(Money anotherMoney) {
+        return amount.compareTo(anotherMoney.amount) > 0;
+    }
 }

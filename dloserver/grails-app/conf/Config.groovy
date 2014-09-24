@@ -115,6 +115,7 @@ dloserver {
 
     payment.modes = "cash,mobile"
     payment.types = "Now,Post-Pay"
+    payment.deliveryTimes = "Morning,Afternoon"
 }
 environments {
     test {

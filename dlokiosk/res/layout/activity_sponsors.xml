@@ -52,8 +52,6 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/header"
         android:layout_above="@+id/bottom_pane"
-        android:padding="16dp"
-        android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
         android:baselineAligned="false">
         <ListView

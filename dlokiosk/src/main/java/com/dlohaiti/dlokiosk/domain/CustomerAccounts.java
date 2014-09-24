@@ -77,4 +77,12 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         return newFilteredCustomerList;
 
     }
+
+    public List<String> getContactNames() {
+        List<String> names=new ArrayList<String>();
+        for (CustomerAccount account : this) {
+            names.add(account.getContactName());
+        }
+        return names;
+    }
 }

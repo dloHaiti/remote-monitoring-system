@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.dlohaiti.dlokiosk.adapter.SponsorsArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
+import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
@@ -21,7 +22,11 @@ public class SponsorsActivity extends RoboActivity {
 
     @Inject
     private SponsorRepository sponsorRepository;
+    @Inject
+    private CustomerAccountRepository customerAccountRepository;
+
     private Sponsors sponsors;
+    private SponsorsArrayAdapter sponsorsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,15 +37,23 @@ public class SponsorsActivity extends RoboActivity {
 
     private void initialiseSponsorsList() {
         sponsors = sponsorRepository.findAll();
-        new SponsorsArrayAdapter(getApplicationContext(),sponsors);
+        fillAccounts();
+        sponsorsAdapter = new SponsorsArrayAdapter(getApplicationContext(), sponsors);
+        sponsorsListView.setAdapter(sponsorsAdapter);
     }
 
+    private void fillAccounts() {
+        for(Sponsor s:sponsors){
+            s.withAccounts(customerAccountRepository.findBySponsorId(s.id()));
+        }
+    }
 
     public void onCancel(View view) {
         Intent intent = new Intent(SponsorsActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
     public void onBack(View view) {
         finish();
     }

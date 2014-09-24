@@ -32,6 +32,7 @@ public class SponsorRepository {
     @Inject
     public SponsorRepository(KioskDatabase db) {
         this.db = db;
+
     }
 
     public boolean replaceAll(List<Sponsor> sponsors) {
@@ -70,7 +71,8 @@ public class SponsorRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                sponsors.add(new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+                Sponsor sponsor = new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                sponsors.add(sponsor);
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();

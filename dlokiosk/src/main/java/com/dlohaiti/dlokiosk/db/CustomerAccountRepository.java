@@ -9,8 +9,10 @@ import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
+import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+import static java.lang.String.format;
 
 public class CustomerAccountRepository {
     private final static String TAG = CustomerAccountRepository.class.getSimpleName();
@@ -43,10 +46,10 @@ public class CustomerAccountRepository {
     private SponsorRepository sponsorRepository;
 
     @Inject
-    public CustomerAccountRepository(KioskDatabase db, SalesChannelRepository salesChannelRepository,SponsorRepository sponsorRepository) {
+    public CustomerAccountRepository(KioskDatabase db, SalesChannelRepository salesChannelRepository, SponsorRepository sponsorRepository) {
         this.db = db;
         this.salesChannelRepository = salesChannelRepository;
-        this.sponsorRepository=sponsorRepository;
+        this.sponsorRepository = sponsorRepository;
     }
 
     public boolean replaceAll(List<CustomerAccount> accounts) {
@@ -178,13 +181,13 @@ public class CustomerAccountRepository {
             values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
 
             if (account.getId() == null) {
-                String generatedId =     UUID.randomUUID().toString();
-                values.put(CustomerAccountsTable.ID,generatedId);
+                String generatedId = UUID.randomUUID().toString();
+                values.put(CustomerAccountsTable.ID, generatedId);
                 account.setId(generatedId);
                 wdb.insert(KioskDatabase.CustomerAccountsTable.TABLE_NAME, null, values);
             } else {
                 String accountId = account.getId();
-                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId +"'", null);
+                wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId + "'", null);
             }
             replaceSalesChannelCustomerAccountMap(account, wdb);
             replaceSponsorCustomerAccountMap(wdb, account);
@@ -199,38 +202,44 @@ public class CustomerAccountRepository {
     }
 
     private void replaceSalesChannelCustomerAccountMap(CustomerAccount account, SQLiteDatabase wdb) {
-        String accountId = account.getId() ;
-        wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(accountId));
-        for(SalesChannel sc:account.getChannels()){
+        String accountId = account.getId();
+        wdb.delete(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, where(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID), matches(accountId));
+        for (SalesChannel sc : account.getChannels()) {
             ContentValues cv = new ContentValues();
-            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,accountId);
-            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID,sc.getId());
-            wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME,null,cv);
+            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, accountId);
+            cv.put(KioskDatabase.SalesChannelCustomerAccountsTable.SALES_CHANNEL_ID, sc.getId());
+            wdb.insert(KioskDatabase.SalesChannelCustomerAccountsTable.TABLE_NAME, null, cv);
         }
     }
 
     private void replaceSponsorCustomerAccountMap(SQLiteDatabase wdb, CustomerAccount account) {
-        wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,where(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID),matches(account.getId()));
-        for(Sponsor s:account.sponsors()){
+        wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, where(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID), matches(account.getId()));
+        for (Sponsor s : account.sponsors()) {
             ContentValues cv = new ContentValues();
-            cv.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,account.getId());
-            cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID,s.id());
-            wdb.insert(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,null,cv);
+            cv.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
+            cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, s.id());
+            wdb.insert(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, null, cv);
         }
     }
 
     public List<CustomerAccount> getNonSyncAccounts() {
-        List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.IS_SYNCED), matches(String.valueOf(false)), null, null, null);
+        return getCustomerAccounts(rdb, cursor,true);
+    }
+
+    private List<CustomerAccount> getCustomerAccounts(SQLiteDatabase rdb, Cursor cursor, boolean withAssociation) {
+        List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 CustomerAccount account = buildCustomerAccount(cursor);
                 accounts.add(account);
-                account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
-                account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
+                if (withAssociation) {
+                    account.withSponsors(sponsorRepository.findByCustomerId(account.getId()));
+                    account.withChannels(salesChannelRepository.findByCustomerId(account.getId()));
+                }
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();
@@ -251,7 +260,7 @@ public class CustomerAccountRepository {
             ContentValues values = new ContentValues();
             accountId = account.getId();
             values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(true));
-            wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId+"'", null);
+            wdb.update(KioskDatabase.CustomerAccountsTable.TABLE_NAME, values, "id " + "='" + accountId + "'", null);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -263,14 +272,14 @@ public class CustomerAccountRepository {
     }
 
     public boolean isNotEmpty() {
-       return this.getNonSyncAccounts().size() > 0;
+        return this.getNonSyncAccounts().size() > 0;
     }
 
-    public  List<CustomerAccount> findByContactName(String contactName) {
+    public List<CustomerAccount> findByContactName(String contactName) {
         List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.CONTACT_NAME),matches(contactName), null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.CONTACT_NAME), matches(contactName), null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -288,5 +297,25 @@ public class CustomerAccountRepository {
             rdb.endTransaction();
         }
         return accounts;
+    }
+
+    public  List<CustomerAccount> findBySponsorId(long sponsorId) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        Cursor cursor = rdb.rawQuery(format(
+                        "SELECT %s FROM " +
+                                "%s c, " +
+                                "%s map " +
+                                "WHERE map.%s = ? and map.%s = c.%s " +
+                                "ORDER BY c.%s",
+                        StringUtils.join(COLUMNS, ","),
+                        CustomerAccountsTable.TABLE_NAME,
+                        KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME,
+                        KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID,
+                        KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
+                        KioskDatabase.CustomerAccountsTable.ID,
+                        KioskDatabase.CustomerAccountsTable.NAME),
+                new String[]{String.valueOf(sponsorId)});
+          return getCustomerAccounts(rdb, cursor, false);
     }
 }

@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.dlohaiti.dlokiosk.R;
-import com.dlohaiti.dlokiosk.domain.SalesChannel;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 
@@ -24,6 +25,7 @@ public class SponsorsArrayAdapter extends ArrayAdapter<Sponsor> {
         super(context, R.layout.layout_sponsors_list_item, sponsors);
         this.context = context;
         this.sponsors = sponsors;
+
     }
 
     @Override
@@ -46,10 +48,17 @@ public class SponsorsArrayAdapter extends ArrayAdapter<Sponsor> {
         TextView contactName = (TextView) view.findViewById(R.id.contact_name);
         contactName.setText(sponsor.contactName());
         TextView phoneNumber = (TextView) view.findViewById(R.id.phone_number);
-//        phoneNumber.setText(sponsor.de());
+        phoneNumber.setText(sponsor.getPhoneNumber());
+        fillCustomerAccount(view, sponsor);
         return view;
     }
 
+    private void fillCustomerAccount(View view, Sponsor sponsor) {
+        TextView accounts = (TextView) view.findViewById(R.id.customers);
+        CustomerAccounts customerAccounts = new CustomerAccounts(sponsor.getCustomerAccounts());
+        List<String> names = customerAccounts.getContactNames();
+        accounts.setText(TextUtils.join(", ",names.toArray()));
+    }
 
 
     class SponsorViewHolder {

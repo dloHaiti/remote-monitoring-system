@@ -4,6 +4,7 @@ public class SalesChannelBuilder {
     private long id = 1;
     private String name = "SalesChannel1";
     private String description = "SalesChannel2";
+    private Boolean delayedDelivery = false;
 
     public SalesChannelBuilder withId(long id) {
         this.id = id;
@@ -21,6 +22,6 @@ public class SalesChannelBuilder {
     }
 
     public SalesChannel build() {
-        return new SalesChannel(id, name, description);
+        return new SalesChannel(id, name, description, delayedDelivery);
     }
 }

@@ -110,7 +110,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         }
         List<SalesChannel> salesChannels = new ArrayList<SalesChannel>();
         for (SalesChannelJson channel : c.getSalesChannels()) {
-            salesChannels.add(new SalesChannel(channel.getId(), channel.getName(), channel.getDescription()));
+            salesChannels.add(new SalesChannel(channel.getId(), channel.getName(), channel.getDescription(),
+                    channel.getDelayedDelivery()));
         }
         List<CustomerAccount> customerAccounts = new ArrayList<CustomerAccount>();
         for (CustomerAccountJson account : c.getCustomerAccounts()) {

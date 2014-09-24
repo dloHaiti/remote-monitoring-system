@@ -214,12 +214,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 SalesChannelsTable.TABLE_NAME,
                 SalesChannelsTable.ID,
                 SalesChannelsTable.NAME,
-                SalesChannelsTable.DESCRIPTION
+                SalesChannelsTable.DESCRIPTION,
+                SalesChannelsTable.DELAYED_DELIVERY
         );
 
         String createCustomerTypes = String.format(
@@ -461,6 +463,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String ID = "ID";
         public static final String NAME = "NAME";
         public static final String DESCRIPTION = "DESCRIPTION";
+        public static final String DELAYED_DELIVERY = "DELAYED_DELIVERY";
     }
 
     public static class CustomerTypeTable {

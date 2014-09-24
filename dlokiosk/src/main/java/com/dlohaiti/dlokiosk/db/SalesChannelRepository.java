@@ -22,7 +22,8 @@ public class SalesChannelRepository {
             {
                     KioskDatabase.SalesChannelsTable.ID,
                     KioskDatabase.SalesChannelsTable.NAME,
-                    KioskDatabase.SalesChannelsTable.DESCRIPTION
+                    KioskDatabase.SalesChannelsTable.DESCRIPTION,
+                    KioskDatabase.SalesChannelsTable.DELAYED_DELIVERY
             };
     private final KioskDatabase db;
 
@@ -41,6 +42,7 @@ public class SalesChannelRepository {
                 values.put(KioskDatabase.SalesChannelsTable.ID, channel.getId());
                 values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
                 values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
+                values.put(KioskDatabase.SalesChannelsTable.DELAYED_DELIVERY, String.valueOf(channel.delayedDelivery()));
 
                 wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);
             }
@@ -65,7 +67,8 @@ public class SalesChannelRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                channels.add(new SalesChannel(cursor.getLong(0), cursor.getString(1), cursor.getString(2)));
+                channels.add(new SalesChannel(cursor.getLong(0), cursor.getString(1), cursor.getString(2),
+                        Boolean.parseBoolean(cursor.getString(3))));
                 cursor.moveToNext();
             }
             rdb.setTransactionSuccessful();

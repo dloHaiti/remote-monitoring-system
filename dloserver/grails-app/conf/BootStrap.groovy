@@ -48,7 +48,8 @@ class BootStrap {
             return [
                     id: sc.id,
                     name       : sc.name,
-                    description: sc.description
+                    description: sc.description,
+                    delayedDelivery: sc.delayedDelivery
             ]
         }
         JSON.registerObjectMarshaller(CustomerType) { CustomerType t ->
@@ -148,7 +149,7 @@ class BootStrap {
 
             if (SalesChannel.count() == 0) {
                 new SalesChannel(name: 'Over the Counter', description: 'Over the Counter', discountType: "AMOUNT", discountAmount: 12).save(failOnError: true)
-                new SalesChannel(name: 'Door delivery', description: 'door delivery', discountType: "AMOUNT", discountAmount: 12).save(failOnError: true)
+                new SalesChannel(name: 'Door delivery', description: 'door delivery', discountType: "AMOUNT", discountAmount: 12, delayedDelivery: true).save(failOnError: true)
             }
 
 

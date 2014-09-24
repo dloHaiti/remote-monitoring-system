@@ -5,6 +5,7 @@ class SalesChannel {
     String description
     String discountType
     BigDecimal discountAmount
+    Boolean delayedDelivery = false
 
 
     static hasMany = [customerAccounts: CustomerAccount,productMrps: ProductMrp]

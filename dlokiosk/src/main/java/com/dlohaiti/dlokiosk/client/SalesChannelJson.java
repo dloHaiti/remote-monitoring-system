@@ -4,6 +4,7 @@ public class SalesChannelJson {
     private long id;
     private String name;
     private String description;
+    private Boolean delayedDelivery;
 
     public long getId() {
         return id;
@@ -27,5 +28,13 @@ public class SalesChannelJson {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDelayedDelivery() {
+        return delayedDelivery;
+    }
+
+    public void setDelayedDelivery(Boolean delayedDelivery) {
+        this.delayedDelivery = delayedDelivery;
     }
 }

@@ -10,12 +10,14 @@ public class SalesChannel extends SelectableListItem implements Comparable<Sales
     private long id;
     private String name;
     private String description;
+    private Boolean delayedDelivery;
 
-    public SalesChannel(long id, String name, String description) {
+    public SalesChannel(long id, String name, String description, Boolean delayedDelivery) {
         super(id, name);
         this.id = id;
         this.name = name;
         this.description = description;
+        this.delayedDelivery = delayedDelivery;
     }
 
     public long getId() {
@@ -28,6 +30,10 @@ public class SalesChannel extends SelectableListItem implements Comparable<Sales
 
     public String description() {
         return description;
+    }
+
+    public Boolean delayedDelivery() {
+        return delayedDelivery;
     }
 
     @Override
@@ -43,6 +49,8 @@ public class SalesChannel extends SelectableListItem implements Comparable<Sales
         SalesChannel that = (SalesChannel) o;
 
         if (id != that.id) return false;
+        if (delayedDelivery != null ? !delayedDelivery.equals(that.delayedDelivery) : that.delayedDelivery != null)
+            return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
@@ -54,6 +62,7 @@ public class SalesChannel extends SelectableListItem implements Comparable<Sales
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (delayedDelivery != null ? delayedDelivery.hashCode() : 0);
         return result;
     }
 
@@ -63,6 +72,7 @@ public class SalesChannel extends SelectableListItem implements Comparable<Sales
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", delayedDelivery=" + delayedDelivery +
                 '}';
     }
 }

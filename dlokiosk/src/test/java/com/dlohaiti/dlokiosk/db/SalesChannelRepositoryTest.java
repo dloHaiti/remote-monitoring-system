@@ -38,27 +38,27 @@ public class SalesChannelRepositoryTest {
     @Test
     public void shouldReturnAllSalesChannelsInSetInAlphabeticalOrder() {
         SQLiteDatabase wdb = db.getWritableDatabase();
-        List<SalesChannel> salesChannels = asList(new SalesChannel(1L, "Name 1", "Desc 1"), new SalesChannel(2L, "Name 2", "Desc 2"));
+        List<SalesChannel> salesChannels = asList(new SalesChannel(1L, "Name 1", "Desc 1", false), new SalesChannel(2L, "Name 2", "Desc 2", false));
         saveSalesChannels(wdb, salesChannels);
 
         SortedSet<SalesChannel> list = repository.findAll();
 
         assertThat(list.size(), is(2));
-        assertThat(list, is(sortedSet(new SalesChannel(1L, "Name 1", "Desc 1"), new SalesChannel(2L, "Name 2", "Desc 2"))));
+        assertThat(list, is(sortedSet(new SalesChannel(1L, "Name 1", "Desc 1", false), new SalesChannel(2L, "Name 2", "Desc 2", false))));
     }
 
     @Test
     public void shouldReplaceAll() {
         SQLiteDatabase wdb = db.getWritableDatabase();
-        saveSalesChannels(wdb, asList(new SalesChannel(1L, "Over the Counter", "Over the Counter"), new SalesChannel(2L, "Door delivery", "Door delivery")));
+        saveSalesChannels(wdb, asList(new SalesChannel(1L, "Over the Counter", "Over the Counter", false), new SalesChannel(2L, "Door delivery", "Door delivery", false)));
         assertThat(repository.findAll(),
-                is(sortedSet(new SalesChannel(1L, "Over the Counter", "Over the Counter"), new SalesChannel(2L, "Door delivery", "Door delivery"))));
+                is(sortedSet(new SalesChannel(1L, "Over the Counter", "Over the Counter", false), new SalesChannel(2L, "Door delivery", "Door delivery", false))));
 
-        boolean success = repository.replaceAll(asList(new SalesChannel(2L, "Name 2", "Desc 2"), new SalesChannel(3L, "Name 3", "Name 4")));
+        boolean success = repository.replaceAll(asList(new SalesChannel(2L, "Name 2", "Desc 2", false), new SalesChannel(3L, "Name 3", "Name 4", false)));
 
         assertThat(success, is(true));
         assertThat(repository.findAll(),
-                is(sortedSet(new SalesChannel(2L, "Name 2", "Desc 2"), new SalesChannel(3L, "Name 3", "Name 4"))));
+                is(sortedSet(new SalesChannel(2L, "Name 2", "Desc 2", false), new SalesChannel(3L, "Name 3", "Name 4", false))));
     }
 
     private void saveSalesChannels(SQLiteDatabase wdb, List<SalesChannel> salesChannels) {
@@ -67,6 +67,7 @@ public class SalesChannelRepositoryTest {
             values.put(KioskDatabase.SalesChannelsTable.ID, channel.getId());
             values.put(KioskDatabase.SalesChannelsTable.NAME, channel.name());
             values.put(KioskDatabase.SalesChannelsTable.DESCRIPTION, channel.description());
+            values.put(KioskDatabase.SalesChannelsTable.DELAYED_DELIVERY, channel.delayedDelivery());
             wdb.insert(KioskDatabase.SalesChannelsTable.TABLE_NAME, null, values);
         }
     }

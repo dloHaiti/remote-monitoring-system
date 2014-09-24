@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.dlohaiti.dlokiosk.AccountsActivity;
+import com.dlohaiti.dlokiosk.CustomerAccountsActivity;
 import com.dlohaiti.dlokiosk.BalanceAmountDialog;
 import com.dlohaiti.dlokiosk.CustomerFormActivity;
 import com.dlohaiti.dlokiosk.R;
@@ -65,7 +65,7 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
             public void onClick(View view) {
                 CustomerAccount account = accounts.get(view.getId());
                 BalanceAmountDialog balanceAmountDialog = new BalanceAmountDialog(account);
-                balanceAmountDialog.show(((AccountsActivity)context).getFragmentManager(),"balanceAmountDialog");
+                balanceAmountDialog.show(((CustomerAccountsActivity)context).getFragmentManager(),"balanceAmountDialog");
             }
         });
     }

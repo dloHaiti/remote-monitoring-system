@@ -141,6 +141,6 @@ public class MainActivity extends RoboActivity implements StatusView {
     }
 
     public void moveToAccountsScreen(View view) {
-        startActivity(new Intent(this, AccountsActivity.class));
+        startActivity(new Intent(this, CustomerAccountsActivity.class));
     }
 }

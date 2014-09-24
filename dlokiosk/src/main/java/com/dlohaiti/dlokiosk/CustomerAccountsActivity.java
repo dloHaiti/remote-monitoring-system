@@ -32,7 +32,7 @@ import roboguice.inject.InjectView;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 
-public class AccountsActivity extends RoboActivity {
+public class CustomerAccountsActivity extends RoboActivity {
     @InjectView(R.id.sales_channel_list)
     private ListView salesChannelListView;
 
@@ -60,7 +60,7 @@ public class AccountsActivity extends RoboActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_accounts);
+        setContentView(R.layout.activity_customer_accounts);
 
         loadSalesChannels();
     }
@@ -101,14 +101,9 @@ public class AccountsActivity extends RoboActivity {
                 CustomerAccount tappedCustomerAccount = filteredCustomerList.get(position);
                 if (tappedCustomerAccount.isSelected()) {
                     tappedCustomerAccount.unSelect();
-//                    cart.setCustomerAccount(null);
                     continueButton.setEnabled(false);
                 } else {
                     tappedCustomerAccount.select();
-//                    if (cart.customerAccount() != null) {
-//                        cart.customerAccount().unSelect();
-//                    }
-//                    cart.setCustomerAccount(tappedCustomerAccount);
                     continueButton.setEnabled(true);
                 }
                 customerListAdapter.notifyDataSetChanged();
@@ -142,7 +137,6 @@ public class AccountsActivity extends RoboActivity {
         updateFilteredCustomerList();
         customerListAdapter = new CustomerAccountEditAdapter(this, filteredCustomerList);
         customerListView.setAdapter(customerListAdapter);
-//        customerListAdapter.notifyDataSetChanged();
     }
 
     private void clearCustomerSearch() {
@@ -189,7 +183,7 @@ public class AccountsActivity extends RoboActivity {
                 filteredCustomerList.clear();
                 List<CustomerAccount> filteredList = allCustomerList.filterAccountsByContactName(text, selectedSalesChannel);
                 filteredCustomerList.addAll(filteredList);
-                customerListAdapter = new CustomerAccountEditAdapter(AccountsActivity.this, filteredCustomerList);
+                customerListAdapter = new CustomerAccountEditAdapter(CustomerAccountsActivity.this, filteredCustomerList);
                 customerListView.setAdapter(customerListAdapter);
                 return true;
             }
@@ -210,7 +204,7 @@ public class AccountsActivity extends RoboActivity {
         account.setDueAmount(account.getDueAmount()-amount);
         customerAccountRepository.save(account);
         Log.d("BALANCE", String.valueOf(account));
-        customerListAdapter = new CustomerAccountEditAdapter(AccountsActivity.this, filteredCustomerList);
+        customerListAdapter = new CustomerAccountEditAdapter(CustomerAccountsActivity.this, filteredCustomerList);
         customerListView.setAdapter(customerListAdapter);
         customerListAdapter.notifyDataSetChanged();
     }

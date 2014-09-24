@@ -39,7 +39,7 @@ public class BalanceAmountDialog extends DialogFragment {
                 if(amount>account.getDueAmount()){
                     balanceAmount.setError("Enter valid amount");
                 }
-                ((AccountsActivity) getActivity()).addBalanceAmount(account,amount);
+                ((CustomerAccountsActivity) getActivity()).addBalanceAmount(account,amount);
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

@@ -74,4 +74,8 @@ public class Money implements Comparable<Money> {
     public boolean isInRange(Money minimum, Money maximum) {
         return greaterThanOrEqualTo(minimum) && lessThanOrEqualTo(maximum);
     }
+
+    public String amountAsString() {
+        return String.valueOf(getAmount());
+    }
 }

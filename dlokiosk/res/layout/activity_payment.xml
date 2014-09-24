@@ -155,6 +155,27 @@
                     style="@style/payment_summary_heading"/>
 
             <TextView
+                    android:text="@string/total_price_summary_label"
+                    style="@style/payment_summary_text"/>
+
+            <LinearLayout
+                    style="@style/payment_value_container"
+                    android:background="@color/medium_spring_green">
+
+                <TextView
+                        android:id="@+id/total_price_value"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="200"/>
+
+                <TextView
+                        android:id="@+id/total_price_currency"
+                        android:paddingLeft="5dp"
+                        style="@style/strong_payment_summary_field_value"
+                        android:text="HTG"/>
+
+            </LinearLayout>
+
+            <TextView
                     android:text="@string/customer_payment_label"
                     style="@style/payment_summary_text"/>
 
@@ -190,29 +211,6 @@
                         android:id="@+id/sponsor_payment_currency"
                         android:paddingLeft="5dp"
                         style="@style/payment_summary_field_value"
-                        android:text="HTG"/>
-
-            </LinearLayout>
-
-            <ImageView style="@style/payment_summary_divider"/>
-
-            <TextView
-                    android:text="@string/total_price_summary_label"
-                    style="@style/payment_summary_text"/>
-
-            <LinearLayout
-                    style="@style/payment_value_container"
-                    android:background="@color/medium_spring_green">
-
-                <TextView
-                        android:id="@+id/total_price_value"
-                        style="@style/strong_payment_summary_field_value"
-                        android:text="200"/>
-
-                <TextView
-                        android:id="@+id/total_price_currency"
-                        android:paddingLeft="5dp"
-                        style="@style/strong_payment_summary_field_value"
                         android:text="HTG"/>
 
             </LinearLayout>

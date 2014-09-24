@@ -89,7 +89,7 @@
     <string name="customer_payment_label">CUSTOMER PAYMENT</string>
     <string name="sponsor_payment_label">SPONSOR PAYMENT</string>
     <string name="total_price_summary_label">TOTAL PRICE FOR THE ORDER</string>
-    <string name="amount_due_summary_label">AMOUNT DUE</string>
+    <string name="amount_due_summary_label">AMOUNT DUE FROM THIS ORDER</string>
 
     <string name="sale_confirm_dialog_message">YOUR ORDER HAS BEEN CONFIRMED</string>
     <string name="no_products_in_cart_error_message">Please add products to proceed.</string>

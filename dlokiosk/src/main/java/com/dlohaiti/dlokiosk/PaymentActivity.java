@@ -27,10 +27,14 @@ import org.apache.commons.lang3.StringUtils;
 import roboguice.inject.InjectView;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class PaymentActivity extends SaleActivity {
 
-    public static final String POST_PAY_STRING = "Post-Pay";
+    public static final String PAYMENT_TYPE_POST_PAY = "Post-Pay";
+    public static final String PAYMENT_TYPE_NOW = "Now";
     @Inject
     private SponsorRepository sponsorRepository;
 
@@ -98,7 +102,6 @@ public class PaymentActivity extends SaleActivity {
     private TextView amountDueCurrencyView;
 
     private Sponsors sponsors;
-    private PaymentModes paymentModes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +133,9 @@ public class PaymentActivity extends SaleActivity {
                     cart.setSponsor(null);
                     sponsorRowView.setVisibility(View.GONE);
                     sponsorAmountRowView.setVisibility(View.GONE);
+                    sponsorAmountView.setText("");
+                    cart.setSponsorAmount(Money.ZERO);
+                    updatePriceSummaryViews();
                 }
             }
         });
@@ -147,7 +153,7 @@ public class PaymentActivity extends SaleActivity {
     private void initialisePriceViews() {
         initialiseSponsorAmountView();
         initialiseCustomerAmountView();
-        initialisePriceSummaryViews();
+        updatePriceSummaryViews();
         initialiseCurrencyViews();
     }
 
@@ -158,16 +164,16 @@ public class PaymentActivity extends SaleActivity {
         amountDueCurrencyView.setText(currency());
     }
 
-    private void initialisePriceSummaryViews() {
-        customerPaymentSummaryView.setText(String.valueOf(cart.getTotal().getAmount()));
-        sponsorPaymentSummaryView.setText(String.valueOf(cart.sponsorAmount().getAmount()));
-        totalPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
-        amountDueSummaryView.setText(String.valueOf(cart.dueAmount().getAmount()));
+    private void updatePriceSummaryViews() {
+        totalPriceView.setText(cart.getTotal().amountAsString());
+        customerPaymentSummaryView.setText(cart.customerAmount().amountAsString());
+        sponsorPaymentSummaryView.setText(cart.sponsorAmount().amountAsString());
+        amountDueSummaryView.setText(cart.dueAmount().amountAsString());
     }
 
     private void initialiseCustomerAmountView() {
         if (cart.customerAmount() != Money.ZERO) {
-            customerAmountView.setText(String.valueOf(cart.getTotal().getAmount()));
+            customerAmountView.setText(cart.customerAmount().amountAsString());
         }
         customerAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
         customerAmountView.addTextChangedListener(new TextWatcher() {
@@ -185,15 +191,14 @@ public class PaymentActivity extends SaleActivity {
                         ? new Money(BigDecimal.ZERO)
                         : new Money(new BigDecimal(editable.toString()));
                 cart.setCustomerAmount(customerAmount);
-                amountDueSummaryView.setText(String.valueOf(cart.dueAmount().getAmount()));
-                customerPaymentSummaryView.setText(String.valueOf(cart.customerAmount().getAmount()));
+                updatePriceSummaryViews();
             }
         });
     }
 
     private void initialiseSponsorAmountView() {
         if (cart.sponsorAmount() != Money.ZERO) {
-            sponsorAmountView.setText(String.valueOf(cart.sponsorAmount().getAmount()));
+            sponsorAmountView.setText(cart.sponsorAmount().amountAsString());
         }
         sponsorAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
         sponsorAmountView.addTextChangedListener(new TextWatcher() {
@@ -213,15 +218,16 @@ public class PaymentActivity extends SaleActivity {
                         ? new Money(BigDecimal.ZERO)
                         : new Money(new BigDecimal(editable.toString()));
                 cart.setSponsorAmount(sponsorAmount);
-                sponsorPaymentSummaryView.setText(String.valueOf(cart.sponsorAmount().getAmount()));
-                customerPaymentSummaryView.setText(String.valueOf(cart.customerAmount().getAmount()));
-                customerAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
+                if (PAYMENT_TYPE_NOW.equalsIgnoreCase(cart.paymentType())) {
+                    cart.updateCustomerAmountWithTheBalanceAmount();
+                }
+                updatePriceSummaryViews();
             }
         });
     }
 
     private void initialisePaymentModeList() {
-        paymentModes = new PaymentModes(configurationRepository.get(ConfigurationKey.PAYMENT_TYPE));
+        PaymentModes paymentModes = new PaymentModes(configurationRepository.get(ConfigurationKey.PAYMENT_TYPE));
         ArrayAdapter<String> paymentTypeAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
                 paymentModes);
@@ -261,15 +267,27 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialisePaymentTypeList() {
+        List<String> paymentTypes = asList(getResources().getStringArray(R.array.payment_types));
         ArrayAdapter<String> paymentModeAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.layout_spinner_dropdown_item,
-                getResources().getStringArray(R.array.payment_types));
+                paymentTypes);
         paymentTypeView.setAdapter(paymentModeAdapter);
+        paymentTypeView.setSelection(paymentTypes.indexOf(cart.paymentType()));
         paymentTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String paymentMode = (String) parent.getItemAtPosition(position);
-                customerAmountRowView.setVisibility(POST_PAY_STRING.equalsIgnoreCase(paymentMode) ? View.VISIBLE : View.GONE);
+                String paymentType = (String) parent.getItemAtPosition(position);
+                if (PAYMENT_TYPE_POST_PAY.equalsIgnoreCase(paymentType)) {
+                    customerAmountRowView.setVisibility(View.VISIBLE);
+                    cart.setCustomerAmount(Money.ZERO);
+                    updatePriceSummaryViews();
+                } else if (PAYMENT_TYPE_NOW.equalsIgnoreCase(paymentType)) {
+                    customerAmountRowView.setVisibility(View.GONE);
+                    customerAmountView.setText("");
+                    cart.updateCustomerAmountWithTheBalanceAmount();
+                    updatePriceSummaryViews();
+                }
+                cart.setPaymentType(paymentType);
             }
 
             @Override

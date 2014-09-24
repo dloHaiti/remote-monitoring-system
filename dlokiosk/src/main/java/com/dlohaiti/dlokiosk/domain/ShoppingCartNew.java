@@ -17,6 +17,7 @@ public class ShoppingCartNew {
     private Sponsor sponsor;
     private Money sponsorAmount = Money.ZERO;
     private Money customerAmount = Money.ZERO;
+    private String paymentType;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -47,6 +48,7 @@ public class ShoppingCartNew {
         salesChannel = null;
         customerAccount = null;
         paymentMode = null;
+        paymentType = null;
         isSponsorSelected = false;
         sponsor = null;
         sponsorAmount = Money.ZERO;
@@ -126,7 +128,6 @@ public class ShoppingCartNew {
 
     public void setSponsorAmount(Money sponsorAmount) {
         this.sponsorAmount = sponsorAmount;
-        this.customerAmount = getTotal().minus(sponsorAmount);
     }
 
     public Money customerAmount() {
@@ -151,5 +152,17 @@ public class ShoppingCartNew {
 
     public String paymentMode() {
         return paymentMode;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String paymentType() {
+        return paymentType;
+    }
+
+    public void updateCustomerAmountWithTheBalanceAmount() {
+        customerAmount = getTotal().minus(sponsorAmount());
     }
 }

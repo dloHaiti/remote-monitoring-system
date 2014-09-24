@@ -85,6 +85,7 @@
     <string name="sponsor_payment_amount_label">Enter Sponsor\'s Payment Amount</string>
     <string name="payment_type_label">Payment Type</string>
     <string name="customer_amount_label">Customer Amount</string>
+    <string name="delivery_time_label">Delivery Time</string>
     <string name="payment_summary_label">PAYMENT SUMMARY</string>
     <string name="customer_payment_label">CUSTOMER PAYMENT</string>
     <string name="sponsor_payment_label">SPONSOR PAYMENT</string>

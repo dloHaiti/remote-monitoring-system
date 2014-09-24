@@ -85,6 +85,7 @@
     <string name="sponsor_payment_amount_label">Entrez Paiement Montant du commanditaire</string>
     <string name="payment_type_label">Type de Paiement</string>
     <string name="customer_amount_label">Montant à la clientèle</string>
+    <string name="delivery_time_label">Délai de livraison</string>
     <string name="payment_summary_label">PAIEMENT RÉSUMÉ</string>
     <string name="customer_payment_label">PAIEMENT À LA CLIENTÈLE</string>
     <string name="sponsor_payment_label">SPONSOR PAIEMENT</string>

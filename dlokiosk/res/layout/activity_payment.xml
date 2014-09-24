@@ -142,6 +142,19 @@
                             android:inputType="numberDecimal"/>
                 </LinearLayout>
 
+                <LinearLayout
+                        android:id="@+id/delivery_time_row"
+                        style="@style/payment_form_row">
+                    <TextView
+                            android:id="@+id/delivery_time_label"
+                            style="@style/payment_form_field"
+                            android:text="@string/delivery_time_label"/>
+
+                    <Spinner
+                            android:id="@+id/delivery_time"
+                            style="@style/payment_form_field"/>
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
         <LinearLayout

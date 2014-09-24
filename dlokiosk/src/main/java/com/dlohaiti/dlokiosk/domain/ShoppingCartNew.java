@@ -18,6 +18,7 @@ public class ShoppingCartNew {
     private Money sponsorAmount = Money.ZERO;
     private Money customerAmount = Money.ZERO;
     private String paymentType;
+    private String deliveryTime;
 
     @Inject
     public ShoppingCartNew(RegisterNew register) {
@@ -53,6 +54,7 @@ public class ShoppingCartNew {
         sponsor = null;
         sponsorAmount = Money.ZERO;
         customerAmount = Money.ZERO;
+        deliveryTime = null;
     }
 
     public boolean isEmpty() {
@@ -164,5 +166,13 @@ public class ShoppingCartNew {
 
     public void updateCustomerAmountWithTheBalanceAmount() {
         customerAmount = getTotal().minus(sponsorAmount());
+    }
+
+    public String deliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 }

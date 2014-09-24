@@ -1,7 +1,5 @@
 package com.dlohaiti.dloserver
 
-import org.springframework.web.servlet.support.RequestContextUtils
-
 class ConfigurationService {
     def grailsApplication
 
@@ -28,5 +26,9 @@ class ConfigurationService {
 
     public String[] getPaymentTypes(){
         return grailsApplication.config.dloserver.payment.types.toString().split(",")
+    }
+
+    public String[] getDeliveryTimes(){
+        return grailsApplication.config.dloserver.payment.deliveryTimes.toString().split(",")
     }
 }

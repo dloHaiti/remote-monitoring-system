@@ -143,6 +143,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                         new PaymentModes(c.getConfiguration().getPaymentModes()).concatenatedString()) &&
                 configurationRepository.save(ConfigurationKey.PAYMENT_TYPE,
                         new PaymentTypes(c.getConfiguration().getPaymentTypes()).concatenatedString()) &&
+                configurationRepository.save(ConfigurationKey.DELIVERY_TIME,
+                        new DeliveryTimes(c.getConfiguration().getDeliveryTimes()).concatenatedString()) &&
                 productCategoryRepository.replaceAll(productCategories) &&
                 productRepository.replaceAll(products) &&
                 promotionRepository.replaceAll(promotions) &&

@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
+import com.dlohaiti.dlokiosk.domain.DeliveryTimes;
 import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.PaymentModes;
 import com.dlohaiti.dlokiosk.domain.PaymentTypes;
@@ -77,6 +78,12 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.customer_amount)
     private EditText customerAmountView;
 
+    @InjectView(R.id.delivery_time_row)
+    private LinearLayout deliveryTimeRowView;
+
+    @InjectView(R.id.delivery_time)
+    private Spinner deliveryTimeView;
+
     @InjectView(R.id.total_price_value)
     private TextView totalPriceView;
 
@@ -115,6 +122,7 @@ public class PaymentActivity extends SaleActivity {
         initialiseCustomerOnlyOrWithSponsorPaymentOptions();
         initialisePaymentModeList();
         initialisePaymentTypeList();
+        initialiseDeliveryTimeList();
         initialisePriceViews();
     }
 
@@ -300,7 +308,31 @@ public class PaymentActivity extends SaleActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
 
+    private void initialiseDeliveryTimeList() {
+        if (!cart.salesChannel().delayedDelivery()) {
+            deliveryTimeRowView.setVisibility(View.GONE);
+            return;
+        }
+
+        List<String> deliveryTimes = new DeliveryTimes(configurationRepository.get(ConfigurationKey.DELIVERY_TIME));
+        ArrayAdapter<String> deliveryTimeAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                R.layout.layout_spinner_dropdown_item,
+                deliveryTimes);
+        deliveryTimeView.setAdapter(deliveryTimeAdapter);
+        deliveryTimeView.setSelection(deliveryTimes.indexOf(cart.deliveryTime()));
+        deliveryTimeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String deliveryTime = (String) parent.getItemAtPosition(position);
+                cart.setDeliveryTime(deliveryTime);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
     }

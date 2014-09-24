@@ -13,5 +13,6 @@ public enum ConfigurationKey {
     DATE_FORMAT,
     PAYMENT_MODE,
     PAYMENT_TYPE,
+    DELIVERY_TIME,
     LOCALE
 }

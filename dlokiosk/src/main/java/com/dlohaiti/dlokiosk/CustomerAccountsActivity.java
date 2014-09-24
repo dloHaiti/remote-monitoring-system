@@ -70,6 +70,14 @@ public class CustomerAccountsActivity extends RoboActivity {
         updateFilteredCustomerList();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCustomerAccounts();
+        initialiseSalesChannelList();
+        initialiseCustomerList();
+        continueButton.setEnabled(false);
+    }
 
     private void updateFilteredCustomerList() {
         filteredCustomerList.clear();

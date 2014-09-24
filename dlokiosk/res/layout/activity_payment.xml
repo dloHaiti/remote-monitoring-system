@@ -215,27 +215,33 @@
 
             </LinearLayout>
 
-            <TextView
-                    android:text="@string/amount_due_summary_label"
-                    style="@style/payment_summary_text"/>
-
             <LinearLayout
-                    style="@style/payment_value_container"
-                    android:background="@color/amount_due_summary_label_background">
-
+                    android:id="@+id/amount_due_summary_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 <TextView
-                        android:id="@+id/amount_due_summary"
-                        style="@style/strong_payment_summary_field_value"
-                        android:text="0.00"/>
+                        android:text="@string/amount_due_summary_label"
+                        style="@style/payment_summary_text"/>
 
-                <TextView
-                        android:id="@+id/amount_due_currency"
-                        android:paddingLeft="5dp"
-                        style="@style/strong_payment_summary_field_value"
-                        android:text="HTG"/>
+                <LinearLayout
+                        style="@style/payment_value_container"
+                        android:background="@color/amount_due_summary_label_background">
+
+                    <TextView
+                            android:id="@+id/amount_due_summary"
+                            style="@style/strong_payment_summary_field_value"
+                            android:text="0.00"/>
+
+                    <TextView
+                            android:id="@+id/amount_due_currency"
+                            android:paddingLeft="5dp"
+                            style="@style/strong_payment_summary_field_value"
+                            android:text="HTG"/>
+
+                </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>

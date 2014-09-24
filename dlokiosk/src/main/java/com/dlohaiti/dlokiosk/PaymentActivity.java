@@ -95,6 +95,9 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.total_price_currency)
     private TextView totalPriceCurrencyView;
 
+    @InjectView(R.id.amount_due_summary_row)
+    private LinearLayout amountDueSummaryRowView;
+
     @InjectView(R.id.amount_due_summary)
     private TextView amountDueSummaryView;
 
@@ -169,6 +172,12 @@ public class PaymentActivity extends SaleActivity {
         customerPaymentSummaryView.setText(cart.customerAmount().amountAsString());
         sponsorPaymentSummaryView.setText(cart.sponsorAmount().amountAsString());
         amountDueSummaryView.setText(cart.dueAmount().amountAsString());
+
+        if (PAYMENT_TYPE_POST_PAY.equalsIgnoreCase(cart.paymentType())) {
+            amountDueSummaryRowView.setVisibility(View.VISIBLE);
+        } else if (PAYMENT_TYPE_NOW.equalsIgnoreCase(cart.paymentType())) {
+            amountDueSummaryRowView.setVisibility(View.GONE);
+        }
     }
 
     private void initialiseCustomerAmountView() {
@@ -280,14 +289,13 @@ public class PaymentActivity extends SaleActivity {
                 if (PAYMENT_TYPE_POST_PAY.equalsIgnoreCase(paymentType)) {
                     customerAmountRowView.setVisibility(View.VISIBLE);
                     cart.setCustomerAmount(Money.ZERO);
-                    updatePriceSummaryViews();
                 } else if (PAYMENT_TYPE_NOW.equalsIgnoreCase(paymentType)) {
                     customerAmountRowView.setVisibility(View.GONE);
                     customerAmountView.setText("");
                     cart.updateCustomerAmountWithTheBalanceAmount();
-                    updatePriceSummaryViews();
                 }
                 cart.setPaymentType(paymentType);
+                updatePriceSummaryViews();
             }
 
             @Override

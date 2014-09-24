@@ -62,6 +62,7 @@
                     android:text="@string/customer_phone_label"/>
                 <EditText
                     android:id="@+id/customer_phone"
+                    android:maxLength="15"
                     style="@style/payment_form_field"
                     android:hint="@string/customer_phone_hint"/>
             </LinearLayout>
@@ -84,6 +85,7 @@
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/latitude_degres"
+                        android:maxLength="3"
                         android:inputType="number" />
                     <TextView
                         android:padding="5dp"
@@ -93,6 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="O"
+
                         android:layout_toRightOf="@+id/latitude_degres"
                         android:layout_alignTop="@+id/latitude_degres" />
                     <EditText
@@ -100,6 +103,7 @@
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/latitude_minutes"
+                        android:maxLength="3"
                         android:inputType="number" />
                     <TextView
                         android:padding="5dp"

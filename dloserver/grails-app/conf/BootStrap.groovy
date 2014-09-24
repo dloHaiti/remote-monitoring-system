@@ -88,7 +88,7 @@ class BootStrap {
                     id: s.id,
                     name              : s.name,
                     contactName: s.contactName,
-                    description: s.description
+                    phoneNumber: s.phoneNumber
             ]
         }
 

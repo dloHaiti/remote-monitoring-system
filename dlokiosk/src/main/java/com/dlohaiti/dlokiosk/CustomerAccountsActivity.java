@@ -147,7 +147,9 @@ public class CustomerAccountsActivity extends RoboActivity {
     }
 
     public void onCancel(View view) {
-        finish();
+        Intent intent = new Intent(CustomerAccountsActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 

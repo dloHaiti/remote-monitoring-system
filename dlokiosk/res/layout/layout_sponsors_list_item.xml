@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="100"
+    android:id="@+id/sponsor_list_item"
+    android:padding="16dp">
+    <ImageButton
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_pencil"
+        android:layout_weight="5"
+        android:padding="1dp"
+        android:background="@drawable/edit_button"
+        android:id="@+id/edit_button" />
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sponsor_name"
+        style="@style/customer_account_edit_item"
+        android:layout_weight="30"
+        android:text="Sponsor"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contact_name"
+        style="@style/customer_account_edit_item"
+        android:layout_weight="20"
+        android:text="Contact"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/phone_number"
+        android:layout_weight="15"
+        style="@style/customer_account_edit_item"
+        android:text="Phone"/>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/customers"
+        style="@style/customer_account_edit_item"
+        android:layout_weight="30"
+        android:text="Customers"/>
+</LinearLayout>

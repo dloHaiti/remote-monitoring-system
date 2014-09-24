@@ -72,7 +72,7 @@ public class SponsorRepositoryTest {
             values.put(SponsorsTable.ID, sponsor.id());
             values.put(SponsorsTable.NAME, sponsor.name());
             values.put(SponsorsTable.CONTACT_NAME, sponsor.contactName());
-            values.put(SponsorsTable.DESCRIPTION, sponsor.description());
+            values.put(SponsorsTable.PHONE_NUMBER, sponsor.getPhoneNumber());
             wdb.insert(SponsorsTable.TABLE_NAME, null, values);
         }
     }

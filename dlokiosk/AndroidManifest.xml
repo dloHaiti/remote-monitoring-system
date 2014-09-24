@@ -91,7 +91,7 @@
         </activity>
         <activity android:name=".CustomerAccountsActivity"
                   android:screenOrientation="landscape"
-                  android:label="Accounts">
+                  android:label="Customer Accounts">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
@@ -147,7 +147,21 @@
         <activity android:name=".CustomerFormActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan|stateHidden"
-            android:label="Payment">
+            android:label="Customer Accounts">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
+        </activity>
+        <activity android:name=".AccountsActivity"
+            android:screenOrientation="landscape"
+            android:label="Accounts">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.dlohaiti.dlokiosk.MainActivity"/>
+        </activity>
+        <activity android:name=".SponsorsActivity"
+            android:screenOrientation="landscape"
+            android:label="Sponsors">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>

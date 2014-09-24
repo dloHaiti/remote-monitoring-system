@@ -125,7 +125,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (SponsorJson sponsorJson : c.getSponsors()) {
             sponsors.add(
                     new Sponsor(sponsorJson.getId(), sponsorJson.getName(),
-                            sponsorJson.getContactName(), sponsorJson.getDescription()));
+                            sponsorJson.getContactName(), sponsorJson.getPhoneNumber()));
         }
 
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();

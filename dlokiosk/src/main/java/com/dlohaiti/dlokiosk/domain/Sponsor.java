@@ -7,13 +7,13 @@ public class Sponsor implements Comparable<Sponsor> {
     private long id;
     private String name;
     private String contactName;
-    private String description;
+    private String phoneNumber;
 
-    public Sponsor(long id, String name, String contactName, String description) {
+    public Sponsor(long id, String name, String contactName, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
-        this.description = description;
+        this.phoneNumber = phoneNumber;
     }
 
     public long id() {
@@ -28,8 +28,8 @@ public class Sponsor implements Comparable<Sponsor> {
         return contactName;
     }
 
-    public String description() {
-        return description;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Sponsor implements Comparable<Sponsor> {
 
         if (id != sponsor.id) return false;
         if (contactName != null ? !contactName.equals(sponsor.contactName) : sponsor.contactName != null) return false;
-        if (description != null ? !description.equals(sponsor.description) : sponsor.description != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(sponsor.phoneNumber) : sponsor.phoneNumber != null) return false;
         if (name != null ? !name.equals(sponsor.name) : sponsor.name != null) return false;
 
         return true;
@@ -52,7 +52,7 @@ public class Sponsor implements Comparable<Sponsor> {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
     }
 

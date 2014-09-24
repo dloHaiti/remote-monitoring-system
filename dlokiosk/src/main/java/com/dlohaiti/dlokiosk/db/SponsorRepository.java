@@ -16,7 +16,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
-import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 import static java.lang.String.format;
 
 public class SponsorRepository {
@@ -26,7 +25,7 @@ public class SponsorRepository {
                     SponsorsTable.ID,
                     SponsorsTable.NAME,
                     SponsorsTable.CONTACT_NAME,
-                    SponsorsTable.DESCRIPTION
+                    SponsorsTable.PHONE_NUMBER
             };
     private final KioskDatabase db;
 
@@ -45,7 +44,7 @@ public class SponsorRepository {
                 values.put(SponsorsTable.ID, sponsor.id());
                 values.put(SponsorsTable.NAME, sponsor.name());
                 values.put(SponsorsTable.CONTACT_NAME, sponsor.contactName());
-                values.put(SponsorsTable.DESCRIPTION, sponsor.description());
+                values.put(SponsorsTable.PHONE_NUMBER, sponsor.getPhoneNumber());
 
                 wdb.insert(SponsorsTable.TABLE_NAME, null, values);
             }

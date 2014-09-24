@@ -4,7 +4,7 @@ public class SponsorJson {
     private long id;
     private String name;
     private String contactName;
-    private String description;
+    private String phoneNumber;
 
     public long getId() {
         return id;
@@ -22,12 +22,12 @@ public class SponsorJson {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getContactName() {

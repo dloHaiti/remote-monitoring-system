@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/activity_background">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:id="@+id/header"
+        android:padding="16dp">
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sponsor_edit"
+            style="@style/table_header"
+            android:text="Edit"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:padding="1dp"
+            android:layout_height="match_parent" />
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sponsor_name"
+            style="@style/table_header"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:text="Sponsor"/>
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_name"
+            style="@style/table_header"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:text="Contact"/>
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/phone_number"
+            android:layout_weight="15"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            style="@style/table_header"
+            android:text="Phone"/>
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/customers"
+            style="@style/table_header"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:text="Customers"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/list_pane"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/bottom_pane"
+        android:padding="16dp"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip"
+        android:baselineAligned="false">
+        <ListView
+            android:id="@+id/sponsors_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <include layout="@layout/layout_sale_bottom_pane"/>
+</RelativeLayout>

@@ -4,6 +4,7 @@ class UrlMappings {
         "/readings/$id?"(resource: "readings")
         "/receipts/$id?"(resource: "receipts")
         "/accounts/$id?"(resource: "accounts")
+        "/sponsors/$id?"(resource: "sponsors")
         "/deliveries/$id?"(resource: "deliveries")
         "/healthcheck/$id?"(resource: "healthcheck")
 

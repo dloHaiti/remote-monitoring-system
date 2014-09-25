@@ -198,4 +198,24 @@ public class SponsorRepository {
         Cursor cursor = rdb.query(KioskDatabase.SponsorsTable.TABLE_NAME, COLUMNS, where(KioskDatabase.SponsorsTable.IS_SYNCED), matches(String.valueOf(false)), null, null, null);
         return readAll(rdb, cursor);
     }
+
+    public Sponsor findByName(String name) {
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        rdb.beginTransaction();
+        try {
+            Cursor cursor = rdb.query(SponsorsTable.TABLE_NAME, COLUMNS, where(SponsorsTable.NAME), matches(name), null, null, null);
+            if (cursor.getCount() != 1) {
+                throw new RecordNotFoundException();
+            }
+            cursor.moveToFirst();
+            Sponsor sponsor = new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.valueOf(cursor.getString(4)));
+            cursor.close();
+            rdb.setTransactionSuccessful();
+            return sponsor;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            rdb.endTransaction();
+        }
+    }
 }

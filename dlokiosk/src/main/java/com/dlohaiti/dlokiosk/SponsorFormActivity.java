@@ -80,11 +80,13 @@ public class SponsorFormActivity extends RoboActivity {
         customerAccounts = new CustomerAccounts(customerAccountRepository.findAll());
         accounts.setItems(customerAccounts.getContactNames());
     }
+
     public void onCancel(View view) {
         Intent intent = new Intent(SponsorFormActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
     public void onSave(View view) {
         if (!validateSponsorForm()) {
             new AlertDialog.Builder(this)
@@ -124,16 +126,25 @@ public class SponsorFormActivity extends RoboActivity {
     }
 
     private boolean validateSponsorForm() {
-        boolean result=true;
-        if(sponsorName.getText().toString().isEmpty()){
+        boolean result = true;
+        if (sponsorName.getText().toString().isEmpty()) {
             sponsorName.setError(mandatoryFieldMessage);
-        }else{
+            result = false;
+        } else {
             sponsorName.setError(null);
+            Sponsor existingSponsor = sponsorRepository.findByName(sponsorName.getText().toString());
+            if (existingSponsor != null) {
+                if (sponsor == null || sponsor.getId() != existingSponsor.getId()) {
+                    sponsorName.setError("Already exist");
+                    result = false;
+
+                }
+            }
         }
         return result;
     }
 
     public void onBack(View view) {
-       this.onBackPressed();
+        this.onBackPressed();
     }
 }

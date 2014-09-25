@@ -97,7 +97,7 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         return accounts;
     }
 
-    private CustomerAccount findAccountByContactName(String name) {
+    public CustomerAccount findAccountByContactName(String name) {
         for(CustomerAccount ca:this){
             if(ca.getContactName().equalsIgnoreCase(name)){
                 return ca;

@@ -8,10 +8,15 @@ public class Money implements Comparable<Money> {
     public static final Money ZERO = new Money(BigDecimal.ZERO);
     private final BigDecimal amount;
     // Money without currency feels wrong, but this app is only used with HTG
-    private final Currency currency = Currency.getInstance("HTG");
+    private final Currency currency;
 
     public Money(BigDecimal amount) {
+        this(amount, "HTG");
+    }
+
+    public Money(BigDecimal amount, String currency) {
         this.amount = amount;
+        this.currency = Currency.getInstance(currency);
     }
 
     public BigDecimal getAmount() {

@@ -4,19 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.google.inject.Inject;
-
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
@@ -223,7 +217,7 @@ public class CustomerAccountRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.IS_SYNCED), matches(String.valueOf(false)), null, null, null);
-        return getCustomerAccounts(rdb, cursor,true);
+        return getCustomerAccounts(rdb, cursor, true);
     }
 
     private List<CustomerAccount> getCustomerAccounts(SQLiteDatabase rdb, Cursor cursor, boolean withAssociation) {
@@ -296,7 +290,7 @@ public class CustomerAccountRepository {
         return accounts;
     }
 
-    public  List<CustomerAccount> findBySponsorId(long sponsorId) {
+    public List<CustomerAccount> findBySponsorId(long sponsorId) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.rawQuery(format(
@@ -313,6 +307,6 @@ public class CustomerAccountRepository {
                         KioskDatabase.CustomerAccountsTable.ID,
                         KioskDatabase.CustomerAccountsTable.NAME),
                 new String[]{String.valueOf(sponsorId)});
-          return getCustomerAccounts(rdb, cursor, false);
+        return getCustomerAccounts(rdb, cursor, false);
     }
 }

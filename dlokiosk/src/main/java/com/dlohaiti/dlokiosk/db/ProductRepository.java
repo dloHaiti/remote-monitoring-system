@@ -45,7 +45,8 @@ public class ProductRepository {
         List<Product> products = new ArrayList<Product>();
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
-        Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cursor = readableDatabase.query(KioskDatabase.ProductsTable.TABLE_NAME,
+                columns, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {

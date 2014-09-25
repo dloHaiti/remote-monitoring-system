@@ -11,6 +11,7 @@ public class Configuration {
     private List<CustomerAccountJson> customerAccounts;
     private List<ProductCategoryJson> productCategories;
     private List<SponsorJson> sponsors;
+    private List<ProductMrpJson> productMrps;
 
     private ConfigurationJson configuration;
 
@@ -94,5 +95,13 @@ public class Configuration {
 
     public void setSponsors(List<SponsorJson> sponsors) {
         this.sponsors = sponsors;
+    }
+
+    public List<ProductMrpJson> getProductMrps() {
+        return productMrps;
+    }
+
+    public void setProductMrps(List<ProductMrpJson> productMrps) {
+        this.productMrps = productMrps;
     }
 }

@@ -42,6 +42,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Inject
     private SponsorRepository sponsorRepository;
     @Inject
+    private ProductMrpRepository productMrpRepository;
+    @Inject
     private KioskDate kioskDate;
     @Inject
     private Base64ImageConverter imageConverter;
@@ -118,7 +120,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         for (SponsorJson sponsorJson : c.getSponsors()) {
             sponsors.add(
                     new Sponsor(sponsorJson.getId(), sponsorJson.getName(),
-                            sponsorJson.getContactName(), sponsorJson.getPhoneNumber(),true));
+                            sponsorJson.getContactName(), sponsorJson.getPhoneNumber(), true));
         }
 
         List<CustomerAccount> customerAccounts = new ArrayList<CustomerAccount>();
@@ -130,6 +132,13 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                             .withChannelIds(account.channelIds())
                             .withSponsorIds(account.sponsorIds()).setGpsCoordinates(account.getGpsCoordinates()));
         }
+
+        ProductMrps productMrps = new ProductMrps();
+        for (ProductMrpJson mrp : c.getProductMrps()) {
+            productMrps.add(new ProductMrp(mrp.getProduct_id(), mrp.getChannel_id(),
+                    new Money(mrp.getPrice().getAmount(), mrp.getPrice().getCurrencyCode())));
+        }
+
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
 
         //FIXME: what happens when one of these fails?
@@ -154,7 +163,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                 salesChannelRepository.replaceAll(salesChannels) &&
                 customerTypeRepository.replaceAll(customerTypes) &&
                 sponsorRepository.replaceAll(sponsors) &&
-                customerAccountRepository.replaceAll(customerAccounts);
+                customerAccountRepository.replaceAll(customerAccounts) &&
+                productMrpRepository.replaceAll(productMrps);
     }
 
     @Override

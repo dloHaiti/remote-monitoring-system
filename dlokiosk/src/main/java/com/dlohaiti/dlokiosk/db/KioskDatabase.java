@@ -302,6 +302,21 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,
                 SponsorCustomerAccountsTable.SPONSOR_ID
         );
+
+        String createProductMrps = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER ," +
+                        "%s INTEGER ," +
+                        "%s STRING ," +
+                        "%s STRING" +
+                        ")",
+                ProductMrpsTable.TABLE_NAME,
+                ProductMrpsTable.PRODUCT_ID,
+                ProductMrpsTable.CHANNEL_ID,
+                ProductMrpsTable.PRICE,
+                ProductMrpsTable.CURRENCY
+        );
+
         db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
         db.execSQL(createMeasurementLineItems);
@@ -321,6 +336,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createSalesChannelCustomerAccounts);
         db.execSQL(createSponsors);
         db.execSQL(createSponsorCustomerAccounts);
+        db.execSQL(createProductMrps);
         insertKioskConfig(db, insertConfig);
     }
 
@@ -508,6 +524,14 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "SPONSOR_CUSTOMER_ACCOUNTS";
         public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
         public static final String SPONSOR_ID = "SPONSOR_ID";
+    }
+
+    public static class ProductMrpsTable {
+        public static final String TABLE_NAME = "PRODUCT_MRPS";
+        public static final String PRODUCT_ID = "PRODUCT_ID";
+        public static final String CHANNEL_ID = "CHANNEL_ID";
+        public static final String PRICE = "PRICE";
+        public static final String CURRENCY = "CURRENCY";
     }
 
 }

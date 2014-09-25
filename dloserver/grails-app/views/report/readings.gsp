@@ -4,6 +4,7 @@
     <title>Readings Report</title>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
+        google.load('jquery','1.4.2');
         google.load("visualization", "1", {packages: ["corechart", "table"]});
         google.setOnLoadCallback(drawChart);
         function drawChart() {
@@ -14,6 +15,7 @@
             </g:each>
         }
     </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 
 <body>

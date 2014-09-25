@@ -594,3 +594,9 @@ a.skip {
 	position: absolute;
 	left: -9999px;
 }
+
+.right-align {
+    position: fixed;
+    float: right;
+    right: 0;
+}

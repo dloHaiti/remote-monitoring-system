@@ -61,7 +61,7 @@ public class Sponsor implements Comparable<Sponsor> {
 
         Sponsor sponsor = (Sponsor) o;
 
-        if (id != sponsor.id) return false;
+        if (!id.equalsIgnoreCase(sponsor.id)) return false;
         if (contactName != null ? !contactName.equals(sponsor.contactName) : sponsor.contactName != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(sponsor.phoneNumber) : sponsor.phoneNumber != null) return false;
         if (name != null ? !name.equals(sponsor.name) : sponsor.name != null) return false;

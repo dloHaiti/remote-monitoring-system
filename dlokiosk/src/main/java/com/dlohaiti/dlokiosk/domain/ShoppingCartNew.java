@@ -69,8 +69,8 @@ public class ShoppingCartNew {
         promotions.remove(promotion);
     }
 
-    public Money getSubtotal() {
-        return register.subtotal(this);
+    public Money getActualTotal() {
+        return register.actualTotal(this);
     }
 
     public String getCurrencyCode() {
@@ -84,7 +84,7 @@ public class ShoppingCartNew {
     }
 
     public Money getTotal() {
-        return register.total(this);
+        return register.discountedTotal(this);
     }
 
     public void clearPromotions() {

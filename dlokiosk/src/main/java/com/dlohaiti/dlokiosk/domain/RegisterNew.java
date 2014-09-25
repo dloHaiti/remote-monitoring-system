@@ -42,7 +42,7 @@ public class RegisterNew {
         }
         List<Promotion> promotionsCopy = new ArrayList<Promotion>(cart.getPromotions());
         Collections.sort(promotionsCopy); // percentages and large amounts first
-        BigDecimal subtotal = cart.getSubtotal().getAmount();
+        BigDecimal subtotal = cart.getActualTotal().getAmount();
         List<Product> productsCopy = new ArrayList<Product>(cart.getProducts());
 
         // deduct everything at the basket-level first
@@ -89,15 +89,15 @@ public class RegisterNew {
         return product.getPrice().times(product.getQuantity());
     }
 
-    public Money subtotal(ShoppingCartNew cart) {
-        BigDecimal subtotal = BigDecimal.ZERO;
+    public Money actualTotal(ShoppingCartNew cart) {
+        BigDecimal actualTotal = BigDecimal.ZERO;
         for (Product product : cart.getProducts()) {
-            subtotal = subtotal.add(retailPriceFor(product).getAmount());
+            actualTotal = actualTotal.add(retailPriceFor(product).getAmount());
         }
-        return new Money(subtotal);
+        return new Money(actualTotal);
     }
 
-    public Money total(ShoppingCartNew cart) {
+    public Money discountedTotal(ShoppingCartNew cart) {
         List<LineItem> lineItems = buildLineItemsFrom(cart);
         BigDecimal total = BigDecimal.ZERO;
         for (LineItem item : lineItems) {

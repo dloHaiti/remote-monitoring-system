@@ -9,7 +9,8 @@
             android:layout_width="match_parent"
             android:weightSum="100"
             android:layout_height="match_parent"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:paddingBottom="@dimen/row_height">
         <ListView
                 android:id="@+id/sales_channel_list"
                 android:layout_width="0dp"

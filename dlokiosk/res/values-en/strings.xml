@@ -137,4 +137,10 @@
         total price. Please correct the values
     </string>
     <string name="search_sponsor_text">Search Sponsor</string>
+    <string name="sponsor_name_label">Sponsor Name</string>
+    <string name="sponsor_name_hint">Enter sponsor name</string>
+    <string name="sponsor_contact_name_label">Contact Name</string>
+    <string name="sponsor_contact_name_hint">Enter contact name</string>
+    <string name="select_customer_label">Customers</string>
+    <string name="add_sponsor_account">Add Sponsor</string>
 </resources>

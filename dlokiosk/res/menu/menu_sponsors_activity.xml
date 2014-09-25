@@ -12,6 +12,6 @@
         android:id="@+id/add_sponsor"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="@string/add_customer_account"
+        android:title="@string/add_sponsor_account"
         android:onClick="onAddSponsor"/>
 </menu>

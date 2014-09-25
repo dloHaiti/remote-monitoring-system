@@ -102,5 +102,7 @@ public class SponsorsActivity extends RoboActivity {
     }
 
     public void onAddSponsor(MenuItem item) {
+        Intent intent = new Intent(SponsorsActivity.this, SponsorFormActivity.class);
+        startActivity(intent);
     }
 }

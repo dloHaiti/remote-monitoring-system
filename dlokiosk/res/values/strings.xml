@@ -134,6 +134,12 @@
     <string name="error_sponsor_customer_amount_greater_than_total">Montant de commanditaire plus le montant de la
         clientèle est plus grande que le prix total. S\'il vous plaît corriger les valeurs
     </string>
-    <string name="search_sponsor_text">Recherche Sponsor</string>
+    <string name="search_sponsor_text">Recherche parrain</string>
+    <string name="sponsor_name_label">Nom du parrain</string>
+    <string name="sponsor_name_hint">Entrez le nom du promoteur</string>
+    <string name="sponsor_contact_name_label">Nom du contact</string>
+    <string name="sponsor_contact_name_hint">Entrez Nom du contact</string>
+    <string name="select_customer_label">clientèle</string>
+    <string name="add_sponsor_account">Ajouter commanditaire</string>
 
 </resources>

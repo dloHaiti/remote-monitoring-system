@@ -166,6 +166,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
         </activity>
+        <activity android:name=".SponsorFormActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:label="Sponsor">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.dlohaiti.dlokiosk.SponsorsActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

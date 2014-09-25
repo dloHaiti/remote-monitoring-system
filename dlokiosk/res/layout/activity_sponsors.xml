@@ -15,7 +15,6 @@
             android:text="Edit"
             android:layout_width="0dp"
             android:layout_weight="5"
-            android:padding="1dp"
             android:layout_height="match_parent" />
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/sponsor_name"

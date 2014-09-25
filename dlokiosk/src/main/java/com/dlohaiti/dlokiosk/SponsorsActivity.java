@@ -43,7 +43,14 @@ public class SponsorsActivity extends RoboActivity {
         initialiseSponsorsList();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initialiseSponsorsList();
+    }
+
     private void initialiseSponsorsList() {
+        clearSponsorSearch();
         allSponsors = sponsorRepository.findAll();
         fillAccounts();
         sponsorsAdapter = new SponsorsArrayAdapter(getApplicationContext(), allSponsors);
@@ -82,6 +89,9 @@ public class SponsorsActivity extends RoboActivity {
     }
 
     private void clearSponsorSearch() {
+        if(searchView ==null){
+            return;
+        }
         if (isNotBlank(searchView.getQuery())) {
             searchView.setQuery("", true);
         }

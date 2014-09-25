@@ -1,20 +1,29 @@
 package com.dlohaiti.dlokiosk;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SearchView;
 
+import com.dlohaiti.dlokiosk.adapter.CustomerAccountEditAdapter;
 import com.dlohaiti.dlokiosk.adapter.SponsorsArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
+import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SponsorsActivity extends RoboActivity {
     @InjectView(R.id.sponsors_list)
@@ -25,8 +34,10 @@ public class SponsorsActivity extends RoboActivity {
     @Inject
     private CustomerAccountRepository customerAccountRepository;
 
-    private Sponsors sponsors;
+    private Sponsors allSponsors;
     private SponsorsArrayAdapter sponsorsAdapter;
+    private SearchView searchView;
+    private Sponsors filteredSponsors =new Sponsors();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,16 +47,48 @@ public class SponsorsActivity extends RoboActivity {
     }
 
     private void initialiseSponsorsList() {
-        sponsors = sponsorRepository.findAll();
+        allSponsors = sponsorRepository.findAll();
         fillAccounts();
-        sponsorsAdapter = new SponsorsArrayAdapter(getApplicationContext(), sponsors);
+        sponsorsAdapter = new SponsorsArrayAdapter(getApplicationContext(), allSponsors);
         sponsorsListView.setAdapter(sponsorsAdapter);
     }
 
     private void fillAccounts() {
-        for(Sponsor s:sponsors){
+        for(Sponsor s: allSponsors){
             s.withAccounts(customerAccountRepository.findBySponsorId(s.id()));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_sponsors_activity, menu);
+
+        searchView = ((SearchView) menu.findItem(R.id.search_sponsors).getActionView());
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                filteredSponsors.clear();
+                List<Sponsor> filteredList = allSponsors.filterBySponsorName(text);
+                filteredSponsors.addAll(filteredList);
+                sponsorsAdapter = new SponsorsArrayAdapter(SponsorsActivity.this, filteredSponsors);
+                sponsorsListView.setAdapter(sponsorsAdapter);
+                return true;
+            }
+        });
+        return true;
+    }
+
+    private void clearSponsorSearch() {
+        if (isNotBlank(searchView.getQuery())) {
+            searchView.setQuery("", true);
+        }
+        searchView.setIconified(true);
     }
 
     public void onCancel(View view) {
@@ -56,5 +99,8 @@ public class SponsorsActivity extends RoboActivity {
 
     public void onBack(View view) {
         finish();
+    }
+
+    public void onAddSponsor(MenuItem item) {
     }
 }

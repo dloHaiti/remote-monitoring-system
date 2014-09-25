@@ -136,4 +136,5 @@
     <string name="error_sponsor_customer_amount_greater_than_total">Sponsor amount plus Customer amount is greater than
         total price. Please correct the values
     </string>
+    <string name="search_sponsor_text">Search Sponsor</string>
 </resources>

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+
 public class Sponsors extends ArrayList<Sponsor> {
     public Sponsors(Collection<Sponsor> sponsors) {
         super(sponsors);
@@ -38,5 +40,15 @@ public class Sponsors extends ArrayList<Sponsor> {
             }
         }
         return null;
+    }
+
+    public List<Sponsor> filterBySponsorName(String sponsorName) {
+        List<Sponsor> sponsors = new ArrayList<Sponsor>();
+        for (Sponsor s : this) {
+            if (containsIgnoreCase(s.name(),sponsorName)) {
+                sponsors.add(s);
+            }
+        }
+        return sponsors;
     }
 }

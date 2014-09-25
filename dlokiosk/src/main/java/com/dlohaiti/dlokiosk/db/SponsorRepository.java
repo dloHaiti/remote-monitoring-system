@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.dlohaiti.dlokiosk.db.KioskDatabase.SponsorsTable;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
@@ -74,7 +75,7 @@ public class SponsorRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Sponsor sponsor = new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.valueOf(cursor.getString(4)));
+                Sponsor sponsor = new Sponsor(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), Boolean.valueOf(cursor.getString(4)));
                 sponsors.add(sponsor);
                 cursor.moveToNext();
             }
@@ -108,7 +109,7 @@ public class SponsorRepository {
         return readAll(rdb, cursor);
     }
 
-    public Sponsor findById(Long id) {
+    public Sponsor findById(String id) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
@@ -117,7 +118,7 @@ public class SponsorRepository {
                 throw new RecordNotFoundException();
             }
             cursor.moveToFirst();
-            Sponsor sponsor = new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.valueOf(cursor.getString(4)));
+            Sponsor sponsor = new Sponsor(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), Boolean.valueOf(cursor.getString(4)));
             cursor.close();
             rdb.setTransactionSuccessful();
             return sponsor;
@@ -147,8 +148,8 @@ public class SponsorRepository {
 //                sponsor.setId(generatedId);
 //                wdb.insert(KioskDatabase.CustomerAccountsTable.TABLE_NAME, null, values);
             } else {
-                Long sponsorId = sponsor.getId();
-                wdb.update(KioskDatabase.SponsorsTable.TABLE_NAME, values, "id " + "=" + sponsorId, null);
+                String sponsorId = sponsor.getId();
+                wdb.update(KioskDatabase.SponsorsTable.TABLE_NAME, values, "id " + "='" + sponsorId + "'", null);
             }
             replaceSponsorCustomerAccountMap(wdb, sponsor);
             wdb.setTransactionSuccessful();
@@ -166,9 +167,9 @@ public class SponsorRepository {
         wdb.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            Long sponsorId = sponsor.getId();
+            String sponsorId = sponsor.getId();
             values.put(SponsorsTable.IS_SYNCED, String.valueOf(true));
-            wdb.update(SponsorsTable.TABLE_NAME, values, "id " + "=" + sponsorId, null);
+            wdb.update(SponsorsTable.TABLE_NAME, values, "id " + "='" + sponsorId + "'", null);
             wdb.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -178,9 +179,10 @@ public class SponsorRepository {
             wdb.endTransaction();
         }
     }
+
     private void replaceSponsorCustomerAccountMap(SQLiteDatabase wdb, Sponsor sponsor) {
         wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, where(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID), matches(sponsor.getId()));
-        for (CustomerAccount account: sponsor.customerAccounts()) {
+        for (CustomerAccount account : sponsor.customerAccounts()) {
             ContentValues cv = new ContentValues();
             cv.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
             cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, sponsor.getId());
@@ -208,7 +210,7 @@ public class SponsorRepository {
                 throw new RecordNotFoundException();
             }
             cursor.moveToFirst();
-            Sponsor sponsor = new Sponsor(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3),Boolean.valueOf(cursor.getString(4)));
+            Sponsor sponsor = new Sponsor(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), Boolean.valueOf(cursor.getString(4)));
             cursor.close();
             rdb.setTransactionSuccessful();
             return sponsor;

@@ -279,7 +279,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
 
         String createSponsors = String.format(
                 "CREATE TABLE %s(" +
-                        "%s INTEGER PRIMARY KEY," +
+                        "%s STRING PRIMARY KEY," +
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s TEXT," +
@@ -296,7 +296,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         String createSponsorCustomerAccounts = String.format(
                 "CREATE TABLE %s(" +
                         "%s STRING ," +
-                        "%s INTEGER " +
+                        "%s STRING " +
                         ")",
                 SponsorCustomerAccountsTable.TABLE_NAME,
                 SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID,

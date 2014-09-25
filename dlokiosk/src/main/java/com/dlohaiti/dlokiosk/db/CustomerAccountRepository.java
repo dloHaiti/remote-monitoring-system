@@ -77,7 +77,7 @@ public class CustomerAccountRepository {
     private void replaceAllSponsorCustomerAccountMap(SQLiteDatabase wdb, List<CustomerAccount> accounts) {
         wdb.delete(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, null, null);
         for (CustomerAccount account : accounts) {
-            for (long channelId : account.getSponsorIds()) {
+            for (String channelId : account.getSponsorIds()) {
                 ContentValues values = new ContentValues();
                 values.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
                 values.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, channelId);
@@ -290,7 +290,7 @@ public class CustomerAccountRepository {
         return accounts;
     }
 
-    public List<CustomerAccount> findBySponsorId(long sponsorId) {
+    public List<CustomerAccount> findBySponsorId(String sponsorId) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         Cursor cursor = rdb.rawQuery(format(

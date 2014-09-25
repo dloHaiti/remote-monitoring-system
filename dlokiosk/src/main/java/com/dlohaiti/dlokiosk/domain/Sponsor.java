@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sponsor implements Comparable<Sponsor> {
-    private Long id;
+    private String id;
     private String name;
     private String contactName;
     private String phoneNumber;
     private List<CustomerAccount> customerAccounts;
     private boolean synced;
 
-    public Sponsor(Long id, String name, String contactName, String phoneNumber,boolean synced) {
+    public Sponsor(String id, String name, String contactName, String phoneNumber,boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
@@ -22,7 +22,7 @@ public class Sponsor implements Comparable<Sponsor> {
         this.synced = synced;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -38,7 +38,7 @@ public class Sponsor implements Comparable<Sponsor> {
         return phoneNumber;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,7 +71,7 @@ public class Sponsor implements Comparable<Sponsor> {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);

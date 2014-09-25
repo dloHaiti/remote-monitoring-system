@@ -64,7 +64,7 @@ public class SponsorFormActivity extends RoboActivity {
             sponsorId = null;
             return;
         }
-        sponsor = sponsorRepository.findById(Long.valueOf(sponsorId));
+        sponsor = sponsorRepository.findById(sponsorId);
         if (sponsor == null) {
             return;
         }
@@ -134,7 +134,7 @@ public class SponsorFormActivity extends RoboActivity {
             sponsorName.setError(null);
             Sponsor existingSponsor = sponsorRepository.findByName(sponsorName.getText().toString());
             if (existingSponsor != null) {
-                if (sponsor == null || sponsor.getId() != existingSponsor.getId()) {
+                if (sponsor == null || !sponsor.getId().equalsIgnoreCase(existingSponsor.getId())) {
                     sponsorName.setError("Already exist");
                     result = false;
 

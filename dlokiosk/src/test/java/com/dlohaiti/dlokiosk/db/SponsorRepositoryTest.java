@@ -37,33 +37,33 @@ public class SponsorRepositoryTest {
     @Test
     public void shouldReturnAllSponsorsInSetInAlphabeticalOrder() {
         SQLiteDatabase wdb = db.getWritableDatabase();
-        List<Sponsor> sponsors = asList(new Sponsor(1L, "Name 1", "Contact Name 1", "Desc 1",true),
-                new Sponsor(2L, "Name 2", "Contact Name 2", "Desc 2",true));
+        List<Sponsor> sponsors = asList(new Sponsor("1", "Name 1", "Contact Name 1", "Desc 1",true),
+                new Sponsor("2", "Name 2", "Contact Name 2", "Desc 2",true));
         saveSponsors(wdb, sponsors);
 
         Sponsors list = repository.findAll();
 
         assertThat(list.size(), is(2));
-        assertThat(list, is(asList(new Sponsor(1L, "Name 1", "Contact Name 1", "Desc 1",true),
-                new Sponsor(2L, "Name 2", "Contact Name 2", "Desc 2",true))));
+        assertThat(list, is(asList(new Sponsor("1", "Name 1", "Contact Name 1", "Desc 1",true),
+                new Sponsor("2", "Name 2", "Contact Name 2", "Desc 2",true))));
     }
 
     @Test
     public void shouldReplaceAll() {
         SQLiteDatabase wdb = db.getWritableDatabase();
-        saveSponsors(wdb, asList(new Sponsor(1L, "Name 1", "Contact Name 1", "Desc 1",true),
-                new Sponsor(2L, "Name 2", "Contact Name 2", "Desc 2",true)));
+        saveSponsors(wdb, asList(new Sponsor("1", "Name 1", "Contact Name 1", "Desc 1",true),
+                new Sponsor("2", "Name 2", "Contact Name 2", "Desc 2",true)));
         assertThat(repository.findAll(),
-                is(asList(new Sponsor(1L, "Name 1", "Contact Name 1", "Desc 1",true),
-                        new Sponsor(2L, "Name 2", "Contact Name 2", "Desc 2",true))));
+                is(asList(new Sponsor("1", "Name 1", "Contact Name 1", "Desc 1",true),
+                        new Sponsor("2", "Name 2", "Contact Name 2", "Desc 2",true))));
 
-        boolean success = repository.replaceAll(asList(new Sponsor(3L, "Name 3", "Contact Name 3", "Desc 3",true),
-                new Sponsor(4L, "Name 4", "Contact Name 4", "Desc 3",true)));
+        boolean success = repository.replaceAll(asList(new Sponsor("3", "Name 3", "Contact Name 3", "Desc 3",true),
+                new Sponsor("4", "Name 4", "Contact Name 4", "Desc 3",true)));
 
         assertThat(success, is(true));
         assertThat(repository.findAll(),
-                is(asList(new Sponsor(3L, "Name 3", "Contact Name 3", "Desc 3",true),
-                        new Sponsor(4L, "Name 4", "Contact Name 4", "Desc 3",true))));
+                is(asList(new Sponsor("3", "Name 3", "Contact Name 3", "Desc 3",true),
+                        new Sponsor("4", "Name 4", "Contact Name 4", "Desc 3",true))));
     }
 
     private void saveSponsors(SQLiteDatabase wdb, List<Sponsor> sponsors) {

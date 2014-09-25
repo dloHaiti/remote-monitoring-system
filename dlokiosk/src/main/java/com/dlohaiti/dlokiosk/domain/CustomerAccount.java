@@ -21,7 +21,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     private boolean synced;
     private List<SalesChannel> channels;
     private String customerTypeId;
-    private List<Long> sponsorIds;
+    private List<String> sponsorIds;
     private Sponsors sponsors;
     private String gpsCoordinates;
     private boolean selected;
@@ -81,12 +81,12 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         return this;
     }
 
-    public List<Long> getSponsorIds() {
+    public List<String> getSponsorIds() {
         try {
             if (sponsorIds != null) {
                 return sponsorIds;
             } else {
-                List<Long> ids = new ArrayList<Long>();
+                List<String> ids = new ArrayList<String>();
                 for (Sponsor s : sponsors) {
                     ids.add(s.getId());
                 }
@@ -228,7 +228,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         return customerTypeId;
     }
 
-    public CustomerAccount withSponsorIds(List<Long> sponsorIds) {
+    public CustomerAccount withSponsorIds(List<String> sponsorIds) {
         this.sponsorIds = sponsorIds;
         return this;
     }

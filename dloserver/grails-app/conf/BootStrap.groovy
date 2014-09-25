@@ -162,7 +162,8 @@ class BootStrap {
             }
 
             if (Sponsor.count() == 0) {
-                new Sponsor(name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
+                new Sponsor(id:"5678",name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
+                new Sponsor(id:"5678sdsd",name: "sponsor2", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
             }
 
             if (DeliveryAgent.count() == 0) {
@@ -180,6 +181,7 @@ class BootStrap {
 
             if (ProductCategory.count() == 0) {
                 def category = new ProductCategory(name: "Category1", base64EncodedImage: "").save(failOnError: true)
+                new ProductCategory(name: "Category2", base64EncodedImage: "").save(failOnError: true)
             }
 
             if (Product.count() == 0) {

@@ -79,8 +79,8 @@ public class CustomerAccountRepositoryTest {
         assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2", false)), is(initialList.last().getChannels()));
 
         boolean success = repository.replaceAll(asList(
-                new CustomerAccount("1", "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)).withSponsorIds(asList(1L)),
-                new CustomerAccount("2", "Name 4", "Contact Name 4", "School", "Address 4", "Phone 4", (long) 44, 0, true).withChannelIds(asList(4L)).withSponsorIds(asList(1L))));
+                new CustomerAccount("1", "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)).withSponsorIds(asList("1")),
+                new CustomerAccount("2", "Name 4", "Contact Name 4", "School", "Address 4", "Phone 4", (long) 44, 0, true).withChannelIds(asList(4L)).withSponsorIds(asList("1"))));
 
         assertThat(success, is(true));
         SortedSet<CustomerAccount> updatedList = repository.findAll();

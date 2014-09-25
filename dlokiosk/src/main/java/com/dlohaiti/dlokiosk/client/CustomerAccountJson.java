@@ -104,8 +104,8 @@ public class CustomerAccountJson {
         return ids;
     }
 
-    public List<Long> sponsorIds() {
-        ArrayList<Long> ids = new ArrayList<Long>();
+    public List<String> sponsorIds() {
+        ArrayList<String> ids = new ArrayList<String>();
         for (SponsorIdJson sponsor : sponsors) {
             ids.add(sponsor.getId());
         }

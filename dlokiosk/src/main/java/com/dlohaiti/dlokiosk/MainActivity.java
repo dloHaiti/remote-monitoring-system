@@ -48,13 +48,13 @@ public class MainActivity extends RoboActivity implements StatusView {
         if (isConnected()) {
             String text = config.get(ConfigurationKey.LAST_UPDATE);
             LocalDate lastUpdate = basicDate().parseLocalDate(text);
-            if (lastUpdate.isBefore(new LocalDate())) {
+            if (hasUnsentData()) {
+                doManualSync(null);
+            }else if (lastUpdate.isBefore(new LocalDate()) ) {
                 new PullConfigurationTask(this).execute();
                 config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(basicDate()));
             }
-            if (hasUnsentData()) {
-                doManualSync(null);
-            }
+
         }
     }
 

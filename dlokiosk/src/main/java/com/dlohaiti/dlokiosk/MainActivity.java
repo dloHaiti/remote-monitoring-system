@@ -33,6 +33,8 @@ public class MainActivity extends RoboActivity implements StatusView {
     private DeliveryRepository deliveryRepository;
     @Inject
     private CustomerAccountRepository accountRepository;
+    @Inject
+    private SponsorRepository sponsorRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +139,7 @@ public class MainActivity extends RoboActivity implements StatusView {
     private boolean hasUnsentData() {
         return readingsRepository.isNotEmpty() ||
                 receiptsRepository.isNotEmpty() ||
-                deliveryRepository.isNotEmpty() || accountRepository.isNotEmpty();
+                deliveryRepository.isNotEmpty() || accountRepository.isNotEmpty() || sponsorRepository.isNotEmpty();
     }
 
     public void moveToAccountsScreen(View view) {

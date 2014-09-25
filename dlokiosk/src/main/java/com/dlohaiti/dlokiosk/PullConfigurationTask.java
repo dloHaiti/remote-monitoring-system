@@ -113,6 +113,14 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
             salesChannels.add(new SalesChannel(channel.getId(), channel.getName(), channel.getDescription(),
                     channel.getDelayedDelivery()));
         }
+
+        Sponsors sponsors = new Sponsors();
+        for (SponsorJson sponsorJson : c.getSponsors()) {
+            sponsors.add(
+                    new Sponsor(sponsorJson.getId(), sponsorJson.getName(),
+                            sponsorJson.getContactName(), sponsorJson.getPhoneNumber(),true));
+        }
+
         List<CustomerAccount> customerAccounts = new ArrayList<CustomerAccount>();
         for (CustomerAccountJson account : c.getCustomerAccounts()) {
             customerAccounts.add(
@@ -122,13 +130,6 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
                             .withChannelIds(account.channelIds())
                             .withSponsorIds(account.sponsorIds()).setGpsCoordinates(account.getGpsCoordinates()));
         }
-        Sponsors sponsors = new Sponsors();
-        for (SponsorJson sponsorJson : c.getSponsors()) {
-            sponsors.add(
-                    new Sponsor(sponsorJson.getId(), sponsorJson.getName(),
-                            sponsorJson.getContactName(), sponsorJson.getPhoneNumber()));
-        }
-
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
 
         //FIXME: what happens when one of these fails?

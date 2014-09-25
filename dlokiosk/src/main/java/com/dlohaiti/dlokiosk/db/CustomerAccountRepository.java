@@ -6,14 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
-import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,7 +214,7 @@ public class CustomerAccountRepository {
         for (Sponsor s : account.sponsors()) {
             ContentValues cv = new ContentValues();
             cv.put(KioskDatabase.SponsorCustomerAccountsTable.CUSTOMER_ACCOUNT_ID, account.getId());
-            cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, s.id());
+            cv.put(KioskDatabase.SponsorCustomerAccountsTable.SPONSOR_ID, s.getId());
             wdb.insert(KioskDatabase.SponsorCustomerAccountsTable.TABLE_NAME, null, cv);
         }
     }

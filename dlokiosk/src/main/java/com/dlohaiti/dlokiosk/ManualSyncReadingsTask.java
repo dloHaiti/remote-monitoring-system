@@ -11,14 +11,17 @@ import com.dlohaiti.dlokiosk.client.DeliveriesClient;
 import com.dlohaiti.dlokiosk.client.PostResponse;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
+import com.dlohaiti.dlokiosk.client.SponsorClient;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.DeliveryRepository;
 import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
+import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.Delivery;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.Receipt;
+import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.google.inject.Inject;
 import roboguice.util.RoboAsyncTask;
 
@@ -35,6 +38,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Inject
     private ReadingsClient readingsClient;
     @Inject
+    private SponsorClient sponsorClient;
+    @Inject
     private CustomerAccountClient accountClient;
     @Inject
     private ReceiptsRepository receiptsRepository;
@@ -44,6 +49,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     private ReadingsRepository readingsRepository;
     @Inject
     private CustomerAccountRepository customerAccountRepository;
+    @Inject
+    private SponsorRepository sponsorRepository;
 
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -71,19 +78,30 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         Collection<Delivery> deliveries = deliveriesRepository.list();
         Collection<Reading> readings = readingsRepository.list();
         List<CustomerAccount> accounts = customerAccountRepository.getNonSyncAccounts();
+        List<Sponsor> sponsors = sponsorRepository.getNonSyncSponsors();
 
-        if (accounts.isEmpty() && receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
+        if (sponsors.isEmpty() && accounts.isEmpty() && receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
 
         Failures failures = new Failures();
+
+        for (Sponsor sponsor : sponsors) {
+            sponsor.withAccounts(customerAccountRepository.findBySponsorId(sponsor.getId()));
+            PostResponse response = sponsorClient.send(sponsor);
+            if (response.isSuccess()) {
+                sponsorRepository.synced(sponsor);
+            } else {
+                failures.add(new Failure(FailureKind.SPONSOR, response.getErrors()));
+            }
+        }
 
         for (CustomerAccount account : accounts) {
             PostResponse response = accountClient.send(account);
             if (response.isSuccess()) {
                 customerAccountRepository.synced(account);
             } else {
-                failures.add(new Failure(FailureKind.READING, response.getErrors()));
+                failures.add(new Failure(FailureKind.ACCOUNT, response.getErrors()));
             }
         }
 

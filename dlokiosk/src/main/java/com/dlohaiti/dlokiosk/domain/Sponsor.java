@@ -3,36 +3,55 @@ package com.dlohaiti.dlokiosk.domain;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sponsor implements Comparable<Sponsor> {
-    private long id;
+    private Long id;
     private String name;
     private String contactName;
     private String phoneNumber;
     private List<CustomerAccount> customerAccounts;
+    private boolean synced;
 
-    public Sponsor(long id, String name, String contactName, String phoneNumber) {
+    public Sponsor(Long id, String name, String contactName, String phoneNumber,boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
         this.phoneNumber = phoneNumber;
+        this.synced = synced;
     }
 
-    public long id() {
+    public Long getId() {
         return id;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
-    public String contactName() {
+    public String getContactName() {
         return contactName;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -72,8 +91,14 @@ public class Sponsor implements Comparable<Sponsor> {
     public void withAccounts(List<CustomerAccount> customerAccounts) {
         this.customerAccounts=customerAccounts;
     }
-
-    public List<CustomerAccount> getCustomerAccounts() {
+    public List<String> getCustomerAccountIds(){
+        List<String> ids=new ArrayList<String>();
+        for(CustomerAccount account: customerAccounts){
+            ids.add(account.getId());
+        }
+        return ids;
+    }
+    public List<CustomerAccount> customerAccounts() {
         return customerAccounts;
     }
 }

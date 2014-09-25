@@ -8,12 +8,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.dlohaiti.dlokiosk.adapter.CustomerAccountEditAdapter;
 import com.dlohaiti.dlokiosk.adapter.SponsorsArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
-import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.dlohaiti.dlokiosk.domain.Sponsors;
 import com.google.inject.Inject;
@@ -55,7 +52,7 @@ public class SponsorsActivity extends RoboActivity {
 
     private void fillAccounts() {
         for(Sponsor s: allSponsors){
-            s.withAccounts(customerAccountRepository.findBySponsorId(s.id()));
+            s.withAccounts(customerAccountRepository.findBySponsorId(s.getId()));
         }
     }
 

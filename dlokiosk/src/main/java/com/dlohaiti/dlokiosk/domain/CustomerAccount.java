@@ -2,8 +2,6 @@ package com.dlohaiti.dlokiosk.domain;
 
 import android.text.TextUtils;
 
-import com.dlohaiti.dlokiosk.SelectableListItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +88,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
             } else {
                 List<Long> ids = new ArrayList<Long>();
                 for (Sponsor s : sponsors) {
-                    ids.add(s.id());
+                    ids.add(s.getId());
                 }
                 return ids;
             }

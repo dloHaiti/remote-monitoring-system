@@ -1,5 +1,5 @@
 package com.dlohaiti.dlokiosk;
 
 public enum FailureKind {
-    READING, RECEIPT, DELIVERY
+    SPONSOR,ACCOUNT,READING, RECEIPT, DELIVERY
 }

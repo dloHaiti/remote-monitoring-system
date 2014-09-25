@@ -17,7 +17,7 @@ public class Sponsors extends ArrayList<Sponsor> {
     public List<String> getSponsorNames() {
         List<String> names = new ArrayList<String>();
         for (Sponsor s : this) {
-            names.add(s.name());
+            names.add(s.getName());
         }
         return names;
     }
@@ -35,7 +35,7 @@ public class Sponsors extends ArrayList<Sponsor> {
 
     private Sponsor findSponsorByName(String name) {
         for (Sponsor sponsor : this) {
-            if (sponsor.name().equalsIgnoreCase(name)) {
+            if (sponsor.getName().equalsIgnoreCase(name)) {
                 return sponsor;
             }
         }
@@ -45,7 +45,7 @@ public class Sponsors extends ArrayList<Sponsor> {
     public List<Sponsor> filterBySponsorName(String sponsorName) {
         List<Sponsor> sponsors = new ArrayList<Sponsor>();
         for (Sponsor s : this) {
-            if (containsIgnoreCase(s.name(),sponsorName)) {
+            if (containsIgnoreCase(s.getName(), sponsorName)) {
                 sponsors.add(s);
             }
         }

@@ -85,4 +85,24 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         }
         return names;
     }
+
+    public List<CustomerAccount> getAccountsFromNames(List<String> names) {
+        List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+        for (String name : names) {
+            CustomerAccount account = this.findAccountByContactName(name);
+            if(account!=null){
+                accounts.add(account);
+            }
+        }
+        return accounts;
+    }
+
+    private CustomerAccount findAccountByContactName(String name) {
+        for(CustomerAccount ca:this){
+            if(ca.getContactName().equalsIgnoreCase(name)){
+                return ca;
+            }
+        }
+        return null;
+    }
 }

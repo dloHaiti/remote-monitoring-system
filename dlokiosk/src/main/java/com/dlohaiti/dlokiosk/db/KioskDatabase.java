@@ -282,13 +282,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s TEXT," +
                         "%s TEXT," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 SponsorsTable.TABLE_NAME,
                 SponsorsTable.ID,
                 SponsorsTable.NAME,
                 SponsorsTable.CONTACT_NAME,
-                SponsorsTable.PHONE_NUMBER
+                SponsorsTable.PHONE_NUMBER,
+                SponsorsTable.IS_SYNCED
         );
 
         String createSponsorCustomerAccounts = String.format(
@@ -499,6 +501,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String NAME = "NAME";
         public static final String CONTACT_NAME = "CONTACT_NAME";
         public static final String PHONE_NUMBER = "PHONE_NUMBER";
+        public static final String IS_SYNCED = "IS_SYNCED";
     }
 
     public static class SponsorCustomerAccountsTable {

@@ -83,7 +83,7 @@ public class ShoppingCartNew {
         return currencyCode;
     }
 
-    public Money getTotal() {
+    public Money getDiscountedTotal() {
         return register.discountedTotal(this);
     }
 
@@ -145,7 +145,7 @@ public class ShoppingCartNew {
     }
 
     public Money dueAmount() {
-        return getTotal().minus(sponsorAmount).minus(customerAmount);
+        return getDiscountedTotal().minus(sponsorAmount).minus(customerAmount);
     }
 
     public Sponsor sponsor() {
@@ -165,7 +165,7 @@ public class ShoppingCartNew {
     }
 
     public void updateCustomerAmountWithTheBalanceAmount() {
-        customerAmount = getTotal().minus(sponsorAmount());
+        customerAmount = getDiscountedTotal().minus(sponsorAmount());
     }
 
     public String deliveryTime() {
@@ -182,5 +182,9 @@ public class ShoppingCartNew {
 
     public void setIsSponsorSelected(boolean isSponsorSelected) {
         this.isSponsorSelected = isSponsorSelected;
+    }
+
+    public void addPromotion(Promotion promotion) {
+        promotions.add(promotion);
     }
 }

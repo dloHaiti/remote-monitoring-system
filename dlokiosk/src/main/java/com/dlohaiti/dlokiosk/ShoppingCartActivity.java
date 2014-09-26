@@ -82,7 +82,7 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private void updatePrices() {
         totalPriceView.setText(String.valueOf(cart.getActualTotal().getAmount()));
-        discountedPriceView.setText(String.valueOf(cart.getTotal().getAmount()));
+        discountedPriceView.setText(String.valueOf(cart.getDiscountedTotal().getAmount()));
     }
 
     private void initialiseProductGrid() {

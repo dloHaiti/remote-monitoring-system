@@ -30,7 +30,7 @@ public class RegisterNew {
         for (Product product : cart.getProducts()) {
             totalGallons += product.getGallons() * product.getQuantity();
         }
-        Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons, cart.getTotal());
+        Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons, cart.getDiscountedTotal());
         repository.add(receipt);
         return receipt;
     }
@@ -42,7 +42,7 @@ public class RegisterNew {
         }
         List<Promotion> promotionsCopy = new ArrayList<Promotion>(cart.getPromotions());
         Collections.sort(promotionsCopy); // percentages and large amounts first
-        BigDecimal subtotal = cart.getActualTotal().getAmount();
+        BigDecimal actualTotal = cart.getActualTotal().getAmount();
         List<Product> productsCopy = new ArrayList<Product>(cart.getProducts());
 
         // deduct everything at the basket-level first
@@ -50,8 +50,8 @@ public class RegisterNew {
         for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
             Promotion promo = it.next();
             if (promo.appliesToBasket()) {
-                BigDecimal discount = promo.discountCart(subtotal);
-                subtotal = subtotal.subtract(discount);
+                BigDecimal discount = promo.discountCart(actualTotal);
+                actualTotal = actualTotal.subtract(discount);
                 BigDecimal discountPerItem = discount.divide(new BigDecimal(cart.getProducts().size()), 4, RoundingMode.HALF_UP);
                 for (Product p : productsCopy) {
                     discounts.add(new Discount(p.getSku(), new Money(discountPerItem)));
@@ -61,22 +61,18 @@ public class RegisterNew {
         }
 
         for (Product product : productsCopy) {
-            for (Iterator<Promotion> it = promotionsCopy.iterator(); it.hasNext(); ) {
-                Promotion promo = it.next();
+            for (Promotion promo : promotionsCopy) {
                 if (promo.isFor(product)) {
                     discounts.add(new Discount(product.getSku(), new Money(promo.discountFor(product))));
-                    it.remove();
                 }
             }
         }
 
         for (Product product : productsCopy) {
             Money actualPrice = retailPriceFor(product);
-            for (Iterator<Discount> it = discounts.iterator(); it.hasNext(); ) {
-                Discount discount = it.next();
+            for (Discount discount : discounts) {
                 if (discount.isFor(product)) {
                     actualPrice = actualPrice.minus(discount.amountMoney());
-                    it.remove();
                 }
             }
             lineItems.add(new LineItem(product.getSku(), product.getQuantity(), actualPrice, PRODUCT));

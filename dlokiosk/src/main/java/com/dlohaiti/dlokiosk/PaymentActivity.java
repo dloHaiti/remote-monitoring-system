@@ -167,7 +167,7 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void updatePriceSummaryViews() {
-        totalPriceView.setText(cart.getTotal().amountAsString());
+        totalPriceView.setText(cart.getDiscountedTotal().amountAsString());
         customerPaymentSummaryView.setText(cart.customerAmount().amountAsString());
         sponsorPaymentSummaryView.setText(cart.sponsorAmount().amountAsString());
         amountDueSummaryView.setText(cart.dueAmount().amountAsString());
@@ -183,7 +183,7 @@ public class PaymentActivity extends SaleActivity {
         if (cart.customerAmount() != Money.ZERO) {
             customerAmountView.setText(cart.customerAmount().amountAsString());
         }
-        customerAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
+        customerAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getDiscountedTotal())});
         customerAmountView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -208,7 +208,7 @@ public class PaymentActivity extends SaleActivity {
         if (cart.sponsorAmount() != Money.ZERO) {
             sponsorAmountView.setText(cart.sponsorAmount().amountAsString());
         }
-        sponsorAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getTotal())});
+        sponsorAmountView.setFilters(new InputFilter[]{new RangeFilter(Money.ZERO, cart.getDiscountedTotal())});
         sponsorAmountView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

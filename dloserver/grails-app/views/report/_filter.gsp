@@ -6,9 +6,11 @@
         var kioskOption = document.getElementById('kiosk-filter');
         var regionOption = document.getElementById('region-filter');
         if (filter === 'kiosk') {
-            kioskOption.className += ' active'
+            kioskOption.className += ' btn-primary active'
+            regionOption.className += ' btn-default'
         } else {
-            regionOption.className += ' active'
+            regionOption.className += ' btn-primary active'
+            kioskOption.className += ' btn-default'
         }
     };
 
@@ -46,10 +48,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <div style="width: 100%">
     <div class="btn-group" data-toggle="buttons" style="float: right; margin-right: 20; margin-top: 10; z-index: 200">
-        <label class="btn btn-primary" id="kiosk-filter">
+        <label class="btn" id="kiosk-filter">
             <input type="radio" name="options"  onclick="kioskFilter()"> Kiosk
         </label>
-        <label class="btn btn-primary" id="region-filter">
+        <label class="btn" id="region-filter">
             <input type="radio" name="options"  onclick="regionFilter()"> Region
         </label>
     </div>

@@ -15,27 +15,39 @@
         var tableData = google.visualization.arrayToDataTable(<%= tableData as JSON %>);
 
         var options = {
-            title: 'Volume by Day',
+            title: 'VOLUME',
             vAxis: {title: 'Gallons', minValue: 0},
             seriesType: 'bars',
-            series: {<%= skusPresent + 1 %>: { type: 'line' } },
-            isStacked: true
-        };
+            series: {
+        <%= skusPresent + 1 %>:
+        {
+            type: 'line'
+        }
+    }
+    ,
+    isStacked: true
+    }
+    ;
 
-        new google.visualization.ComboChart(document.getElementById('chart')).draw(chartData, options);
-        new google.visualization.Table(document.getElementById('table')).draw(tableData, {});
+    new google.visualization.ComboChart(document.getElementById('chart')).draw(chartData, options);
+    new google.visualization.Table(document.getElementById('table')).draw(tableData, {});
     }
 </script>
+
 <div>
     <g:render template="menu"></g:render>
 </div>
+
 <div id="content">
     <div>
         <g:render template="filter"></g:render>
     </div>
-    <div>
-    <div id="chart" style="width:800px;height:400px; margin-left:auto;margin-right:auto;"></div>
-    <div id="table" style="width:800px; margin-left:auto;margin-right:auto;"></div>
+    <div style="margin: 0 auto;">
+        <div style="margin-left:auto;margin-right:auto; padding-bottom: 30px"><g:render template="filter-for-volume"></g:render></div>
+
+        <div id="chart" style="width:800px;height:400px; margin-left:auto;margin-right:auto;"></div>
+
+        <div id="table" style="width:800px; margin-left:auto;margin-right:auto;"></div>
     </div>
 </div>
 </body>

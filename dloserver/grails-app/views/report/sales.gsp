@@ -14,7 +14,7 @@
         var tableData = google.visualization.arrayToDataTable(<%= tableData as JSON %>);
 
         var options = {
-            title: 'SALES BY DAY',
+            title: 'SALES',
             vAxis: {title: 'Gourdes', minValue: 0},
             isStacked: true
         };
@@ -23,16 +23,26 @@
         new google.visualization.Table(document.getElementById('table')).draw(tableData, options);
     }
 </script>
+
 <div>
     <g:render template="menu"></g:render>
 </div>
+
+
 
 <div id="content">
     <div>
         <g:render template="filter"></g:render>
     </div>
-    <div id="chart" style="width:800px;height:400px;margin-left:auto;margin-right:auto;"></div>
-    <div id="table" style="width:800px;margin-left:auto;margin-right:auto;"></div>
+    <div style="margin: 0 auto;">
+        <div style="margin-left:auto;margin-right:auto;padding-bottom: 30px ">
+            <g:render template="filter-for-sales"></g:render>
+        </div>
+
+        <div id="chart" style="width:800px;height:400px;margin-left:auto;margin-right:auto;"></div>
+
+        <div id="table" style="width:800px;margin-left:auto;margin-right:auto;"></div>
+    </div>
 </div>
 </body>
 </html>

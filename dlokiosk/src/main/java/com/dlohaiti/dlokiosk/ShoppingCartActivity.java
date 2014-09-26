@@ -77,7 +77,7 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private void initialiseOrderSummary() {
         salesChannelView.setText(cart.salesChannel().name());
-        customerAccountView.setText(cart.customerAccount().getName());
+        customerAccountView.setText(cart.customerAccount().getContactName());
     }
 
     private void updatePrices() {

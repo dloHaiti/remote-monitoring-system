@@ -27,6 +27,12 @@ public class PaymentActivity extends SaleActivity {
     @Inject
     private SponsorRepository sponsorRepository;
 
+    @InjectView(R.id.sales_channel)
+    private TextView salesChannelView;
+
+    @InjectView(R.id.customer_account)
+    private TextView customerAccountView;
+
     @InjectView(R.id.payment_mode)
     private Spinner paymentModeView;
 
@@ -109,12 +115,18 @@ public class PaymentActivity extends SaleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
+        initialiseOrderSummary();
         initialiseSponsorList();
         initialiseCustomerOnlyOrWithSponsorPaymentOptions();
         initialisePaymentModeList();
         initialisePaymentTypeList();
         initialiseDeliveryTimeList();
         initialisePriceViews();
+    }
+
+    private void initialiseOrderSummary() {
+        salesChannelView.setText(cart.salesChannel().name());
+        customerAccountView.setText(cart.customerAccount().getContactName());
     }
 
     private void initialiseCustomerOnlyOrWithSponsorPaymentOptions() {

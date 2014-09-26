@@ -4,23 +4,23 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import com.dlohaiti.dlokiosk.db.KioskDatabase.ProductMrpsTable;
 import com.dlohaiti.dlokiosk.domain.Money;
 import com.dlohaiti.dlokiosk.domain.ProductMrp;
 import com.dlohaiti.dlokiosk.domain.ProductMrps;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;
-import java.util.Currency;
+
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.ProductMrpsTable.*;
 
 public class ProductMrpRepository {
     private final static String TAG = ProductMrpRepository.class.getSimpleName();
     private final static String[] COLUMNS = new String[]
             {
-                    ProductMrpsTable.PRODUCT_ID,
-                    ProductMrpsTable.CHANNEL_ID,
-                    ProductMrpsTable.PRICE,
-                    ProductMrpsTable.CURRENCY
+                    PRODUCT_ID,
+                    CHANNEL_ID,
+                    PRICE,
+                    CURRENCY
             };
     private final KioskDatabase db;
 
@@ -33,15 +33,15 @@ public class ProductMrpRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            wdb.delete(ProductMrpsTable.TABLE_NAME, null, null);
+            wdb.delete(TABLE_NAME, null, null);
             for (ProductMrp mrp : productMrps) {
                 ContentValues values = new ContentValues();
-                values.put(ProductMrpsTable.PRODUCT_ID, mrp.productId());
-                values.put(ProductMrpsTable.CHANNEL_ID, mrp.channelId());
-                values.put(ProductMrpsTable.PRICE, mrp.price().amountAsString());
-                values.put(ProductMrpsTable.CURRENCY, mrp.price().getCurrencyCode());
+                values.put(PRODUCT_ID, mrp.productId());
+                values.put(CHANNEL_ID, mrp.channelId());
+                values.put(PRICE, mrp.price().amountAsString());
+                values.put(CURRENCY, mrp.price().getCurrencyCode());
 
-                wdb.insert(ProductMrpsTable.TABLE_NAME, null, values);
+                wdb.insert(TABLE_NAME, null, values);
             }
             wdb.setTransactionSuccessful();
             return true;
@@ -56,7 +56,7 @@ public class ProductMrpRepository {
     public ProductMrps findAll() {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(ProductMrpsTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
         return readAll(rdb, cursor);
     }
 
@@ -65,8 +65,13 @@ public class ProductMrpRepository {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                ProductMrp mrp = new ProductMrp(cursor.getLong(0), cursor.getLong(1),
-                        new Money(new BigDecimal(cursor.getString(2)), cursor.getString(3)));
+                ProductMrp mrp =
+                        new ProductMrp(
+                                cursor.getLong(cursor.getColumnIndex(PRODUCT_ID)),
+                                cursor.getLong(cursor.getColumnIndex(CHANNEL_ID)),
+                                new Money(new BigDecimal(
+                                        cursor.getString(cursor.getColumnIndex(PRICE))),
+                                        cursor.getString(cursor.getColumnIndex(CURRENCY))));
                 productMrps.add(mrp);
                 cursor.moveToNext();
             }

@@ -103,7 +103,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
     }
 
     private void loadProducts() {
-        allProducts = new Products(productRepository.list());
+        allProducts = new Products(productRepository.findProductsWithPriceFor(cart.salesChannel().getId()));
         updateFilteredProductList();
     }
 

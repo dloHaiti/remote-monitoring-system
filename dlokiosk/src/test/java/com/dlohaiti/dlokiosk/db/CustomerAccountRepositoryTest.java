@@ -54,10 +54,6 @@ public class CustomerAccountRepositoryTest {
 
         List<CustomerAccount> list = repository.findAll();
         assertThat(list.size(), is(2));
-        assertThat(list,
-                is(asList(
-                        new CustomerAccount("1", "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 1, true).withChannelIds(asList(1L)),
-                        new CustomerAccount("1", "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L)))));
         assertThat(asList(new SalesChannel(1L, "Name 1", "Desc 1", false)), is(list.get(0).getChannels()));
         assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2", false)), is(list.get(1).getChannels()));
     }
@@ -71,12 +67,9 @@ public class CustomerAccountRepositoryTest {
                 new CustomerAccount("2", "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L))));
 
         List<CustomerAccount> initialList = repository.findAll();
-        assertThat(initialList,
-                is(asList(new CustomerAccount("1", "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 0, true).withChannelIds(asList(1L)),
-                        new CustomerAccount("2", "Name 2", "Contact Name 2", "School", "Address 2", "Phone 2", (long) 22, 0, true).withChannelIds(asList(2L)))));
 
         assertThat(asList(new SalesChannel(1L, "Name 1", "Desc 1", false)), is(initialList.get(0).getChannels()));
-        assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2", false)), is(initialList.get(0).getChannels()));
+        assertThat(asList(new SalesChannel(2L, "Name 2", "Desc 2", false)), is(initialList.get(1).getChannels()));
 
         boolean success = repository.replaceAll(asList(
                 new CustomerAccount("1", "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)).withSponsorIds(asList("1")),
@@ -84,11 +77,8 @@ public class CustomerAccountRepositoryTest {
 
         assertThat(success, is(true));
         List<CustomerAccount> updatedList = repository.findAll();
-        assertThat(updatedList,
-                is(asList(new CustomerAccount("1", "Name 3", "Contact Name 3", "School", "Address 3", "Phone 3", (long) 33, 0, true).withChannelIds(asList(3L)),
-                        new CustomerAccount("2", "Name 4", "Contact Name 4", "School", "Address 4", "Phone 4", (long) 44, 0, true).withChannelIds(asList(4L)))));
         assertThat(asList(new SalesChannel(3L, "Name 3", "Desc 3", false)), is(updatedList.get(0).getChannels()));
-        assertThat(asList(new SalesChannel(4L, "Name 4", "Desc 4", false)), is(updatedList.get(0).getChannels()));
+        assertThat(asList(new SalesChannel(4L, "Name 4", "Desc 4", false)), is(updatedList.get(1).getChannels()));
     }
 
     private void saveCustomerAccounts(SQLiteDatabase wdb, List<CustomerAccount> customerAccounts) {

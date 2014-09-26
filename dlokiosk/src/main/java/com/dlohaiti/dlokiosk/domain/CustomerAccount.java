@@ -193,7 +193,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
 
         CustomerAccount that = (CustomerAccount) o;
 
-        if (id != that.id) return false;
+        if (id.equalsIgnoreCase(that.id)) return false;
         if (kiosk_id != that.kiosk_id) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null)

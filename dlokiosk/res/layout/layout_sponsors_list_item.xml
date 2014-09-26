@@ -2,16 +2,14 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:weightSum="100"
     android:id="@+id/sponsor_list_item"
-    android:padding="16dp">
+    style="@style/customer_list">
     <ImageButton
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:src="@drawable/ic_pencil"
-        android:layout_weight="5"
+        android:layout_weight="8"
         android:padding="1dp"
         android:background="@drawable/edit_button"
         android:id="@+id/edit_button" />
@@ -41,6 +39,6 @@
         style="@style/customer_account_edit_item"
         android:singleLine="true"
         android:ellipsize="end"
-        android:layout_weight="30"
+        android:layout_weight="27"
         android:text="Customers"/>
 </LinearLayout>

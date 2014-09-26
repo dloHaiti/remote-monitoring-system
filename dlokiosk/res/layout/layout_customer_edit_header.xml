@@ -16,14 +16,15 @@
         style="@style/table_header"
         android:text="Edit"
         android:layout_width="0dp"
-        android:layout_weight="5"
+
+        android:layout_weight="8"
         android:layout_height="match_parent" />
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_name"
         style="@style/table_header"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="35"
+        android:layout_weight="32"
         android:text="Customer"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_phone"

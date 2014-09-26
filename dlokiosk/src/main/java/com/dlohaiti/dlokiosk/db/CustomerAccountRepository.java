@@ -98,11 +98,11 @@ public class CustomerAccountRepository {
         }
     }
 
-    public SortedSet<CustomerAccount> findAll() {
-        SortedSet<CustomerAccount> accounts = new TreeSet<CustomerAccount>();
+    public List<CustomerAccount> findAll() {
+        List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null,  CustomerAccountsTable.CONTACT_NAME);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -171,7 +171,7 @@ public class CustomerAccountRepository {
             values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
             values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
 
-            if (account.getId() == null) {
+            if (account.getId()==null || account.getId().isEmpty()) {
                 String generatedId = UUID.randomUUID().toString();
                 values.put(CustomerAccountsTable.ID, generatedId);
                 account.setId(generatedId);

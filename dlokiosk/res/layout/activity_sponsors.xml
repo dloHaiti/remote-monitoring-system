@@ -14,7 +14,7 @@
             style="@style/table_header"
             android:text="Edit"
             android:layout_width="0dp"
-            android:layout_weight="5"
+            android:layout_weight="8"
             android:layout_height="match_parent" />
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/sponsor_name"
@@ -42,21 +42,23 @@
             style="@style/table_header"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="30"
+            android:layout_weight="27"
             android:text="Customers"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/list_pane"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/header"
+        android:orientation="vertical"
+        android:weightSum="100"
         android:layout_above="@+id/bottom_pane"
         android:layout_marginBottom="5dip"
         android:baselineAligned="false">
         <ListView
             android:id="@+id/sponsors_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <include layout="@layout/layout_sale_bottom_pane"/>

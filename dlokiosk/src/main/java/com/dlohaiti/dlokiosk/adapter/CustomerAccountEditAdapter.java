@@ -71,8 +71,8 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
     }
 
     private void handleCustomerEdit(int position, View view, CustomerAccountViewHolder holder) {
-        holder.editButton = (ImageButton) view.findViewById(R.id.imageButton);
-        if (holder.editButton==null) return;
+//        holder.editButton = (ImageButton) view.findViewById(R.id.imageButton);
+//        if (holder.editButton==null) return;
         holder.editButton.setId(position);
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override

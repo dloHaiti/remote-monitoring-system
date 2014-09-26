@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +62,13 @@ public class SponsorsArrayAdapter extends ArrayAdapter<Sponsor> {
     }
 
     private void handleSponsorEdit(int position, View view, SponsorViewHolder holder) {
-        holder.editButton = (ImageButton) view.findViewById(R.id.edit_button);
-        if (holder.editButton==null) return;
+//        holder.editButton = (ImageButton) view.findViewById(R.id.edit_button);
+//        if (holder.editButton==null) return;
         holder.editButton.setId(position);
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("SPONSOR ID ", String.valueOf(view.getId()));
                 Sponsor s = sponsors.get(view.getId());
                 Intent intent = new Intent(context, SponsorFormActivity.class);
                 intent.putExtra("sponsor_id",String.valueOf(s.getId()));

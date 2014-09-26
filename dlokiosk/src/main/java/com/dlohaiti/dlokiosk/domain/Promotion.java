@@ -191,7 +191,7 @@ public class Promotion implements VisibleGridItem, Orderable, Comparable<Promoti
             return this.getAmount().multiply(retailPrice.getAmount(), new MathContext(4, RoundingMode.HALF_UP));
         }
         if (isAmountOff())
-            return this.getAmount();
+            return this.getAmount().multiply(new BigDecimal(product.getQuantity()));
         return BigDecimal.ZERO;
     }
 

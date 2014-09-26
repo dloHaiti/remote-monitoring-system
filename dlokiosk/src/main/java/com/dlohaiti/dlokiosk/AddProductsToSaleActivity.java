@@ -60,7 +60,12 @@ public class AddProductsToSaleActivity extends SaleActivity {
         super.onResume();
 
         productListAdapter.notifyDataSetChanged();
+        if (cartView != null) {
+            setCartViewTitle();
+        }
     }
+
+
 
     private void loadProductCategories() {
         productCategories = new ProductCategories(productCategoryRepository.findAll());

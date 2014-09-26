@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -31,6 +32,8 @@ public class SponsorsActivity extends RoboActivity {
     @Inject
     private CustomerAccountRepository customerAccountRepository;
 
+    @InjectView(R.id.continue_button)
+    protected ImageButton continueButton;
     private Sponsors allSponsors;
     private SponsorsArrayAdapter sponsorsAdapter;
     private SearchView searchView;
@@ -41,6 +44,7 @@ public class SponsorsActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsors);
         initialiseSponsorsList();
+        continueButton.setEnabled(false);
     }
 
     @Override

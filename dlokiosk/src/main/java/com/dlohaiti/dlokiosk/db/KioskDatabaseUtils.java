@@ -19,4 +19,9 @@ public class KioskDatabaseUtils {
     static String where(String columnName) {
         return String.format("%s=?", columnName);
     }
+
+    static String whereWithLike(String columnName) {
+        return String.format("%s like ?", columnName);
+    }
+
 }

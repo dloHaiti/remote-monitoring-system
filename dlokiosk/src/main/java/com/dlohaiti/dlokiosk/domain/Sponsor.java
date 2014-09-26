@@ -22,6 +22,9 @@ public class Sponsor implements Comparable<Sponsor> {
         this.synced = synced;
     }
 
+    public Sponsor() {
+    }
+
     public String getId() {
         return id;
     }

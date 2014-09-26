@@ -122,7 +122,8 @@ public class SponsorFormActivity extends RoboActivity {
     }
 
     private boolean createNewSponsor() {
-        return false;
+        Sponsor s=new Sponsor();
+        return updateSponsor(s);
     }
 
     private boolean validateSponsorForm() {
@@ -137,7 +138,6 @@ public class SponsorFormActivity extends RoboActivity {
                 if (sponsor == null || !sponsor.getId().equalsIgnoreCase(existingSponsor.getId())) {
                     sponsorName.setError("Already exist");
                     result = false;
-
                 }
             }
         }

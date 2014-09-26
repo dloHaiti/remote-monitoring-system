@@ -10,7 +10,7 @@ class SponsorsService {
         if (sponsor == null) {
             log.debug "Creating new sponsor"
             newSponsor = true
-//            account = new CustomerAccount(id: params.id,kiosk: params.kiosk)
+            sponsor = new Sponsor(id: params.id,kiosk: params.kiosk)
         }
         sponsor.name = params.name
         sponsor.contactName = params.contactName

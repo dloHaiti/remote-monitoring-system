@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dlohaiti.dlokiosk.db.KioskDatabase.SponsorsTable;
@@ -16,9 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
+import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.whereWithLike;
 import static java.lang.String.format;
 
 public class SponsorRepository {
@@ -142,11 +145,11 @@ public class SponsorRepository {
             values.put(SponsorsTable.PHONE_NUMBER, String.valueOf(sponsor.getPhoneNumber()));
             values.put(KioskDatabase.SponsorsTable.IS_SYNCED, String.valueOf(false));
 
-            if (sponsor.getId() == null) {
-//                String generatedId = UUID.randomUUID().toString();
-//                values.put(SponsorsTable.ID, generatedId);
-//                sponsor.setId(generatedId);
-//                wdb.insert(KioskDatabase.CustomerAccountsTable.TABLE_NAME, null, values);
+            if (TextUtils.isEmpty(sponsor.getId())) {
+                String generatedId = UUID.randomUUID().toString();
+                values.put(SponsorsTable.ID, generatedId);
+                sponsor.setId(generatedId);
+                wdb.insert(KioskDatabase.SponsorsTable.TABLE_NAME, null, values);
             } else {
                 String sponsorId = sponsor.getId();
                 wdb.update(KioskDatabase.SponsorsTable.TABLE_NAME, values, "id " + "='" + sponsorId + "'", null);
@@ -205,7 +208,7 @@ public class SponsorRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor cursor = rdb.query(SponsorsTable.TABLE_NAME, COLUMNS, where(SponsorsTable.NAME), matches(name), null, null, null);
+            Cursor cursor = rdb.query(SponsorsTable.TABLE_NAME, COLUMNS, whereWithLike(SponsorsTable.NAME), matches(name), null, null, null);
             if (cursor.getCount() != 1) {
                 throw new RecordNotFoundException();
             }

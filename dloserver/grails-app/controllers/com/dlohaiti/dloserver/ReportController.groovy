@@ -6,12 +6,26 @@ import java.math.RoundingMode
 
 class ReportController {
 
+    def configurationService
+
      def index() {
         [kioskName: request.kiosk.name]
     }
 
     def menu() {
         [kioskName: request.kiosk.name]
+    }
+
+    def outstandingPayment() {
+        [kioskName: request.kiosk.name]
+        Kiosk kiosk = Kiosk.findByName(params.kioskName)
+        def currencyCode = configurationService.currencyCode
+        def tableHeader=['Customer Name', 'Contact Name', 'Due Amount (in ' + currencyCode + ')']
+        def customerAccounts = CustomerAccount.findAllByKioskAndDueAmountGreaterThan(kiosk, 0);
+        def tableData = [tableHeader]
+        customerAccounts.each {customer -> tableData.add([customer.name, customer.contactName,customer.dueAmount])}
+        print("Payment outstanding Report: " + tableData)
+        [kioskName: kiosk.name, tableData: tableData]
     }
 
     def readings() {

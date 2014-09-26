@@ -44,6 +44,7 @@
         <li><g:link action="sales" params="[kioskName: kioskName, filterType: 'kiosk']"
                     class="smoothScroll">Ventes</g:link></li>
         <li><g:link action="readings" params="[kioskName: kioskName]" class="smoothScroll">Mesures</g:link></li>
+        <li><g:link action="outstandingPayment" params="[kioskName: kioskName]" class="smoothScroll">Impayé</g:link></li>
     </ul>
     <br class="clearLeft"/>
 </div>

@@ -176,6 +176,39 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
     }
 
     public void onSave(View view) {
+        if(!validateAllFields() && isToday){
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Save")
+                    .setMessage("There are empty/invalid fields , are you sure you want to save?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveReadings();
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }else {
+            saveReadings();
+        }
+    }
+
+    private boolean validateAllFields() {
+        boolean isValid=true;
+        ParameterAdapter parameterAdapter = (ParameterAdapter) parameterListView.getAdapter();
+        for (int i = 0; i < parameterAdapter.getCount(); i++) {
+            Parameter parameter = parameterAdapter.getItem(i);
+            if (parameter.getValue().isEmpty() || parameter.considersInvalid(parameter.getValue())) {
+                isValid=false;
+            }
+        }
+        return isValid;
+    }
+
+    private void saveReadings() {
         Set<Measurement> measurements;
         Date date = getSelectedDate();
         Reading reading = readingsRepository.getReadingsWithDateAndSamplingSite(date, selectedSamplingSite.getName());

@@ -10,6 +10,7 @@ import com.dlohaiti.dlokiosk.client.ConfigurationClient;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
 import com.dlohaiti.dlokiosk.db.ConfigurationRepository;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.google.inject.Inject;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
@@ -33,6 +34,8 @@ public class ConfigurationActivity extends RoboActivity {
 
     @Inject
     private CustomerAccountRepository customerAccountRepository;
+    @Inject
+    private SponsorRepository sponsorRepository;
 
     @InjectResource(R.string.do_manual_sync_msg)
     private String do_manual_sync_msg;
@@ -58,7 +61,7 @@ public class ConfigurationActivity extends RoboActivity {
     }
 
     public void updateConfiguration(View v) {
-        if(customerAccountRepository.getNonSyncAccounts().size()==0) {
+        if(customerAccountRepository.getNonSyncAccounts().size()==0 || !sponsorRepository.isNotEmpty()) {
             new PullConfigurationTask(this).execute();
             config.save(ConfigurationKey.LAST_UPDATE, new LocalDate().toString(ISODateTimeFormat.basicDate()));
         }

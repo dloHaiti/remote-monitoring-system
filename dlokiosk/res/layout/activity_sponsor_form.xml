@@ -63,6 +63,15 @@
                     android:id="@+id/customer_label"
                     style="@style/payment_form_field"
                     android:text="@string/select_customer_label"/>
+                <EditText
+                    android:id="@+id/accounts_error"
+                    android:enabled="false"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:visibility="gone"
+                    />
                 <com.dlohaiti.dlokiosk.MultiSelectSpinner
                     android:id="@+id/accounts"
                     style="@style/payment_form_field"/>

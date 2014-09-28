@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class SponsorFormActivity extends RoboActivity {
     @InjectView(R.id.customer_phone)
     protected EditText phoneNumber;
 
+    @InjectView(R.id.accounts_error)
+    protected EditText accountsError;
 
     @InjectResource(R.string.mandatory_field)
     private String mandatoryFieldMessage;
@@ -140,6 +143,14 @@ public class SponsorFormActivity extends RoboActivity {
                     result = false;
                 }
             }
+        }
+        if(accounts.getSelectedStrings().size()==0){
+            accountsError.setVisibility(View.VISIBLE);
+            accountsError.setError(mandatoryFieldMessage);
+            result = false;
+        }else{
+            accountsError.setVisibility(View.GONE);
+            accountsError.setError(null);
         }
         return result;
     }

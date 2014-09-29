@@ -10,7 +10,6 @@ class SalesChannel {
 
     static hasMany = [customerAccounts: CustomerAccount,productMrps: ProductMrp]
 
-
     static constraints = {
         name(unique: true,blank:false)
         description(nullable: true)

@@ -104,6 +104,9 @@ public class Receipt {
     }
 
     public String getSponsorId() {
+        if (sponsorId == null) {
+            return "";
+        }
         return sponsorId;
     }
 

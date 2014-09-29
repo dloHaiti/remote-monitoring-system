@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:weightSum="100"
     android:id="@+id/sponsor_list_item"
+    android:paddingLeft="15dp"
     style="@style/customer_list">
     <ImageButton
         android:layout_width="0dp"

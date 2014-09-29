@@ -30,7 +30,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
 
     }
 
-    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, int amount, boolean synced) {
+    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, double amount, boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;

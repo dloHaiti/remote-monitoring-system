@@ -12,7 +12,7 @@ public class CustomerAccountJson {
     private List<SalesChannelIdJson> channels;
     private List<SponsorIdJson> sponsors;
     private String contactName;
-    private int dueAmount;
+    private double dueAmount;
     private String customerType;
     private String gpsCoordinates;
 
@@ -40,11 +40,11 @@ public class CustomerAccountJson {
         this.customerType = customerType;
     }
 
-    public int getDueAmount() {
+    public double getDueAmount() {
         return dueAmount;
     }
 
-    public void setDueAmount(int dueAmount) {
+    public void setDueAmount(double dueAmount) {
         this.dueAmount = dueAmount;
     }
 

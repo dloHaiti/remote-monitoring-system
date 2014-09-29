@@ -151,7 +151,7 @@ public class CustomerAccountRepository {
                 cursor.getString(4),
                 cursor.getString(5),
                 cursor.getLong(7),
-                cursor.getInt(8),
+                cursor.getDouble(8),
                 Boolean.valueOf(cursor.getString(9))).setGpsCoordinates(cursor.getString(6));
     }
 

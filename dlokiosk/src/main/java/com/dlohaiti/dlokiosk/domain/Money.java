@@ -19,6 +19,10 @@ public class Money implements Comparable<Money> {
         this.currency = Currency.getInstance(currency);
     }
 
+    public Money(String amount, String currency) {
+        this(new BigDecimal(amount), currency);
+    }
+
     public BigDecimal getAmount() {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }

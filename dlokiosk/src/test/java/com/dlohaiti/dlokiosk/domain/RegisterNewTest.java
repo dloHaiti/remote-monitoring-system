@@ -35,6 +35,8 @@ public class RegisterNewTest {
     @Before
     public void setUp() {
         cart = new ShoppingCartNew(register);
+        cart.setSalesChannel(new SalesChannelBuilder().build());
+        cart.setCustomerAccount(new CustomerAccountBuilder().build());
         tenDollarTenGallonABC = productBuilder()
                 .withId(1l)
                 .withSku("ABC")
@@ -107,7 +109,9 @@ public class RegisterNewTest {
     public void shouldRoundCorrectly() {
         cart.addOrUpdateProduct(productBuilder().withPrice(7d).withSku("ZZZ").build());
         cart.addPromotion(promotionBuilder().withProductSku("ZZZ").withAmount("23").withPromotionType(PERCENT).thatAppliesTo(SKU).build());
+
         Receipt receipt = register.checkout(cart);
+
         assertThat(receipt.getProductLineItems().get(0).getPrice(), is(new Money(new BigDecimal("5.39"))));
     }
 

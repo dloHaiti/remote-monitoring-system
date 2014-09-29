@@ -4,24 +4,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.dlohaiti.dlokiosk.KioskDate;
 import com.dlohaiti.dlokiosk.domain.Clock;
 import com.dlohaiti.dlokiosk.domain.Measurement;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.google.inject.Inject;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
@@ -131,7 +122,7 @@ public class ReadingsRepository {
                 } else {
                     Log.d("QUERY", "Unable to find reading");
                 }
-                Reading reading = new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)),Boolean.parseBoolean(rc.getString(3)));
+                Reading reading = new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)), Boolean.parseBoolean(rc.getString(3)));
                 mc.close();
                 rc.close();
                 rdb.setTransactionSuccessful();
@@ -171,8 +162,8 @@ public class ReadingsRepository {
             } else {
                 readingId = reading.getId();
                 values.put(KioskDatabase.ReadingsTable.IS_SYNCED, String.valueOf(reading.isSynced()));
-                Log.d("UPDATE",String.valueOf(reading.isSynced()));
-                wdb.update(KioskDatabase.ReadingsTable.TABLE_NAME,values, "id " + "=" + readingId,null);
+                Log.d("UPDATE", String.valueOf(reading.isSynced()));
+                wdb.update(KioskDatabase.ReadingsTable.TABLE_NAME, values, "id " + "=" + readingId, null);
             }
             for (Measurement m : reading.getMeasurements()) {
                 ContentValues cv = new ContentValues();
@@ -200,7 +191,8 @@ public class ReadingsRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         try {
-            Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, whereSyncFalse(), null, null, null, null);
+            Cursor rc = rdb.query(KioskDatabase.ReadingsTable.TABLE_NAME, READINGS_COLUMNS, whereSyncFalse(),
+                    null, null, null, null);
             Log.i(TAG, "Found readings: " + rc.getCount());
             if (rc.moveToFirst()) {
                 while (!rc.isAfterLast()) {
@@ -214,7 +206,7 @@ public class ReadingsRepository {
                         }
                     }
                     mc.close();
-                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)),Boolean.parseBoolean(rc.getString(3))));
+                    readings.add(new Reading(readingId, rc.getString(1), measurements, kioskDate.getFormat().parse(rc.getString(2)), Boolean.parseBoolean(rc.getString(3))));
                     rc.moveToNext();
                 }
             }
@@ -230,7 +222,7 @@ public class ReadingsRepository {
     }
 
     private String whereSyncFalse() {
-        return format("%s is '%s'",KioskDatabase.ReadingsTable.IS_SYNCED,"false");
+        return format("%s is '%s'", KioskDatabase.ReadingsTable.IS_SYNCED, "false");
     }
 
     public boolean remove(Reading reading) {

@@ -3,7 +3,6 @@ package com.dlohaiti.dlokiosk;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.dlohaiti.dlokiosk.client.CustomerAccountClient;
@@ -27,7 +26,6 @@ import roboguice.util.RoboAsyncTask;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.SortedSet;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 

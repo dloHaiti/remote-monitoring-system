@@ -30,7 +30,10 @@ public class Register {
         for (Product product : cart.getProducts()) {
             totalGallons += product.getGallons() * product.getQuantity();
         }
-        Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons, new Money(cart.getTotal()));
+        Receipt receipt = new Receipt(lineItems,
+                clock.now(),
+                totalGallons,
+                new Money(cart.getTotal()));
         repository.add(receipt);
         return receipt;
     }

@@ -30,7 +30,11 @@ public class RegisterNew {
         for (Product product : cart.getProducts()) {
             totalGallons += product.getGallons() * product.getQuantity();
         }
-        Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons, cart.getDiscountedTotal());
+        String sponsorId = cart.isSponsorSelected() ? cart.sponsor().getId() : null;
+        Receipt receipt = new Receipt(lineItems, clock.now(), totalGallons,
+                cart.getDiscountedTotal(), cart.salesChannel().getId(), cart.customerAccount().getId(),
+                cart.paymentMode(), cart.isSponsorSelected(), sponsorId,
+                cart.sponsorAmount(), cart.customerAmount(), cart.paymentType(), cart.deliveryTime());
         repository.add(receipt);
         return receipt;
     }

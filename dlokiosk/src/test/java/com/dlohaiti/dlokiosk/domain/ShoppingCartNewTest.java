@@ -30,6 +30,8 @@ public class ShoppingCartNewTest {
     public void shouldClearOnCheckout() {
         cart.addOrUpdateProduct(productBuilder().build());
         cart.addPromotion(promotionBuilder().build());
+        cart.setSalesChannel(new SalesChannelBuilder().build());
+        cart.setCustomerAccount(new CustomerAccountBuilder().build());
 
         cart.checkout();
 

@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.KioskDate;
-import com.dlohaiti.dlokiosk.domain.*;
+import com.dlohaiti.dlokiosk.domain.LineItem;
+import com.dlohaiti.dlokiosk.domain.Money;
+import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.google.inject.Inject;
 
 import java.math.BigDecimal;
@@ -14,73 +16,83 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.ReceiptLineItemsTable;
+import static com.dlohaiti.dlokiosk.db.KioskDatabase.ReceiptsTable;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosk.db.KioskDatabaseUtils.where;
 
 public class ReceiptsRepository {
     private final static String TAG = ReceiptsRepository.class.getSimpleName();
     private final KioskDatabase db;
-    private final ReceiptFactory receiptFactory;
     private final KioskDate kioskDate;
+    private ConfigurationRepository configurationRepository;
     private final static String[] lineItemCols = new String[]{
-            KioskDatabase.ReceiptLineItemsTable.ID,
-            KioskDatabase.ReceiptLineItemsTable.SKU,
-            KioskDatabase.ReceiptLineItemsTable.QUANTITY,
-            KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID,
-            KioskDatabase.ReceiptLineItemsTable.PRICE,
-            KioskDatabase.ReceiptLineItemsTable.TYPE
+            ReceiptLineItemsTable.ID,
+            ReceiptLineItemsTable.SKU,
+            ReceiptLineItemsTable.QUANTITY,
+            ReceiptLineItemsTable.RECEIPT_ID,
+            ReceiptLineItemsTable.PRICE,
+            ReceiptLineItemsTable.TYPE
     };
 
     @Inject
-    public ReceiptsRepository(KioskDatabase db, ReceiptFactory receiptFactory, KioskDate kioskDate) {
+    public ReceiptsRepository(KioskDatabase db, KioskDate kioskDate, ConfigurationRepository configurationRepository) {
         this.db = db;
-        this.receiptFactory = receiptFactory;
         this.kioskDate = kioskDate;
+        this.configurationRepository = configurationRepository;
     }
 
     public List<Receipt> list() {
         List<Receipt> receipts = new ArrayList<Receipt>();
         String[] columns = {
-                KioskDatabase.ReceiptsTable.ID,
-                KioskDatabase.ReceiptsTable.CREATED_AT,
-                KioskDatabase.ReceiptsTable.TOTAL_GALLONS,
-                KioskDatabase.ReceiptsTable.TOTAL
+                ReceiptsTable.ID,
+                ReceiptsTable.CREATED_AT,
+                ReceiptsTable.TOTAL_GALLONS,
+                ReceiptsTable.TOTAL,
+                ReceiptsTable.SALES_CHANNEL_ID,
+                ReceiptsTable.CUSTOMER_ACCOUNT_ID,
+                ReceiptsTable.PAYMENT_MODE,
+                ReceiptsTable.IS_SPONSOR_SELECTED,
+                ReceiptsTable.SPONSOR_ID,
+                ReceiptsTable.SPONSOR_AMOUNT,
+                ReceiptsTable.CUSTOMER_AMOUNT,
+                ReceiptsTable.PAYMENT_TYPE,
+                ReceiptsTable.DELIVERY_TIME
         };
 
         SQLiteDatabase readableDatabase = db.getReadableDatabase();
         readableDatabase.beginTransaction();
         try {
-            Cursor receiptsCursor = readableDatabase.query(KioskDatabase.ReceiptsTable.TABLE_NAME, columns, null, null, null, null, null);
-            receiptsCursor.moveToFirst();
+            Cursor cursor = readableDatabase.query(ReceiptsTable.TABLE_NAME, columns, null, null, null, null, null);
+            cursor.moveToFirst();
 
-            while (!receiptsCursor.isAfterLast()) {
+            while (!cursor.isAfterLast()) {
                 Date date = null;
                 try {
-                    date = kioskDate.getFormat().parse(receiptsCursor.getString(1));
+                    date = kioskDate.getFormat().parse(getStringValueForColumn(cursor, ReceiptsTable.CREATED_AT));
                 } catch (ParseException e) {
-                    Log.e(TAG, String.format("Invalid date format for receipt with id %d", receiptsCursor.getLong(0)), e);
+                    Log.e(TAG, String.format("Invalid date format for receipt with id %d", cursor.getLong(0)), e);
                 }
-                String receiptId = receiptsCursor.getString(0);
-                Cursor lineItemsCursor = readableDatabase.query(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, lineItemCols, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receiptId), null, null, null);
-                lineItemsCursor.moveToFirst();
-                List<LineItem> lineItems = new ArrayList<LineItem>();
-                while (!lineItemsCursor.isAfterLast()) {
-                    String sku = lineItemsCursor.getString(1);
-                    int quantity = lineItemsCursor.getInt(2);
-                    String price = lineItemsCursor.getString(4);
-                    ReceiptLineItemType type = ReceiptLineItemType.valueOf(lineItemsCursor.getString(5));
-                    Money money = new Money(new BigDecimal(price));
-                    lineItems.add(new LineItem(sku, quantity, money, type));
-                    lineItemsCursor.moveToNext();
-                }
-                lineItemsCursor.close();
-                long id = receiptsCursor.getLong(0);
-                int totalGallons = receiptsCursor.getInt(2);
-                Money total = new Money(new BigDecimal(receiptsCursor.getString(3)));
-                receipts.add(receiptFactory.makeReceipt(id, lineItems, date, totalGallons, total));
-                receiptsCursor.moveToNext();
+                long id = getLongValueForColumn(cursor, ReceiptsTable.ID);
+                List<LineItem> lineItems = listLineItems(readableDatabase, id);
+                int totalGallons = getIntegerValueForColumn(cursor, ReceiptsTable.TOTAL_GALLONS);
+                Money total = new Money(new BigDecimal(getStringValueForColumn(cursor, ReceiptsTable.TOTAL)));
+                Long salesChannelId = getLongValueForColumn(cursor, ReceiptsTable.SALES_CHANNEL_ID);
+                String customerAccountId = getStringValueForColumn(cursor, ReceiptsTable.CUSTOMER_ACCOUNT_ID);
+                String paymentMode = getStringValueForColumn(cursor, ReceiptsTable.PAYMENT_MODE);
+                Boolean isSponsorSelected = getBooleanValueForColumn(cursor, ReceiptsTable.IS_SPONSOR_SELECTED);
+                String sponsorId = getStringValueForColumn(cursor, ReceiptsTable.SPONSOR_ID);
+                Money sponsorAmount = new Money(getStringValueForColumn(cursor, ReceiptsTable.SPONSOR_AMOUNT),
+                        currency());
+                Money customerAmount = new Money(getStringValueForColumn(cursor, ReceiptsTable.CUSTOMER_AMOUNT),
+                        currency());
+                String paymentType = getStringValueForColumn(cursor, ReceiptsTable.PAYMENT_TYPE);
+                String deliveryTime = getStringValueForColumn(cursor, ReceiptsTable.DELIVERY_TIME);
+
+                receipts.add(makeReceipt(date, id, lineItems, totalGallons, total, salesChannelId, customerAccountId, paymentMode, isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime));
+                cursor.moveToNext();
             }
-            receiptsCursor.close();
+            cursor.close();
             readableDatabase.setTransactionSuccessful();
             return receipts;
         } catch (Exception e) {
@@ -91,12 +103,58 @@ public class ReceiptsRepository {
         }
     }
 
+    private Receipt makeReceipt(Date date, long id, List<LineItem> lineItems, int totalGallons, Money total, Long salesChannelId, String customerAccountId, String paymentMode, Boolean isSponsorSelected, String sponsorId, Money sponsorAmount, Money customerAmount, String paymentType, String deliveryTime) {
+        return new Receipt(id, lineItems, date, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
+                isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime);
+    }
+
+    private String currency() {
+        return configurationRepository.get(ConfigurationKey.CURRENCY);
+    }
+
+    private String getStringValueForColumn(Cursor cursor, String column) {
+        return cursor.getString(cursor.getColumnIndex(column));
+    }
+
+    private Long getLongValueForColumn(Cursor cursor, String column) {
+        return cursor.getLong(cursor.getColumnIndex(column));
+    }
+
+    private int getIntegerValueForColumn(Cursor cursor, String column) {
+        return cursor.getInt(cursor.getColumnIndex(column));
+    }
+
+    private Boolean getBooleanValueForColumn(Cursor cursor, String column) {
+        return Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(column)));
+    }
+
+    private List<LineItem> listLineItems(SQLiteDatabase readableDatabase, long receiptId) {
+        Cursor cursor = readableDatabase
+                .query(
+                        ReceiptLineItemsTable.TABLE_NAME, lineItemCols,
+                        where(ReceiptLineItemsTable.RECEIPT_ID),
+                        matches(receiptId), null, null, null);
+        cursor.moveToFirst();
+        List<LineItem> lineItems = new ArrayList<LineItem>();
+        while (!cursor.isAfterLast()) {
+            String sku = cursor.getString(1);
+            int quantity = cursor.getInt(2);
+            String price = cursor.getString(4);
+            ReceiptLineItemType type = ReceiptLineItemType.valueOf(cursor.getString(5));
+            Money money = new Money(new BigDecimal(price));
+            lineItems.add(new LineItem(sku, quantity, money, type));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return lineItems;
+    }
+
     public boolean remove(Receipt receipt) {
         SQLiteDatabase writableDatabase = db.getWritableDatabase();
         writableDatabase.beginTransaction();
         try {
-            writableDatabase.delete(KioskDatabase.ReceiptsTable.TABLE_NAME, where(KioskDatabase.ReceiptsTable.ID), matches(receipt.getId()));
-            writableDatabase.delete(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, where(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID), matches(receipt.getId()));
+            writableDatabase.delete(ReceiptsTable.TABLE_NAME, where(ReceiptsTable.ID), matches(receipt.getId()));
+            writableDatabase.delete(ReceiptLineItemsTable.TABLE_NAME, where(ReceiptLineItemsTable.RECEIPT_ID), matches(receipt.getId()));
             writableDatabase.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -108,18 +166,14 @@ public class ReceiptsRepository {
     }
 
     public boolean add(Receipt receipt) {
-        ContentValues receiptValues = new ContentValues();
-        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
-        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, receipt.getTotalGallons());
-        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL, String.valueOf(receipt.getTotal().getAmount()));
-
+        ContentValues receiptValues = buildContentValuesForReceipt(receipt);
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
-            long receiptId = wdb.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
+            long receiptId = wdb.insert(ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (LineItem orderedItem : receipt.getLineItems()) {
-                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem);
-                wdb.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
+                ContentValues productLineItemValue = buildContentValuesForLineItems(receiptId, orderedItem);
+                wdb.insert(ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
             }
             wdb.setTransactionSuccessful();
             return true;
@@ -131,37 +185,30 @@ public class ReceiptsRepository {
         }
     }
 
-    public boolean add(List<Product> products, List<Promotion> promotions, Integer totalGallons, Money total) {
-        SQLiteDatabase writableDatabase = db.getWritableDatabase();
-        writableDatabase.beginTransaction();
-        Receipt receipt = receiptFactory.makeReceipt(products, promotions, total);
+    private ContentValues buildContentValuesForReceipt(Receipt receipt) {
         ContentValues receiptValues = new ContentValues();
-        receiptValues.put(KioskDatabase.ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
-        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL_GALLONS, totalGallons);
-        receiptValues.put(KioskDatabase.ReceiptsTable.TOTAL, total.getAmount().toString());
-        try {
-            long receiptId = writableDatabase.insert(KioskDatabase.ReceiptsTable.TABLE_NAME, null, receiptValues);
-            for (LineItem orderedItem : receipt.getLineItems()) {
-                ContentValues productLineItemValue = buildContentValues(receiptId, orderedItem);
-                writableDatabase.insert(KioskDatabase.ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
-            }
-            writableDatabase.setTransactionSuccessful();
-            return true;
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to save receipt to database.", e);
-            return false;
-        } finally {
-            writableDatabase.endTransaction();
-        }
+        receiptValues.put(ReceiptsTable.CREATED_AT, kioskDate.getFormat().format(receipt.getCreatedDate()));
+        receiptValues.put(ReceiptsTable.TOTAL_GALLONS, receipt.getTotalGallons());
+        receiptValues.put(ReceiptsTable.TOTAL, receipt.getTotal().amountAsString());
+        receiptValues.put(ReceiptsTable.SALES_CHANNEL_ID, receipt.getSalesChannelId());
+        receiptValues.put(ReceiptsTable.CUSTOMER_ACCOUNT_ID, receipt.getCustomerAccountId());
+        receiptValues.put(ReceiptsTable.PAYMENT_MODE, receipt.getPaymentMode());
+        receiptValues.put(ReceiptsTable.IS_SPONSOR_SELECTED, String.valueOf(receipt.getIsSponsorSelected()));
+        receiptValues.put(ReceiptsTable.SPONSOR_ID, receipt.getSponsorId());
+        receiptValues.put(ReceiptsTable.SPONSOR_AMOUNT, receipt.getSponsorAmount().amountAsString());
+        receiptValues.put(ReceiptsTable.CUSTOMER_AMOUNT, receipt.getCustomerAmount().amountAsString());
+        receiptValues.put(ReceiptsTable.PAYMENT_TYPE, receipt.getPaymentType());
+        receiptValues.put(ReceiptsTable.DELIVERY_TIME, receipt.getDeliveryTime());
+        return receiptValues;
     }
 
-    private ContentValues buildContentValues(long receiptId, LineItem orderedItem) {
+    private ContentValues buildContentValuesForLineItems(long receiptId, LineItem orderedItem) {
         ContentValues productLineItemValue = new ContentValues();
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.TYPE, orderedItem.getType().name());
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.RECEIPT_ID, receiptId);
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.SKU, orderedItem.getSku());
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());
-        productLineItemValue.put(KioskDatabase.ReceiptLineItemsTable.PRICE, orderedItem.getPrice().getAmount().toString());
+        productLineItemValue.put(ReceiptLineItemsTable.TYPE, orderedItem.getType().name());
+        productLineItemValue.put(ReceiptLineItemsTable.RECEIPT_ID, receiptId);
+        productLineItemValue.put(ReceiptLineItemsTable.SKU, orderedItem.getSku());
+        productLineItemValue.put(ReceiptLineItemsTable.QUANTITY, orderedItem.getQuantity());
+        productLineItemValue.put(ReceiptLineItemsTable.PRICE, orderedItem.getPrice().amountAsString());
         return productLineItemValue;
     }
 

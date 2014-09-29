@@ -30,7 +30,9 @@ public class ShoppingCartTest {
     public void shouldClearOnCheckout() {
         cart.addProduct(productBuilder().build());
         cart.addPromotion(promotionBuilder().build());
+
         cart.checkout();
+
         assertThat(cart.isEmpty(), is(true));
     }
 

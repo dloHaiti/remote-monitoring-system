@@ -363,7 +363,7 @@ public class PaymentActivity extends SaleActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
-                                cart.clear();
+                                cart.checkout();
                                 callSuperOnContinue(view);
                             }
                         })

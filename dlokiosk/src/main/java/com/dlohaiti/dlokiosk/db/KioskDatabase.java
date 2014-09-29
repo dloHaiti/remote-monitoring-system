@@ -23,13 +23,31 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s INTEGER PRIMARY KEY," +
                         "%s INTEGER," +
                         "%s TEXT," +
+                        "%s TEXT," +
+                        "%s INTEGER," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
+                        "%s TEXT," +
                         "%s TEXT" +
                         ")",
                 ReceiptsTable.TABLE_NAME,
                 ReceiptsTable.ID,
                 ReceiptsTable.TOTAL_GALLONS,
                 ReceiptsTable.TOTAL,
-                ReceiptsTable.CREATED_AT
+                ReceiptsTable.CREATED_AT,
+                ReceiptsTable.SALES_CHANNEL_ID,
+                ReceiptsTable.CUSTOMER_ACCOUNT_ID,
+                ReceiptsTable.PAYMENT_MODE,
+                ReceiptsTable.IS_SPONSOR_SELECTED,
+                ReceiptsTable.SPONSOR_ID,
+                ReceiptsTable.SPONSOR_AMOUNT,
+                ReceiptsTable.CUSTOMER_AMOUNT,
+                ReceiptsTable.PAYMENT_TYPE,
+                ReceiptsTable.DELIVERY_TIME
         );
         String createReceiptLineItems = String.format(
                 "CREATE TABLE %s(" +
@@ -400,6 +418,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String CREATED_AT = "CREATED_DATE";
         public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
         public static final String TOTAL = "TOTAL";
+        public static final String SALES_CHANNEL_ID = "SALES_CHANNEL_ID";
+        public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
+        public static final String PAYMENT_MODE = "PAYMENT_MODE";
+        public static final String IS_SPONSOR_SELECTED = "IS_SPONSOR_SELECTED";
+        public static final String SPONSOR_ID = "SPONSOR_ID";
+        public static final String SPONSOR_AMOUNT = "SPONSOR_AMOUNT";
+        public static final String CUSTOMER_AMOUNT = "CUSTOMER_AMOUNT";
+        public static final String PAYMENT_TYPE = "PAYMENT_TYPE";
+        public static final String DELIVERY_TIME = "DELIVERY_TIME";
     }
 
     public static class ConfigurationTable {

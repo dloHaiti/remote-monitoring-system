@@ -32,7 +32,7 @@ class ReceiptsService {
                 isSponsorSelected: params.isSponsorSelected,
                 sponsor          : sponsor,
                 sponsorAmount    : params.sponsorAmount.amount,
-                customerAmount   : params.sponsorAmount.amount,
+                customerAmount   : params.customerAmount.amount,
                 paymentType      : params.paymentType,
                 deliveryTime     : params.deliveryTime
         ])

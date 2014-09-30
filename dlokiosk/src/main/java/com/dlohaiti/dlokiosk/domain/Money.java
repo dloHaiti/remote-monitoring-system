@@ -99,4 +99,8 @@ public class Money implements Comparable<Money> {
     public boolean isGreaterThan(Money anotherMoney) {
         return amount.compareTo(anotherMoney.amount) > 0;
     }
+
+    public boolean isLessThan(Money money) {
+        return !isGreaterThan(money);
+    }
 }

@@ -300,7 +300,7 @@ public class PaymentActivity extends SaleActivity {
                 if (PAYMENT_TYPE_POST_PAY.equalsIgnoreCase(paymentType)) {
                     customerAmountRowView.setVisibility(View.VISIBLE);
                     cart.setCustomerAmount(Money.ZERO);
-                    customerAmountView.setText("");
+                    customerAmountView.setText("0");
                 } else if (PAYMENT_TYPE_NOW.equalsIgnoreCase(paymentType)) {
                     customerAmountRowView.setVisibility(View.GONE);
                     customerAmountView.setText("");

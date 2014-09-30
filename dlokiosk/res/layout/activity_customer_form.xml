@@ -81,130 +81,19 @@
                     android:layout_weight="1"
                     >
                     <EditText
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/latitude_degres"
-                        android:maxLength="3"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/latitude_degres_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="O"
-
-                        android:layout_toRightOf="@+id/latitude_degres"
-                        android:layout_alignTop="@+id/latitude_degres" />
+                         android:layout_alignParentLeft="true"
+                         android:id="@+id/latitude_degres"
+                        android:hint="@string/latitude_hint"
+                        android:inputType="numberDecimal|numberSigned" />
                     <EditText
-                        android:layout_toRightOf="@+id/latitude_degres_label"
-                        android:layout_width="70dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/latitude_minutes"
-                        android:maxLength="3"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/latitude_minutes_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="'"
-                        android:layout_toRightOf="@+id/latitude_minutes"
-                        android:layout_alignTop="@+id/latitude_minutes" />
-                    <EditText
-                        android:layout_toRightOf="@+id/latitude_minutes_label"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/latitude_secondes"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/latitude_secondes_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="''"
-                        android:layout_toRightOf="@+id/latitude_secondes"
-                        android:layout_alignTop="@+id/latitude_secondes" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/latitude_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Latitude"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/latitude_secondes_label"
-                        android:layout_alignTop="@+id/latitude_secondes_label" />
-
-                    <EditText
                         android:layout_below="@id/latitude_degres"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
                         android:id="@+id/longitude_degres"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/longitude_degres_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="O"
-                        android:layout_alignParentBottom="false"
-                        android:layout_alignTop="@+id/longitude_degres"
-                        android:layout_toRightOf="@+id/longitude_degres" />
-                    <EditText
-                        android:layout_below="@id/latitude_minutes"
-                        android:layout_toRightOf="@+id/longitude_degres_label"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/longitude_minutes"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/longitude_minutes_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="'"
-
-                        android:layout_alignTop="@+id/longitude_minutes"
-                        android:layout_toRightOf="@+id/longitude_minutes" />
-                    <EditText
-                        android:layout_toRightOf="@+id/longitude_minutes_label"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/longitude_secondes"
-                        android:layout_alignTop="@+id/longitude_minutes_label"
-                        android:inputType="number" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/longitude_secondes_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="''"
-                        android:layout_toRightOf="@+id/longitude_secondes"
-                        android:layout_alignTop="@+id/longitude_secondes" />
-                    <TextView
-                        android:padding="5dp"
-                        android:id="@+id/longitude_label"
-                        style="@style/standard_black_text"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Longitude"
-                        android:layout_toRightOf="@+id/longitude_secondes_label"
-                        android:layout_alignTop="@+id/longitude_secondes_label" />
+                        android:hint="@string/longitude_hint"
+                        android:inputType="numberDecimal|numberSigned" />
                 </RelativeLayout>
             </LinearLayout>
 

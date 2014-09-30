@@ -64,18 +64,12 @@ public class CustomerFormActivity extends RoboActivity {
 
     @InjectView(R.id.latitude_degres)
     protected EditText latitudeDegree;
-    @InjectView(R.id.latitude_minutes)
-    protected EditText latitudeMinute;
-    @InjectView(R.id.latitude_secondes)
-    protected EditText latitudeSecond;
+
 
 
     @InjectView(R.id.longitude_degres)
     protected EditText longitudeDegree;
-    @InjectView(R.id.longitude_minutes)
-    protected EditText longitudeMinute;
-    @InjectView(R.id.longitude_secondes)
-    protected EditText longitudeSecond;
+
 
     @InjectView(R.id.organisation)
     protected EditText organization;
@@ -156,17 +150,11 @@ public class CustomerFormActivity extends RoboActivity {
 
     private void fillGPSCoordinates(String gpsCoordinates) {
         if (TextUtils.isEmpty(gpsCoordinates)) return;
-        String[] coordinates = gpsCoordinates.split(",");
-        String[] latitude = coordinates[0].split(":");
-        String[] longitude = coordinates[1].split(":");
-
-        latitudeDegree.setText(latitude[0]);
-        latitudeMinute.setText(latitude[1]);
-        latitudeSecond.setText(latitude[2]);
-
-        longitudeDegree.setText(longitude[0]);
-        longitudeMinute.setText(longitude[1]);
-        longitudeSecond.setText(longitude[2]);
+        String[] coordinates = gpsCoordinates.trim().split(" ");
+        String latitude = coordinates[0];
+        String longitude = coordinates[1];
+        latitudeDegree.setText(latitude);
+        longitudeDegree.setText(longitude);
     }
 
 
@@ -261,24 +249,20 @@ public class CustomerFormActivity extends RoboActivity {
         if (isLatitudeEmpty() || isLongitudeEmpty()) {
             return "";
         } else {
-            return String.format("%s:%s:%s,%s:%s:%s",
+            return String.format("%s %s",
                     latitudeDegree.getText(),
-                    latitudeMinute.getText(),
-                    latitudeSecond.getText(),
-                    longitudeDegree.getText(),
-                    longitudeMinute.getText(),
-                    longitudeSecond.getText()
+                    longitudeDegree.getText()
             );
         }
     }
 
     private boolean isLatitudeEmpty() {
-        return isEmptyField(latitudeDegree) || isEmptyField(latitudeMinute) || isEmptyField(latitudeSecond);
+        return isEmptyField(latitudeDegree);
     }
 
 
     private boolean isLongitudeEmpty() {
-        return isEmptyField(longitudeDegree) || isEmptyField(longitudeMinute) || isEmptyField(longitudeSecond);
+        return isEmptyField(longitudeDegree);
     }
 
     private boolean isEmptyField(EditText editable) {

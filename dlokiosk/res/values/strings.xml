@@ -141,5 +141,7 @@
     <string name="sponsor_contact_name_hint">Entrez Nom du contact</string>
     <string name="select_customer_label">clientèle</string>
     <string name="add_sponsor_account">Ajouter commanditaire</string>
+    <string name="longitude_hint">Entrez degré de longitude</string>
+    <string name="latitude_hint">Entrez degré de latitude</string>
 
 </resources>

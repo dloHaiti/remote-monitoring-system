@@ -70,10 +70,10 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     public String formatedGPS() {
         if (TextUtils.isEmpty(gpsCoordinates))
             return "";
-        String[] split = gpsCoordinates.split(",");
-        String[] latitude = split[0].split(":");
-        String[] longitude = split[1].split(":");
-        return format("%s° %s′ %s″,%s° %s′ %s″", latitude[0], latitude[1], latitude[2], longitude[0], longitude[1], longitude[2]);
+        String[] split = gpsCoordinates.trim().split(" ");
+        String latitude = split[0];
+        String longitude = split[1];
+        return format("%s %s", latitude, longitude);
     }
 
     public CustomerAccount setGpsCoordinates(String gpsCoordinates) {

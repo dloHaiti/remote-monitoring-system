@@ -40,8 +40,8 @@ class CustomerAccount {
         gpsCoordinates(validator: { val, obj ->
             if(val == null || val=="") return true
             else {
-              def locs = val.split(",")
-              return  (locs.size() == 2) && (locs[0].split(":").size() == 3) &&  (locs[1].split(":").size() == 3)
+              def locs = val.split(" ")
+              return  (locs.size() == 2)
             }
         },nullable: true)
     }

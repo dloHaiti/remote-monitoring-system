@@ -1,6 +1,5 @@
 package com.dlohaiti.dlokiosk.domain;
 
-import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +18,11 @@ import static org.mockito.Mockito.mock;
 
 public class ShoppingCartNewTest {
     private ShoppingCartNew cart;
+    private RegisterNew register;
 
     @Before
     public void setUp() {
-        RegisterNew register = new RegisterNew(mock(Clock.class), mock(ReceiptsRepository.class),
-                mock(CustomerAccountRepository.class));
+        register = new RegisterNew(mock(Clock.class), mock(ReceiptsRepository.class));
         cart = new ShoppingCartNew(register);
     }
 

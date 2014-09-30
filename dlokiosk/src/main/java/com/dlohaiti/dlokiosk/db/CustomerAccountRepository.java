@@ -102,7 +102,7 @@ public class CustomerAccountRepository {
         List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null, CustomerAccountsTable.CONTACT_NAME);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, null, null, null, null,  CustomerAccountsTable.CONTACT_NAME);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -171,7 +171,7 @@ public class CustomerAccountRepository {
             values.put(CustomerAccountsTable.DUE_AMOUNT, String.valueOf(account.getDueAmount()));
             values.put(KioskDatabase.CustomerAccountsTable.IS_SYNCED, String.valueOf(false));
 
-            if (account.getId() == null || account.getId().isEmpty()) {
+            if (account.getId()==null || account.getId().isEmpty()) {
                 String generatedId = UUID.randomUUID().toString();
                 values.put(CustomerAccountsTable.ID, generatedId);
                 account.setId(generatedId);
@@ -308,9 +308,5 @@ public class CustomerAccountRepository {
                         KioskDatabase.CustomerAccountsTable.NAME),
                 new String[]{String.valueOf(sponsorId)});
         return getCustomerAccounts(rdb, cursor, false);
-    }
-
-    public void updateDueAmount(String accountId, double dueAmount) {
-
     }
 }

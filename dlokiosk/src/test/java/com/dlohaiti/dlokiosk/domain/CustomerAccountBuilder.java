@@ -11,7 +11,6 @@ public class CustomerAccountBuilder {
     private long kioskId = 1;
     private List<SalesChannel> salesChannels;
     private boolean selected = false;
-    private double dueAmount = 0;
 
     public CustomerAccountBuilder withId(String id) {
         this.id = id;
@@ -54,17 +53,11 @@ public class CustomerAccountBuilder {
     }
 
     public CustomerAccount build() {
-        CustomerAccount account = new CustomerAccount(id, name, contactName, "School", address, phoneNumber, kioskId,
-                dueAmount, true)
+        CustomerAccount account = new CustomerAccount(id, name, contactName,"School", address, phoneNumber, kioskId,0,true)
                 .withChannels(salesChannels);
         if (selected) {
             account.select();
         }
         return account;
-    }
-
-    public CustomerAccountBuilder withDueAmount(double dueAmount) {
-        this.dueAmount = dueAmount;
-        return this;
     }
 }

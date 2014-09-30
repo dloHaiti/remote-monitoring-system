@@ -9,7 +9,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
-public class CustomerAccount  implements Comparable<CustomerAccount> {
+public class CustomerAccount implements Comparable<CustomerAccount> {
     private double dueAmount;
     private String id;
     private String name;
@@ -26,11 +26,12 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     private String gpsCoordinates;
     private boolean selected;
 
-    public CustomerAccount(){
+    public CustomerAccount() {
 
     }
 
-    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, double amount, boolean synced) {
+    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address,
+                           String phoneNumber, long kiosk_id, double dueAmount, boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
@@ -38,7 +39,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
-        this.dueAmount = amount;
+        this.dueAmount = dueAmount;
         this.synced = synced;
     }
 
@@ -61,7 +62,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     }
 
     public String getGpsCoordinates() {
-        if(gpsCoordinates==null){
+        if (gpsCoordinates == null) {
             return "";
         }
         return gpsCoordinates;
@@ -123,21 +124,21 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     }
 
     public String getName() {
-        if(name==null){
+        if (name == null) {
             return "";
         }
         return name;
     }
 
     public String getAddress() {
-        if(address==null){
+        if (address == null) {
             return "";
         }
         return address;
     }
 
     public String getPhoneNumber() {
-        if(phoneNumber==null){
+        if (phoneNumber == null) {
             return "";
         }
         return phoneNumber;

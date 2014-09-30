@@ -1,9 +1,11 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptLineItemType;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
@@ -29,7 +31,9 @@ public class RegisterNewTest {
             .withAmount("10")
             .withPromotionType(PERCENT).build();
     ReceiptsRepository repository = mock(ReceiptsRepository.class);
-    RegisterNew register = new RegisterNew(mock(Clock.class), repository);
+    @Mock
+    CustomerAccountRepository customerAccountRepository;
+    RegisterNew register = new RegisterNew(mock(Clock.class), repository, customerAccountRepository);
     ShoppingCartNew cart;
 
     @Before
@@ -151,5 +155,31 @@ public class RegisterNewTest {
         Money total = register.discountedTotal(cart);
 
         assertThat(total, is(new Money(new BigDecimal("22.50"))));
+    }
+
+    @Test
+    public void shouldUpdateCustomerDueAmountWhenTotalAmountIsNotPaid() {
+        cart.addOrUpdateProduct(tenDollarTenGallonABC);
+        cart.setCustomerAmount(new Money("4.0", "HTG"));
+        cart.setSponsorAmount(new Money("4.0", "HTG"));
+        CustomerAccount account = new CustomerAccountBuilder().withDueAmount(5.0).build();
+        cart.setCustomerAccount(account);
+
+        register.checkout(cart);
+
+        verify(customerAccountRepository).updateDueAmount(account.getId(), 7.0);
+    }
+
+    @Test
+    public void shouldNotUpdateCustomerDueAmountWhenTotalAmountIsPaid() {
+        cart.addOrUpdateProduct(tenDollarTenGallonABC);
+        cart.setCustomerAmount(new Money("5.0", "HTG"));
+        cart.setSponsorAmount(new Money("5.0", "HTG"));
+        CustomerAccount account = new CustomerAccountBuilder().withDueAmount(5.0).build();
+        cart.setCustomerAccount(account);
+
+        register.checkout(cart);
+
+        verifyZeroInteractions(customerAccountRepository);
     }
 }

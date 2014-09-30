@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.google.inject.Inject;
 
@@ -19,7 +20,7 @@ public class RegisterNew {
     private final ReceiptsRepository repository;
 
     @Inject
-    public RegisterNew(Clock clock, ReceiptsRepository repository) {
+    public RegisterNew(Clock clock, ReceiptsRepository repository, CustomerAccountRepository customerAccountRepository) {
         this.clock = clock;
         this.repository = repository;
     }

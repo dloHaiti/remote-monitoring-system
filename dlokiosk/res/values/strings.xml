@@ -41,8 +41,8 @@
     <string name="zero">0</string>
     <string name="default_currency">HTG</string>
     <string name="title_activity_select_sampling_site">Sélectionner le point de collecte des échantillons</string>
-    <string name="view_reports_button">Visualiser les rapports</string>
-    <string name="title_activity_view_reports">Visualiser les rapports</string>
+    <string name="view_reports_button">Rapports</string>
+    <string name="title_activity_view_reports">Rapports</string>
     <string name="update_configuration">Mettre a jour la configuration</string>
     <string name="fetch_configuration_failed">Erreur lors du chargement de la configuration</string>
     <string name="fetch_configuration_succeeded">La configuration a été chargée avec succès</string>
@@ -72,27 +72,26 @@
     <string name="yes_button_label">Oui</string>
     <string name="no_button_label">Aucun</string>
     <string name="enter_quantity_hint">Quantité</string>
-    <string name="add_product_to_cart">AJOUTER</string>
+    <string name="add_product_to_cart">Ajouter</string>
     <string name="search_product_text">Recherche Produit</string>
-    <string name="order_for_label">ORDONNANCE DE:</string>
-    <string name="choose_promotion_label">CHOISIR PROMOTIONS DISPONIBLES POUR CETTE ORDONNANCE</string>
+    <string name="applied_promotions_label">Promotions Appliquées</string>
     <string name="total_price_label">Prix ​​Total:</string>
     <string name="discounted_price_label">Prix ​​Réduit:</string>
 
     <string name="payment_mode_label">Mode de Paiement</string>
-    <string name="select_payee_label">Sélectionnez bénéficiaire</string>
-    <string name="select_sponsor_label">Sélectionnez commanditaire</string>
-    <string name="sponsor_payment_amount_label">Entrez Paiement Montant du commanditaire</string>
+    <string name="payee_label">Bénéficiaire</string>
+    <string name="sponsor_label">Sponsor</string>
+    <string name="sponsor_payment_amount_label">Paiement Montant du Sponsor</string>
     <string name="payment_type_label">Type de Paiement</string>
     <string name="customer_amount_label">Montant à la clientèle</string>
     <string name="delivery_time_label">Délai de livraison</string>
     <string name="payment_summary_label">PAIEMENT RÉSUMÉ</string>
     <string name="customer_payment_label">PAIEMENT À LA CLIENTÈLE</string>
     <string name="sponsor_payment_label">SPONSOR PAIEMENT</string>
-    <string name="total_price_summary_label">PRIX TOTAL POUR L\'ORDRE</string>
-    <string name="amount_due_summary_label">MONTANT DÛ POUR CETTE COMMANDE</string>
+    <string name="total_price_summary_label">PRIX TOTAL POUR LA VENTE</string>
+    <string name="amount_due_summary_label">MONTANT DÛ POUR CETTE VENTE</string>
 
-    <string name="sale_confirm_dialog_message">VOTRE COMMANDE A ÉTÉ CONFIRMÉ</string>
+    <string name="sale_confirm_dialog_message">Vente a été confirmée</string>
 
     <string name="no_products_in_cart_error_message">S\'il vous plaît ajouter des produits à procéder.</string>
     <string name="no_products_in_cart_error_title">Aucun produit n\'a été ajouté</string>
@@ -143,5 +142,9 @@
     <string name="add_sponsor_account">Ajouter commanditaire</string>
     <string name="longitude_hint">Entrez degré de longitude</string>
     <string name="latitude_hint">Entrez degré de latitude</string>
+    <string name="select_sales_channel_and_customer">Sélectionnez canal de vente et le client</string>
+    <string name="select_products">Sélectionner les produits</string>
+    <string name="sale_summary_and_promotions">Vente Résumé et Promotions</string>
+    <string name="payment_activity_label">Paiement</string>
 
 </resources>

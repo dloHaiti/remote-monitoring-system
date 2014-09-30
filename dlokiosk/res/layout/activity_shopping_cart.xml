@@ -25,36 +25,29 @@
                     android:paddingLeft="2dp"
                     android:background="@color/order_summary_background">
                 <TextView
-                        android:id="@+id/order_for_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/all_caps_text"
-                        android:text="@string/order_for_label"/>
-                <TextView
                         android:id="@+id/sales_channel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/order_for_label"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:maxWidth="200dp"
-                        style="@style/all_caps_text"
+                        style="@style/standard_black_text"
                         android:text="Over the counter Really Long"/>
                 <TextView
                         android:id="@+id/sales_channel_account_separator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/sales_channel"
-                        style="@style/all_caps_text"
+                        style="@style/standard_black_text"
                         android:text=" | "/>
                 <TextView
                         android:id="@+id/customer_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/sales_channel_account_separator"
-                        style="@style/all_caps_text"
                         android:ellipsize="end"
                         android:singleLine="true"
+                        style="@style/standard_black_text"
                         android:text="John Doe Really Really Long"/>
             </RelativeLayout>
 
@@ -88,9 +81,9 @@
                     android:paddingTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/choose_promotion_label"
-                    android:layout_gravity="center_horizontal"
-                    style="@style/all_caps_text"/>
+                    android:text="@string/applied_promotions_label"
+                    style="@style/standard_black_text"
+                    android:layout_gravity="center_horizontal"/>
 
             <GridView
                     android:id="@+id/right_grid"

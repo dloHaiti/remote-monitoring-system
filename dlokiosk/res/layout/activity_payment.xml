@@ -16,10 +16,6 @@
             android:paddingBottom="10dp"
             android:background="@color/order_summary_background">
         <TextView
-                android:id="@+id/order_for_label"
-                style="@style/order_summary_text"
-                android:text="@string/order_for_label"/>
-        <TextView
                 android:id="@+id/sales_channel"
                 style="@style/order_summary_text"
                 android:text="Over the counter"/>
@@ -59,7 +55,7 @@
                     <TextView
                             android:id="@+id/select_payee_label"
                             style="@style/payment_form_field"
-                            android:text="@string/select_payee_label"/>
+                            android:text="@string/payee_label"/>
                     <RadioGroup
                             android:id="@+id/select_payee"
                             style="@style/payment_form_field"
@@ -82,7 +78,7 @@
                     <TextView
                             android:id="@+id/select_sponsor_label"
                             style="@style/payment_form_field"
-                            android:text="@string/select_sponsor_label"/>
+                            android:text="@string/sponsor_label"/>
                     <Spinner
                             android:id="@+id/sponsor"
                             style="@style/payment_form_field"/>

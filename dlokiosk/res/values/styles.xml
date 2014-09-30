@@ -15,8 +15,14 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:actionMenuTextAppearance">@style/menu_text</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+    <style name="menu_text" parent="standard_white_text">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 
     <style name="horizontal_rule">
         <item name="android:layout_width">fill_parent</item>
@@ -151,10 +157,6 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="all_caps_text" parent="small_black_text">
-        <item name="android:textAllCaps">true</item>
-    </style>
-
     <style name="product_list_add_button" parent="standard_white_text">
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">30dp</item>
@@ -235,7 +237,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="order_summary_text" parent="all_caps_text">
+    <style name="order_summary_text" parent="standard_black_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

@@ -84,7 +84,7 @@
         <activity
                 android:screenOrientation="landscape"
                 android:name=".SelectSalesChannelAndCustomerActivity"
-                android:label="SELECT SALES CHANNEL AND CUSTOMER">
+                android:label="@string/select_sales_channel_and_customer">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectSalesChannelAndCustomerActivity"/>
@@ -115,7 +115,7 @@
                 android:screenOrientation="landscape"
                 android:name=".AddProductsToSaleActivity"
                 android:windowSoftInputMode="adjustPan"
-                android:label="SELECT PRODUCTS">
+                android:label="@string/select_products">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.AddProductsToSaleActivity"/>
@@ -123,7 +123,7 @@
         <activity
                 android:screenOrientation="landscape"
                 android:name=".ShoppingCartActivity"
-                android:label="SELECT PROMOTIONS">
+                android:label="@string/sale_summary_and_promotions">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.ShoppingCartActivity"/>
@@ -139,7 +139,7 @@
         <activity android:name=".PaymentActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
-                  android:label="Payment">
+                  android:label="@string/payment_activity_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.PaymentActivity"/>

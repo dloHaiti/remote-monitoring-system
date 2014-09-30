@@ -11,7 +11,7 @@
     <dimen name="price_label_space">5dp</dimen>
     <dimen name="promotions_grid_height">270dp</dimen>
     <dimen name="promotions_grid_column_width">50dp</dimen>
-    <dimen name="spinner_drop_down_item_height">40dp</dimen>
+    <dimen name="spinner_drop_down_item_height">50dp</dimen>
     <dimen name="standard_font_size">16sp</dimen>
     <dimen name="small_font_size">14sp</dimen>
     <dimen name="action_bar_height">70dp</dimen>

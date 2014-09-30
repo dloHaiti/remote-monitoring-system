@@ -73,12 +73,11 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     @Override
     public String call() throws Exception {
         Collection<Receipt> receipts = receiptsRepository.list();
-        Collection<Delivery> deliveries = deliveriesRepository.list();
         Collection<Reading> readings = readingsRepository.list();
         List<CustomerAccount> accounts = customerAccountRepository.getNonSyncAccounts();
         List<Sponsor> sponsors = sponsorRepository.getNonSyncSponsors();
 
-        if (sponsors.isEmpty() && accounts.isEmpty() && receipts.isEmpty() && deliveries.isEmpty() && readings.isEmpty()) {
+        if (sponsors.isEmpty() && accounts.isEmpty() && receipts.isEmpty() && readings.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
 
@@ -121,22 +120,14 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
             }
         }
 
-        for (Delivery delivery : deliveries) {
-            PostResponse response = deliveriesClient.send(delivery);
-            if (response.isSuccess()) {
-                deliveriesRepository.remove(delivery);
-            } else {
-                failures.add(new Failure(FailureKind.DELIVERY, response.getErrors()));
-            }
-        }
-
         if (failures.isNotEmpty()) {
             Integer readingCount = failures.countFor(FailureKind.READING);
             Integer receiptCount = failures.countFor(FailureKind.RECEIPT);
-            Integer deliveryCount = failures.countFor(FailureKind.DELIVERY);
-            return activity.getString(R.string.send_error_msg, readingCount, receiptCount, deliveryCount);
+            Integer accountCount = failures.countFor(FailureKind.ACCOUNT);
+            Integer sponsorCount = failures.countFor(FailureKind.SPONSOR);
+            return activity.getString(R.string.send_error_msg, readingCount, receiptCount,accountCount,sponsorCount);
         }
-        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size(), deliveries.size());
+        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size(), accounts.size(),sponsors.size());
     }
 
     private void showMessage(String message) {

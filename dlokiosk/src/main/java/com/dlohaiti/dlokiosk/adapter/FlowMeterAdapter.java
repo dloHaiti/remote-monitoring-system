@@ -27,15 +27,15 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         super(context, R.layout.parameter_row, listItems);
         this.context = context;
         this.listItems = listItems;
-        this.isDisplayError=false;
+        this.isDisplayError = false;
     }
 
     public void setDisplayError(boolean isDisplayError) {
         this.isDisplayError = isDisplayError;
     }
 
-    public void cleanQuantity(){
-        for(FlowMeterReading r: listItems){
+    public void cleanQuantity() {
+        for (FlowMeterReading r : listItems) {
             r.setQuantity("");
         }
         notifyDataSetChanged();
@@ -51,9 +51,8 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.flowmeter_row, parent, false);
-            EditText editText = (EditText) convertView.findViewById(R.id.flow_gallons);
 
-            holder.listItem = editText;
+            holder.listItem = (EditText) convertView.findViewById(R.id.flow_gallons);
 //            editText.setHint("Enter Gallons");
             convertView.setTag(holder);
         } else {
@@ -64,9 +63,9 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         holder.listItem.setText(flowMeterReading.getQuantity());
 
         TextView label = (TextView) convertView.findViewById(R.id.flow_channel);
-        if(isDisplayError && String.valueOf(holder.listItem.getText()).isEmpty()){
+        if (isDisplayError && String.valueOf(holder.listItem.getText()).isEmpty()) {
             holder.listItem.setError("Can't be blank");
-        }else {
+        } else {
             holder.listItem.setError(null);
         }
         holder.listItem.addTextChangedListener(new CustomTextWatcher(holder.listItem));
@@ -74,30 +73,29 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         return convertView;
     }
 
-     class CustomTextWatcher implements TextWatcher {
+    class CustomTextWatcher implements TextWatcher {
 
-         private final EditText view;
+        private final EditText view;
 
-         public CustomTextWatcher(EditText listItem){
-            this.view=listItem;
-         }
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+        public CustomTextWatcher(EditText view) {
+            this.view = view;
+        }
 
-         }
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-         @Override
-         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-             final int position = view.getId();
-             final EditText Caption = (EditText) view;
-             String val = Caption.getText().toString();
-             ((FlowMeterReading) listItems.get(position)).setQuantity(val);
-         }
+        }
 
-         @Override
-         public void afterTextChanged(Editable editable) {
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            String val = view.getText().toString();
+            listItems.get(view.getId()).setQuantity(val);
+        }
 
-         }
-     }
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    }
 }
 

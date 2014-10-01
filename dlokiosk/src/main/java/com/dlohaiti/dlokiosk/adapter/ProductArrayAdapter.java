@@ -1,6 +1,8 @@
 package com.dlohaiti.dlokiosk.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,23 +61,7 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
     }
 
     private void initialiseQuantityView(final ProductViewHolder holder, final Product product) {
-        holder.quantityView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    Integer newQuantity = tryParse(((EditText) view).getText().toString(), 0);
-                    Product product = products.findById((long) view.getId());
-                    if (product == null) {
-                        return;
-                    }
-                    if (newQuantity != 0 && !newQuantity.equals(product.getQuantity())) {
-                        product.hasQuantityBeenModified = true;
-                        product.setQuantity(newQuantity);
-                        holder.addProduct.setEnabled(true);
-                    }
-                }
-            }
-        });
-
+        holder.quantityView.addTextChangedListener(new QuantityChangedListener(holder.quantityView, holder.addProduct));
         holder.quantityView.setId(Integer.valueOf(holder.productId.toString()));
         holder.quantityView.setText(
                 product.getQuantity() == null
@@ -111,5 +97,39 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
         public EditText quantityView;
         public Button addProduct;
         public Long productId;
+    }
+
+    private class QuantityChangedListener implements TextWatcher {
+        private EditText quantityView;
+        private Button addProductView;
+
+        public QuantityChangedListener(EditText quantityView, Button addProduct) {
+            this.quantityView = quantityView;
+            this.addProductView = addProduct;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            Integer newQuantity = tryParse(quantityView.getText().toString(), 0);
+            Product product = products.findById((long) quantityView.getId());
+            if (product == null) {
+                return;
+            }
+            if (!(newQuantity == 0 || newQuantity.equals(product.getQuantity()))) {
+                product.hasQuantityBeenModified = true;
+                product.setQuantity(newQuantity);
+                addProductView.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
     }
 }

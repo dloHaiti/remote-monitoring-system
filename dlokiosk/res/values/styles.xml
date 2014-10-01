@@ -235,6 +235,16 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/product_grid_header</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">@dimen/price_label_space</item>
+        <item name="android:paddingBottom">@dimen/price_label_space</item>
+    </style>
+
+    <style name="total_price_text" parent="price_text">
+        <item name="android:background">@color/bottom_navigation_pane_background</item>
+    </style>
+
+    <style name="discounted_price_text" parent="price_text">
+        <item name="android:background">@color/medium_spring_green</item>
     </style>
 
     <style name="order_summary_text" parent="standard_black_text">

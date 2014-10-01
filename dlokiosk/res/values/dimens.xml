@@ -9,7 +9,7 @@
     <dimen name="order_summary_height">40dp</dimen>
     <dimen name="product_row_height">100dp</dimen>
     <dimen name="price_label_space">5dp</dimen>
-    <dimen name="promotions_grid_height">270dp</dimen>
+    <dimen name="promotions_grid_height">250dp</dimen>
     <dimen name="promotions_grid_column_width">50dp</dimen>
     <dimen name="spinner_drop_down_item_height">50dp</dimen>
     <dimen name="standard_font_size">16sp</dimen>

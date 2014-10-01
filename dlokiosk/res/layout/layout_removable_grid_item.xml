@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="120dp"
-             android:layout_height="120dp"
-             android:padding="10dp"
-             style="@style/removable_grid_item_layout"
-             xmlns:android="http://schemas.android.com/apk/res/android">
 
+<RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="10dp"
+        style="@style/removable_grid_item_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
             android:id="@+id/icon"
             style="@style/removable_grid_item"/>
@@ -12,10 +13,12 @@
     <TextView
             android:id="@+id/quantity"
             style="@style/quantity_badge"
+            android:layout_alignParentBottom="true"
             android:text="3"/>
 
     <ImageButton
             android:id="@+id/remove_item_button"
-            style="@style/remove_button"/>
+            style="@style/remove_button"
+            android:layout_alignParentRight="true"/>
 
-</FrameLayout>
+</RelativeLayout>

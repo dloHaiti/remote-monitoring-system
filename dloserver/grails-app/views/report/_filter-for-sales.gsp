@@ -20,9 +20,9 @@
     };
 
     var enableCorrespondingFilterParam = function (filterParam) {
-        if (filterParam === 'sales-channel')
+        if (filterParam === 'salesChannel')
             enableSalesChannelFilter();
-        else if (filterParam === 'product-category')
+        else if (filterParam === 'productCategory')
             enableProductCategoryFilter()
         else
             enableSkuFilter();
@@ -35,10 +35,10 @@
             <input type="radio" name="options" onclick="reloadWithParams('filterParam','sku')"> SKU
         </label>
         <label class="btn btn-default" id="sales-channel-filter">
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','sales-channel')"> Sales Channel
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','salesChannel')"> Sales Channel
         </label>
         <label class="btn btn-default" id="product-category-filter">
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','product-category')"> Product Category
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','productCategory')"> Product Category
         </label>
     </div>
 </div>

@@ -39,9 +39,9 @@
         <li><h4>Reports</h4></li>
     </ul>
     <ul>
-        <li><g:link action="volume" params="[kioskName: kioskName, filterType: 'kiosk']"
+        <li><g:link action="volume" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku']"
                     class="smoothScroll">Volume</g:link></li>
-        <li><g:link action="sales" params="[kioskName: kioskName, filterType: 'kiosk']"
+        <li><g:link action="sales" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku']"
                     class="smoothScroll">Ventes</g:link></li>
         <li><g:link action="readings" params="[kioskName: kioskName]" class="smoothScroll">Mesures</g:link></li>
         <li><g:link action="outstandingPayment" params="[kioskName: kioskName]" class="smoothScroll">Impayé</g:link></li>

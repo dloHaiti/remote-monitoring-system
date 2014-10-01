@@ -11,38 +11,48 @@ class VolumeReportService {
 
         def model = [:]
         if (filterType.equalsIgnoreCase('region')) {
-            model = volumeByRegionForKiosk(kiosk)
+            model = volumeByRegionForKiosk(kiosk, filterParam)
         } else {
-            model = volumeByDay(kiosk)
+            model = volumeByDay(kiosk, filterParam)
         }
         return model
     }
 
-    private volumeByRegionForKiosk(Kiosk kiosk) {
+    private volumeByRegionForKiosk(Kiosk kiosk, String filterParam) {
         Region region = kiosk.region
         List<Delivery> deliveries = deliveriesForAllKiosksInRegion(region)
         List<Receipt> receipts = receiptsForAllKiosksInRegion(region)
         List<Reading> readings = readingsForAllKiosksInRegion(region)
         List<Product> products = Product.findAll()
 
-        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, deliveries, readings)
-
+        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, deliveries, readings, filterParam)
         [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
     }
 
-    private volumeByDay(Kiosk kiosk) {
+    private volumeByDay(Kiosk kiosk, String filterParam) {
         def oneWeekAgoMidnight = DateUtil.oneWeekAgoMidnight()
         List<Delivery> deliveries = Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight)
         List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight)
         List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight)
         List<Product> products = Product.findAll()
 
-        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, deliveries, readings)
+        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, deliveries, readings, filterParam)
 
         [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
     }
 
-    private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {
+    private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings, String filterParam) {
+        def tableData = [['']]
+        if("sku".equalsIgnoreCase(filterParam)) {
+            tableData = tableDataFilteredBySKU(previousWeek, products, receipts, deliveries, readings)
+        }
+        if("salesChannel".equalsIgnoreCase(filterParam)) {
+            tableData = tableDataFilteredBySalesChannel(previousWeek, receipts)
+        }
+        return tableData
+    }
+
+    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Delivery> deliveries, List<Reading> readings) {
         def tableHeader = ['']
         for (day in previousWeek) {
             tableHeader.add(day.toString('dd-MMM-yy'))
@@ -97,10 +107,28 @@ class VolumeReportService {
             percentDiffRow.add(difference.multiply(new BigDecimal(100)).setScale(0))
         }
         tableData.add(percentDiffRow)
-
-        return tableData
+        tableData
     }
 
+    private ArrayList<String> tableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts) {
+        def tableHeader = ['']
+        for (day in previousWeek) {
+            tableHeader.add(day.toString('dd-MMM-yy'))
+        }
+        def tableData = [tableHeader]
+        def salesChannels = SalesChannel.findAll()
+        for (salesChannel in salesChannels) {
+            def row = [salesChannel.name]
+            for (day in previousWeek) {
+                def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) && r.salesChannel == salesChannel })
+                def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallons })
+
+                row.add(totalForSku)
+            }
+            tableData.add(row)
+        }
+        tableData
+    }
     List<Delivery> deliveriesForAllKiosksInRegion(Region region) {
         List<Delivery> deliveries = new ArrayList<>();
         def weekAgoMidnight = DateUtil.oneWeekAgoMidnight()

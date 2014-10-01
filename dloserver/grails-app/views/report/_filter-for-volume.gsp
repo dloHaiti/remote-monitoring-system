@@ -12,7 +12,7 @@
     };
 
     var enableCorrespondingFilterParam = function (filterParam) {
-        if (filterParam === 'sales-channel')
+        if (filterParam === 'salesChannel')
             enableSalesChannelFilter();
         else
             enableSkuFilter();
@@ -24,7 +24,7 @@
             <input type="radio" name="options" onclick="reloadWithParams('filterParam','sku')"> SKU
         </label>
         <label class="btn btn-default" id="sales-channel-filter">
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','sales-channel')"> Sales Channel
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','salesChannel')"> Sales Channel
         </label>
     </div>
 </div>

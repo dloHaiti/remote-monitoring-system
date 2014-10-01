@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerAccountBuilder {
@@ -9,8 +10,11 @@ public class CustomerAccountBuilder {
     private String address = "Address 1";
     private String phoneNumber = "Phone 1";
     private long kioskId = 1;
-    private List<SalesChannel> salesChannels;
+    private List<SalesChannel> salesChannels = new ArrayList<SalesChannel>();
     private boolean selected = false;
+    private double dueAmount = 0;
+    private boolean synced = true;
+    private List<Long> channelIds = new ArrayList<Long>();
 
     public CustomerAccountBuilder withId(String id) {
         this.id = id;
@@ -52,12 +56,30 @@ public class CustomerAccountBuilder {
         return this;
     }
 
+    public CustomerAccountBuilder withDueAmount(double dueAmount) {
+        this.dueAmount = dueAmount;
+        return this;
+    }
+
+    public CustomerAccountBuilder withIsSynced(Boolean synced) {
+        this.synced = synced;
+        return this;
+    }
+
     public CustomerAccount build() {
-        CustomerAccount account = new CustomerAccount(id, name, contactName,"School", address, phoneNumber, kioskId,0,true)
-                .withChannels(salesChannels);
+        CustomerAccount account = new CustomerAccount(id, name, contactName, "School", address, phoneNumber, kioskId,
+                dueAmount, synced)
+                .withChannels(salesChannels)
+                .withChannelIds(channelIds)
+                .withSponsors(new Sponsors());
         if (selected) {
             account.select();
         }
         return account;
+    }
+
+    public CustomerAccountBuilder withChannelIds(List<Long> channelIds) {
+        this.channelIds = channelIds;
+        return this;
     }
 }

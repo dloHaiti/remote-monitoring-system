@@ -103,4 +103,8 @@ public class Money implements Comparable<Money> {
     public boolean isLessThan(Money money) {
         return !isGreaterThan(money);
     }
+
+    public double amountAsDouble() {
+        return amount.doubleValue();
+    }
 }

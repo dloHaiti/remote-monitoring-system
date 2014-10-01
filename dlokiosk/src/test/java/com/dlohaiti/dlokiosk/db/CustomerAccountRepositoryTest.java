@@ -2,10 +2,9 @@ package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
+import com.dlohaiti.dlokiosk.domain.CustomerAccountBuilder;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +19,7 @@ import java.util.TreeSet;
 import static com.dlohaiti.dlokiosk.db.KioskDatabase.CustomerAccountsTable;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -29,12 +29,16 @@ public class CustomerAccountRepositoryTest {
     CustomerAccountRepository repository;
     SalesChannelRepository salesChannelRepository;
     private SponsorRepository sponsorRepository;
+    private CustomerAccountBuilder builder;
+    private SQLiteDatabase wdb;
 
     @Before
     public void setUp() {
         salesChannelRepository = new SalesChannelRepository(db);
-         sponsorRepository = new SponsorRepository(db);
-        repository = new CustomerAccountRepository(db, salesChannelRepository,sponsorRepository);
+        sponsorRepository = new SponsorRepository(db);
+        builder = new CustomerAccountBuilder();
+        repository = new CustomerAccountRepository(db, salesChannelRepository, sponsorRepository);
+        wdb = db.getWritableDatabase();
     }
 
     @Test
@@ -45,7 +49,6 @@ public class CustomerAccountRepositoryTest {
 
     @Test
     public void shouldReturnAllCustomerAccountsInSetInAlphabeticalOrder() {
-        SQLiteDatabase wdb = db.getWritableDatabase();
         saveSalesChannel();
         List<CustomerAccount> customerAccounts = asList(
                 new CustomerAccount("1", "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 0, true).withChannelIds(asList(1L)),
@@ -60,7 +63,6 @@ public class CustomerAccountRepositoryTest {
 
     @Test
     public void shouldReplaceAll() {
-        SQLiteDatabase wdb = db.getWritableDatabase();
         saveSalesChannel();
         saveCustomerAccounts(wdb, asList(
                 new CustomerAccount("1", "Name 1", "Contact Name 1", "School", "Address 1", "Phone 1", (long) 11, 1, true).withChannelIds(asList(1L)),
@@ -79,6 +81,21 @@ public class CustomerAccountRepositoryTest {
         List<CustomerAccount> updatedList = repository.findAll();
         assertThat(asList(new SalesChannel(3L, "Name 3", "Desc 3", false)), is(updatedList.get(0).getChannels()));
         assertThat(asList(new SalesChannel(4L, "Name 4", "Desc 4", false)), is(updatedList.get(1).getChannels()));
+    }
+
+    @Test
+    public void shouldSaveCustomerAccount() {
+        saveSalesChannel();
+        CustomerAccount customer = builder.withId("1").withDueAmount(1).withIsSynced(true).withChannelIds(asList(1L)).build();
+        saveCustomerAccounts(wdb, asList(customer, builder.withId("1").withDueAmount(1).withIsSynced(true).build()));
+        customer.setDueAmount(5.0);
+        customer.setIsSynced(false);
+
+        repository.save(customer);
+
+        CustomerAccount updatedCustomer = repository.findById(customer.getId());
+        assertThat(updatedCustomer.getDueAmount(), is(5.0));
+        assertFalse(updatedCustomer.isSynced());
     }
 
     private void saveCustomerAccounts(SQLiteDatabase wdb, List<CustomerAccount> customerAccounts) {

@@ -9,7 +9,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.upperCase;
 
-public class CustomerAccount  implements Comparable<CustomerAccount> {
+public class CustomerAccount implements Comparable<CustomerAccount> {
     private double dueAmount;
     private String id;
     private String name;
@@ -26,11 +26,12 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     private String gpsCoordinates;
     private boolean selected;
 
-    public CustomerAccount(){
+    public CustomerAccount() {
 
     }
 
-    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address, String phoneNumber, long kiosk_id, double amount, boolean synced) {
+    public CustomerAccount(String id, String name, String contactName, String customerTypeId, String address,
+                           String phoneNumber, long kiosk_id, double dueAmount, boolean synced) {
         this.id = id;
         this.name = name;
         this.contactName = contactName;
@@ -38,7 +39,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.kiosk_id = kiosk_id;
-        this.dueAmount = amount;
+        this.dueAmount = dueAmount;
         this.synced = synced;
     }
 
@@ -61,7 +62,7 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     }
 
     public String getGpsCoordinates() {
-        if(gpsCoordinates==null){
+        if (gpsCoordinates == null) {
             return "";
         }
         return gpsCoordinates;
@@ -123,21 +124,21 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
     }
 
     public String getName() {
-        if(name==null){
+        if (name == null) {
             return "";
         }
         return name;
     }
 
     public String getAddress() {
-        if(address==null){
+        if (address == null) {
             return "";
         }
         return address;
     }
 
     public String getPhoneNumber() {
-        if(phoneNumber==null){
+        if (phoneNumber == null) {
             return "";
         }
         return phoneNumber;
@@ -193,26 +194,47 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
 
         CustomerAccount that = (CustomerAccount) o;
 
-        if (id.equalsIgnoreCase(that.id)) return false;
+        if (Double.compare(that.dueAmount, dueAmount) != 0) return false;
         if (kiosk_id != that.kiosk_id) return false;
+        if (selected != that.selected) return false;
+        if (synced != that.synced) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null)
+        if (channelIds != null ? !channelIds.equals(that.channelIds) : that.channelIds != null) return false;
+        if (channels != null ? !channels.equals(that.channels) : that.channels != null) return false;
+        if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
+        if (customerTypeId != null ? !customerTypeId.equals(that.customerTypeId) : that.customerTypeId != null)
             return false;
+        if (gpsCoordinates != null ? !gpsCoordinates.equals(that.gpsCoordinates) : that.gpsCoordinates != null)
+            return false;
+        if (id != null ? !id.equalsIgnoreCase(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null)
-            return false;
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+        if (sponsorIds != null ? !sponsorIds.equals(that.sponsorIds) : that.sponsorIds != null) return false;
+        if (sponsors != null ? !sponsors.equals(that.sponsors) : that.sponsors != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (name != null ? name.hashCode() : 0);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(dueAmount);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (int) (kiosk_id ^ (kiosk_id >>> 32));
+        result = 31 * result + (channelIds != null ? channelIds.hashCode() : 0);
         result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
+        result = 31 * result + (synced ? 1 : 0);
+        result = 31 * result + (channels != null ? channels.hashCode() : 0);
+        result = 31 * result + (customerTypeId != null ? customerTypeId.hashCode() : 0);
+        result = 31 * result + (sponsorIds != null ? sponsorIds.hashCode() : 0);
+        result = 31 * result + (sponsors != null ? sponsors.hashCode() : 0);
+        result = 31 * result + (gpsCoordinates != null ? gpsCoordinates.hashCode() : 0);
+        result = 31 * result + (selected ? 1 : 0);
         return result;
     }
 
@@ -220,8 +242,9 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         return dueAmount;
     }
 
-    public void setDueAmount(Double dueAmount) {
+    public CustomerAccount setDueAmount(Double dueAmount) {
         this.dueAmount = dueAmount;
+        return this;
     }
 
     public String getCustomerTypeId() {
@@ -233,8 +256,9 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
         return this;
     }
 
-    public void withSponsors(Sponsors sponsors) {
+    public CustomerAccount withSponsors(Sponsors sponsors) {
         this.sponsors = sponsors;
+        return this;
     }
 
     public Sponsors sponsors() {
@@ -243,5 +267,13 @@ public class CustomerAccount  implements Comparable<CustomerAccount> {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isSynced() {
+        return synced;
+    }
+
+    public void setIsSynced(Boolean synced) {
+        this.synced = synced;
     }
 }

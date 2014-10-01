@@ -1,9 +1,11 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptLineItemType;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
@@ -15,25 +17,33 @@ import static com.dlohaiti.dlokiosk.domain.PromotionType.PERCENT;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RegisterNewTest {
     Product tenDollarTenGallonABC;
     Product fiveDollarFiveGallonXYZ;
-    Promotion tenPercentOffABC = promotionBuilder()
-            .thatAppliesTo(PromotionApplicationType.SKU)
-            .withProductSku("ABC")
-            .withAmount("10")
-            .withPromotionType(PERCENT).build();
-    Promotion tenPercentOffBasket = promotionBuilder()
-            .thatAppliesTo(BASKET)
-            .withAmount("10")
-            .withPromotionType(PERCENT).build();
-    ReceiptsRepository repository = mock(ReceiptsRepository.class);
-    RegisterNew register = new RegisterNew(mock(Clock.class), repository);
+    Promotion tenPercentOffABC;
+    Promotion tenPercentOffBasket;
+    @Mock
+    ReceiptsRepository repository;
+    @Mock
+    CustomerAccountRepository customerAccountRepository;
+    RegisterNew register;
     ShoppingCartNew cart;
 
     @Before
     public void setUp() {
+        initMocks(this);
+        tenPercentOffABC = promotionBuilder()
+                .thatAppliesTo(PromotionApplicationType.SKU)
+                .withProductSku("ABC")
+                .withAmount("10")
+                .withPromotionType(PERCENT).build();
+        tenPercentOffBasket = promotionBuilder()
+                .thatAppliesTo(BASKET)
+                .withAmount("10")
+                .withPromotionType(PERCENT).build();
+        register = new RegisterNew(mock(Clock.class), repository, customerAccountRepository);
         cart = new ShoppingCartNew(register);
         cart.setSalesChannel(new SalesChannelBuilder().build());
         cart.setCustomerAccount(new CustomerAccountBuilder().build());
@@ -151,5 +161,43 @@ public class RegisterNewTest {
         Money total = register.discountedTotal(cart);
 
         assertThat(total, is(new Money(new BigDecimal("22.50"))));
+    }
+
+    @Test
+    public void shouldSaveDueAmountWhenTotalAmountIsNotPaid() {
+        cart.addOrUpdateProduct(tenDollarTenGallonABC);
+        cart.setCustomerAmount(new Money("4.0", "HTG"));
+        cart.setSponsorAmount(new Money("4.0", "HTG"));
+        cart.setCustomerAccount(new CustomerAccountBuilder().withDueAmount(0).withIsSynced(true).build());
+
+        register.checkout(cart);
+
+        verify(customerAccountRepository).save(new CustomerAccountBuilder().withDueAmount(2).withIsSynced(false).build());
+    }
+
+    @Test
+    public void shouldAddSaleDueAmountToCustomerDueAmountWhenTotalAmountIsNotPaid() {
+        cart.addOrUpdateProduct(tenDollarTenGallonABC);
+        cart.setCustomerAmount(new Money("4.0", "HTG"));
+        cart.setSponsorAmount(new Money("4.0", "HTG"));
+        CustomerAccount account = new CustomerAccountBuilder().withDueAmount(5.0).withIsSynced(true).build();
+        cart.setCustomerAccount(account);
+
+        register.checkout(cart);
+
+        verify(customerAccountRepository).save(new CustomerAccountBuilder().withDueAmount(7.0).withIsSynced(false).build());
+    }
+
+    @Test
+    public void shouldNotSaveDueAmountWhenTotalAmountIsPaid() {
+        cart.addOrUpdateProduct(tenDollarTenGallonABC);
+        cart.setCustomerAmount(new Money("5.0", "HTG"));
+        cart.setSponsorAmount(new Money("5.0", "HTG"));
+        CustomerAccount account = new CustomerAccountBuilder().withDueAmount(5.0).withIsSynced(false).build();
+        cart.setCustomerAccount(account);
+
+        register.checkout(cart);
+
+        verifyZeroInteractions(customerAccountRepository);
     }
 }

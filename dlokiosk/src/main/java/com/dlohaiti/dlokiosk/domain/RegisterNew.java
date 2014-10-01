@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.google.inject.Inject;
 
@@ -17,11 +18,13 @@ public class RegisterNew {
 
     private final Clock clock;
     private final ReceiptsRepository repository;
+    private CustomerAccountRepository customerAccountRepository;
 
     @Inject
-    public RegisterNew(Clock clock, ReceiptsRepository repository) {
+    public RegisterNew(Clock clock, ReceiptsRepository repository, CustomerAccountRepository customerAccountRepository) {
         this.clock = clock;
         this.repository = repository;
+        this.customerAccountRepository = customerAccountRepository;
     }
 
     public Receipt checkout(ShoppingCartNew cart) {
@@ -36,7 +39,17 @@ public class RegisterNew {
                 cart.paymentMode(), cart.isSponsorSelected(), sponsorId,
                 cart.sponsorAmount(), cart.customerAmount(), cart.paymentType(), cart.deliveryTime());
         repository.add(receipt);
+        updateDueAmountOfCustomerIfTotalAmountIsNotPaid(cart);
         return receipt;
+    }
+
+    private void updateDueAmountOfCustomerIfTotalAmountIsNotPaid(ShoppingCartNew cart) {
+        if (cart.dueAmount().isGreaterThan(Money.ZERO)) {
+            cart.customerAccount()
+                    .setDueAmount(cart.customerAccount().getDueAmount() + cart.dueAmount().amountAsDouble())
+                    .setIsSynced(false);
+            customerAccountRepository.save(cart.customerAccount());
+        }
     }
 
     private List<LineItem> buildLineItemsFrom(ShoppingCartNew cart) {

@@ -142,7 +142,9 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         TextView units = (TextView) view.findViewById(R.id.parameter_units);
         TextView range = (TextView) view.findViewById(R.id.parameter_range);
         label.setText(parameter.getName());
-        units.setText(parameter.getUnitOfMeasure());
+        if(units!=null) {
+            units.setText(parameter.getUnitOfMeasure());
+        }
         if (parameter.hasRange() && !parameter.isOkNotOk()) {
             range.setText(parameter.getRange());
         }

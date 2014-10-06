@@ -24,6 +24,7 @@
             android:id="@+id/radio_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:button="@drawable/custom_radio_button"
             android:text="@string/ok"
             android:textColor="@android:color/black" />
 
@@ -31,6 +32,7 @@
             android:id="@+id/radio_not_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:button="@drawable/custom_radio_button"
             android:text="@string/not_ok"
             android:textColor="@android:color/black" />
     </RadioGroup>
@@ -39,12 +41,14 @@
         android:id="@+id/parameter_units"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:textColor="@android:color/black"
         android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/parameter_range"
         android:layout_width="wrap_content"
+        android:visibility="invisible"
         android:textColor="@android:color/black"
         android:layout_height="wrap_content" />
 </LinearLayout>

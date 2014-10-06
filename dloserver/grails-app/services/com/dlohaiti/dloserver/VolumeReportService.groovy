@@ -120,9 +120,9 @@ class VolumeReportService {
         for (salesChannel in salesChannels) {
             def row = [salesChannel.name]
             for (day in previousWeek) {
-                def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) && r.salesChannel == salesChannel })
-                def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallons })
+                def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) && r.salesChannel.name == salesChannel.name })
 
+                def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallons })
                 row.add(totalForSku)
             }
             tableData.add(row)

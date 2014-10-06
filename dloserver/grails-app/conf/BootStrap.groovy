@@ -1,9 +1,12 @@
 import com.dlohaiti.dloserver.*
 import grails.converters.JSON
 import grails.util.Environment
+import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
 import java.text.SimpleDateFormat
+
+import static java.util.Arrays.asList
 
 class BootStrap {
     def grailsApplication
@@ -28,14 +31,14 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(Parameter) { Parameter p ->
             return [
-                    isOkNotOk    : p.isOkNotOk,
-                    minimum      : p.minimum,
-                    maximum      : p.maximum,
-                    name         : p.name,
-                    unit         : p.unit,
-                    priority     : p.priority,
+                    isOkNotOk        : p.isOkNotOk,
+                    minimum          : p.minimum,
+                    maximum          : p.maximum,
+                    name             : p.name,
+                    unit             : p.unit,
+                    priority         : p.priority,
                     isUsedInTotalizer: p.isUsedInTotalizer,
-                    samplingSites: p.samplingSites
+                    samplingSites    : p.samplingSites
             ]
         }
 
@@ -46,48 +49,48 @@ class BootStrap {
         }
         JSON.registerObjectMarshaller(SalesChannel) { SalesChannel sc ->
             return [
-                    id: sc.id,
-                    name       : sc.name,
-                    description: sc.description,
+                    id             : sc.id,
+                    name           : sc.name,
+                    description    : sc.description,
                     delayedDelivery: sc.delayedDelivery
             ]
         }
         JSON.registerObjectMarshaller(CustomerType) { CustomerType t ->
             return [
-                    id: t.id,
+                    id  : t.id,
                     name: t.name
             ]
         }
         JSON.registerObjectMarshaller(CustomerAccount) { CustomerAccount a ->
             return [
-                    id: a.id,
-                    name       : a.name,
-                    contactName: a.contactName,
-                    address    : a.address,
-                    phoneNumber: a.phoneNumber,
-                    kiosk_id   : a.kiosk.id,
-                    dueAmount: a.dueAmount,
-                    customerType: a.customerType.id,
+                    id            : a.id,
+                    name          : a.name,
+                    contactName   : a.contactName,
+                    address       : a.address,
+                    phoneNumber   : a.phoneNumber,
+                    kiosk_id      : a.kiosk.id,
+                    dueAmount     : a.dueAmount,
+                    customerType  : a.customerType.id,
                     gpsCoordinates: a.gpsCoordinates,
-                    sponsors   : a.sponsors.collect{
+                    sponsors      : a.sponsors.collect {
                         Sponsor s -> [id: s.id]
                     },
-                    channels   : a.channels.collect{
+                    channels      : a.channels.collect {
                         SalesChannel channel -> [id: channel.id]
                     }
             ]
         }
         JSON.registerObjectMarshaller(ProductCategory) { ProductCategory c ->
             return [
-                    id: c.id,
-                    name              : c.name
+                    id  : c.id,
+                    name: c.name
             ]
         }
 
         JSON.registerObjectMarshaller(Sponsor) { Sponsor s ->
             return [
-                    id: s.id,
-                    name              : s.name,
+                    id         : s.id,
+                    name       : s.name,
                     contactName: s.contactName,
                     phoneNumber: s.phoneNumber
             ]
@@ -95,7 +98,7 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(Product) { Product p ->
             return [
-                    id               : p.id,
+                    id                : p.id,
                     sku               : p.sku,
                     description       : p.description,
                     gallons           : p.gallons,
@@ -113,10 +116,10 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(ProductMrp) { ProductMrp p ->
             return [
-                    kiosk_id: p.kiosk.id,
+                    kiosk_id  : p.kiosk.id,
                     product_id: p.product.id,
                     channel_id: p.salesChannel.id,
-                    price             : [
+                    price     : [
                             amount      : p.price.amount,
                             currencyCode: p.price.currency.currencyCode
                     ]
@@ -144,7 +147,7 @@ class BootStrap {
                 new Region(name: "Region1", country: c1).save(failOnError: true)
             }
             if (Kiosk.count() == 0) {
-                new Kiosk(name: "kiosk01", apiKey: 'pw',region: Region.first()).save(failOnError: true)
+                new Kiosk(name: "kiosk01", apiKey: 'pw', region: Region.first()).save(failOnError: true)
             }
 
             if (SalesChannel.count() == 0) {
@@ -154,16 +157,16 @@ class BootStrap {
 
 
             if (CustomerAccount.count() == 0) {
-                CustomerType type = (new CustomerType(name: "School")).save(failOnError: true,flush:true)
-                new CustomerAccount(id:"7878", name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true,flush: true)
-                new CustomerAccount(id:"7879", name: "Customer2", contactName: 'contact2', dueAmount: 4,customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true,flush: true)
-                new CustomerAccount(id:"9099", name: "Customer3", contactName: 'contact3', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true,flush: true)
-                new CustomerAccount(id:"909x", name: "Customer4", contactName: 'contact4', dueAmount: 10, customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true,flush: true)
+                CustomerType type = (new CustomerType(name: "School")).save(failOnError: true, flush: true)
+                new CustomerAccount(id: "7878", name: "Customer1", contactName: 'contact1', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true, flush: true)
+                new CustomerAccount(id: "7879", name: "Customer2", contactName: 'contact2', dueAmount: 4, customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.first()).save(failOnError: true, flush: true)
+                new CustomerAccount(id: "9099", name: "Customer3", contactName: 'contact3', customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true, flush: true)
+                new CustomerAccount(id: "909x", name: "Customer4", contactName: 'contact4', dueAmount: 10, customerType: type, kiosk: Kiosk.first()).addToChannels(SalesChannel.last()).save(failOnError: true, flush: true)
             }
 
             if (Sponsor.count() == 0) {
-                new Sponsor(id:"5678",name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
-                new Sponsor(id:"5678sdsd",name: "sponsor2", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
+                new Sponsor(id: "5678", name: "sponsor1", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
+                new Sponsor(id: "5678sdsd", name: "sponsor2", contactName: 'contact1', kiosk: Kiosk.first()).addToAccounts(CustomerAccount.first()).save(failOnError: true)
             }
 
             if (DeliveryAgent.count() == 0) {
@@ -285,13 +288,48 @@ class BootStrap {
                 new Parameter(active: true, manual: false, name: "Vbatt", unit: '', minimum: null, maximum: null, isUsedInTotalizer: false, isOkNotOk: false).save(failOnError: true)
             }
 
-            if(KioskWiseParameter.count()==0){
-                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(1)).save(failOnError: true)
-                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(2)).save(failOnError: true)
-                new KioskWiseParameter(kiosk: Kiosk.first(),samplingSite: SamplingSite.first(),parameter: Parameter.get(19)).save(failOnError: true)
+            if (KioskWiseParameter.count() == 0) {
+                new KioskWiseParameter(kiosk: Kiosk.first(), samplingSite: SamplingSite.first(), parameter: Parameter.get(1)).save(failOnError: true)
+                new KioskWiseParameter(kiosk: Kiosk.first(), samplingSite: SamplingSite.first(), parameter: Parameter.get(2)).save(failOnError: true)
+                new KioskWiseParameter(kiosk: Kiosk.first(), samplingSite: SamplingSite.first(), parameter: Parameter.get(19)).save(failOnError: true)
+            }
+
+            if (Receipt.count() == 0) {
+                new ReceiptLineItem(sku: "5GALLON", quantity: 1, type: "WATER", price: 20, currencyCode: "HTG", gallons: 10).save()
+                new ReceiptLineItem(sku: "10CAN", quantity: 1, type: "TYPE-1", price: 30, currencyCode: "HTG", gallons: 20).save()
+                new Receipt(createdDate: DateTime.now().minusDays(2).toDate(),
+                        kiosk: Kiosk.first(),
+                        totalGallons: 10,
+                        total: 20,
+                        currencyCode: "HTG",
+                        receiptLineItems: asList(ReceiptLineItem.first(), ReceiptLineItem.last()),
+                        salesChannel: SalesChannel.first(),
+                        customerAccount: CustomerAccount.first(),
+                        paymentMode: "Mode",
+                        isSponsorSelected: true,
+                        sponsor: Sponsor.first(),
+                        sponsorAmount: 10,
+                        customerAmount: 10,
+                        paymentType: "CC",
+                        deliveryTime: DateTime.now().minusDays(1).toString()).save(failOnError: true)
+                new Receipt(createdDate: DateTime.now().minusDays(2).toDate(),
+                        kiosk: Kiosk.first(),
+                        totalGallons: 30,
+                        total: 60,
+                        currencyCode: "HTG",
+                        receiptLineItems: asList(ReceiptLineItem.first(), ReceiptLineItem.last()),
+                        salesChannel: SalesChannel.last(),
+                        customerAccount: CustomerAccount.first(),
+                        paymentMode: "Mode",
+                        isSponsorSelected: true,
+                        sponsor: Sponsor.first(),
+                        sponsorAmount: 30,
+                        customerAmount: 30,
+                        paymentType: "CC",
+                        deliveryTime: DateTime.now().minusDays(1).toString()).save(failOnError: true)
             }
         }
     }
     def destroy = {
-    }   
+    }
 }

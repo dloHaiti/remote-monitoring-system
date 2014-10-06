@@ -116,9 +116,14 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         } else {
             holder = (WaterQualityViewHolder) view.getTag();
         }
+        if(holder.listener!=null) {
+            holder.listItem.removeTextChangedListener(holder.listener);
+        }
+
         if(holder.listItem!=null){
             holder.listItem.setText(parameter.getValue());
         }
+
         setTextValues(view,parameter);
         holder.listItem.setId(position);
         if(parameter.considersInvalid(holder.listItem.getText().toString()) && !holder.listItem.getText().toString().isEmpty() ){
@@ -126,7 +131,9 @@ public class ParameterAdapter extends ArrayAdapter<Parameter> {
         }else {
             holder.listItem.setError(null);
         }
-        holder.listItem.addTextChangedListener(new CustomTextWatcher(holder.listItem));
+
+        holder.listener=new CustomTextWatcher(holder.listItem);
+        holder.listItem.addTextChangedListener(holder.listener);
         return view;
     }
 

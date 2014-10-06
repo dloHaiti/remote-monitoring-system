@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.view_holder;
 
 
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
@@ -9,4 +10,5 @@ public class WaterQualityViewHolder {
     public EditText listItem;
     public RadioGroup radioGroup;
     public String value;
+    public TextWatcher listener;
 }

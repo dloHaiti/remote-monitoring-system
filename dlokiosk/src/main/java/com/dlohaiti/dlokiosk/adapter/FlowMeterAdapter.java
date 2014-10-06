@@ -58,6 +58,9 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         } else {
             holder = (FlowMeterViewHolder) convertView.getTag();
         }
+        if(holder.listener!=null) {
+            holder.listItem.removeTextChangedListener(holder.listener);
+        }
         holder.listItem.setId(position);
         holder.id = flowMeterReading.getId();
         holder.listItem.setText(flowMeterReading.getQuantity());
@@ -68,7 +71,9 @@ public class FlowMeterAdapter extends ArrayAdapter<FlowMeterReading> {
         } else {
             holder.listItem.setError(null);
         }
-        holder.listItem.addTextChangedListener(new CustomTextWatcher(holder.listItem));
+        holder.listener=new CustomTextWatcher(holder.listItem);
+        holder.listItem.addTextChangedListener(holder.listener);
+
         label.setText(flowMeterReading.getSamplingName());
         return convertView;
     }

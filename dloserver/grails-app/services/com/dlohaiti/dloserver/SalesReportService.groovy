@@ -94,10 +94,8 @@ class SalesReportService {
     private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader, List<Delivery> deliveries) {
         def tableData = [tableHeader]
         def productCategories = ProductCategory.findAll();
-        print (productCategories)
         for (productCategory in productCategories) {
             def row = [productCategory.name]
-            print(productCategory.name)
             for (day in previousWeek) {
                 def dayReceipts = receipts.findAll({r -> r.isOnDate(day)  })
                 def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type.equals('PRODUCT') && Product.findBySku(item.sku).category.name.equals(productCategory.name)});
@@ -125,7 +123,6 @@ class SalesReportService {
             tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader, deliveries)
         }
         if ("salesChannel".equalsIgnoreCase(filterParameter)) {
-            print ("Filter: " + filterParameter)
             tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader, deliveries)
         }
         if ("productCategory".equalsIgnoreCase(filterParameter)) {

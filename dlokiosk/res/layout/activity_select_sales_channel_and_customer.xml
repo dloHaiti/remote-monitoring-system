@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/activity_background">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
+
     <LinearLayout
-            android:id="@+id/list_pane"
-            android:layout_width="match_parent"
-            android:weightSum="100"
+        android:id="@+id/list_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:paddingBottom="@dimen/row_height"
+        android:weightSum="100">
+
+        <ListView
+            android:id="@+id/sales_channel_list"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:paddingBottom="@dimen/row_height">
-        <ListView
-                android:id="@+id/sales_channel_list"
-                android:layout_width="0dp"
-                android:layout_weight="20"
-                android:layout_height="match_parent"
-                android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/list_divider_dark"
-                android:background="@color/left_pane_background"/>
-        <ListView
+            android:layout_weight="20"
+            android:background="@color/left_pane_background"
+            android:divider="@color/list_divider_dark"
+            android:dividerHeight="@dimen/list_divider_height" />
+
+        <LinearLayout
+            android:id="@+id/customer_list_pane"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="80"
+            android:divider="@color/right_pane_list_divider"
+            android:dividerHeight="@dimen/list_divider_height"
+            android:orientation="vertical"
+            android:weightSum="100">
+            <include layout="@layout/layout_sale_customer_header" />
+            <ListView
                 android:id="@+id/customer_list"
-                android:layout_width="0dp"
-                android:layout_weight="80"
-                android:layout_height="match_parent"
-                android:dividerHeight="@dimen/list_divider_height"
-                android:divider="@color/right_pane_list_divider"/>
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/layout_sale_bottom_pane"/>
+    <include layout="@layout/layout_sale_bottom_pane" />
 
 </RelativeLayout>

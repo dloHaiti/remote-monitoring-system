@@ -114,6 +114,21 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="customer_account_list_header">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/table_header_background</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">50</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="customer_account_edit_item" parent="standard_black_text">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>

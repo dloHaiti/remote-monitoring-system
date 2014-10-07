@@ -81,7 +81,7 @@ class SalesReportService {
         for (salesChannel in salesChannels) {
             def row = [salesChannel.name]
             for (day in previousWeek) {
-                def dayReceipts = receipts.findAll({r -> r.isOnDate(day) && r.salesChannel == salesChannel})
+                def dayReceipts = receipts.findAll({r -> r.isOnDate(day) && r.salesChannel.name == salesChannel.name})
                 def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll();
                 def total = lineItemsForSalesChannel.inject (0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
@@ -100,7 +100,7 @@ class SalesReportService {
             print(productCategory.name)
             for (day in previousWeek) {
                 def dayReceipts = receipts.findAll({r -> r.isOnDate(day)  })
-                def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type ==  'Product' && Product.findBySku(item.sku).category == productCategory});
+                def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type.equals('PRODUCT') && Product.findBySku(item.sku).category.name.equals(productCategory.name)});
                 def total = lineItemsForSalesChannel.inject (0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
             }

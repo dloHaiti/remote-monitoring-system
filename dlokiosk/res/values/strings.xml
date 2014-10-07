@@ -12,7 +12,7 @@
     <string name="dialog_save">Sauvegarder</string>
     <string name="dialog_cancel">Annuler</string>
     <string name="server_status_checking_label">Etat du serveur</string>
-    <string name="sending_readings_message">Envoi des mesures au serveur</string>
+    <string name="sending_readings_message">Envoi de données vers le serveur</string>
     <string name="no_readings_msg">Tout a déjà été synchronisé!</string>
     <string name="send_error_msg">Erreur lors de l\'envoi des %1$d pour des lectures %2$d pour les ventes %3$d pour les comptes clients %4$d pour les sponsors
     </string>

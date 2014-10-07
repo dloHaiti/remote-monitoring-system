@@ -55,6 +55,7 @@ public abstract class SaleActivity extends RoboActivity {
                                                 int whichButton) {
                                 cart.clear();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
                         })

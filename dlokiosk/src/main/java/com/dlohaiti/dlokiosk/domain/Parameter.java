@@ -28,9 +28,9 @@ public class Parameter implements Comparable<Parameter> {
         this.maximum = parseBigDecimal(maximum, null);
         this.hasRange = StringUtils.isNotBlank(minimum) && StringUtils.isNotBlank(maximum);
         this.isOkNotOk = isOkNotOk;
-        this.isUsedInTotalizer=isUsedInTotalizer;
+        this.isUsedInTotalizer = isUsedInTotalizer;
         this.priority = ObjectUtils.defaultIfNull(priority, Integer.MAX_VALUE);
-        this.value="";
+        this.value = "";
     }
 
     private BigDecimal parseBigDecimal(String candidate, BigDecimal defaultValue) {
@@ -53,7 +53,10 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     public String getUnitOfMeasure() {
-        return unitOfMeasure;
+        if (unitOfMeasure == null || unitOfMeasure.equalsIgnoreCase("null"))
+            return "";
+        else
+            return unitOfMeasure;
     }
 
     public BigDecimal getMinimum() {
@@ -121,10 +124,13 @@ public class Parameter implements Comparable<Parameter> {
         if (hasRange != parameter.hasRange) return false;
         if (isOkNotOk != parameter.isOkNotOk) return false;
         if (isUsedInTotalizer != parameter.isUsedInTotalizer) return false;
-        if (maximum != null ? !maximum.equals(parameter.maximum) : parameter.maximum != null) return false;
-        if (minimum != null ? !minimum.equals(parameter.minimum) : parameter.minimum != null) return false;
+        if (maximum != null ? !maximum.equals(parameter.maximum) : parameter.maximum != null)
+            return false;
+        if (minimum != null ? !minimum.equals(parameter.minimum) : parameter.minimum != null)
+            return false;
         if (name != null ? !name.equals(parameter.name) : parameter.name != null) return false;
-        if (priority != null ? !priority.equals(parameter.priority) : parameter.priority != null) return false;
+        if (priority != null ? !priority.equals(parameter.priority) : parameter.priority != null)
+            return false;
         if (unitOfMeasure != null ? !unitOfMeasure.equals(parameter.unitOfMeasure) : parameter.unitOfMeasure != null)
             return false;
 

@@ -24,7 +24,6 @@ class SalesReportService {
         Region region = currentKiosk.region;
         List<Product> products = Product.findAllByActive(true)
         List<Receipt> receipts = receiptsForAllKiosksInRegion(region)
-        List<Delivery> deliveries = deliveriesForAllKiosksInRegion(region)
         def tableHeader = ['']
 
         def previousWeek = DateUtil.previousWeek()
@@ -33,18 +32,18 @@ class SalesReportService {
         }
         def tableData = [['']]
         if ("sku".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader)
         }
         if ("salesChannel".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader)
         }
         if ("productCategory".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader)
         }
         [kioskName: currentKiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
     }
 
-    private List<List<String>> buildTableDataFilteredBySKU(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader, List<Delivery> deliveries) {
+    private List<List<String>> buildTableDataFilteredBySKU(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         for (product in products) {
             def row = [product.sku]
@@ -57,25 +56,16 @@ class SalesReportService {
             tableData.add(row)
         }
 
-        def deliveriesRow = ['DELIVERY']
-        for (day in previousWeek) {
-            def dayDeliveries = deliveries.findAll({ d -> d.isOnDate(day) })
-            def positiveDeliveries = dayDeliveries.findAll({ Delivery d -> d.isOutForDelivery() }).inject(0, { acc, val -> acc + (val.quantity * val.price.amount) })
-            def totalDeliveries = dayDeliveries.findAll({ Delivery d -> d.isReturned() }).inject(positiveDeliveries, { acc, val -> acc - (val.quantity * val.price.amount) })
-            deliveriesRow.add(totalDeliveries)
-        }
-        tableData.add(deliveriesRow)
-
         def totalRow = ['TOTAL']
         previousWeek.eachWithIndex { LocalDate day, int i ->
             def total = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.total })
-            totalRow.add(total + deliveriesRow[i + 1])
+            totalRow.add(total)
         }
         tableData.add(totalRow)
         tableData
     }
 
-    private List<List<String>> buildTableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader, List<Delivery> deliveries) {
+    private List<List<String>> buildTableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         def salesChannels = SalesChannel.findAll();
         for (salesChannel in salesChannels) {
@@ -91,7 +81,7 @@ class SalesReportService {
         tableData
     }
 
-    private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader, List<Delivery> deliveries) {
+    private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         def productCategories = ProductCategory.findAll();
         for (productCategory in productCategories) {
@@ -110,7 +100,6 @@ class SalesReportService {
     private salesByDay(Kiosk kiosk, String filterParameter) {
         List<Product> products = Product.findAllByActive(true)
         List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, DateUtil.oneWeekAgoMidnight())
-        List<Delivery> deliveries = Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, DateUtil.oneWeekAgoMidnight())
 
         def previousWeek = DateUtil.previousWeek()
         def tableHeader = ['']
@@ -120,23 +109,15 @@ class SalesReportService {
         }
         def tableData = [['']]
         if ("sku".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader)
         }
         if ("salesChannel".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader)
         }
         if ("productCategory".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader, deliveries)
+            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader)
         }
         [kioskName: kiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
-    }
-
-    List<Delivery> deliveriesForAllKiosksInRegion(Region region) {
-        List<Delivery> deliveries = new ArrayList<>();
-        def weekAgoMidnight = DateUtil.oneWeekAgoMidnight()
-        def kiosks = Kiosk.findAllByRegion(region)
-        kiosks.each { kiosk -> deliveries.addAll(Delivery.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, weekAgoMidnight)) }
-        deliveries
     }
 
     List<Receipt> receiptsForAllKiosksInRegion(Region region) {

@@ -293,41 +293,6 @@ class BootStrap {
                 new KioskWiseParameter(kiosk: Kiosk.first(), samplingSite: SamplingSite.first(), parameter: Parameter.get(2)).save(failOnError: true)
                 new KioskWiseParameter(kiosk: Kiosk.first(), samplingSite: SamplingSite.first(), parameter: Parameter.get(19)).save(failOnError: true)
             }
-
-            if (Receipt.count() == 0) {
-                new ReceiptLineItem(sku: "5GALLON", quantity: 1, type: "WATER", price: 20, currencyCode: "HTG", gallons: 10).save()
-                new ReceiptLineItem(sku: "10CAN", quantity: 1, type: "TYPE-1", price: 30, currencyCode: "HTG", gallons: 20).save()
-                new Receipt(createdDate: DateTime.now().minusDays(2).toDate(),
-                        kiosk: Kiosk.first(),
-                        totalGallons: 10,
-                        total: 20,
-                        currencyCode: "HTG",
-                        receiptLineItems: asList(ReceiptLineItem.first(), ReceiptLineItem.last()),
-                        salesChannel: SalesChannel.first(),
-                        customerAccount: CustomerAccount.first(),
-                        paymentMode: "Mode",
-                        isSponsorSelected: true,
-                        sponsor: Sponsor.first(),
-                        sponsorAmount: 10,
-                        customerAmount: 10,
-                        paymentType: "CC",
-                        deliveryTime: DateTime.now().minusDays(1).toString()).save(failOnError: true)
-                new Receipt(createdDate: DateTime.now().minusDays(2).toDate(),
-                        kiosk: Kiosk.first(),
-                        totalGallons: 30,
-                        total: 60,
-                        currencyCode: "HTG",
-                        receiptLineItems: asList(ReceiptLineItem.first(), ReceiptLineItem.last()),
-                        salesChannel: SalesChannel.last(),
-                        customerAccount: CustomerAccount.first(),
-                        paymentMode: "Mode",
-                        isSponsorSelected: true,
-                        sponsor: Sponsor.first(),
-                        sponsorAmount: 30,
-                        customerAmount: 30,
-                        paymentType: "CC",
-                        deliveryTime: DateTime.now().minusDays(1).toString()).save(failOnError: true)
-            }
         }
     }
     def destroy = {

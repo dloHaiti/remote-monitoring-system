@@ -23,7 +23,7 @@ class AccountsService {
         account.gpsCoordinates= (params.gpsCoordinates==null) ? "" : params.gpsCoordinates
         if(!newAccount) {
             def salesChannels = account.channels.toArray()
-            if (salesChannels != null) {
+            if (params.channels.size() != 0 && salesChannels != null) {
                 for (sc in salesChannels) {
                     account.removeFromChannels(sc)
                 }

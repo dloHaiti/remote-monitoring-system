@@ -67,9 +67,9 @@ class CustomerAccountTests {
 
         CustomerAccount account = (new CustomerAccount(name: "Customer2",contactName:"c", customerType: type,kiosk: k1,gpsCoordinates:""))
         assert account.validate()
-        account.gpsCoordinates="32:45:12.8,56:23:67.23"
+        account.gpsCoordinates="18.676 -79.87979"
         assert account.validate()
-        account.gpsCoordinates="32:12.8,56:23:67.23"
+        account.gpsCoordinates="18.67:79.87979"
         assert !account.validate()
 
     }

@@ -60,6 +60,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/cancel_button"
             style="@style/navigation_button"
+            android:visibility="gone"
             android:onClick="cancelClick"/>
 
         <Button
@@ -77,6 +78,7 @@
             android:layout_toLeftOf="@id/save_button"
             android:src="@drawable/back_button"
             style="@style/navigation_button"
+            android:visibility="gone"
             android:onClick="onBack"/>
 
     </RelativeLayout>

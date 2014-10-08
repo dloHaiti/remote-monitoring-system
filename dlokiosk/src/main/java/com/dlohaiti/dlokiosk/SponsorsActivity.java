@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,8 +33,7 @@ public class SponsorsActivity extends RoboActivity {
     @Inject
     private CustomerAccountRepository customerAccountRepository;
 
-    @InjectView(R.id.continue_button)
-    protected ImageButton continueButton;
+
     private Sponsors allSponsors;
     private SponsorsArrayAdapter sponsorsAdapter;
     private SearchView searchView;
@@ -42,11 +42,24 @@ public class SponsorsActivity extends RoboActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_sponsors);
         initialiseSponsorsList();
-        continueButton.setEnabled(false);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(SponsorsActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();

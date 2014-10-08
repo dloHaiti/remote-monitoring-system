@@ -11,6 +11,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/cancel_button"
             style="@style/navigation_button"
+        android:visibility="invisible"
             android:onClick="onCancel"/>
 
     <ImageButton
@@ -24,6 +25,7 @@
 
     <ImageButton
             android:id="@+id/back_button"
+        android:visibility="invisible"
             android:layout_toLeftOf="@id/continue_button"
             android:src="@drawable/back_button"
             style="@style/navigation_button"

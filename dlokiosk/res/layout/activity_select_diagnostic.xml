@@ -8,7 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/row_height"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
@@ -34,22 +33,6 @@
             />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/bottom_pane"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/bottom_navigation_pane"
-      >
-
-        <ImageButton
-            android:id="@+id/cancel_button"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/cancel_button"
-            style="@style/navigation_button"
-            android:onClick="cancelClick"/>
-
-    </RelativeLayout>
 
 
 </RelativeLayout>

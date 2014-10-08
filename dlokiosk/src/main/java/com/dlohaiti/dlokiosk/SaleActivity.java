@@ -1,9 +1,12 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import com.dlohaiti.dlokiosk.db.ConfigurationKey;
@@ -22,6 +25,44 @@ public abstract class SaleActivity extends RoboActivity {
 
     @Inject
     protected ShoppingCartNew cart;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.cancel_sale_confirm_dialog_message)
+                        .setTitle(R.string.cancel_sale_confirm_dialog_title)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes_button_label,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int whichButton) {
+                                        cart.clear();
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                    }
+                                })
+                        .setNegativeButton(R.string.no_button_label,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int whichButton) {
+                                    }
+                                })
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     protected String currency() {
         return configurationRepository.get(ConfigurationKey.CURRENCY);

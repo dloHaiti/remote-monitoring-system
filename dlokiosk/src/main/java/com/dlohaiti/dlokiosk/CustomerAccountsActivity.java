@@ -1,5 +1,6 @@
 package com.dlohaiti.dlokiosk;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,9 +43,6 @@ public class CustomerAccountsActivity extends RoboActivity {
     private CustomerAccountEditAdapter customerListAdapter;
     private SalesChannelArrayAdapter salesChannelAdapter;
 
-    @InjectView(R.id.continue_button)
-    protected ImageButton continueButton;
-
     @Inject
     private SalesChannelRepository salesChannelRepository;
     @Inject
@@ -59,10 +57,24 @@ public class CustomerAccountsActivity extends RoboActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_customer_accounts);
 
         loadSalesChannels();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(CustomerAccountsActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void loadCustomerAccounts() {
@@ -76,7 +88,6 @@ public class CustomerAccountsActivity extends RoboActivity {
         loadCustomerAccounts();
         initialiseSalesChannelList();
         initialiseCustomerList();
-        continueButton.setEnabled(false);
     }
 
     private void updateFilteredCustomerList() {
@@ -96,7 +107,6 @@ public class CustomerAccountsActivity extends RoboActivity {
             loadCustomerAccounts();
             initialiseSalesChannelList();
             initialiseCustomerList();
-            continueButton.setEnabled(false);
         }
     }
 
@@ -109,10 +119,8 @@ public class CustomerAccountsActivity extends RoboActivity {
                 CustomerAccount tappedCustomerAccount = filteredCustomerList.get(position);
                 if (tappedCustomerAccount.isSelected()) {
                     tappedCustomerAccount.unSelect();
-                    continueButton.setEnabled(false);
                 } else {
                     tappedCustomerAccount.select();
-                    continueButton.setEnabled(true);
                 }
                 customerListAdapter.notifyDataSetChanged();
             }
@@ -134,7 +142,6 @@ public class CustomerAccountsActivity extends RoboActivity {
                 tappedSalesChannel.select();
                 selectedSalesChannel = tappedSalesChannel;
                 salesChannelAdapter.notifyDataSetChanged();
-                continueButton.setEnabled(false);
                 updateCustomerList();
             }
         });

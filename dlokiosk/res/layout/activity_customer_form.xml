@@ -159,6 +159,7 @@
             style="@style/navigation_button"
             android:layout_alignParentLeft="true"
             android:onClick="onCancel"
+            android:visibility="gone"
             android:src="@drawable/cancel_button" />
 
         <Button
@@ -179,6 +180,7 @@
             android:layout_toLeftOf="@id/save_button"
             android:gravity="center_vertical"
             android:onClick="onBack"
+            android:visibility="gone"
             android:src="@drawable/back_button" />
 
     </RelativeLayout>

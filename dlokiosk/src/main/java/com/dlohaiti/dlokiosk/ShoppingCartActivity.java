@@ -98,8 +98,11 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private void updatePrices() {
         totalPriceView.setText(String.valueOf(cart.getActualTotal().getAmount()));
-        if (!cart.getPromotions().isEmpty())
+        if (cart.getPromotions().isEmpty())
+            hideDiscountedPriceIfNoPromotion();
+        else
             discountedPriceView.setText(String.valueOf(cart.getDiscountedTotal().getAmount()));
+
     }
 
     private void initialiseProductGrid() {
@@ -119,16 +122,13 @@ public class ShoppingCartActivity extends SaleActivity {
         cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
         promotionAdapter = new PromotionGridAdapter(this, cart.getPromotions());
         promotionGridView.setAdapter(promotionAdapter);
-        hideDiscountedPriceIfNoPromotion();
     }
 
     private void hideDiscountedPriceIfNoPromotion() {
-        if (cart.getPromotions().isEmpty()) {
             discountedPriceLabel.setVisibility(View.GONE);
             discountedPrice.setVisibility(View.GONE);
             discountedPriceCurrency.setVisibility(View.GONE);
             choosePromotionLabel.setText("No Promotions Are Available");
-        }
     }
 
     @Override
@@ -143,7 +143,6 @@ public class ShoppingCartActivity extends SaleActivity {
         cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
         promotionGridView.setAdapter(promotionAdapter);
         updatePrices();
-        hideDiscountedPriceIfNoPromotion();
     }
 
     public void onPromotionRemoveButtonClick(Promotion promotion) {

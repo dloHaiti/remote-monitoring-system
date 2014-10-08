@@ -105,6 +105,12 @@ public class PaymentActivity extends SaleActivity {
     @InjectView(R.id.amount_due_currency)
     private TextView amountDueCurrencyView;
 
+    @InjectView(R.id.sponsor_payment_label)
+    private TextView sponsorPaymentLabel;
+
+    @InjectView(R.id.sponsor_payment_amount)
+    private LinearLayout sponsorPaymentAmount;
+
     private Sponsors sponsors;
 
     @Inject
@@ -162,6 +168,8 @@ public class PaymentActivity extends SaleActivity {
         selectPayeeRowView.setVisibility(View.GONE);
         sponsorRowView.setVisibility(View.GONE);
         sponsorAmountRowView.setVisibility(View.GONE);
+        sponsorPaymentLabel.setVisibility(View.GONE);
+        sponsorPaymentAmount.setVisibility(View.GONE);
     }
 
     private void initialisePriceViews() {

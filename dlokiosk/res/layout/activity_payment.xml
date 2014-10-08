@@ -205,10 +205,12 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/sponsor_payment_label"
                     android:text="@string/sponsor_payment_label"
                     style="@style/payment_summary_text"/>
 
             <LinearLayout
+                android:id="@+id/sponsor_payment_amount"
                     style="@style/payment_value_container">
 
                 <TextView
@@ -266,6 +268,7 @@
                 android:layout_alignParentLeft="true"
                 android:src="@drawable/cancel_button"
                 style="@style/navigation_button"
+                android:visibility="invisible"
                 android:onClick="onCancel"/>
 
         <ImageButton
@@ -285,6 +288,7 @@
 
         <ImageButton
                 android:id="@+id/back_button"
+            android:visibility="invisible"
                 android:layout_toLeftOf="@id/confirm_button"
                 android:src="@drawable/back_button"
                 style="@style/navigation_button"

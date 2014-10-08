@@ -1,91 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:padding="16dp"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <TextView
-                android:id="@+id/last_update_label"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/last_updated_label"/>
+            android:id="@+id/last_update_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/last_updated_label" />
 
         <TextView
-                android:id="@+id/last_updated"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/last_update_label"/>
+            android:id="@+id/last_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/last_update_label" />
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:padding="20dp"
-                android:onClick="doManualSync"
-                android:text="@string/manual_sync_button"
-                android:layout_toLeftOf="@+id/update_configuration_button"
-                android:id="@+id/manualSyncButton"/>
+            android:id="@+id/manualSyncButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_toLeftOf="@+id/update_configuration_button"
+            android:onClick="doManualSync"
+            android:padding="20dp"
+            android:text="@string/manual_sync_button" />
 
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_toLeftOf="@+id/save_configuration_button"
-                android:padding="20dp"
-                android:text="@string/update_configuration"
-                android:onClick="updateConfiguration"
-                android:id="@+id/update_configuration_button"/>
+            android:id="@+id/update_configuration_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/save_configuration_button"
+            android:onClick="updateConfiguration"
+            android:padding="20dp"
+            android:text="@string/update_configuration" />
 
         <Button
-                android:id="@+id/save_configuration_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_alignParentRight="true"
-                android:padding="20dp"
-                android:text="@string/dialog_save"
-                android:onClick="save"/>
+            android:id="@+id/save_configuration_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:onClick="save"
+            android:padding="20dp"
+            android:text="@string/dialog_save" />
 
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-        <EditText
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:text="Kiosk Id" />
+
+            <EditText
                 android:id="@+id/kiosk_id"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:padding="15dp"
-                android:hint="@string/kiosk_id_hint"/>
+                android:layout_weight="80"
+                android:hint="@string/kiosk_id_hint"
+                android:padding="15dp" />
+        </LinearLayout>
 
-        <EditText
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:text="Kiosk Password" />
+
+            <EditText
                 android:id="@+id/kiosk_password"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="15dp"
-                android:inputType="textPassword"
-                android:hint="@string/kiosk_password_hint"/>
+                android:layout_weight="80"
 
-        <EditText
-                android:id="@+id/server_url"
+                android:hint="@string/kiosk_password_hint"
+                android:inputType="textPassword"
+                android:padding="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:padding="15dp"
+                android:layout_weight="20"
+                android:text="Server Url" />
+
+            <EditText
+                android:id="@+id/server_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="80"
+                android:hint="@string/server_url_hint"
                 android:inputType="textUri"
-                android:hint="@string/server_url_hint"/>
+                android:padding="15dp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

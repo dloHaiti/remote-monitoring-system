@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+
 import com.dlohaiti.dlokiosk.adapter.ProductGridAdapter;
 import com.dlohaiti.dlokiosk.adapter.PromotionGridAdapter;
 import com.dlohaiti.dlokiosk.db.ProductCategoryRepository;
@@ -13,6 +14,7 @@ import com.dlohaiti.dlokiosk.db.PromotionRepository;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
+
 import roboguice.inject.InjectView;
 
 import java.util.Collections;
@@ -55,6 +57,20 @@ public class ShoppingCartActivity extends SaleActivity {
     @InjectView(R.id.customer_account)
     private TextView customerAccountView;
 
+    // Added for Disabling the Discounted price when there are no discounts for it.
+
+    @InjectView(R.id.discounted_price_label)
+    private TextView discountedPriceLabel;
+
+    @InjectView(R.id.discounted_price)
+    private TextView discountedPrice;
+
+    @InjectView(R.id.discounted_price_currency)
+    private TextView discountedPriceCurrency;
+
+    @InjectView(R.id.choose_promotion_label)
+    private TextView choosePromotionLabel;
+
     private PromotionGridAdapter promotionAdapter;
     private ProductGridAdapter productAdapter;
     private Promotions allPromotions;
@@ -82,7 +98,8 @@ public class ShoppingCartActivity extends SaleActivity {
 
     private void updatePrices() {
         totalPriceView.setText(String.valueOf(cart.getActualTotal().getAmount()));
-        discountedPriceView.setText(String.valueOf(cart.getDiscountedTotal().getAmount()));
+        if (!cart.getPromotions().isEmpty())
+            discountedPriceView.setText(String.valueOf(cart.getDiscountedTotal().getAmount()));
     }
 
     private void initialiseProductGrid() {
@@ -102,6 +119,16 @@ public class ShoppingCartActivity extends SaleActivity {
         cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
         promotionAdapter = new PromotionGridAdapter(this, cart.getPromotions());
         promotionGridView.setAdapter(promotionAdapter);
+        hideDiscountedPriceIfNoPromotion();
+    }
+
+    private void hideDiscountedPriceIfNoPromotion() {
+        if (cart.getPromotions().isEmpty()) {
+            discountedPriceLabel.setVisibility(View.GONE);
+            discountedPrice.setVisibility(View.GONE);
+            discountedPriceCurrency.setVisibility(View.GONE);
+            choosePromotionLabel.setText("No Promotions Are Available");
+        }
     }
 
     @Override
@@ -116,6 +143,7 @@ public class ShoppingCartActivity extends SaleActivity {
         cart.overwrite(allPromotions.findApplicablePromotionsForProducts(cart.getProducts()));
         promotionGridView.setAdapter(promotionAdapter);
         updatePrices();
+        hideDiscountedPriceIfNoPromotion();
     }
 
     public void onPromotionRemoveButtonClick(Promotion promotion) {

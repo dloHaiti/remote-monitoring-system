@@ -8,25 +8,25 @@ import org.joda.time.LocalDate
  */
 class SalesReportService {
 
-    def salesData(String kioskName, String filterType, String filterParameter) {
+    def salesData(String kioskName, String filterType, String filterParameter, LocalDate fromDate, LocalDate toDate) {
         Kiosk kiosk = Kiosk.findByName(kioskName)
 
         def model = [:]
         if (filterType.equalsIgnoreCase("region")) {
-            model = salesByRegionForKiosk(kiosk, filterParameter)
+            model = salesByRegionForKiosk(kiosk, filterParameter, fromDate, toDate)
         } else {
-            model = salesByDay(kiosk, filterParameter)
+            model = salesByDay(kiosk, filterParameter, fromDate, toDate)
         }
         model
     }
 
-    private salesByRegionForKiosk(Kiosk currentKiosk, String filterParameter) {
+    private salesByRegionForKiosk(Kiosk currentKiosk, String filterParameter, LocalDate fromDate, LocalDate toDate) {
         Region region = currentKiosk.region;
         List<Product> products = Product.findAllByActive(true)
-        List<Receipt> receipts = receiptsForAllKiosksInRegion(region)
+        List<Receipt> receipts = receiptsForAllKiosksInRegion(region, fromDate, toDate)
         def tableHeader = ['']
 
-        def previousWeek = DateUtil.previousWeek()
+        def previousWeek = DateUtil.getWeekDataByFromDate(fromDate, toDate);
         for (day in previousWeek) {
             tableHeader.add(day.toString('dd-MMM-yy'))
         }
@@ -71,9 +71,9 @@ class SalesReportService {
         for (salesChannel in salesChannels) {
             def row = [salesChannel.name]
             for (day in previousWeek) {
-                def dayReceipts = receipts.findAll({r -> r.isOnDate(day) && r.salesChannel.name == salesChannel.name})
+                def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) && r.salesChannel.name == salesChannel.name })
                 def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll();
-                def total = lineItemsForSalesChannel.inject (0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
+                def total = lineItemsForSalesChannel.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
             }
             tableData.add(row)
@@ -87,9 +87,9 @@ class SalesReportService {
         for (productCategory in productCategories) {
             def row = [productCategory.name]
             for (day in previousWeek) {
-                def dayReceipts = receipts.findAll({r -> r.isOnDate(day)  })
-                def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type.equals('PRODUCT') && Product.findBySku(item.sku).category.name.equals(productCategory.name)});
-                def total = lineItemsForSalesChannel.inject (0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
+                def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) })
+                def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type.equals('PRODUCT') && Product.findBySku(item.sku).category.name.equals(productCategory.name) });
+                def total = lineItemsForSalesChannel.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
             }
             tableData.add(row)
@@ -97,11 +97,11 @@ class SalesReportService {
         tableData
     }
 
-    private salesByDay(Kiosk kiosk, String filterParameter) {
+    private salesByDay(Kiosk kiosk, String filterParameter, LocalDate fromDate, LocalDate toDate) {
         List<Product> products = Product.findAllByActive(true)
-        List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, DateUtil.oneWeekAgoMidnight())
+        List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(), toDate.toDate())
 
-        def previousWeek = DateUtil.previousWeek()
+        def previousWeek = DateUtil.getWeekDataByFromDate(fromDate, toDate);
         def tableHeader = ['']
 
         for (day in previousWeek) {
@@ -120,11 +120,11 @@ class SalesReportService {
         [kioskName: kiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
     }
 
-    List<Receipt> receiptsForAllKiosksInRegion(Region region) {
+    List<Receipt> receiptsForAllKiosksInRegion(Region region, LocalDate fromDate, LocalDate toDate) {
         def receipts = [];
-        def weekAgoMidnight = DateUtil.oneWeekAgoMidnight()
         def kiosks = Kiosk.findAllByRegion(region)
-        kiosks.each { kiosk -> receipts.addAll(Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, weekAgoMidnight)) }
+        kiosks.each { kiosk -> receipts.addAll(Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(), toDate.toDate())) }
+
         receipts
     }
 }

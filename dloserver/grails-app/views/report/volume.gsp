@@ -47,7 +47,9 @@
 
         <div id="chart" style="width:800px;height:400px; margin-left:auto;margin-right:auto;"></div>
 
-        <div id="table" style="width:800px; margin-left:auto;margin-right:auto;"></div>
+        <div align="center" style="padding-bottom:40px; margin-top:-40px;margin-bottom:-20px;margin-left:auto;margin-right:auto;"> <g:render template="timeLine"></g:render></div>
+
+        <div id="table" style="height:200px;width:800px;margin-:-30px; margin-left:auto;margin-right:auto;"></div>
     </div>
 </div>
 </body>

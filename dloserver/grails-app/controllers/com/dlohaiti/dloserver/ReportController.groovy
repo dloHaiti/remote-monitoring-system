@@ -1,6 +1,7 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.utils.DateUtil
+import org.joda.time.LocalDate
 
 class ReportController {
 
@@ -12,6 +13,14 @@ class ReportController {
 
     def index() {
         [kioskName: request.kiosk.name]
+        String filterType = params.filterType != null ? params.filterType : 'kiosk';
+        String filterParam = params.filterParam != null ? params.filterParam : 'sku';
+        String filterTimeLine = params.timeLine != null ? params.timeLine : 'currentWeek';
+        // Getting the fromDate and toDate based on the week string
+        LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
+        LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
+        def model = volumeReportService.volumeReportData(request.kiosk.name, filterType, filterParam, fromDate, toDate)
+        render(view: 'volume', model: model)
     }
 
     def menu() {
@@ -31,7 +40,7 @@ class ReportController {
         def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, DateUtil.oneWeekAgoMidnight())
         def parameters = kiosk.getParameters()
         def paramMap = readingsReportService.parameterMapForReadings(readings, parameters, DateUtil.previousWeek())
-        def model = [kioskName: request.kiosk.name, parameters: parameters, lastWeek: DateUtil.previousWeek()
+        def model = [kioskName                         : request.kiosk.name, parameters: parameters, lastWeek: DateUtil.previousWeek()
                 .collect({ d -> d.toDate() }), readings: readings, paramMap: paramMap]
 
         render(view: 'readings', model: model)
@@ -40,16 +49,22 @@ class ReportController {
     def sales() {
         String filterType = params.filterType != null ? params.filterType : '';
         String filterParam = params.filterParam != null ? params.filterParam : '';
-
-        def model = salesReportService.salesData(params.kioskName, filterType, filterParam)
+        String filterTimeLine = params.timeLine != null ? params.timeLine : 'currentWeek';
+        // Getting the fromDate and toDate based on the week string
+        LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
+        LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
+        def model = salesReportService.salesData(params.kioskName, filterType, filterParam, fromDate, toDate)
         render(view: 'sales', model: model)
     }
 
     def volume() {
         String filterType = params.filterType != null ? params.filterType : 'kiosk';
         String filterParam = params.filterParam != null ? params.filterParam : 'sku';
-
-        def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam)
+        String filterTimeLine = params.timeLine != null ? params.timeLine : 'currentWeek';
+        // Getting the fromDate and toDate based on the week string
+        LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
+        LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
+        def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam, fromDate, toDate)
 
         render(view: 'volume', model: model)
     }

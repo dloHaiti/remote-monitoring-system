@@ -2,39 +2,39 @@ package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.utils.DateUtil
 import org.joda.time.LocalDate
+
 import java.math.RoundingMode
 
 class VolumeReportService {
 
-    def volumeReportData(String kioskName, String filterType, String filterParam) {
+    def volumeReportData(String kioskName, String filterType, String filterParam,LocalDate fromDate,LocalDate toDate) {
         Kiosk kiosk = Kiosk.findByName(kioskName)
 
         def model = [:]
         if (filterType.equalsIgnoreCase('region')) {
-            model = volumeByRegionForKiosk(kiosk, filterParam)
+            model = volumeByRegionForKiosk(kiosk, filterParam,fromDate,toDate)
         } else {
-            model = volumeByDay(kiosk, filterParam)
+            model = volumeByDay(kiosk, filterParam,fromDate,toDate)
         }
         return model
     }
 
-    private volumeByRegionForKiosk(Kiosk kiosk, String filterParam) {
+    private volumeByRegionForKiosk(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate) {
         Region region = kiosk.region
-        List<Receipt> receipts = receiptsForAllKiosksInRegion(region)
-        List<Reading> readings = readingsForAllKiosksInRegion(region)
+        List<Receipt> receipts = receiptsForAllKiosksInRegion(region,fromDate,toDate)
+        List<Reading> readings = readingsForAllKiosksInRegion(region,fromDate,toDate)
         List<Product> products = Product.findAll()
 
-        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, readings, filterParam)
+        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
         [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
     }
 
-    private volumeByDay(Kiosk kiosk, String filterParam) {
-        def oneWeekAgoMidnight = DateUtil.oneWeekAgoMidnight()
-        List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight)
-        List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, oneWeekAgoMidnight)
+    private volumeByDay(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate) {
+        List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
+        List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
         List<Product> products = Product.findAll()
 
-        def tableData = buildTableData(DateUtil.previousWeek(), products, receipts, readings, filterParam)
+        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
 
         [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
     }
@@ -117,19 +117,17 @@ class VolumeReportService {
         tableData
     }
 
-    List<Receipt> receiptsForAllKiosksInRegion(Region region) {
+    List<Receipt> receiptsForAllKiosksInRegion(Region region,LocalDate fromDate,LocalDate toDate) {
         def receipts = [];
-        def weekAgoMidnight = DateUtil.oneWeekAgoMidnight()
         def kiosks = Kiosk.findAllByRegion(region)
-        kiosks.each {kiosk -> receipts.addAll(Receipt.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, weekAgoMidnight))}
+        kiosks.each {kiosk -> receipts.addAll(Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate()))}
         receipts
     }
 
-    List<Reading> readingsForAllKiosksInRegion(Region region) {
+    List<Reading> readingsForAllKiosksInRegion(Region region,LocalDate fromDate,LocalDate toDate) {
         def readings = [];
-        def weekAgoMidnight = DateUtil.oneWeekAgoMidnight()
         def kiosks = Kiosk.findAllByRegion(region)
-        kiosks.each {kiosk -> readings.addAll(Reading.findAllByKioskAndCreatedDateGreaterThanEquals(kiosk, weekAgoMidnight))}
+        kiosks.each {kiosk -> readings.addAll(Reading.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate()))}
         readings
     }
 

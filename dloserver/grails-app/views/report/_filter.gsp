@@ -4,10 +4,16 @@
     window.onload = function(){
         var filter = getParameterByName('filterType');
         var filterParam = getParameterByName('filterParam')
+        var timeLine = getParameterByName('timeLine')
+
+    if (!filter)
+           enableCorrespondingFilterType("kiosk");
         if (filter)
             enableCorrespondingFilterType(filter)
         if (filterParam)
             enableCorrespondingFilterParam(filterParam)
+        if (timeLine)
+            enableCorrespondingTimeline(timeLine)
     };
 
     var enableCorrespondingFilterType = function (filter) {

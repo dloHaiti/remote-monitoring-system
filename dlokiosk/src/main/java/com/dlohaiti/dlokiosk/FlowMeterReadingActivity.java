@@ -115,7 +115,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
     private void fillQuantity(Date date) {
         if(flowMeterAdapter==null)return;
-        List<Reading> readingWithDate = readingsRepository.getReadingsWithDate(date);
+        List<Reading> readingWithDate = readingsRepository.getReadingsWithDate(date,getApplicationContext());
         flowMeterAdapter.cleanQuantity();
         if (readingWithDate.size()==0){
             return;
@@ -178,7 +178,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         boolean successful=true;
         List<Reading> readingsWithDate;
         Date date = isToday? clock.today() : clock.yesterday();
-        readingsWithDate = readingsRepository.getReadingsWithDate(date);
+        readingsWithDate = readingsRepository.getReadingsWithDate(date,getApplicationContext());
 
         for(int i=0;i<flowMeterAdapter.getCount();i++){
             FlowMeterReading flowMeterReading = flowMeterAdapter.getItem(i);

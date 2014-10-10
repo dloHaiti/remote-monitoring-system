@@ -9,12 +9,22 @@ import com.dlohaiti.dlokiosk.client.*;
 import com.dlohaiti.dlokiosk.db.*;
 import com.dlohaiti.dlokiosk.domain.*;
 import com.google.inject.Inject;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import roboguice.inject.InjectResource;
 import roboguice.util.RoboAsyncTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.logging.SimpleFormatter;
 
 public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     private static final String TAG = PullConfigurationTask.class.getSimpleName();
@@ -72,6 +82,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
     @Override
     public Boolean call() throws Exception {
         Configuration c = client.fetch();
+        configurationRepository.save(ConfigurationKey.DATE_FORMAT, c.getConfiguration().getDateformat());
         List<Product> products = new ArrayList<Product>();
         for (ProductJson p : c.getProducts()) {
             Money price = new Money(p.getPrice().getAmount());
@@ -92,8 +103,8 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         List<Promotion> promotions = new ArrayList<Promotion>();
         for (PromotionJson p : c.getPromotions()) {
             PromotionApplicationType appliesTo = PromotionApplicationType.valueOf(p.getAppliesTo());
-            Date start = kioskDate.getFormat().parse(p.getStartDate());
-            Date end = kioskDate.getFormat().parse(p.getEndDate());
+            Date start = kioskDate.getFormat(context).parse(p.getStartDate());
+            Date end = kioskDate.getFormat(context).parse(p.getEndDate());
             Bitmap imageResource = imageConverter.fromBase64EncodedString(p.getBase64EncodedImage());
             promotions.add(new Promotion(null, p.getSku(), appliesTo, p.getProductSku(), start, end, p.getAmount().toString(), PromotionType.valueOf(p.getType()), imageResource));
         }
@@ -142,10 +153,7 @@ public class PullConfigurationTask extends RoboAsyncTask<Boolean> {
         DeliveryConfigurationJson configuration = c.getDelivery().getConfiguration();
 
         //FIXME: what happens when one of these fails?
-        return configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MIN, configuration.getMinimum()) &&
-                configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_MAX, configuration.getMaximum()) &&
-                configurationRepository.save(ConfigurationKey.DELIVERY_TRACKING_DEFAULT, configuration.getDefault()) &&
-                configurationRepository.save(ConfigurationKey.UNIT_OF_MEASURE, c.getConfiguration().getUnitOfMeasure()) &&
+        return  configurationRepository.save(ConfigurationKey.UNIT_OF_MEASURE, c.getConfiguration().getUnitOfMeasure()) &&
                 configurationRepository.save(ConfigurationKey.CURRENCY, c.getConfiguration().getCurrency()) &&
                 configurationRepository.save(ConfigurationKey.DATE_FORMAT, c.getConfiguration().getDateformat()) &&
                 configurationRepository.save(ConfigurationKey.LOCALE, c.getConfiguration().getLocale()) &&

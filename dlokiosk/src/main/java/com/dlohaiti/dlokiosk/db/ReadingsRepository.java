@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -43,12 +44,12 @@ public class ReadingsRepository {
         this.clock = clock;
     }
 
-    public List<Reading> getReadingsWithDate(Date date) {
+    public List<Reading> getReadingsWithDate(Date date,Context context) {
         List<Reading> readings = new ArrayList<Reading>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        String createdDate = kioskDate.getFormat().format(removeTime(date));
-//        createdDate= createdDate.split(" ")[0];
+        String createdDate = kioskDate.getFormat(context).format(removeTime(date));
+        createdDate= createdDate.split(" ")[0];
 
         Cursor rc = rdb.rawQuery(format(
                 "SELECT %s FROM " +
@@ -95,7 +96,7 @@ public class ReadingsRepository {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
         String createdDate = kioskDate.getFormat().format(removeTime(date));
-
+        createdDate= createdDate.split(" ")[0];
         Cursor rc = rdb.rawQuery(format(
                 "SELECT %s FROM " +
                         "%s" +

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -50,7 +51,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
 
     private FlowMeterAdapter flowMeterAdapter;
-    private boolean isToday=true;
+    private boolean isToday = true;
     @Inject
     private Clock clock;
 
@@ -96,6 +97,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
                 return super.onOptionsItemSelected(item);
         }
     }
+
     public void cancelClick(View view) {
         Intent intent = new Intent(FlowMeterReadingActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -104,26 +106,26 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        if(tab.getPosition()==0){
-            isToday=true;
-        }else{
-            isToday=false;
+        if (tab.getPosition() == 0) {
+            isToday = true;
+        } else {
+            isToday = false;
         }
-        Date date = isToday? clock.today():clock.yesterday();
+        Date date = isToday ? clock.today() : clock.yesterday();
         fillQuantity(date);
     }
 
     private void fillQuantity(Date date) {
-        if(flowMeterAdapter==null)return;
-        List<Reading> readingWithDate = readingsRepository.getReadingsWithDate(date,getApplicationContext());
+        if (flowMeterAdapter == null) return;
+        List<Reading> readingWithDate = readingsRepository.getReadingsWithDate(date, getApplicationContext());
         flowMeterAdapter.cleanQuantity();
-        if (readingWithDate.size()==0){
+        if (readingWithDate.size() == 0) {
             return;
         }
-        for(int i=0;i<flowMeterAdapter.getCount();i++) {
+        for (int i = 0; i < flowMeterAdapter.getCount(); i++) {
             FlowMeterReading item = flowMeterAdapter.getItem(i);
             Reading readingWithSite = findReadingWithSite(readingWithDate, item.getSamplingName());
-            if(readingWithSite!=null) {
+            if (readingWithSite != null) {
                 Measurement measurement = readingWithSite.getMeasurement(item.getParameterName());
                 if (measurement != null) {
                     item.setQuantity(String.valueOf(measurement.getValue()));
@@ -134,8 +136,8 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     }
 
     private Reading findReadingWithSite(List<Reading> readingWithDate, String samplingName) {
-        for(Reading reading:readingWithDate){
-            if(reading.getSamplingSiteName().equalsIgnoreCase(samplingName)){
+        for (Reading reading : readingWithDate) {
+            if (reading.getSamplingSiteName().equalsIgnoreCase(samplingName)) {
                 return reading;
             }
         }
@@ -153,13 +155,12 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     }
 
     public void onSaveReadings(View view) {
-        if(!validateAllFields() && isToday){
+        if (!validateAllFields() && isToday) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Save")
                     .setMessage("There are empty fields , are you sure you want to save?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveReadings();
@@ -168,44 +169,44 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
                     })
                     .setNegativeButton("No", null)
                     .show();
-        }else {
+        } else {
             saveReadings();
         }
     }
 
     private void saveReadings() {
         Set<Measurement> measurements = new HashSet<Measurement>();
-        boolean successful=true;
+        boolean successful = true;
         List<Reading> readingsWithDate;
-        Date date = isToday? clock.today() : clock.yesterday();
-        readingsWithDate = readingsRepository.getReadingsWithDate(date,getApplicationContext());
+        Date date = isToday ? clock.today() : clock.yesterday();
+        readingsWithDate = readingsRepository.getReadingsWithDate(date, getApplicationContext());
 
-        for(int i=0;i<flowMeterAdapter.getCount();i++){
+        for (int i = 0; i < flowMeterAdapter.getCount(); i++) {
             FlowMeterReading flowMeterReading = flowMeterAdapter.getItem(i);
-            if(flowMeterReading.getQuantity().isEmpty()){
+            if (flowMeterReading.getQuantity().isEmpty()) {
                 continue;
             }
             Reading readingWithSite = findReadingWithSite(readingsWithDate, flowMeterReading.getSamplingName());
-            if(readingWithSite==null){
+            if (readingWithSite == null) {
                 measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));
-                readingWithSite= new Reading(null,flowMeterReading.getSamplingName(), measurements, date);
-            }else{
+                readingWithSite = new Reading(null, flowMeterReading.getSamplingName(), measurements, date);
+            } else {
                 Measurement measurement = readingWithSite.getMeasurement(flowMeterReading.getParameterName());
-                if(measurement!=null){
+                if (measurement != null) {
                     measurement.setValue(new BigDecimal(flowMeterReading.getQuantity()));
-                }else{
+                } else {
                     measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));
                 }
             }
             readingWithSite.setSynced(false);
             successful = readingsRepository.save(readingWithSite);
-            if(!successful){
+            if (!successful) {
                 break;
             }
             measurements.clear();
         }
 
-        Log.d("SAVE",String.valueOf(successful));
+        Log.d("SAVE", String.valueOf(successful));
         if (successful) {
             Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -218,21 +219,42 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
 
     private boolean validateAllFields() {
         FlowMeterAdapter adapter = (FlowMeterAdapter) flowMeterList.getAdapter();
-        boolean isError=false;
+        boolean isError = false;
 
-        for(int i=0;i<adapter.getCount();i++){
+        for (int i = 0; i < adapter.getCount(); i++) {
             FlowMeterReading item = adapter.getItem(i);
-            if(item.getQuantity().isEmpty()){
-                isError=true;
+            if (item.getQuantity().isEmpty()) {
+                isError = true;
                 break;
-              }
+            }
         }
-        if(isError){
+        if (isError) {
             adapter.setDisplayError(true);
             adapter.notifyDataSetChanged();
         }
 
         return !isError;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_ENTER: {
+                    scrollToNext();
+                    return true;
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void scrollToNext() {
+        int currentPosition = flowMeterList.getFirstVisiblePosition();
+        if (currentPosition == flowMeterList.getCount() - 1)
+            return;
+        flowMeterList.setSelection(currentPosition + 1);
+
     }
 
     public void onBack(View view) {

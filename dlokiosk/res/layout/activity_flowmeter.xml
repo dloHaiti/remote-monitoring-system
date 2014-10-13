@@ -44,7 +44,7 @@
         <ListView
             android:id="@+id/flow_meter_list"
             android:layout_width="fill_parent"
-            android:descendantFocusability="afterDescendants"
+            android:descendantFocusability="beforeDescendants"
             android:layout_weight="20"
             android:layout_height="wrap_content"
         />

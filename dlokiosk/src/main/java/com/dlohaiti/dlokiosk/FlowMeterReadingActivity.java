@@ -208,7 +208,9 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         Log.d("SAVE",String.valueOf(successful));
         if (successful) {
             Toast.makeText(this, savedMessage, Toast.LENGTH_SHORT).show();
-            finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         } else {
             Toast.makeText(this, errorNotSavedMessage, Toast.LENGTH_LONG).show();
         }

@@ -59,7 +59,6 @@ class ReadingsServiceIntegrationTests extends GroovyTestCase {
 
         assert Reading.count() == 2
         sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z")
-        assert Reading.first().createdDate == sdf.parse("2013-12-12 00:01:02 +0530")
         assert Measurement.findByParameter(ph).value == 8
         assert Measurement.findByParameter(temperature).value == 20
     }

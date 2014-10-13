@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -274,6 +275,27 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_ENTER: {
+                    scrollToNext();
+                    return true;
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void scrollToNext() {
+        int currentPosition = parameterListView.getFirstVisiblePosition();
+        if (currentPosition == parameterListView.getCount() - 1)
+            return;
+        parameterListView.setSelection(currentPosition + 1);
 
     }
 }

@@ -37,10 +37,16 @@ class ReportController {
 
     def readings() {
         Kiosk kiosk = Kiosk.findByName(params.kioskName)
-        def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, DateUtil.oneWeekAgoMidnight())
+        String filterTimeLine = params.timeLine != null ? params.timeLine : 'currentWeek';
+        // Getting the fromDate and toDate based on the week string
+        LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
+        LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
+
+        def days = DateUtil.getWeekDataByFromDate(fromDate, toDate);
+        def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, fromDate, toDate)
         def parameters = kiosk.getParameters()
-        def paramMap = readingsReportService.parameterMapForReadings(readings, parameters, DateUtil.previousWeek())
-        def model = [kioskName                         : request.kiosk.name, parameters: parameters, lastWeek: DateUtil.previousWeek()
+        def paramMap = readingsReportService.parameterMapForReadings(readings, parameters, days)
+        def model = [kioskName                         : request.kiosk.name, parameters: parameters, lastWeek: days
                 .collect({ d -> d.toDate() }), readings: readings, paramMap: paramMap]
 
         render(view: 'readings', model: model)

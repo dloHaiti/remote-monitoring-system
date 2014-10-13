@@ -23,11 +23,22 @@
     <g:render template="menu"></g:render>
 </div>
 <div id="content">
+  <g:render template="timeline"></g:render>
     <g:each in="${paramMap.keySet()}">
         <h1>${it}</h1>
         <div id="${it}-chart" style="width:800px;height:400px;margin-right: auto;margin-left: auto"></div>
         <div id="${it}" style="width: 800px;margin-right: auto;margin-left: auto"></div>
     </g:each>
 </div>
+<script type = "text/javascript" >
+
+        window.onload = function() {
+    var timeLine = getParameterByName('timeLine')
+
+    if (timeLine)
+        enableCorrespondingTimeline(timeLine)
+};
+
+</script>
 </body>
 </html>

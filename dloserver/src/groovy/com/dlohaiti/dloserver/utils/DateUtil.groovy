@@ -1,5 +1,6 @@
 package com.dlohaiti.dloserver.utils
 
+import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
 class DateUtil {
@@ -74,6 +75,7 @@ class DateUtil {
         } else {
             toDate = new LocalDate();
         }
+        toDate=new LocalDate().plusDays(1);
         return toDate;
     }
 }

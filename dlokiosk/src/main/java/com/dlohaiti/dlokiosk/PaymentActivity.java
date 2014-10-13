@@ -3,6 +3,7 @@ package com.dlohaiti.dlokiosk;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -373,7 +374,9 @@ public class PaymentActivity extends SaleActivity {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
                                 cart.checkout();
-                                callSuperOnContinue(view);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
                         })
                 .show();

@@ -57,8 +57,8 @@ class VolumeReportService {
         def tableData = [tableHeader]
         for (product in products) {
             def row = [product.sku]
-            // Not including the product in the report data if the price of product is 0
-            if (product.price.getAmount() != null && product.price.getAmount() != 0.0) {
+            // Not including the product in the report data if the Volume (Gallons) of product is 0
+            if (product.getGallons() != null && product.getGallons() != 0.0) {
                 for (day in previousWeek) {
                     def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
                     def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku) })

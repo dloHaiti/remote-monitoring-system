@@ -1,7 +1,9 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.utils.DateUtil
-import org.joda.time.LocalDate
+import org.joda.time.*
+import au.com.bytecode.opencsv.CSVWriter
+import java.text.SimpleDateFormat
 
 class ReportController {
 
@@ -10,7 +12,7 @@ class ReportController {
     def salesReportService
     def readingsReportService
     def volumeReportService
-
+    def waterQualityReportService
     def index() {
         [kioskName: request.kiosk.name]
         String filterType = params.filterType != null ? params.filterType : 'kiosk';
@@ -71,7 +73,40 @@ class ReportController {
         LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
         LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
         def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam, fromDate, toDate)
-
         render(view: 'volume', model: model)
+    }
+
+    def waterQuality(){
+        Kiosk kiosk = Kiosk.findByName(params.kioskName)
+       [kioskName: kiosk.name]
+    }
+
+    def csvWaterQuality(){
+        Kiosk kiosk = Kiosk.findByName(params.kioskName)
+        def format = new SimpleDateFormat("yyyy-MM-dd")
+        def fromDate,toDate
+        if(params.fromDate == null || params.fromDate.toString() == ""){
+           fromDate = new LocalDate()
+        }else{
+            Date input =format.parse(params.fromDate)
+          fromDate=new LocalDate(input)
+        }
+
+        if(params.toDate == null || params.toDate.toString() == ""){
+            toDate = new LocalDate()
+        }else{
+            Date input =format.parse(params.toDate)
+            toDate=new LocalDate(input)
+        }
+        response.setHeader("Content-disposition", "attachment; filename=waterQuality.csv")
+        def days = DateUtil.getWeekDataByFromDate(fromDate, toDate);
+        def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, fromDate, toDate)
+        def parameters = kiosk.getParameters()
+        def data = waterQualityReportService.waterQualityReadings(readings, parameters, days)
+        StringWriter sw = new StringWriter();
+        CSVWriter writer = new CSVWriter(sw);
+        writer.writeAll(data);
+        writer.close()
+        render(contentType: "text/csv", text:sw.toString())
     }
 }

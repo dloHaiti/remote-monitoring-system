@@ -68,32 +68,50 @@ class SalesReportService {
     private List<List<String>> buildTableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         def salesChannels = SalesChannel.findAll();
+        def totalRow = ['TOTAL']
         for (salesChannel in salesChannels) {
             def row = [salesChannel.name]
+            int index=1
             for (day in previousWeek) {
                 def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) && r.salesChannel.name == salesChannel.name })
                 def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll();
                 def total = lineItemsForSalesChannel.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
+                if(index>totalRow.size()-1){
+                    totalRow.add(total)
+                }else{
+                    totalRow[index]= totalRow[index]+total
+                }
+                index++
             }
             tableData.add(row)
         }
+        tableData.add(totalRow)
         tableData
     }
 
     private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         def productCategories = ProductCategory.findAll();
+        def totalRow = ['TOTAL']
         for (productCategory in productCategories) {
             def row = [productCategory.name]
+            int index=1
             for (day in previousWeek) {
                 def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) })
                 def lineItemsForSalesChannel = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.type.equals('PRODUCT') && Product.findBySku(item.sku).category.name.equals(productCategory.name) });
                 def total = lineItemsForSalesChannel.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
                 row.add(total)
+                if(index>totalRow.size()-1){
+                    totalRow.add(total)
+                }else{
+                    totalRow[index]= totalRow[index]+total
+                }
+                index++
             }
             tableData.add(row)
         }
+        tableData.add(totalRow)
         tableData
     }
 

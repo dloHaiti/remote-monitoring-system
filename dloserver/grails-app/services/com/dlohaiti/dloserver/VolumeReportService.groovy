@@ -33,7 +33,6 @@ class VolumeReportService {
         List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
         List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
         List<Product> products = Product.findAll()
-
         def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
 
         [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
@@ -58,12 +57,15 @@ class VolumeReportService {
         def tableData = [tableHeader]
         for (product in products) {
             def row = [product.sku]
-            for (day in previousWeek) {
-                def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
-                def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku) })
-                row.add(totalForSku)
+            // Not including the product in the report data if the price of product is 0
+            if (product.price.getAmount() != null && product.price.getAmount() != 0.0) {
+                for (day in previousWeek) {
+                    def relevantReceipts = receipts.findAll({ r -> r.isOnDate(day) })
+                    def totalForSku = relevantReceipts.inject(0, { acc, val -> acc + val.totalGallonsForSku(product.sku) })
+                    row.add(totalForSku)
+                }
+                tableData.add(row)
             }
-            tableData.add(row)
         }
 
         def totalRow = ['TOTAL']

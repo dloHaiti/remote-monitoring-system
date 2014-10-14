@@ -47,13 +47,16 @@ class SalesReportService {
         def tableData = [tableHeader]
         for (product in products) {
             def row = [product.sku]
-            for (day in previousWeek) {
-                def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) })
-                def lineItemsWithSku = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.sku == product.sku })
-                def skuTotal = lineItemsWithSku.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
-                row.add(skuTotal)
+            // Not including the product in the report data if the price of product is 0
+            if (product.price.getAmount() != null && product.price.getAmount() !=0.0) {
+                for (day in previousWeek) {
+                    def dayReceipts = receipts.findAll({ r -> r.isOnDate(day) })
+                    def lineItemsWithSku = dayReceipts.receiptLineItems.flatten().findAll({ ReceiptLineItem item -> item.sku == product.sku })
+                    def skuTotal = lineItemsWithSku.inject(0, { BigDecimal acc, ReceiptLineItem val -> acc + val.price })
+                    row.add(skuTotal)
+                }
+                tableData.add(row)
             }
-            tableData.add(row)
         }
 
         def totalRow = ['TOTAL']

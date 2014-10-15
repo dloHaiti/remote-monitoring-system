@@ -70,8 +70,24 @@ class CsvReportController {
 
         Kiosk kiosk = Kiosk.findByName(params.kioskName)
 
+        def format = new SimpleDateFormat("yyyy-MM-dd")
+        def fromDate, toDate
+        if (params.fromDate == null || params.fromDate.toString() == "") {
+            fromDate = new LocalDate()
+        } else {
+            Date input = format.parse(params.fromDate)
+            fromDate = new LocalDate(input)
+        }
+        if (params.toDate == null || params.toDate.toString() == "") {
+            toDate = new LocalDate()
+        } else {
+            Date input = format.parse(params.toDate)
+            toDate = new LocalDate(input)
+        }
+        response.setHeader("Content-disposition", "attachment; filename=customerReport.csv")
+
         // Get the receipts within the given date range
-        List<Receipt> receipts = receiptsService.getReceiptsBetWeenDate(params.fromDate, params.toDate);
+        List<Receipt> receipts = receiptsService.getReceiptsBetWeenDate(fromDate,toDate);
 
         // Generate the CSV Report with the receipts data (It has internally customer data and sales data)
         def text = customerDataReportService.generateCustomerReport(receipts);

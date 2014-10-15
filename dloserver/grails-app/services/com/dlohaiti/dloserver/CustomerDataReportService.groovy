@@ -34,7 +34,7 @@ class CustomerDataReportService {
                 row.add(receipt.getCustomerAccount().getPhoneNumber())
                 row.add(receipt.getCustomerAccount().getAddress())
             }
-            row.add(receipt.getCreatedDate().toString('dd-MMM-yy'))
+            row.add(receipt.getCreatedDate())
             row.add(receipt.getSalesChannel().getName())
             row.add(receipt.getCustomerAmount())
             if (receipt.getSponsor() != null)

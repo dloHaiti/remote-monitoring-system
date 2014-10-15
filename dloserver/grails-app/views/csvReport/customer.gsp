@@ -16,23 +16,32 @@
 
         <div id="content">
             <h2>Customer Report</h2>
-
-            <g:form action="csvCustomerReport" >
-                <g:hiddenField name="kioskName" value="${kioskName}" />
-                    <div class="form-group">
-                        <label for="fromDate" class="col-sm-2 control-label">Start Date</label>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <g:form action="csvCustomerReport" >
+                        <g:hiddenField name="kioskName" value="${kioskName}" />
+                        <div class="form-group">
+                            <label for="fromDate" class="col-sm-2 control-label">Start Date</label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="fromDate" name="fromDate">
                             </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="toDate" class="col-sm-2 control-label">End Date</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" id="toDate" name="toDate">
                         </div>
-                    </div>
-                <g:submitButton class="btn btn-default" name="submit" > Download Customer Data</g:submitButton>
-            </g:form>
+                        <br><br><br>
+                        <div class="form-group">
+                            <label for="toDate" class="col-sm-2 control-label">End Date</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" id="toDate" name="toDate">
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Download</button>
+                            </div>
+                        </div>
+                    </g:form>
+                </div>
+            </div>
         </div>
 
     <script type="text/javascript">

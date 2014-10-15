@@ -15,7 +15,7 @@
     <g:render template="menu"></g:render>
 </div>
 <div id="content">
-    <h2>Water Qaulity Report</h2>
+    <h2>Water Quality Report</h2>
 
     <div class="row">
     <div class="col-md-10 col-md-offset-1">

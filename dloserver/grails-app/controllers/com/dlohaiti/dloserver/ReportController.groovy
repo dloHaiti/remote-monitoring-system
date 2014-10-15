@@ -76,37 +76,4 @@ class ReportController {
         render(view: 'volume', model: model)
     }
 
-    def waterQuality(){
-        Kiosk kiosk = Kiosk.findByName(params.kioskName)
-       [kioskName: kiosk.name]
-    }
-
-    def csvWaterQuality(){
-        Kiosk kiosk = Kiosk.findByName(params.kioskName)
-        def format = new SimpleDateFormat("yyyy-MM-dd")
-        def fromDate,toDate
-        if(params.fromDate == null || params.fromDate.toString() == ""){
-           fromDate = new LocalDate()
-        }else{
-            Date input =format.parse(params.fromDate)
-          fromDate=new LocalDate(input)
-        }
-
-        if(params.toDate == null || params.toDate.toString() == ""){
-            toDate = new LocalDate()
-        }else{
-            Date input =format.parse(params.toDate)
-            toDate=new LocalDate(input)
-        }
-        response.setHeader("Content-disposition", "attachment; filename=waterQuality.csv")
-        def days = DateUtil.getWeekDataByFromDate(fromDate, toDate);
-        def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, fromDate, toDate)
-        def parameters = kiosk.getParameters()
-        def data = waterQualityReportService.waterQualityReadings(readings, parameters, days)
-        StringWriter sw = new StringWriter();
-        CSVWriter writer = new CSVWriter(sw);
-        writer.writeAll(data);
-        writer.close()
-        render(contentType: "text/csv", text:sw.toString())
-    }
 }

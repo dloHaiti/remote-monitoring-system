@@ -1,6 +1,7 @@
 package com.dlohaiti.dloserver
 
 import org.apache.commons.lang3.StringUtils
+import org.joda.time.LocalDate
 
 class ReceiptsService {
 
@@ -61,4 +62,15 @@ class ReceiptsService {
         return receipt
     }
 
+    /**
+     * Processes the receipts for the given date range
+     * @param fromDate the start Date
+     * @param toDate the end Date
+     * @return the {@link List} of {@link Receipt}'s
+     */
+    List<Receipt> getReceiptsBetWeenDate(LocalDate fromDate, LocalDate toDate) {
+        def receipts = [];
+        receipts.addAll(Receipt.findAllByCreatedDateGreaterThanEqualsAndCreatedDateLessThan(fromDate.toDate(), toDate.toDate()));
+        return receipts;
+    }
 }

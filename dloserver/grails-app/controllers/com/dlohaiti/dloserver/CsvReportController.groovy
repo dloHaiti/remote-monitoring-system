@@ -44,7 +44,7 @@ class CsvReportController {
             toDate=new LocalDate(input)
         }
         response.setHeader("Content-disposition", "attachment; filename=waterQuality.csv")
-        def days = DateUtil.getWeekDataByFromDate(fromDate, toDate);
+        def days = DateUtil.getDatesBetween(fromDate, toDate)
         def readings = readingsReportService.readingsForKioskAndCreatedDateGreaterThanOrEqualTo(kiosk, fromDate, toDate)
         def parameters = kiosk.getParameters()
         def data = waterQualityReportService.waterQualityReadings(readings, parameters, days)

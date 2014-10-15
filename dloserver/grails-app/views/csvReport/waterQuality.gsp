@@ -24,13 +24,13 @@
         <div class="form-group">
             <label for="fromDate" class="col-sm-2 control-label">Start Date</label>
             <div class="col-sm-10">
-                <input type="date" class="form-control" id="fromDate" name="fromDate">
+                <input class="form-control" id="fromDate" name="fromDate">
             </div>
         </div>
         <div class="form-group">
             <label for="toDate" class="col-sm-2 control-label">End Date</label>
             <div class="col-sm-10">
-                <input type="date" class="form-control" id="toDate" name="toDate">
+                <input class="form-control" id="toDate" name="toDate">
             </div>
         </div>
         <div class="form-group">
@@ -42,6 +42,19 @@
     </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $('#fromDate').datepicker({
+            format: "yyyy-mm-dd",
+        todayBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    })
+    $('#toDate').datepicker({
+         format: "yyyy-mm-dd",
+        todayBtn: true,
+        autoclose: true,
+        todayHighlight: true
+    })
+</script>
 </body>
 </html>

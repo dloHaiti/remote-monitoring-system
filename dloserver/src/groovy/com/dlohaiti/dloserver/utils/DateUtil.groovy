@@ -1,7 +1,7 @@
 package com.dlohaiti.dloserver.utils
 
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
+import org.joda.time.*
 
 class DateUtil {
 
@@ -32,6 +32,20 @@ class DateUtil {
         }
         return days
     }
+
+
+
+    public static List<LocalDate> getDatesBetween(LocalDate fromDate, LocalDate toDate) {
+        List<LocalDate> dates = new ArrayList<LocalDate>();
+        int days = Days.daysBetween(fromDate, toDate).getDays()+1;
+        for (int i=0; i < days; i++) {
+            LocalDate d = fromDate.withFieldAdded(DurationFieldType.days(), i);
+            dates.add(d);
+        }
+        return dates
+    }
+
+
 
     /**
      * Processes the given week and returns the from Date for the given week.

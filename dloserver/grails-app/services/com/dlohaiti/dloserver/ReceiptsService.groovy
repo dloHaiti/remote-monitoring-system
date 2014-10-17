@@ -69,8 +69,21 @@ class ReceiptsService {
      * @return the {@link List} of {@link Receipt}'s
      */
     List<Receipt> getReceiptsBetWeenDate(LocalDate fromDate, LocalDate toDate) {
-        def receipts = [];
-        receipts.addAll(Receipt.findAllByCreatedDateGreaterThanEqualsAndCreatedDateLessThan(fromDate.toDate(), toDate.toDate()));
-        return receipts;
+        def receipts = []
+        receipts.addAll(Receipt.findAllByCreatedDateGreaterThanEqualsAndCreatedDateLessThan(fromDate.toDate(), toDate.toDate()))
+        receipts
+    }
+
+    /**
+     * Processes and returns the receipts By Customers in specific date range
+     * @param customerId
+     * @param fromDate
+     * @param toDate
+     * @return
+     */
+    def getReceiptsByCustomerInDateRange(def customers, LocalDate fromDate, LocalDate toDate) {
+        def receipts = []
+        receipts.addAll(Receipt.findAllByCustomerAccountInListAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(customers, fromDate.toDate(), toDate.toDate()))
+        receipts
     }
 }

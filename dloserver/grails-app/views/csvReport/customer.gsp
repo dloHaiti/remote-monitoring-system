@@ -5,8 +5,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"> </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <link type="text/css" href="${resource(dir: 'css', file: 'datepicker.css')}" />
-    <script type="text/javascript" src="${resource(dir: 'js', file: 'bootstrap-datepicker.js')}"></script>
 </head>
 
     <body>
@@ -21,16 +19,9 @@
                     <g:form action="csvCustomerReport" >
                         <g:hiddenField name="kioskName" value="${kioskName}" />
                         <div class="form-group">
-                            <label for="fromDate" class="col-sm-2 control-label">Start Date</label>
+                            <label for="fromDate" class="col-sm-2 control-label">Select Month & Year</label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="fromDate" name="fromDate">
-                            </div>
-                        </div>
-                        <br><br><br>
-                        <div class="form-group">
-                            <label for="toDate" class="col-sm-2 control-label">End Date</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="toDate" name="toDate">
+                                <g:datePicker name="fromDate" value="${new Date()}" precision="month" years="${2013..2030}" size="5"/>
                             </div>
                         </div>
                         <br><br>
@@ -43,20 +34,5 @@
                 </div>
             </div>
         </div>
-
-    <script type="text/javascript">
-        $('#fromDate').datepicker({
-            format: "yyyy-mm-dd",
-            todayBtn: true,
-            autoclose: true,
-            todayHighlight: true
-        })
-        $('#toDate').datepicker({
-            format: "yyyy-mm-dd",
-            todayBtn: true,
-            autoclose: true,
-            todayHighlight: true
-        })
-    </script>
 </body>
 </html>

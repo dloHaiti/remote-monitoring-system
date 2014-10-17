@@ -54,6 +54,7 @@ class CsvReportController {
         render(contentType: "text/csv", text: data)
 
     }
+
     /**
      * Handles the customer report data.
      */
@@ -70,27 +71,30 @@ class CsvReportController {
 
         Kiosk kiosk = Kiosk.findByName(params.kioskName)
 
-        def format = new SimpleDateFormat("yyyy-MM-dd")
         def fromDate, toDate
         if (params.fromDate == null || params.fromDate.toString() == "") {
             fromDate = new LocalDate()
         } else {
-            Date input = format.parse(params.fromDate)
-            fromDate = new LocalDate(input)
+            fromDate = new LocalDate(params.fromDate);
         }
-        if (params.toDate == null || params.toDate.toString() == "") {
-            toDate = new LocalDate()
-        } else {
-            Date input = format.parse(params.toDate)
-            toDate = new LocalDate(input)
-        }
+
         response.setHeader("Content-disposition", "attachment; filename=customerReport.csv")
 
+        // Calculating the start date and end date of the month
+        LocalDate endOfMonth = fromDate.dayOfMonth().withMaximumValue();
+        LocalDate startOfMonth = fromDate.dayOfMonth().withMinimumValue();
+
+        // Finding the dates in given range
+        def days = DateUtil.getDatesBetween(startOfMonth, endOfMonth)
+
+        // Get the customers associated to the respective KIOSK
+        def customers = customerDataReportService.getCustomersByKiosk(kiosk)
+
         // Get the receipts within the given date range
-        List<Receipt> receipts = receiptsService.getReceiptsBetWeenDate(fromDate,toDate);
+        def receipts = receiptsService.getReceiptsByCustomerInDateRange(customers, startOfMonth, endOfMonth)
 
         // Generate the CSV Report with the receipts data (It has internally customer data and sales data)
-        def text = customerDataReportService.generateCustomerReport(receipts);
+        def text = customerDataReportService.generateCustomerReport(receipts, days,customers);
         render(contentType: "text/csv", text: text)
     }
 }

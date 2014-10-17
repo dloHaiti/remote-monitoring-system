@@ -32,7 +32,7 @@ class CustomerDataReportService {
         // Iterating over all customers in the selected KIOSK
         for (customer in customers) {
             def content = []
-            content.add(customer.getName())
+            content.add(customer.getContactName())
             // Iterating over the days
             for (day in days) {
                 def totalSales = getCustomerTotalSales(receipts, day, customer.getId())

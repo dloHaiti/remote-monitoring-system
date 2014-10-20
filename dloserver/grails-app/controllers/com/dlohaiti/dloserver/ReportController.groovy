@@ -1,9 +1,7 @@
 package com.dlohaiti.dloserver
 
 import com.dlohaiti.dloserver.utils.DateUtil
-import org.joda.time.*
-import au.com.bytecode.opencsv.CSVWriter
-import java.text.SimpleDateFormat
+import org.joda.time.LocalDate
 
 class ReportController {
 
@@ -13,6 +11,10 @@ class ReportController {
     def readingsReportService
     def volumeReportService
     def waterQualityReportService
+    def customerDataReportService;
+    def receiptsService;
+
+
     def index() {
         [kioskName: request.kiosk.name]
         String filterType = params.filterType != null ? params.filterType : 'kiosk';
@@ -74,6 +76,41 @@ class ReportController {
         LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
         def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam, fromDate, toDate)
         render(view: 'volume', model: model)
+    }
+
+    /**
+     * Handles the customer report request.
+     */
+    def customer() {
+        Kiosk kiosk = Kiosk.findByName(params.kioskName)
+        log.debug "Kiosk " + kiosk.getName()
+        [kioskName: kiosk.name]
+    }
+
+    /**
+     * Generates the customer report in CSV format.
+     */
+    def csvCustomerReport() {
+        Kiosk kiosk = Kiosk.findByName(params.kioskName)
+        def fromDate, toDate
+        if (params.fromDate == null || params.fromDate.toString() == "") {
+            fromDate = new LocalDate()
+        } else {
+            fromDate = new LocalDate(params.fromDate);
+        }
+        response.setHeader("Content-disposition", "attachment; filename=customerReport.csv")
+        // Calculating the start date and end date of the month
+        LocalDate endOfMonth = fromDate.dayOfMonth().withMaximumValue();
+        LocalDate startOfMonth = fromDate.dayOfMonth().withMinimumValue();
+        // Get the customers associated to the respective KIOSK
+        def customers = customerDataReportService.getCustomersByKiosk(kiosk)
+        // Get the receipts within the given date range
+        def receipts = receiptsService.getReceiptsByCustomerInDateRange(customers, startOfMonth, endOfMonth)
+        // Finding the dates in given range
+        def days = DateUtil.getDatesBetween(startOfMonth, endOfMonth)
+        // Generate the CSV Report with the receipts data (It has internally customer data and sales data)
+        def text = customerDataReportService.generateCustomerReport(receipts, days, customers);
+        render(contentType: "text/csv", text: text)
     }
 
 }

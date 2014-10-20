@@ -55,46 +55,5 @@ class CsvReportController {
 
     }
 
-    /**
-     * Handles the customer report data.
-     */
-    def customer() {
-        Kiosk kiosk = Kiosk.findByName(params.kioskName)
-        log.debug "Kiosk " + kiosk.getName()
-        [kioskName: kiosk.name]
-    }
 
-    /**
-     * Generates the customer report in to the CSV format.
-     */
-    def csvCustomerReport() {
-
-        Kiosk kiosk = Kiosk.findByName(params.kioskName)
-
-        def fromDate, toDate
-        if (params.fromDate == null || params.fromDate.toString() == "") {
-            fromDate = new LocalDate()
-        } else {
-            fromDate = new LocalDate(params.fromDate);
-        }
-
-        response.setHeader("Content-disposition", "attachment; filename=customerReport.csv")
-
-        // Calculating the start date and end date of the month
-        LocalDate endOfMonth = fromDate.dayOfMonth().withMaximumValue();
-        LocalDate startOfMonth = fromDate.dayOfMonth().withMinimumValue();
-
-        // Finding the dates in given range
-        def days = DateUtil.getDatesBetween(startOfMonth, endOfMonth)
-
-        // Get the customers associated to the respective KIOSK
-        def customers = customerDataReportService.getCustomersByKiosk(kiosk)
-
-        // Get the receipts within the given date range
-        def receipts = receiptsService.getReceiptsByCustomerInDateRange(customers, startOfMonth, endOfMonth)
-
-        // Generate the CSV Report with the receipts data (It has internally customer data and sales data)
-        def text = customerDataReportService.generateCustomerReport(receipts, days,customers);
-        render(contentType: "text/csv", text: text)
-    }
 }

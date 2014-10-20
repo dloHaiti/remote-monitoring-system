@@ -46,6 +46,7 @@
                     class="smoothScroll">Ventes</g:link></li>
         <li><g:link action="readings" params="[kioskName: kioskName,'timeLine':'currentWeek']" class="smoothScroll">Mesures</g:link></li>
         <li><g:link action="outstandingPayment" params="[kioskName: kioskName]" class="smoothScroll">Impayé</g:link></li>
+        <li><g:link action="customer" params="[kioskName: kioskName]" class="smoothScroll">Customer Data</g:link></li>
     </ul>
     <br class="clearLeft"/>
 </div>

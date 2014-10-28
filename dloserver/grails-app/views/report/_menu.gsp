@@ -40,13 +40,31 @@
         <li><h4>Reports</h4></li>
     </ul>
     <ul>
-        <li><g:link action="volume" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku','timeLine':'currentWeek']"
-                    class="smoothScroll">Volume</g:link></li>
-        <li><g:link action="sales" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku','timeLine':'currentWeek']"
-                    class="smoothScroll">Ventes</g:link></li>
-        <li><g:link action="readings" params="[kioskName: kioskName,'timeLine':'currentWeek']" class="smoothScroll">Mesures</g:link></li>
-        <li><g:link action="outstandingPayment" params="[kioskName: kioskName]" class="smoothScroll">Impayé</g:link></li>
-        <li><g:link action="customer" params="[kioskName: kioskName]" class="smoothScroll">Customer Data</g:link></li>
+        <li>
+            <g:link action="volume" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku','timeLine':'currentWeek']"  class="smoothScroll">
+                   <g:message code="message.volume" />
+            </g:link>
+        </li>
+        <li>
+            <g:link action="sales" params="[kioskName: kioskName, filterType: 'kiosk', filterParam: 'sku','timeLine':'currentWeek']" class="smoothScroll">
+                    <g:message code="message.sales" />
+            </g:link>
+        </li>
+        <li>
+            <g:link action="readings" params="[kioskName: kioskName,'timeLine':'currentWeek']" class="smoothScroll">
+                    <g:message code="message.measures" />
+            </g:link>
+        </li>
+        <li>
+            <g:link action="outstandingPayment" params="[kioskName: kioskName]" class="smoothScroll">
+                    <g:message code="message.outstandingPayment" />
+            </g:link>
+        </li>
+        <li>
+            <g:link action="customer" params="[kioskName: kioskName]" class="smoothScroll">
+                    <g:message code="message.customerData" />
+            </g:link>
+        </li>
     </ul>
     <br class="clearLeft"/>
 </div>

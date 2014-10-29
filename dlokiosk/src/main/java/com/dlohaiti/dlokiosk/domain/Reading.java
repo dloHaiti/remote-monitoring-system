@@ -35,7 +35,7 @@ public class Reading {
     }
 
     public String getSamplingSiteName() {
-        return samplingSiteName;
+        return samplingSiteName.trim();
     }
 
     public Date getCreatedDate() {

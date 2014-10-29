@@ -111,6 +111,7 @@ public class ProductRepository {
             wdb.delete(ProductsTable.TABLE_NAME, null, null);
             for (Product p : products) {
                 ContentValues values = new ContentValues();
+                values.put(ProductsTable.ID, p.getId());
                 values.put(ProductsTable.SKU, p.getSku());
                 values.put(ProductsTable.PRICE, p.getPrice().getAmount().toString());
                 values.put(ProductsTable.DESCRIPTION, p.getDescription());
@@ -136,26 +137,20 @@ public class ProductRepository {
     public Products findProductsWithPriceFor(long salesChannelId) {
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        /*SELECT
-            PRODUCTS.ID as PRODUCTSID, PRODUCTS.SKU as PRODUCTSSKU, PRODUCTS.ICON as PRODUCTSICON,
-            PRODUCTS.REQUIRES_QUANTITY as PRODUCTSREQUIRES_QUANTITY, PRODUCTS.MINIMUM_QUANTITY as PRODUCTSMINIMUM_QUANTITY,
-            PRODUCTS.MAXIMUM_QUANTITY as PRODUCTSMAXIMUM_QUANTITY, PRODUCTS.PRICE as PRODUCTSPRICE,
-            PRODUCTS.CURRENCY as PRODUCTSCURRENCY, PRODUCTS.DESCRIPTION as PRODUCTSDESCRIPTION,
-            PRODUCTS.GALLONS as PRODUCTSGALLONS, PRODUCTS.CATEGORY_ID as PRODUCTSCATEGORY_ID,
-                (SELECT PRICE FROM PRODUCT_MRPS WHERE PRODUCT_MRPS.PRODUCT_ID = PRODUCTS.ID AND
-                PRODUCT_MRPS.CHANNEL_ID = ?) AS PRODUCT_MRPSPRICE
-            FROM PRODUCTS
-            ORDER BY PRODUCTS.CATEGORY_ID*/
+        /*SELECT PRODUCTS.ID as PRODUCTSID, PRODUCTS.SKU as PRODUCTSSKU, PRODUCTS.REQUIRES_QUANTITY as PRODUCTSREQUIRES_QUANTITY,
+        PRODUCTS.MINIMUM_QUANTITY as PRODUCTSMINIMUM_QUANTITY,  PRODUCTS.MAXIMUM_QUANTITY as PRODUCTSMAXIMUM_QUANTITY,
+        PRODUCTS.PRICE as PRODUCTSPRICE, PRODUCTS.CURRENCY as PRODUCTSCURRENCY, PRODUCTS.DESCRIPTION as PRODUCTSDESCRIPTION,
+        PRODUCTS.GALLONS as PRODUCTSGALLONS, PRODUCTS.CATEGORY_ID as PRODUCTSCATEGORY_ID, PRODUCT_MRPS.PRICE AS PRODUCT_MRPSPRICE
+        FROM PRODUCTS, PRODUCT_MRPS  WHERE PRODUCT_MRPS.PRODUCT_ID= PRODUCTS.ID AND PRODUCT_MRPS.CHANNEL_ID=109 ORDER BY PRODUCTS.CATEGORY_ID*/
         Cursor cursor = rdb.rawQuery(
                 "SELECT " +
                         tableColumnsForQuery(ProductsTable.TABLE_NAME, columns) + ", " +
-                        "(SELECT " +
-                        ProductMrpsTable.PRICE + " FROM " + ProductMrpsTable.TABLE_NAME + " WHERE " +
-                        ProductMrpsTable.TABLE_NAME + "." + ProductMrpsTable.PRODUCT_ID + " = " +
-                        ProductsTable.TABLE_NAME + "." + ProductsTable.ID +
-                        " AND " + ProductMrpsTable.TABLE_NAME + "." + ProductMrpsTable.CHANNEL_ID + " = ?) AS " +
+                        ProductMrpsTable.TABLE_NAME + "." + ProductMrpsTable.PRICE +
+                        " AS " +
                         ProductMrpsTable.TABLE_NAME + ProductMrpsTable.PRICE +
-                        " FROM " + ProductsTable.TABLE_NAME +
+                        " FROM " + ProductsTable.TABLE_NAME + ", " + ProductMrpsTable.TABLE_NAME +
+                        " WHERE "  + ProductMrpsTable.TABLE_NAME + "." + ProductMrpsTable.PRODUCT_ID + " = " + ProductsTable.TABLE_NAME + "." + ProductsTable.ID +
+                        " AND " + ProductMrpsTable.TABLE_NAME + "." + ProductMrpsTable.CHANNEL_ID + " = ? " +
                         " ORDER BY " + ProductsTable.TABLE_NAME + "." + ProductsTable.CATEGORY_ID,
                 new String[]{String.valueOf(salesChannelId)});
         return readProducts(rdb, cursor);

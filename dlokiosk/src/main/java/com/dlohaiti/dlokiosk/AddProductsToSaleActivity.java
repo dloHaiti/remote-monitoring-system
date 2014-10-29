@@ -68,7 +68,7 @@ public class AddProductsToSaleActivity extends SaleActivity {
 
 
     private void loadProductCategories() {
-        productCategories = new ProductCategories(productCategoryRepository.findAll());
+        productCategories = new ProductCategories(productCategoryRepository.findWithSalesChannel(cart.salesChannel()));
         if (productCategories.isEmpty()) {
             showNoConfigurationAlert();
         } else {

@@ -7,10 +7,15 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import com.dlohaiti.dlokiosk.Base64ImageConverter;
 import com.dlohaiti.dlokiosk.domain.ProductCategory;
+import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.google.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.String.format;
 
 public class ProductCategoryRepository {
     private final static String TAG = ProductCategoryRepository.class.getSimpleName();
@@ -79,4 +84,52 @@ public class ProductCategoryRepository {
             wdb.endTransaction();
         }
     }
+
+    public List<ProductCategory> findWithSalesChannel(SalesChannel salesChannel) {
+        List<ProductCategory> productCategories = new ArrayList<ProductCategory>();
+        SQLiteDatabase readableDatabase = db.getReadableDatabase();
+        readableDatabase.beginTransaction();
+        Cursor cursor = readableDatabase.rawQuery(format(
+                "SELECT distinct(%s), %s, %s " +
+                        "from %s, %s, %s " +
+                        "where %s=%s.%s " +
+                        "and %s.%s=? " +
+                        "and %s.%s=%s.%s",
+                getNameWithTable(KioskDatabase.ProductsCategoryTable.ID),
+                getNameWithTable(KioskDatabase.ProductsCategoryTable.NAME),
+                getNameWithTable(KioskDatabase.ProductsCategoryTable.ICON),
+                KioskDatabase.ProductsCategoryTable.TABLE_NAME,
+                KioskDatabase.ProductsTable.TABLE_NAME,
+                KioskDatabase.ProductMrpsTable.TABLE_NAME,
+                getNameWithTable(KioskDatabase.ProductsCategoryTable.ID),
+                KioskDatabase.ProductsTable.TABLE_NAME,
+                KioskDatabase.ProductsTable.CATEGORY_ID,
+                KioskDatabase.ProductMrpsTable.TABLE_NAME,
+                KioskDatabase.ProductMrpsTable.CHANNEL_ID,
+                KioskDatabase.ProductMrpsTable.TABLE_NAME,
+                KioskDatabase.ProductMrpsTable.PRODUCT_ID,
+                KioskDatabase.ProductsTable.TABLE_NAME,
+                KioskDatabase.ProductsTable.ID)
+                ,new String[]{String.valueOf(salesChannel.getId())});
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                productCategories.add(buildProductCategory(cursor));
+                cursor.moveToNext();
+            }
+            readableDatabase.setTransactionSuccessful();
+            return productCategories;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load all product categories from the database.", e);
+            return new ArrayList<ProductCategory>();
+        } finally {
+            cursor.close();
+            readableDatabase.endTransaction();
+        }
+    }
+
+    private String getNameWithTable(String name) {
+        return KioskDatabase.ProductsCategoryTable.TABLE_NAME + "." +name;
+    }
+
 }

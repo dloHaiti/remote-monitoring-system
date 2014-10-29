@@ -12,7 +12,7 @@ public class FlowMeterReading  implements Comparable<FlowMeterReading>  {
     public FlowMeterReading(Long id, Long parameterId, String sampling_name, String parameterName,String quantity) {
         this.id = id;
         this.parameterId = parameterId;
-        this.samplingName = sampling_name;
+        this.samplingName = sampling_name.trim();
         this.parameterName =parameterName;
         this.quantity = quantity;
     }

@@ -23,7 +23,7 @@
     <g:render template="menu"></g:render>
 </div>
 <div id="content">
-  <g:render template="timeline"></g:render>
+  <g:render template="timeLine"></g:render>
     <g:each in="${paramMap.keySet()}">
         <h1>${it}</h1>
         <div id="${it}-chart" style="width:800px;height:400px;margin-right: auto;margin-left: auto"></div>

@@ -60,9 +60,8 @@ public class ProductRepositoryTest {
         assertThat(products.get(1).getPrice().getAmount(), is(roundedBigDecimal(5.00)));
 
         products = repository.findProductsWithPriceFor(2);
-        assertThat(products.size(), is(2));
+        assertThat(products.size(), is(1));
         assertThat(products.get(0).getPrice().getAmount(), is(roundedBigDecimal(2.00)));
-        assertThat(products.get(1).getPrice().getAmount(), is(roundedBigDecimal(4.00)));
     }
 
     private BigDecimal roundedBigDecimal(double value) {

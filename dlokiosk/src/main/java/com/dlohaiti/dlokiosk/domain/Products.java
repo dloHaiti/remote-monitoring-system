@@ -53,7 +53,7 @@ public class Products extends ArrayList<Product> {
 
     public Product findById(Long id) {
         for (Product product : this) {
-            if (product.getId() == id) {
+            if (product.getId().equals(id)) {
                 return product;
             }
         }

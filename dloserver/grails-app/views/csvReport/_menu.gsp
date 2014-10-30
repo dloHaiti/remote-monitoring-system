@@ -40,7 +40,11 @@
         <li><h4>CSV Reports</h4></li>
     </ul>
     <ul>
-        <li><g:link action="waterQuality" params="[kioskName: kioskName]" class="smoothScroll">Water Quality</g:link></li>
+        <li>
+            <g:link action="waterQuality" params="[kioskName: kioskName]" class="smoothScroll">
+                    <g:message code="message.waterQuality" />
+            </g:link>
+        </li>
     </ul>
     <br class="clearLeft"/>
 </div>

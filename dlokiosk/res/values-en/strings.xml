@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">dloHaiti</string>
+    <string name="app_name">Jibu</string>
     <string name="action_configuration">Configuration</string>
     <string name="record_new_reading_button">Diagnostics</string>
     <string name="manual_sync_button">Manual Sync</string>

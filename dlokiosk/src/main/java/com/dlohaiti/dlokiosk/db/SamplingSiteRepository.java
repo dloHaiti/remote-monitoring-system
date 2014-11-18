@@ -149,7 +149,7 @@ public class SamplingSiteRepository {
     }
 
     private String parameterQuery() {
-       return format("(SELECT id from %s where %s = 'true') ",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
+       return format("(SELECT IFNULL((SELECT id from %s where %s = 'true'),0))",KioskDatabase.ParametersTable.TABLE_NAME,KioskDatabase.ParametersTable.IS_USED_IN_TOTALIZER);
     }
 
     public ArrayList<SamplingSite> listAllWaterQualityChannel() {

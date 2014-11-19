@@ -7,7 +7,7 @@ import groovy.transform.ToString
 @EqualsAndHashCode
 class Money {
   BigDecimal amount;
-  Currency currency = Currency.getInstance("HTG")
+  Currency currency = Currency.getInstance("RWF")
 
   static mapWith = "none"
 }

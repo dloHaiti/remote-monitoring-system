@@ -87,8 +87,8 @@ public class ShoppingCartActivity extends SaleActivity {
     }
 
     private void initialiseCurrency() {
-        totalPriceCurrencyView.setText(currency());
-        discountedPriceCurrencyView.setText(currency());
+        totalPriceCurrencyView.setText("");
+        discountedPriceCurrencyView.setText("");
     }
 
     private void initialiseOrderSummary() {

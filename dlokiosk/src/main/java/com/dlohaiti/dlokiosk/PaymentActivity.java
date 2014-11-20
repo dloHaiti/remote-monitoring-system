@@ -181,10 +181,10 @@ public class PaymentActivity extends SaleActivity {
     }
 
     private void initialiseCurrencyViews() {
-        customerPaymentCurrencyView.setText(currency());
-        sponsorPaymentCurrencyView.setText(currency());
-        totalPriceCurrencyView.setText(currency());
-        amountDueCurrencyView.setText(currency());
+        customerPaymentCurrencyView.setText("");
+        sponsorPaymentCurrencyView.setText("");
+        totalPriceCurrencyView.setText("");
+        amountDueCurrencyView.setText("");
     }
 
     private void updatePriceSummaryViews() {

@@ -68,8 +68,8 @@ public class EnterPromotionActivity extends RoboActivity {
         });
         subtotalTextBox.setText(String.valueOf(shoppingCart.getSubtotal().getAmount()));
         String currencyCode = shoppingCart.getCurrencyCode();
-        subtotalCurrencyTextBox.setText(currencyCode);
-        totalCurrencyTextBox.setText(currencyCode);
+        subtotalCurrencyTextBox.setText("");
+        totalCurrencyTextBox.setText("");
         updateNewTotal();
     }
 

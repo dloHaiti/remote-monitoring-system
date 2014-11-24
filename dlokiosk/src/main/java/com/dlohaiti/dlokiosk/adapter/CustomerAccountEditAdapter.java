@@ -87,17 +87,14 @@ public class CustomerAccountEditAdapter extends ArrayAdapter<CustomerAccount> {
     }
 
     private void fillCustomerDetails(View view, CustomerAccountViewHolder holder, CustomerAccount customerAccount) {
-        if (StringUtils.isNotBlank(customerAccount.getContactName())) {
-            holder.customerName.setText(customerAccount.getContactName());
-        } else {
-            holder.customerName.setText(customerAccount.getName());
-        }
+
+        holder.customerName.setText(customerAccount.getContactName());
 
         TextView phone = (TextView) view.findViewById(R.id.customer_phone);
         phone.setText(customerAccount.getPhoneNumber());
 
-        TextView address = (TextView) view.findViewById(R.id.customer_address);
-        address.setText(customerAccount.formatedGPS());
+        TextView organization = (TextView) view.findViewById(R.id.customer_organization);
+        organization.setText(customerAccount.getName());
 
         TextView balance = (TextView) view.findViewById(R.id.customer_balance);
         balance.setText( String.format( "%.2f",customerAccount.getDueAmount()));

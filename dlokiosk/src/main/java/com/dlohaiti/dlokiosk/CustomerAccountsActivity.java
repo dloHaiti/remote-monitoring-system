@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -198,7 +197,7 @@ public class CustomerAccountsActivity extends RoboActivity {
             @Override
             public boolean onQueryTextChange(String text) {
                 filteredCustomerList.clear();
-                List<CustomerAccount> filteredList = allCustomerList.filterAccountsByContactName(text, selectedSalesChannel);
+                List<CustomerAccount> filteredList = allCustomerList.filterAccountsByChannel(text, selectedSalesChannel);
                 filteredCustomerList.addAll(filteredList);
                 customerListAdapter = new CustomerAccountEditAdapter(CustomerAccountsActivity.this, filteredCustomerList);
                 customerListView.setAdapter(customerListAdapter);

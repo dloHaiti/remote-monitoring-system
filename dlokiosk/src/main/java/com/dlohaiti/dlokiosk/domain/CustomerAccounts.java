@@ -66,11 +66,11 @@ public class CustomerAccounts extends ArrayList<CustomerAccount> {
         throw new NoCustomerAccountWithGivenIdException(id);
     }
 
-    public List<CustomerAccount> filterAccountsByContactName(String contactName, SalesChannel selectedSalesChannel) {
+    public List<CustomerAccount> filterAccountsByChannel(String text, SalesChannel selectedSalesChannel) {
         List<CustomerAccount> newFilteredCustomerList = new ArrayList<CustomerAccount>();
 
         for (CustomerAccount account : this) {
-            if (containsIgnoreCase(account.getContactName(), contactName) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.getId()))) {
+            if ((containsIgnoreCase(account.getName(), text) || containsIgnoreCase(account.getContactName(), text)) && (selectedSalesChannel == null || account.canBeServedByChannel(selectedSalesChannel.getId()))) {
                 newFilteredCustomerList.add(account);
             }
         }

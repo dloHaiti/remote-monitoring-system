@@ -94,7 +94,7 @@
         <item name="android:layout_height">@dimen/row_height</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="customer_list" parent="standard_black_text">
@@ -111,7 +111,7 @@
         <item name="android:layout_weight">50</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="customer_account_list_header">

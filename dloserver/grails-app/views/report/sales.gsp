@@ -15,7 +15,7 @@
 
         var options = {
             title: 'SALES',
-            vAxis: {title: 'Gourdes', minValue: 0},
+            vAxis: {title: 'Money', minValue: 0},
             isStacked: true
         };
 

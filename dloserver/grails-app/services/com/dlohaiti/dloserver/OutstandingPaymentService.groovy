@@ -7,7 +7,7 @@ class OutstandingPaymentService {
 
 
     def outStandingPaymentsAtKiosk(Kiosk kiosk, String currencyCode) {
-        def tableHeader=['Customer Name', 'Contact Name', 'Due Amount (in ' + currencyCode + ')']
+        def tableHeader=['Customer Name', 'Contact Name', 'Due Amount']
         def customerAccounts = CustomerAccount.findAllByKioskAndDueAmountGreaterThan(kiosk, 0);
         def tableData = [tableHeader]
         customerAccounts.each {customer -> tableData.add([customer.name, customer.contactName,customer.dueAmount])}

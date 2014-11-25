@@ -146,5 +146,11 @@
     <string name="select_products">Select Products</string>
     <string name="sale_summary_and_promotions">Sale Summary and Promotions</string>
     <string name="payment_activity_label">Payment</string>
+    <string name="water_quality_reading">Water Quality Readings</string>
+    <string name="edit_label">Edit</string>
+    <string name="balance_label">Balance</string>
+    <string name="select_diagnostic">Select Diagnostic</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 
 </resources>

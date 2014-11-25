@@ -12,7 +12,7 @@
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/sponsor_edit"
             style="@style/table_header"
-            android:text="Edit"
+            android:text="@string/edit_label"
             android:layout_width="0dp"
             android:layout_weight="8"
             android:layout_height="match_parent" />
@@ -22,28 +22,28 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="30"
-            android:text="Sponsor"/>
+            android:text="@string/sponsor_label"/>
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_name"
             style="@style/table_header"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="20"
-            android:text="Contact"/>
+            android:text="@string/sponsor_contact_name_label"/>
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/phone_number"
             android:layout_weight="15"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             style="@style/table_header"
-            android:text="Phone"/>
+            android:text="@string/customer_phone_label"/>
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/customers"
             style="@style/table_header"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="27"
-            android:text="Customers"/>
+            android:text="@string/select_customer_label"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/list_pane"

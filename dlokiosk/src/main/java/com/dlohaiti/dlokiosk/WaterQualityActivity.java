@@ -65,6 +65,12 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
     @InjectResource(R.string.error_not_saved_message)
     private String errorNotSavedMessage;
 
+    @InjectResource(R.string.today)
+    private String todayLabel;
+
+    @InjectResource(R.string.yesterday)
+    private String yesterdayLabel;
+
     private boolean isToday = true;
 
     @Override
@@ -80,9 +86,9 @@ public class WaterQualityActivity extends RoboActivity implements ActionBar.TabL
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.addTab(actionBar.newTab().setText("Today")
+        actionBar.addTab(actionBar.newTab().setText(todayLabel)
                 .setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText("Yesterday")
+        actionBar.addTab(actionBar.newTab().setText(yesterdayLabel)
                 .setTabListener(this));
     }
 

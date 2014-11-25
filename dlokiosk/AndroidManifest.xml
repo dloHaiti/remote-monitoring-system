@@ -91,14 +91,14 @@
         </activity>
         <activity android:name=".CustomerAccountsActivity"
                   android:screenOrientation="landscape"
-                  android:label="Customer Accounts">
+                  android:label="@string/customer_account">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
         </activity>
         <activity android:name=".SelectDiagnostic"
                   android:screenOrientation="landscape"
-                  android:label="Select Diagnostic">
+                  android:label="@string/select_diagnostic">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.MainActivity"/>
@@ -131,7 +131,7 @@
         <activity android:name=".WaterQualityActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan"
-                  android:label="Water Quality Readings">
+                  android:label="@string/water_quality_reading">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
@@ -161,7 +161,7 @@
         </activity>
         <activity android:name=".SponsorsActivity"
                   android:screenOrientation="landscape"
-                  android:label="Sponsors">
+                  android:label="@string/sponsor_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>

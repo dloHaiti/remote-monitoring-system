@@ -14,7 +14,7 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_edit"
         style="@style/table_header"
-        android:text="Edit"
+        android:text="@string/edit_label"
         android:layout_width="0dp"
 
         android:layout_weight="8"
@@ -25,27 +25,27 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="32"
-        android:text="Customer"/>
+        android:text="@string/customer_name_label"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_organization"
         android:layout_weight="30"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         style="@style/table_header"
-        android:text="Organization"/>
+        android:text="@string/organisation_label"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_phone"
         style="@style/table_header"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="15"
-        android:text="Phone"/>
+        android:text="@string/customer_phone_label"/>
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/customer_balance"
         style="@style/table_header"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="15"
-        android:text="Balance"/>
+        android:text="@string/balance_label"/>
 
 </LinearLayout>

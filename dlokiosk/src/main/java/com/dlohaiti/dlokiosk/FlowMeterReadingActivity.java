@@ -55,6 +55,11 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     @Inject
     private Clock clock;
 
+    @InjectResource(R.string.today)
+    private String todayLabel;
+
+    @InjectResource(R.string.yesterday)
+    private String yesterdayLabel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,9 +83,9 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.addTab(actionBar.newTab().setText("Today")
+        actionBar.addTab(actionBar.newTab().setText(todayLabel)
                 .setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText("Yesterday")
+        actionBar.addTab(actionBar.newTab().setText(yesterdayLabel)
                 .setTabListener(this));
     }
 

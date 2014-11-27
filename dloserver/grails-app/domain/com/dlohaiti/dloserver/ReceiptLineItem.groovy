@@ -11,7 +11,7 @@ class ReceiptLineItem {
   String type
   BigDecimal price
   String currencyCode
-  Integer gallons
+  Double gallons
 
   static belongsTo = [receipt: Receipt]
 }

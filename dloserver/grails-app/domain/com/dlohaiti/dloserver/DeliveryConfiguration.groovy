@@ -4,7 +4,7 @@ class DeliveryConfiguration {
   Integer minimumValue
   Integer maximumValue
   Integer defaultValue
-  Integer gallons
+  Double gallons
   Money price
 
   static embedded = ['price']

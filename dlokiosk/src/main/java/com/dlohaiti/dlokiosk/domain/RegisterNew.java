@@ -29,7 +29,7 @@ public class RegisterNew {
 
     public Receipt checkout(ShoppingCartNew cart) {
         List<LineItem> lineItems = buildLineItemsFrom(cart);
-        int totalGallons = 0;
+        Double totalGallons = 0.0;
         for (Product product : cart.getProducts()) {
             totalGallons += product.getGallons() * product.getQuantity();
         }

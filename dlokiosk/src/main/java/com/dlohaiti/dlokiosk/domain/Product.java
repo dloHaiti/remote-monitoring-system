@@ -13,7 +13,7 @@ public class Product implements VisibleGridItem, Comparable<Product> {
     private final Integer maximumQuantity;
     private final Money price;
     private final String description;
-    private final Integer gallons;
+    private final Double gallons;
     private Long categoryId;
     public boolean hasQuantityBeenModified;
 
@@ -26,7 +26,7 @@ public class Product implements VisibleGridItem, Comparable<Product> {
                    Integer maximumQuantity,
                    Money price,
                    String description,
-                   Integer gallons,
+                   Double gallons,
                    Long categoryId) {
         this.id = id;
         this.sku = sku;
@@ -84,7 +84,7 @@ public class Product implements VisibleGridItem, Comparable<Product> {
         return description;
     }
 
-    public Integer getGallons() {
+    public Double getGallons() {
         return gallons;
     }
 

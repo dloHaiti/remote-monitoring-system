@@ -75,7 +75,7 @@ public class ProductRepository {
         Integer maximum = cursor.getInt(5);
         Money price = new Money(new BigDecimal(cursor.getDouble(6)));
         String description = cursor.getString(8);
-        Integer gallons = cursor.getInt(9);
+        Double gallons = cursor.getDouble(9);
         long category = cursor.getInt(10);
         Bitmap resource = imageConverter.fromBase64EncodedString(cursor.getString(2));
         long id = cursor.getLong(0);
@@ -184,7 +184,7 @@ public class ProductRepository {
                         ? new Money(new BigDecimal(cursor.getDouble(getColumnIndexByAlias(cursor, ProductMrpsTable.TABLE_NAME, ProductMrpsTable.PRICE))))
                         : new Money(new BigDecimal(cursor.getDouble(getColumnIndexByAlias(cursor, ProductsTable.TABLE_NAME, ProductsTable.PRICE))));
                 String description = cursor.getString(getColumnIndexByAlias(cursor, ProductsTable.TABLE_NAME, ProductsTable.DESCRIPTION));
-                Integer gallons = cursor.getInt(getColumnIndexByAlias(cursor, ProductsTable.TABLE_NAME, ProductsTable.GALLONS));
+                Double gallons = cursor.getDouble(getColumnIndexByAlias(cursor, ProductsTable.TABLE_NAME, ProductsTable.GALLONS));
                 long category = cursor.getInt(getColumnIndexByAlias(cursor, ProductsTable.TABLE_NAME, ProductsTable.CATEGORY_ID));
                 products.add(new Product(id, sku, resource, requiresQuantity, null, minimum, maximum, price,
                         description, gallons, category));

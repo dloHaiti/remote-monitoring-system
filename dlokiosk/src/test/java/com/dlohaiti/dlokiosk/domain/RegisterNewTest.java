@@ -51,7 +51,7 @@ public class RegisterNewTest {
                 .withId(1l)
                 .withSku("ABC")
                 .withPrice(10d)
-                .withGallons(10)
+                .withGallons(10.0)
                 .withQuantity(1)
                 .build();
         fiveDollarFiveGallonXYZ = productBuilder()
@@ -59,7 +59,7 @@ public class RegisterNewTest {
                 .withSku("XYZ")
                 .withPrice(5d)
                 .withQuantity(1)
-                .withGallons(5)
+                .withGallons(5.0)
                 .build();
     }
 
@@ -131,7 +131,7 @@ public class RegisterNewTest {
 
         Receipt receipt = register.checkout(cart);
 
-        assertThat(receipt.getTotalGallons(), is(30));
+        assertThat(receipt.getTotalGallons(), is(30.0));
     }
 
     @Test

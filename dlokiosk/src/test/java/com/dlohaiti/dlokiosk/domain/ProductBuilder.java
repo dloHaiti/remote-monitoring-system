@@ -15,7 +15,7 @@ public class ProductBuilder {
     private Integer maximum = null;
     private Money price = new Money(BigDecimal.ONE);
     private String description = "10 Gallon";
-    private Integer gallons = 0;
+    private Double gallons = 0.0;
     private Long categoryId = 1L;
 
     private ProductBuilder() {
@@ -75,7 +75,7 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder withGallons(Integer gallons) {
+    public ProductBuilder withGallons(Double gallons) {
         this.gallons = gallons;
         return this;
     }

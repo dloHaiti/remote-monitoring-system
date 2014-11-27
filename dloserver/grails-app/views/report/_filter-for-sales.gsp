@@ -32,13 +32,16 @@
 <div>
     <div class="btn-group" data-toggle="buttons" style="float: left; margin-right: 20; margin-top: 10; z-index: 200">
         <label class="btn btn-primary active" id="sku-filter" >
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','sku')"> SKU
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','sku')">
+                 <g:message code="message.sku" />
         </label>
         <label class="btn btn-default" id="sales-channel-filter">
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','salesChannel')"> Sales Channel
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','salesChannel')">
+                 <g:message code="message.salesChannel" />
         </label>
         <label class="btn btn-default" id="product-category-filter">
-            <input type="radio" name="options" onclick="reloadWithParams('filterParam','productCategory')"> Product Category
+            <input type="radio" name="options" onclick="reloadWithParams('filterParam','productCategory')">
+             <g:message code="message.productCategory" />
         </label>
     </div>
 </div>

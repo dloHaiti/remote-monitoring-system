@@ -73,10 +73,12 @@
 <div style="width: 100%">
     <div class="btn-group" data-toggle="buttons" style="float: right; margin-right: 20; margin-top: 10; z-index: 200">
         <label class="btn" id="kiosk-filter">
-            <input type="radio" name="options"  onclick="reloadWithParams('filterType', 'kiosk')"> Kiosk
+            <input type="radio" name="options"  onclick="reloadWithParams('filterType', 'kiosk')">
+                    <g:message code="message.kiosk" />
         </label>
         <label class="btn" id="region-filter">
-            <input type="radio" name="options"  onclick="reloadWithParams('filterType', 'region')"> Region
+            <input type="radio" name="options"  onclick="reloadWithParams('filterType', 'region')">
+                    <g:message code="message.region" />
         </label>
     </div>
 </div>

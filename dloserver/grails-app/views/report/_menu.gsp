@@ -37,7 +37,7 @@
 
 <div id="sidemenu">
     <ul>
-        <li><h4>Reports</h4></li>
+        <li><h4> <g:message code="message.reports" /> </h4></li>
     </ul>
     <ul>
         <li>

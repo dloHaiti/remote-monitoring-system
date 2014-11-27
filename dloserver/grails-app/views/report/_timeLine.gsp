@@ -65,10 +65,12 @@ var reloadWithParams = function(key, value) {
 <div>
 <div class="btn-group" data-toggle="buttons" style=" margin-right: 20; margin-top: 10; z-index: 200">
     <label class="btn btn-default" id="lastWeek-filter">
-        <input type="radio" name="options" onclick="reloadWithParams('timeLine','lastWeek')"> Last Week
+        <input type="radio" name="options" onclick="reloadWithParams('timeLine','lastWeek')">
+            <g:message code="message.lastWeek" />
     </label>
     <label class="btn btn-primary active" id="currentWeek-filter" >
-        <input type="radio" name="options" onclick="reloadWithParams('timeLine','currentWeek')"> Current Week
+        <input type="radio" name="options" onclick="reloadWithParams('timeLine','currentWeek')">
+            <g:message code="message.currentWeek" />
     </label>
 </div>
 </div>

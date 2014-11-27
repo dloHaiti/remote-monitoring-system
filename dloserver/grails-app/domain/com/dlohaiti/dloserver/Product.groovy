@@ -8,7 +8,7 @@ import groovy.transform.ToString
 class Product {
   String sku
   String description
-  Integer gallons
+  Double gallons
   Money price
   Integer minimumQuantity
   Integer maximumQuantity

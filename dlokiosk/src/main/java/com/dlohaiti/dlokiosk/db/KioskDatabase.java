@@ -21,7 +21,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         String createReceipts = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
-                        "%s INTEGER," +
+                        "%s DOUBLE," +
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s INTEGER," +
@@ -77,7 +77,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s INTEGER," +
                         "%s INTEGER," +
-                        "%s INTEGER," +
+                        "%s DOUBLE," +
                         "%s INTEGER" +
                         ")",
                 ProductsTable.TABLE_NAME,

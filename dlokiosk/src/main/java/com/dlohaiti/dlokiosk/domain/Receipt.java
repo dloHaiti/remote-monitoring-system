@@ -11,7 +11,7 @@ public class Receipt {
     private final Long id;
     private final List<LineItem> lineItems;
     private final Date createdDate;
-    private final Integer totalGallons;
+    private final Double totalGallons;
     private final Money total;
     private final Long salesChannelId;
     private final String customerAccountId;
@@ -23,13 +23,13 @@ public class Receipt {
     private final String paymentType;
     private final String deliveryTime;
 
-    public Receipt(List<LineItem> lineItems, Date createdDate, Integer totalGallons, Money total) {
+    public Receipt(List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total) {
         this(null, lineItems, createdDate, totalGallons, total, null, null, null,
                 null, null, null, null, null, null);
 
     }
 
-    public Receipt(Long id, List<LineItem> lineItems, Date createdDate, Integer totalGallons, Money total,
+    public Receipt(Long id, List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total,
                    Long salesChannelId, String customerAccountId, String paymentMode,
                    Boolean isSponsorSelected, String sponsorId, Money sponsorAmount,
                    Money customerAmount, String paymentType, String deliveryTime) {
@@ -49,7 +49,7 @@ public class Receipt {
         this.deliveryTime = deliveryTime;
     }
 
-    public Receipt(List<LineItem> lineItems, Date createdDate, Integer totalGallons, Money total,
+    public Receipt(List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total,
                    long salesChannelId, String customerAccountId, String paymentMode,
                    boolean isSponsorSelected, String sponsorId, Money sponsorAmount,
                    Money customerAmount, String paymentType, String deliveryTime) {
@@ -79,7 +79,7 @@ public class Receipt {
         return id;
     }
 
-    public Integer getTotalGallons() {
+    public Double getTotalGallons() {
         return totalGallons;
     }
 

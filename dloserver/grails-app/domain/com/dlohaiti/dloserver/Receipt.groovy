@@ -9,7 +9,7 @@ import org.joda.time.LocalDate
 class Receipt {
     Date createdDate
     Kiosk kiosk
-    Integer totalGallons
+    Double totalGallons
     BigDecimal total
     String currencyCode
     List<ReceiptLineItem> receiptLineItems
@@ -33,7 +33,7 @@ class Receipt {
         return receiptLineItems.any { ReceiptLineItem item -> item.sku == sku }
     }
 
-    Integer totalGallonsForSku(String sku) {
+    Double totalGallonsForSku(String sku) {
         List<ReceiptLineItem> itemsWithSku = receiptLineItems.findAll({ ReceiptLineItem item -> item.sku == sku })
         return itemsWithSku.inject(0, { acc, val -> acc + val.gallons })
     }

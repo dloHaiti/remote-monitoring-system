@@ -56,7 +56,7 @@ class CustomerDataReportService {
      * @return
      */
     def getCustomerTotalSales(def receipts, def day, def customerId) {
-        int totalSaleForTheDay = 0;
+        Double totalSaleForTheDay = 0;
         for (receipt in receipts) {
             // If Customer Id Matches
             if (receipt.getCustomerAccount().getId().equals(customerId)) {

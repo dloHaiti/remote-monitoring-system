@@ -4,7 +4,7 @@ public class DeliveryConfigurationJson {
     private Integer minimum;
     private Integer maximum;
     private Integer defaultValue;
-    private Integer gallons;
+    private Double gallons;
     private MoneyJson price;
 
     public Integer getMinimum() {
@@ -31,11 +31,11 @@ public class DeliveryConfigurationJson {
         this.defaultValue = defaultValue;
     }
 
-    public Integer getGallons() {
+    public Double getGallons() {
         return gallons;
     }
 
-    public void setGallons(Integer gallons) {
+    public void setGallons(Double gallons) {
         this.gallons = gallons;
     }
 

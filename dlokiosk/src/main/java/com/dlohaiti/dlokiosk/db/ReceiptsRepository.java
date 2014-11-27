@@ -75,7 +75,7 @@ public class ReceiptsRepository {
                 }
                 long id = getLongValueForColumn(cursor, ReceiptsTable.ID);
                 List<LineItem> lineItems = listLineItems(readableDatabase, id);
-                int totalGallons = getIntegerValueForColumn(cursor, ReceiptsTable.TOTAL_GALLONS);
+                Double totalGallons = getDoubleValueForColumn(cursor, ReceiptsTable.TOTAL_GALLONS);
                 Money total = new Money(new BigDecimal(getStringValueForColumn(cursor, ReceiptsTable.TOTAL)));
                 Long salesChannelId = getLongValueForColumn(cursor, ReceiptsTable.SALES_CHANNEL_ID);
                 String customerAccountId = getStringValueForColumn(cursor, ReceiptsTable.CUSTOMER_ACCOUNT_ID);
@@ -103,7 +103,7 @@ public class ReceiptsRepository {
         }
     }
 
-    private Receipt makeReceipt(Date date, long id, List<LineItem> lineItems, int totalGallons, Money total, Long salesChannelId, String customerAccountId, String paymentMode, Boolean isSponsorSelected, String sponsorId, Money sponsorAmount, Money customerAmount, String paymentType, String deliveryTime) {
+    private Receipt makeReceipt(Date date, long id, List<LineItem> lineItems, Double totalGallons, Money total, Long salesChannelId, String customerAccountId, String paymentMode, Boolean isSponsorSelected, String sponsorId, Money sponsorAmount, Money customerAmount, String paymentType, String deliveryTime) {
         return new Receipt(id, lineItems, date, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
                 isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime);
     }
@@ -118,6 +118,10 @@ public class ReceiptsRepository {
 
     private Long getLongValueForColumn(Cursor cursor, String column) {
         return cursor.getLong(cursor.getColumnIndex(column));
+    }
+
+    private Double getDoubleValueForColumn(Cursor cursor, String column) {
+        return cursor.getDouble(cursor.getColumnIndex(column));
     }
 
     private int getIntegerValueForColumn(Cursor cursor, String column) {

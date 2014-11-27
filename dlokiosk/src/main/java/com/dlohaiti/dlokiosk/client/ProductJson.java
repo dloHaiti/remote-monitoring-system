@@ -5,7 +5,7 @@ public class ProductJson {
     private long category;
     private String sku;
     private String description;
-    private Integer gallons;
+    private Double gallons;
     private Integer minimumQuantity;
     private Integer maximumQuantity;
     private boolean requiresQuantity;
@@ -36,11 +36,11 @@ public class ProductJson {
         this.description = description;
     }
 
-    public Integer getGallons() {
+    public Double getGallons() {
         return gallons;
     }
 
-    public void setGallons(Integer gallons) {
+    public void setGallons(Double gallons) {
         this.gallons = gallons;
     }
 

@@ -3,7 +3,7 @@ package com.dlohaiti.dloserver
 class ReceiptBuilder {
   Date createdDate = new Date(0)
   Kiosk kiosk = new Kiosk(name: "k1")
-  Integer totalGallons = 10
+  Double totalGallons = 10.0
   BigDecimal total = 10G
   String currencyCode = "HTG"
   List<ReceiptLineItem> receiptLineItems = []

@@ -21,7 +21,7 @@ class Delivery {
     return 'RETURNED' == type
   }
 
-  Integer getGallons() {
+  Double getGallons() {
     return DeliveryConfiguration.first()?.gallons
   }
 

@@ -12,9 +12,10 @@
     function drawChart() {
         var chartData = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
         var tableData = google.visualization.arrayToDataTable(<%= tableData as JSON %>);
+        var salesMessage = "${g.message(code: 'message.sales', args: [])}";
 
         var options = {
-            title: 'SALES',
+            title: salesMessage,
             vAxis: {title: 'Gourdes', minValue: 0},
             isStacked: true
         };

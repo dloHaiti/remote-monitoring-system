@@ -13,9 +13,9 @@
     function drawChart() {
         var chartData = google.visualization.arrayToDataTable(<%= chartData as JSON %>);
         var tableData = google.visualization.arrayToDataTable(<%= tableData as JSON %>);
-
+        var volumeMessage = "${g.message(code: 'message.volume', args: [])}";
         var options = {
-            title: 'VOLUME',
+            title: volumeMessage,
             vAxis: {title: 'Gallons', minValue: 0},
             seriesType: 'bars',
             series: {

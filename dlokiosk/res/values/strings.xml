@@ -40,8 +40,8 @@
     <string name="zero">0</string>
     <string name="default_currency">HTG</string>
     <string name="title_activity_select_sampling_site">Sélectionner le point de collecte des échantillons</string>
-    <string name="view_reports_button">Rapports</string>
-    <string name="title_activity_view_reports">Rapports</string>
+    <string name="view_reports_button">Rapò</string>
+    <string name="title_activity_view_reports">Rapò</string>
     <string name="update_configuration">Mettre a jour la configuration</string>
     <string name="fetch_configuration_failed">Erreur lors du chargement de la configuration</string>
     <string name="fetch_configuration_succeeded">La configuration a été chargée avec succès</string>

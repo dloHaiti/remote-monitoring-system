@@ -1,7 +1,9 @@
 <%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Volume Report</title>
+    <title>
+        <g:message code="message.volumeReport" />
+    </title>
 </head>
 
 <body>

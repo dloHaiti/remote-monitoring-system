@@ -128,7 +128,7 @@ public class ShoppingCartActivity extends SaleActivity {
             discountedPriceLabel.setVisibility(View.GONE);
             discountedPrice.setVisibility(View.GONE);
             discountedPriceCurrency.setVisibility(View.GONE);
-            choosePromotionLabel.setText("No Promotions Are Available");
+            choosePromotionLabel.setText(R.string.no_promotions_label);
     }
 
     @Override

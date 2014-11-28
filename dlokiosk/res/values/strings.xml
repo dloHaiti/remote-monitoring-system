@@ -154,5 +154,6 @@
     <string name="sponsors_title_label">Sponsò</string>
     <string name="flow_meter_readings">Flow Meter Readings</string>
     <string name="customer_accounts_label">Kont kliyan</string>
+    <string name="no_promotions_label">Pa gen pwomosyon disponib sou pwodui sa</string>
 
 </resources>

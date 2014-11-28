@@ -7,41 +7,41 @@ import java.math.RoundingMode
 
 class VolumeReportService {
 
-    def volumeReportData(String kioskName, String filterType, String filterParam,LocalDate fromDate,LocalDate toDate) {
+    def volumeReportData(String kioskName, String filterType, String filterParam,LocalDate fromDate,LocalDate toDate,def totalMessage,def differenceMessage) {
         Kiosk kiosk = Kiosk.findByName(kioskName)
 
         def model = [:]
         if (filterType.equalsIgnoreCase('region')) {
-            model = volumeByRegionForKiosk(kiosk, filterParam,fromDate,toDate)
+            model = volumeByRegionForKiosk(kiosk, filterParam,fromDate,toDate,totalMessage,differenceMessage)
         } else {
-            model = volumeByDay(kiosk, filterParam,fromDate,toDate)
+            model = volumeByDay(kiosk, filterParam,fromDate,toDate,totalMessage,differenceMessage)
         }
         return model
     }
 
-    private volumeByRegionForKiosk(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate) {
+    private volumeByRegionForKiosk(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate,def totalMessage,def differenceMessage) {
         Region region = kiosk.region
         List<Receipt> receipts = receiptsForAllKiosksInRegion(region,fromDate,toDate)
         List<Reading> readings = readingsForAllKiosksInRegion(region,fromDate,toDate)
         List<Product> products = Product.findAll()
 
-        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam,totalMessage,differenceMessage)
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage, differenceMessage]), tableData: tableData, skusPresent: products.size()]
     }
 
-    private volumeByDay(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate) {
+    private volumeByDay(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate,def totalMessage,def differenceMessage) {
         List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
         List<Reading> readings = Reading.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(),toDate.toDate())
         List<Product> products = Product.findAll()
-        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
+        def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam,totalMessage,differenceMessage)
 
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage, differenceMessage]), tableData: tableData, skusPresent: products.size()]
     }
 
-    private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings, String filterParam) {
+    private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings, String filterParam,def totalMessage,def differenceMessage) {
         def tableData = [['']]
         if("sku".equalsIgnoreCase(filterParam)) {
-            tableData = tableDataFilteredBySKU(previousWeek, products, receipts, readings)
+            tableData = tableDataFilteredBySKU(previousWeek, products, receipts, readings,totalMessage,differenceMessage)
         }
         if("salesChannel".equalsIgnoreCase(filterParam)) {
             tableData = tableDataFilteredBySalesChannel(previousWeek, receipts)
@@ -49,7 +49,7 @@ class VolumeReportService {
         return tableData
     }
 
-    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings) {
+    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings,def totalMessage,def differenceMessage) {
         def tableHeader = ['']
         for (day in previousWeek) {
             tableHeader.add(day.toString('dd-MMM-yy'))
@@ -68,7 +68,7 @@ class VolumeReportService {
             }
         }
 
-        def totalRow = ['TOTAL']
+        def totalRow = [totalMessage]
         for (LocalDate day in previousWeek) {
             def sales = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.totalGallons })
             totalRow.add(sales)
@@ -83,7 +83,7 @@ class VolumeReportService {
         }
         tableData.add(totalizerRow)
 
-        def percentDiffRow = ['DIFFERENCE %']
+        def percentDiffRow = [differenceMessage]
         for (int i = 1; i < totalizerRow.size(); i++) {
             def total = new BigDecimal(totalizerRow[i])
             def difference

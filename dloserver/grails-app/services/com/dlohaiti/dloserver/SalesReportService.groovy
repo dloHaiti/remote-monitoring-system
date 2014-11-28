@@ -8,19 +8,19 @@ import org.joda.time.LocalDate
  */
 class SalesReportService {
 
-    def salesData(String kioskName, String filterType, String filterParameter, LocalDate fromDate, LocalDate toDate) {
+    def salesData(String kioskName, String filterType, String filterParameter, LocalDate fromDate, LocalDate toDate,def totalMessage) {
         Kiosk kiosk = Kiosk.findByName(kioskName)
 
         def model = [:]
         if (filterType.equalsIgnoreCase("region")) {
-            model = salesByRegionForKiosk(kiosk, filterParameter, fromDate, toDate)
+            model = salesByRegionForKiosk(kiosk, filterParameter, fromDate, toDate,totalMessage)
         } else {
-            model = salesByDay(kiosk, filterParameter, fromDate, toDate)
+            model = salesByDay(kiosk, filterParameter, fromDate, toDate,totalMessage)
         }
         model
     }
 
-    private salesByRegionForKiosk(Kiosk currentKiosk, String filterParameter, LocalDate fromDate, LocalDate toDate) {
+    private salesByRegionForKiosk(Kiosk currentKiosk, String filterParameter, LocalDate fromDate, LocalDate toDate,def totalMessage) {
         Region region = currentKiosk.region;
         List<Product> products = Product.findAllByActive(true)
         List<Receipt> receipts = receiptsForAllKiosksInRegion(region, fromDate, toDate)
@@ -32,18 +32,18 @@ class SalesReportService {
         }
         def tableData = [['']]
         if ("sku".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader,totalMessage)
         }
         if ("salesChannel".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader,totalMessage)
         }
         if ("productCategory".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader,totalMessage)
         }
-        [kioskName: currentKiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
+        [kioskName: currentKiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage])]
     }
 
-    private List<List<String>> buildTableDataFilteredBySKU(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
+    private List<List<String>> buildTableDataFilteredBySKU(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader,def totalMessage) {
         def tableData = [tableHeader]
         for (product in products) {
             def row = [product.sku]
@@ -59,7 +59,7 @@ class SalesReportService {
             }
         }
 
-        def totalRow = ['TOTAL']
+        def totalRow = [totalMessage]
         previousWeek.eachWithIndex { LocalDate day, int i ->
             def total = receipts.findAll({ r -> r.isOnDate(day) }).inject(0, { acc, val -> acc + val.total })
             totalRow.add(total)
@@ -68,10 +68,10 @@ class SalesReportService {
         tableData
     }
 
-    private List<List<String>> buildTableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
+    private List<List<String>> buildTableDataFilteredBySalesChannel(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader,def totalMessage) {
         def tableData = [tableHeader]
         def salesChannels = SalesChannel.findAll();
-        def totalRow = ['TOTAL']
+        def totalRow = [totalMessage]
         for (salesChannel in salesChannels) {
             def row = [salesChannel.name]
             int index=1
@@ -93,10 +93,10 @@ class SalesReportService {
         tableData
     }
 
-    private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
+    private List<List<String>> buildTableDataFilteredByProductCategory(List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader,def totalMessage) {
         def tableData = [tableHeader]
         def productCategories = ProductCategory.findAll();
-        def totalRow = ['TOTAL']
+        def totalRow = [totalMessage]
         for (productCategory in productCategories) {
             def row = [productCategory.name]
             int index=1
@@ -118,7 +118,7 @@ class SalesReportService {
         tableData
     }
 
-    private salesByDay(Kiosk kiosk, String filterParameter, LocalDate fromDate, LocalDate toDate) {
+    private salesByDay(Kiosk kiosk, String filterParameter, LocalDate fromDate, LocalDate toDate,def totalMessage) {
         List<Product> products = Product.findAllByActive(true)
         List<Receipt> receipts = Receipt.findAllByKioskAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(kiosk, fromDate.toDate(), toDate.toDate())
 
@@ -130,15 +130,15 @@ class SalesReportService {
         }
         def tableData = [['']]
         if ("sku".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredBySKU(products, previousWeek, receipts, tableHeader,totalMessage)
         }
         if ("salesChannel".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredBySalesChannel(previousWeek, receipts, tableHeader,totalMessage)
         }
         if ("productCategory".equalsIgnoreCase(filterParameter)) {
-            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader)
+            tableData = buildTableDataFilteredByProductCategory(previousWeek, receipts, tableHeader,totalMessage)
         }
-        [kioskName: kiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL'])]
+        [kioskName: kiosk.name, tableData: tableData, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage])]
     }
 
     List<Receipt> receiptsForAllKiosksInRegion(Region region, LocalDate fromDate, LocalDate toDate) {

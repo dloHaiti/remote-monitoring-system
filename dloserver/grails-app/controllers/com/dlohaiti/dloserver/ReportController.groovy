@@ -23,7 +23,9 @@ class ReportController {
         // Getting the fromDate and toDate based on the week string
         LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
         LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
-        def model = volumeReportService.volumeReportData(request.kiosk.name, filterType, filterParam, fromDate, toDate)
+        def totalMessage=message(code: "message.total")
+        def differenceMessage=message(code: "message.difference")
+        def model = volumeReportService.volumeReportData(request.kiosk.name, filterType, filterParam, fromDate, toDate,totalMessage,differenceMessage)
         render(view: 'volume', model: model)
     }
 
@@ -63,7 +65,8 @@ class ReportController {
         // Getting the fromDate and toDate based on the week string
         LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
         LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
-        def model = salesReportService.salesData(params.kioskName, filterType, filterParam, fromDate, toDate)
+        def totalMessage=message(code: "message.total")
+        def model = salesReportService.salesData(params.kioskName, filterType, filterParam, fromDate, toDate,totalMessage)
         render(view: 'sales', model: model)
     }
 
@@ -74,7 +77,9 @@ class ReportController {
         // Getting the fromDate and toDate based on the week string
         LocalDate fromDate = DateUtil.getFromDateByWeekString(filterTimeLine)
         LocalDate toDate = DateUtil.getToDateByWeekString(filterTimeLine);
-        def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam, fromDate, toDate)
+        def totalMessage=message(code: "message.total")
+        def differenceMessage=message(code: "message.difference")
+        def model = volumeReportService.volumeReportData(params.kioskName, filterType, filterParam, fromDate, toDate,totalMessage,differenceMessage)
         render(view: 'volume', model: model)
     }
 
@@ -112,5 +117,10 @@ class ReportController {
         def text = customerDataReportService.generateCustomerReport(receipts, days, customers);
         render(contentType: "text/csv", text: text)
     }
+
+   def test(){
+       def msg = message(code: "message.volume")
+       render "test DONE"+msg
+   }
 
 }

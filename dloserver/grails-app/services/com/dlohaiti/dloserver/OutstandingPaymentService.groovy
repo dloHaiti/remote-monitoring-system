@@ -6,8 +6,8 @@ package com.dlohaiti.dloserver
 class OutstandingPaymentService {
 
 
-    def outStandingPaymentsAtKiosk(Kiosk kiosk, String currencyCode) {
-        def tableHeader=['Customer Name', 'Contact Name', 'Due Amount (in ' + currencyCode + ')']
+    def outStandingPaymentsAtKiosk(Kiosk kiosk, String currencyCode,def customerNameMessage, def contactNameMessage,def dueAmountMessage) {
+        def tableHeader=[customerNameMessage, contactNameMessage, dueAmountMessage]
         def customerAccounts = CustomerAccount.findAllByKioskAndDueAmountGreaterThan(kiosk, 0);
         def tableData = [tableHeader]
         customerAccounts.each {customer -> tableData.add([customer.name, customer.contactName,customer.dueAmount])}

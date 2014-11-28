@@ -37,7 +37,10 @@ class ReportController {
         [kioskName: request.kiosk.name]
         Kiosk kiosk = Kiosk.findByName(params.kioskName)
         def currencyCode = configurationService.currencyCode
-        def tableData = outstandingPaymentService.outStandingPaymentsAtKiosk(kiosk, currencyCode)
+        def customerNameMessage=message(code: "message.customerNameMessage")
+        def contactNameMessage=message(code: "message.contactNameMessage")
+        def dueAmountMessage=message(code: "message.dueAmountMessage")
+        def tableData = outstandingPaymentService.outStandingPaymentsAtKiosk(kiosk, currencyCode,customerNameMessage,contactNameMessage,dueAmountMessage)
         [kioskName: kiosk.name, tableData: tableData]
     }
 

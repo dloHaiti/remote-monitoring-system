@@ -282,7 +282,7 @@
                 android:id="@+id/confirm_button"
                 android:layout_alignParentRight="true"
                 style="@style/confirm_button"
-                android:text="Confirm"
+                android:text="@string/confirm_button"
                 android:onClick="onContinue"
                 android:background="@drawable/submit_buttom"/>
 

@@ -157,5 +157,6 @@
     <string name="flow_meter_readings">Flow Meter Readings</string>
     <string name="customer_accounts_label">Customer Accounts</string>
     <string name="no_promotions_label">No Promotions Are Available</string>
+    <string name="confirm_button">Confirm</string>
 
 </resources>

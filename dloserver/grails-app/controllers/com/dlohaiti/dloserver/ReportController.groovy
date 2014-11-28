@@ -117,10 +117,4 @@ class ReportController {
         def text = customerDataReportService.generateCustomerReport(receipts, days, customers);
         render(contentType: "text/csv", text: text)
     }
-
-   def test(){
-       def msg = message(code: "message.volume")
-       render "test DONE"+msg
-   }
-
 }

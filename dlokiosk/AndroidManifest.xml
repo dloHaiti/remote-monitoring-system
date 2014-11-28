@@ -106,7 +106,7 @@
         <activity android:name=".FlowMeterReadingActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
-                  android:label="Flow Meter Readings">
+                  android:label="@string/flow_meter_readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
@@ -147,14 +147,14 @@
         <activity android:name=".CustomerFormActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
-                  android:label="Customer Accounts">
+                  android:label="@string/accounts_button">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
         </activity>
         <activity android:name=".AccountsActivity"
                   android:screenOrientation="landscape"
-                  android:label="Accounts">
+                  android:label="@string/accounts_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.MainActivity"/>
@@ -169,7 +169,7 @@
         <activity android:name=".SponsorFormActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
-                  android:label="Sponsor">
+                  android:label="@string/sponsors_title_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.dlohaiti.dlokiosk.SponsorsActivity"/>

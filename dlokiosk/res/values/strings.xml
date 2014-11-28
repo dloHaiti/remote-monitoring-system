@@ -150,5 +150,9 @@
     <string name="select_diagnostic">Seleksyone Dyagnostik</string>
     <string name="today">Jodia</string>
     <string name="yesterday">Yè</string>
+    <string name="accounts_label">Kont</string>
+    <string name="sponsors_title_label">Sponsò</string>
+    <string name="flow_meter_readings">Flow Meter Readings</string>
+    <string name="customer_accounts_label">Kont kliyan</string>
 
 </resources>

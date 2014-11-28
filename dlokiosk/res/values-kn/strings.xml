@@ -152,5 +152,9 @@
     <string name="select_diagnostic">Select Diagnostic</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="accounts_label">Accounts</string>
+    <string name="sponsors_title_label">Sponsors</string>
+    <string name="flow_meter_readings">Flow Meter Readings</string>
+    <string name="customer_accounts_label">Customer Accounts</string>
 
 </resources>

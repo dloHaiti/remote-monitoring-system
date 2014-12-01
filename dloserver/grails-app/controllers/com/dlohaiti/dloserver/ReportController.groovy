@@ -99,6 +99,7 @@ class ReportController {
             fromDate = new LocalDate(params.fromDate);
         }
         response.setHeader("Content-disposition", "attachment; filename=customerReport.csv")
+        response.contentType = 'text/csv'
         // Calculating the start date and end date of the month
         LocalDate endOfMonth = fromDate.dayOfMonth().withMaximumValue();
         LocalDate startOfMonth = fromDate.dayOfMonth().withMinimumValue();

@@ -26,7 +26,7 @@ class VolumeReportService {
         List<Product> products = Product.findAll()
 
         def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %','TOTALIZER']), tableData: tableData, skusPresent: products.size()]
     }
 
     private volumeByDay(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate) {
@@ -35,7 +35,7 @@ class VolumeReportService {
         List<Product> products = Product.findAll()
         def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
 
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %','TOTALIZER']), tableData: tableData, skusPresent: products.size()]
     }
 
     private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings, String filterParam) {

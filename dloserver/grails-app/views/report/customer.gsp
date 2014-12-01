@@ -20,7 +20,7 @@
             </h2>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
-                    <g:form action="csvCustomerReport" >
+                    <g:form action="csvCustomerReport" method="get">
                         <g:hiddenField name="kioskName" value="${kioskName}" />
                         <div class="form-group">
                             <label for="fromDate" class="col-sm-2 control-label">

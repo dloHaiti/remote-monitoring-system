@@ -16,7 +16,7 @@ class CustomerAccount {
     Collection channels
 
     static belongsTo = [SalesChannel,CustomerType,Kiosk]
-    static hasMany = [channels: SalesChannel,sponsors: Sponsor]
+    static hasMany = [channels: SalesChannel,sponsors: Sponsor, payments: PaymentHistory]
 
     static mapping = {
         id generator: 'assigned',column:'id', name: 'id', type: 'string'

@@ -262,7 +262,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         "%s TEXT," +
                         "%s TEXT," +
                         "%s INTEGER," +
-                        "%s INTEGER," +
+                        "%s STRING," +
                         "%s TEXT" +
                         ")",
                 CustomerAccountsTable.TABLE_NAME,
@@ -335,6 +335,24 @@ public class KioskDatabase extends SQLiteOpenHelper {
                 ProductMrpsTable.CURRENCY
         );
 
+
+        String createPaymentHistory = String.format(
+                "CREATE TABLE %s(" +
+                        "%s INTEGER PRIMARY KEY," +
+                        "%s STRING ," +
+                        "%s INTEGER ," +
+                        "%s STRING ," +
+                        "%s TEXT" +
+                        ")",
+                PaymentHistoryTable.TABLE_NAME,
+                PaymentHistoryTable.ID,
+                PaymentHistoryTable.CUSTOMER_ACCOUNT_ID,
+                PaymentHistoryTable.RECEIPT_ID,
+                PaymentHistoryTable.AMOUNT,
+                PaymentHistoryTable.PAYMENT_DATE
+
+        );
+
         db.execSQL(createDeliveryAgents);
         db.execSQL(createMeasurements);
         db.execSQL(createMeasurementLineItems);
@@ -355,6 +373,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         db.execSQL(createSponsors);
         db.execSQL(createSponsorCustomerAccounts);
         db.execSQL(createProductMrps);
+        db.execSQL(createPaymentHistory);
         insertKioskConfig(db, insertConfig);
     }
 
@@ -559,6 +578,15 @@ public class KioskDatabase extends SQLiteOpenHelper {
         public static final String CHANNEL_ID = "CHANNEL_ID";
         public static final String PRICE = "PRICE";
         public static final String CURRENCY = "CURRENCY";
+    }
+
+    public static class PaymentHistoryTable {
+        public static final String TABLE_NAME = "PAYMENT_HISTORY";
+        public static final String ID = "ID";
+        public static final String CUSTOMER_ACCOUNT_ID = "CUSTOMER_ACCOUNT_ID";
+        public static final String RECEIPT_ID = "RECEIPT_ID";
+        public static final String AMOUNT = "AMOUNT";
+        public static final String PAYMENT_DATE = "PAYMENT_DATE";
     }
 
 }

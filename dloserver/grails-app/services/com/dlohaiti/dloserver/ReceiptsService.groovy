@@ -16,6 +16,7 @@ class ReceiptsService {
         if (StringUtils.isNotBlank(params.sponsorId)) {
             sponsor = Sponsor.findById(params.sponsorId)
         }
+
         if (salesChannel == null) {
             throw new RuntimeException("Unable to save receipt as sales channel is null, id: " + params.salesChannelId)
         }
@@ -59,6 +60,17 @@ class ReceiptsService {
         }
         receipt.kiosk = params.kiosk
         receipt.save(flush: true)
+        if (params.paymentHistory || StringUtils.isNotBlank(params.sponsorId)) {
+            def history = new PaymentHistory(
+                    [
+                            paymentDate:  params.date("paymentHistory.paymentDate", grailsApplication.config.dloserver.measurement.timeformat.toString()),
+                            customerAccount: customerAccount,
+                            amount: params.paymentHistory.amount,
+                            receipt: receipt
+                    ]
+            )
+            history.save(flush: true)
+        }
         return receipt
     }
 

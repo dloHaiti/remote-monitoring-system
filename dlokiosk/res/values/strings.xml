@@ -14,9 +14,9 @@
     <string name="server_status_checking_label">Etat du serveur</string>
     <string name="sending_readings_message">Envoi de données vers le serveur</string>
     <string name="no_readings_msg">Tout a déjà été synchronisé!</string>
-    <string name="send_error_msg">Erreur lors de l\'envoi des %1$d pour des lectures %2$d pour les ventes %3$d pour les comptes clients %4$d pour les sponsors
+    <string name="send_error_msg">Erreur lors de l\'envoi des %1$d pour des lectures %2$d pour les ventes %3$d pour les comptes clients %4$d pour les sponsors %5$d payments
     </string>
-    <string name="send_success_msg">Bravo! Transmis au serveur:\n\t%1$d lectures \n\t %2$d ventes \n\t%3$d accounts \n\t%4$d sponsors
+    <string name="send_success_msg">Bravo! Transmis au serveur:\n\t%1$d lectures \n\t %2$d ventes \n\t%3$d accounts \n\t%4$d sponsors \n\t%5$d payments
     </string>
     <string name="server_status_content_description">Etat du serveur</string>
     <string name="new_sale_button">Nouvelle vente</string>

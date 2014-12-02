@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.PaymentHistoryRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class ShoppingCartNewTest {
     @Before
     public void setUp() {
         RegisterNew register = new RegisterNew(mock(Clock.class), mock(ReceiptsRepository.class),
-                mock(CustomerAccountRepository.class));
+                mock(CustomerAccountRepository.class), mock(PaymentHistoryRepository.class));
         cart = new ShoppingCartNew(register);
     }
 

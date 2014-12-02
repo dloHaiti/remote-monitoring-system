@@ -169,7 +169,7 @@ public class ReceiptsRepository {
         }
     }
 
-    public boolean add(Receipt receipt) {
+    public Long add(Receipt receipt) {
         ContentValues receiptValues = buildContentValuesForReceipt(receipt);
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
@@ -180,10 +180,10 @@ public class ReceiptsRepository {
                 wdb.insert(ReceiptLineItemsTable.TABLE_NAME, null, productLineItemValue);
             }
             wdb.setTransactionSuccessful();
-            return true;
+            return new Long(receiptId);
         } catch (Exception e) {
             Log.e(TAG, "Failed to save receipt to database.", e);
-            return false;
+            return null;
         } finally {
             wdb.endTransaction();
         }

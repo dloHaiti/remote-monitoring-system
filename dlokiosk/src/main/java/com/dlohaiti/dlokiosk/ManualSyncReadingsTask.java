@@ -7,30 +7,35 @@ import android.widget.Toast;
 
 import com.dlohaiti.dlokiosk.client.CustomerAccountClient;
 import com.dlohaiti.dlokiosk.client.DeliveriesClient;
+import com.dlohaiti.dlokiosk.client.PaymentHistoryClient;
 import com.dlohaiti.dlokiosk.client.PostResponse;
 import com.dlohaiti.dlokiosk.client.ReadingsClient;
 import com.dlohaiti.dlokiosk.client.ReceiptsClient;
 import com.dlohaiti.dlokiosk.client.SponsorClient;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
 import com.dlohaiti.dlokiosk.db.DeliveryRepository;
+import com.dlohaiti.dlokiosk.db.PaymentHistoryRepository;
 import com.dlohaiti.dlokiosk.db.ReadingsRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.dlohaiti.dlokiosk.db.SponsorRepository;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
-import com.dlohaiti.dlokiosk.domain.Delivery;
+import com.dlohaiti.dlokiosk.domain.PaymentHistory;
 import com.dlohaiti.dlokiosk.domain.Reading;
 import com.dlohaiti.dlokiosk.domain.Receipt;
 import com.dlohaiti.dlokiosk.domain.Sponsor;
 import com.google.inject.Inject;
-import roboguice.util.RoboAsyncTask;
 
 import java.util.Collection;
 import java.util.List;
+
+import roboguice.util.RoboAsyncTask;
 
 public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
 
     @Inject
     private ReceiptsClient receiptsClient;
+    @Inject
+    private PaymentHistoryClient paymentHistoryClient;
     @Inject
     private DeliveriesClient deliveriesClient;
     @Inject
@@ -49,6 +54,8 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
     private CustomerAccountRepository customerAccountRepository;
     @Inject
     private SponsorRepository sponsorRepository;
+    @Inject
+    private PaymentHistoryRepository paymentHistoryRepository;
 
     private Activity activity;
     private ProgressDialog progressDialog;
@@ -76,8 +83,9 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         Collection<Reading> readings = readingsRepository.list();
         List<CustomerAccount> accounts = customerAccountRepository.getNonSyncAccounts();
         List<Sponsor> sponsors = sponsorRepository.getNonSyncSponsors();
+        List<PaymentHistory> paymentHistories = paymentHistoryRepository.list();
 
-        if (sponsors.isEmpty() && accounts.isEmpty() && receipts.isEmpty() && readings.isEmpty()) {
+        if (sponsors.isEmpty() && accounts.isEmpty() && receipts.isEmpty() && readings.isEmpty() && paymentHistories.isEmpty()) {
             return activity.getString(R.string.no_readings_msg);
         }
 
@@ -112,22 +120,45 @@ public class ManualSyncReadingsTask extends RoboAsyncTask<String> {
         }
 
         for (Receipt receipt : receipts) {
+            PaymentHistory paymentHistory=getPaymentHistoryForReceipt(paymentHistories,receipt);
+            receipt.setPaymentHistory(paymentHistory);
             PostResponse response = receiptsClient.send(receipt);
             if (response.isSuccess()) {
                 receiptsRepository.remove(receipt);
+                if (paymentHistory!=null){
+                    paymentHistoryRepository.remove(paymentHistory);
+                }
             } else {
                 failures.add(new Failure(FailureKind.RECEIPT, response.getErrors()));
             }
         }
-
+        paymentHistories = paymentHistoryRepository.list();
+        for(PaymentHistory history: paymentHistories){
+            PostResponse response = paymentHistoryClient.send(history);
+            if (response.isSuccess()) {
+                paymentHistoryRepository.remove(history);
+            } else {
+                failures.add(new Failure(FailureKind.PAYMENT_HISTORY, response.getErrors()));
+            }
+        }
         if (failures.isNotEmpty()) {
             Integer readingCount = failures.countFor(FailureKind.READING);
             Integer receiptCount = failures.countFor(FailureKind.RECEIPT);
             Integer accountCount = failures.countFor(FailureKind.ACCOUNT);
             Integer sponsorCount = failures.countFor(FailureKind.SPONSOR);
-            return activity.getString(R.string.send_error_msg, readingCount, receiptCount,accountCount,sponsorCount);
+            Integer paymentCount = failures.countFor(FailureKind.PAYMENT_HISTORY);
+            return activity.getString(R.string.send_error_msg, readingCount, receiptCount,accountCount,sponsorCount,paymentCount);
         }
-        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size(), accounts.size(),sponsors.size());
+        return activity.getString(R.string.send_success_msg, readings.size(), receipts.size(), accounts.size(),sponsors.size(),paymentHistories.size());
+    }
+
+    private PaymentHistory getPaymentHistoryForReceipt(List<PaymentHistory> paymentHistories, Receipt receipt) {
+        for(PaymentHistory history: paymentHistories){
+            if(history.getReceiptID().equals(receipt.getId())){
+                return history;
+            }
+        }
+        return null;
     }
 
     private void showMessage(String message) {

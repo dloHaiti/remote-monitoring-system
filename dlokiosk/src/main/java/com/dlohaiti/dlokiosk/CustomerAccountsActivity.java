@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +15,12 @@ import android.widget.SearchView;
 import com.dlohaiti.dlokiosk.adapter.CustomerAccountEditAdapter;
 import com.dlohaiti.dlokiosk.adapter.SalesChannelArrayAdapter;
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.PaymentHistoryRepository;
 import com.dlohaiti.dlokiosk.db.SalesChannelRepository;
+import com.dlohaiti.dlokiosk.domain.Clock;
 import com.dlohaiti.dlokiosk.domain.CustomerAccount;
 import com.dlohaiti.dlokiosk.domain.CustomerAccounts;
+import com.dlohaiti.dlokiosk.domain.PaymentHistory;
 import com.dlohaiti.dlokiosk.domain.SalesChannel;
 import com.dlohaiti.dlokiosk.domain.SalesChannels;
 import com.dlohaiti.dlokiosk.view_holder.LeftPaneListViewHolder;
@@ -43,9 +45,14 @@ public class CustomerAccountsActivity extends RoboActivity {
     private SalesChannelArrayAdapter salesChannelAdapter;
 
     @Inject
+    private  Clock clock;
+    @Inject
     private SalesChannelRepository salesChannelRepository;
     @Inject
     private CustomerAccountRepository customerAccountRepository;
+
+    @Inject
+    private PaymentHistoryRepository paymentHistoryRepository;
 
     private SalesChannels salesChannels;
     private SalesChannel selectedSalesChannel;
@@ -219,7 +226,8 @@ public class CustomerAccountsActivity extends RoboActivity {
     public void addBalanceAmount(CustomerAccount account, Double amount) {
         account.setDueAmount(account.getDueAmount()-amount);
         customerAccountRepository.save(account);
-        Log.d("BALANCE", String.valueOf(account));
+        PaymentHistory paymentHistory = new PaymentHistory(null, account.getId(), amount, clock.now());
+        paymentHistoryRepository.save(paymentHistory);
         customerListAdapter = new CustomerAccountEditAdapter(CustomerAccountsActivity.this, filteredCustomerList);
         customerListView.setAdapter(customerListAdapter);
         customerListAdapter.notifyDataSetChanged();

@@ -1,6 +1,7 @@
 package com.dlohaiti.dlokiosk.domain;
 
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.PaymentHistoryRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptLineItemType;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import org.junit.Before;
@@ -28,6 +29,9 @@ public class RegisterNewTest {
     ReceiptsRepository repository;
     @Mock
     CustomerAccountRepository customerAccountRepository;
+
+    @Mock
+    PaymentHistoryRepository paymentHistoryRepository;
     RegisterNew register;
     ShoppingCartNew cart;
 
@@ -43,7 +47,7 @@ public class RegisterNewTest {
                 .thatAppliesTo(BASKET)
                 .withAmount("10")
                 .withPromotionType(PERCENT).build();
-        register = new RegisterNew(mock(Clock.class), repository, customerAccountRepository);
+        register = new RegisterNew(mock(Clock.class), repository, customerAccountRepository,paymentHistoryRepository);
         cart = new ShoppingCartNew(register);
         cart.setSalesChannel(new SalesChannelBuilder().build());
         cart.setCustomerAccount(new CustomerAccountBuilder().build());

@@ -22,6 +22,7 @@ public class Receipt {
     private final Money customerAmount;
     private final String paymentType;
     private final String deliveryTime;
+    private PaymentHistory paymentHistory;
 
     public Receipt(List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total) {
         this(null, lineItems, createdDate, totalGallons, total, null, null, null,
@@ -47,6 +48,7 @@ public class Receipt {
         this.customerAmount = customerAmount;
         this.paymentType = paymentType;
         this.deliveryTime = deliveryTime;
+        this.paymentHistory=null;
     }
 
     public Receipt(List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total,
@@ -108,6 +110,10 @@ public class Receipt {
             return "";
         }
         return sponsorId;
+    }
+
+    public PaymentHistory getPaymentHistory(){
+        return paymentHistory;
     }
 
     public Money getSponsorAmount() {
@@ -194,5 +200,9 @@ public class Receipt {
         result = 31 * result + (paymentType != null ? paymentType.hashCode() : 0);
         result = 31 * result + (deliveryTime != null ? deliveryTime.hashCode() : 0);
         return result;
+    }
+
+    public void setPaymentHistory(PaymentHistory paymentHistory) {
+        this.paymentHistory=paymentHistory;
     }
 }

@@ -1,6 +1,9 @@
 package com.dlohaiti.dlokiosk.domain;
 
+import android.util.Log;
+
 import com.dlohaiti.dlokiosk.db.CustomerAccountRepository;
+import com.dlohaiti.dlokiosk.db.PaymentHistoryRepository;
 import com.dlohaiti.dlokiosk.db.ReceiptsRepository;
 import com.google.inject.Inject;
 
@@ -8,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,12 +23,14 @@ public class RegisterNew {
     private final Clock clock;
     private final ReceiptsRepository repository;
     private CustomerAccountRepository customerAccountRepository;
+    private PaymentHistoryRepository paymentHistoryRepository;
 
     @Inject
-    public RegisterNew(Clock clock, ReceiptsRepository repository, CustomerAccountRepository customerAccountRepository) {
+    public RegisterNew(Clock clock, ReceiptsRepository repository, CustomerAccountRepository customerAccountRepository,PaymentHistoryRepository paymentHistoryRepository) {
         this.clock = clock;
         this.repository = repository;
         this.customerAccountRepository = customerAccountRepository;
+        this.paymentHistoryRepository=paymentHistoryRepository;
     }
 
     public Receipt checkout(ShoppingCartNew cart) {
@@ -38,9 +44,18 @@ public class RegisterNew {
                 cart.getDiscountedTotal(), cart.salesChannel().getId(), cart.customerAccount().getId(),
                 cart.paymentMode(), cart.isSponsorSelected(), sponsorId,
                 cart.sponsorAmount(), cart.customerAmount(), cart.paymentType(), cart.deliveryTime());
-        repository.add(receipt);
+        Long receiptId = repository.add(receipt);
         updateDueAmountOfCustomerIfTotalAmountIsNotPaid(cart);
+        insertPaymentHistory(receiptId,cart);
         return receipt;
+    }
+
+    private void insertPaymentHistory(Long receiptId, ShoppingCartNew cart) {
+        if (cart.customerAmount().amountAsDouble()==0.0) {
+            return;
+        }
+        PaymentHistory paymentHistory = new PaymentHistory(null, cart.customerAccount().getId(), cart.customerAmount().amountAsDouble(), clock.now(), receiptId);
+        paymentHistoryRepository.save(paymentHistory);
     }
 
     private void updateDueAmountOfCustomerIfTotalAmountIsNotPaid(ShoppingCartNew cart) {

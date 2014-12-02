@@ -26,7 +26,7 @@ class VolumeReportService {
         List<Product> products = Product.findAll()
 
         def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam,totalMessage,differenceMessage)
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage, differenceMessage]), tableData: tableData, skusPresent: products.size()]
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, [totalMessage, differenceMessage]), tableData: tableData, skusPresent: getProductCount(products)]
     }
 
     private volumeByDay(Kiosk kiosk, String filterParam,LocalDate fromDate,LocalDate toDate,def totalMessage,def differenceMessage) {
@@ -47,6 +47,17 @@ class VolumeReportService {
             tableData = tableDataFilteredBySalesChannel(previousWeek, receipts)
         }
         return tableData
+    }
+
+    private int getProductCount(List<Product> products){
+        int i =0
+        for (product in products) {
+            // Not including the product in the report data if the Volume (Gallons) of product is 0
+            if (product.getGallons() != null && product.getGallons() != 0.0) {
+                i=i+1
+            }
+        }
+        return i
     }
 
     private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings,def totalMessage,def differenceMessage) {

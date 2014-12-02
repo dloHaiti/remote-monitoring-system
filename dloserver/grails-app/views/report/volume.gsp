@@ -18,16 +18,9 @@
             title: 'VOLUME',
             vAxis: {title: 'Gallons', minValue: 0},
             seriesType: 'bars',
-            series: {
-        <%= skusPresent + 1 %>:
-        {
-            type: 'line'
-        }
-    }
-    ,
-    isStacked: true
-    }
-    ;
+            series: { <%= skusPresent %>: { type: 'line'}
+    },
+    isStacked: true};
 
     new google.visualization.ComboChart(document.getElementById('chart')).draw(chartData, options);
     new google.visualization.Table(document.getElementById('table')).draw(tableData, {});

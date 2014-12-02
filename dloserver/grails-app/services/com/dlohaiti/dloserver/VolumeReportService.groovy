@@ -35,7 +35,7 @@ class VolumeReportService {
         List<Product> products = Product.findAll()
         def tableData = buildTableData(DateUtil.getWeekDataByFromDate(fromDate,toDate), products, receipts, readings, filterParam)
 
-        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: products.size()]
+        [kioskName: kiosk.name, chartData: new TableToChart().convertWithoutRowsTitled(tableData, ['TOTAL', 'DIFFERENCE %']), tableData: tableData, skusPresent: getProductCount(products)]
     }
 
     private buildTableData(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings, String filterParam) {
@@ -49,9 +49,6 @@ class VolumeReportService {
         return tableData
     }
 
-<<<<<<< HEAD
-    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings) {
-=======
     private int getProductCount(List<Product> products){
         int i =0
         for (product in products) {
@@ -64,7 +61,6 @@ class VolumeReportService {
     }
 
     private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings,def totalMessage,def differenceMessage) {
->>>>>>> 79a7f89... Fixing product size in volume report
         def tableHeader = ['']
         for (day in previousWeek) {
             tableHeader.add(day.toString('dd-MMM-yy'))

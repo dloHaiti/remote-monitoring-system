@@ -60,7 +60,7 @@ class VolumeReportService {
         return i
     }
 
-    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings,def totalMessage,def differenceMessage) {
+    private ArrayList<String> tableDataFilteredBySKU(List<LocalDate> previousWeek, List<Product> products, List<Receipt> receipts, List<Reading> readings) {
         def tableHeader = ['']
         for (day in previousWeek) {
             tableHeader.add(day.toString('dd-MMM-yy'))

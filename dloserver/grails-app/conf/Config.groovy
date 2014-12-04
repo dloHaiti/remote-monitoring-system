@@ -108,8 +108,8 @@ dloserver {
     readings.failed    = '/tmp/failed'
 
     measurement.timeformat = "yyyy-MM-dd hh:mm:ss Z"
-    locale.language="ht"
-    locale.country="HT"
+    locale.language="en"
+    locale.country="UG"
 
     measurement.unitOfMeasure="gallon"
 

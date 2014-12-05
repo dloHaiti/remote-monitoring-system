@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.dlohaiti.dlokiosk"
+          package="com.dlohaiti.dlokiosknew"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme">
         <activity
                 android:screenOrientation="landscape"
-                android:name="com.dlohaiti.dlokiosk.MainActivity"
+                android:name="com.dlohaiti.dlokiosknew.MainActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -29,7 +29,7 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name="com.dlohaiti.dlokiosk.EnterSaleActivity"
+                android:name="com.dlohaiti.dlokiosknew.EnterSaleActivity"
                 android:label="@string/title_activity_enter_sale">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -37,7 +37,7 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name="com.dlohaiti.dlokiosk.ConfigurationActivity"
+                android:name="com.dlohaiti.dlokiosknew.ConfigurationActivity"
                 android:label="@string/title_activity_configuration">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -45,7 +45,7 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".DeliveryActivity"
+                android:name="com.dlohaiti.dlokiosknew.DeliveryActivity"
                 android:label="@string/title_activity_delivery_tracking">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -53,7 +53,7 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".EnterPromotionActivity"
+                android:name="com.dlohaiti.dlokiosknew.EnterPromotionActivity"
                 android:label="@string/title_activity_enter_promotion">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -61,120 +61,120 @@
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".SelectSamplingSiteActivity"
+                android:name="com.dlohaiti.dlokiosknew.SelectSamplingSiteActivity"
                 android:label="@string/title_activity_select_sampling_site">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.MainActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.MainActivity"/>
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".ViewReportsActivity"
+                android:name="com.dlohaiti.dlokiosknew.ViewReportsActivity"
                 android:label="@string/title_activity_view_reports">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.MainActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.MainActivity"/>
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".NewEnterReadingActivity"
+                android:name="com.dlohaiti.dlokiosknew.NewEnterReadingActivity"
                 android:label="@string/title_activity_enter_reading">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectSamplingSiteActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.SelectSamplingSiteActivity"/>
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".SelectSalesChannelAndCustomerActivity"
+                android:name="com.dlohaiti.dlokiosknew.SelectSalesChannelAndCustomerActivity"
                 android:label="@string/select_sales_channel_and_customer">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectSalesChannelAndCustomerActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.SelectSalesChannelAndCustomerActivity"/>
         </activity>
-        <activity android:name=".CustomerAccountsActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.CustomerAccountsActivity"
                   android:screenOrientation="landscape"
                   android:label="@string/customer_account">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.AccountsActivity"/>
         </activity>
-        <activity android:name=".SelectDiagnostic"
+        <activity android:name="com.dlohaiti.dlokiosknew.SelectDiagnostic"
                   android:screenOrientation="landscape"
                   android:label="@string/select_diagnostic">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.MainActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.MainActivity"/>
         </activity>
-        <activity android:name=".FlowMeterReadingActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.FlowMeterReadingActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
                   android:label="@string/flow_meter_readings">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
+                    android:value="com.dlohaiti.dlokiosknew.SelectDiagnostic"/>
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".AddProductsToSaleActivity"
+                android:name="com.dlohaiti.dlokiosknew.AddProductsToSaleActivity"
                 android:windowSoftInputMode="adjustPan"
                 android:label="@string/select_products">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.AddProductsToSaleActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.AddProductsToSaleActivity"/>
         </activity>
         <activity
                 android:screenOrientation="landscape"
-                android:name=".ShoppingCartActivity"
+                android:name="com.dlohaiti.dlokiosknew.ShoppingCartActivity"
                 android:label="@string/sale_summary_and_promotions">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.ShoppingCartActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.ShoppingCartActivity"/>
         </activity>
-        <activity android:name=".WaterQualityActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.WaterQualityActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan"
                   android:label="@string/water_quality_reading">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SelectDiagnostic"/>
+                    android:value="com.dlohaiti.dlokiosknew.SelectDiagnostic"/>
         </activity>
-        <activity android:name=".PaymentActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.PaymentActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
                   android:label="@string/payment_activity_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.PaymentActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.PaymentActivity"/>
         </activity>
-        <activity android:name=".CustomerFormActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.CustomerFormActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
                   android:label="@string/accounts_button">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.AccountsActivity"/>
         </activity>
-        <activity android:name=".AccountsActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.AccountsActivity"
                   android:screenOrientation="landscape"
                   android:label="@string/accounts_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.MainActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.MainActivity"/>
         </activity>
-        <activity android:name=".SponsorsActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.SponsorsActivity"
                   android:screenOrientation="landscape"
                   android:label="@string/sponsor_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.AccountsActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.AccountsActivity"/>
         </activity>
-        <activity android:name=".SponsorFormActivity"
+        <activity android:name="com.dlohaiti.dlokiosknew.SponsorFormActivity"
                   android:screenOrientation="landscape"
                   android:windowSoftInputMode="adjustPan|stateHidden"
                   android:label="@string/sponsors_title_label">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.dlohaiti.dlokiosk.SponsorsActivity"/>
+                    android:value="com.dlohaiti.dlokiosknew.SponsorsActivity"/>
         </activity>
 
     </application>

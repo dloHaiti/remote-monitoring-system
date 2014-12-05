@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     />
-                <com.dlohaiti.dlokiosk.MultiSelectSpinner
+                <com.dlohaiti.dlokiosknew.MultiSelectSpinner
                     android:id="@+id/sales_channel"
                     style="@style/payment_form_field"/>
 
@@ -140,7 +140,7 @@
                     android:id="@+id/sponsor_label"
                     style="@style/payment_form_field"
                     android:text="@string/sponsor_label"/>
-                <com.dlohaiti.dlokiosk.MultiSelectSpinner
+                <com.dlohaiti.dlokiosknew.MultiSelectSpinner
                     android:id="@+id/sponsor"
                     style="@style/payment_form_field"/>
             </LinearLayout>

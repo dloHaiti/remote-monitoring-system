@@ -63,7 +63,7 @@
                     android:id="@+id/customer_label"
                     style="@style/payment_form_field"
                     android:text="@string/select_customer_label"/>
-                <com.dlohaiti.dlokiosk.MultiSelectSpinner
+                <com.dlohaiti.dlokiosknew.MultiSelectSpinner
                     android:id="@+id/accounts"
                     style="@style/payment_form_field"/>
             </LinearLayout>

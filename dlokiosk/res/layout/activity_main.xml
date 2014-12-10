@@ -14,7 +14,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
         android:gravity="top"
-            android:id="@+id/relativeLayout"
+            android:id="@+id/relativeLayout1"
         android:layout_alignParentTop="true">
 
         <ImageView
@@ -43,6 +43,14 @@
                 android:layout_alignLeft="@+id/statusImage"
                 android:layout_alignBottom="@+id/statusImage"/>
     </RelativeLayout>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/relativeLayout1"
+        android:layout_height="fill_parent">
+        <!-- Here you put the rest of your current view-->
 
     <LinearLayout
             android:orientation="vertical"
@@ -83,5 +91,5 @@
                 android:id="@+id/view_reports"/>
 
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>

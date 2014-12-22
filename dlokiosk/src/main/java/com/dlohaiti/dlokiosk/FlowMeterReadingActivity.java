@@ -175,13 +175,13 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
     }
 
     private void saveReadings() {
-        Set<Measurement> measurements = new HashSet<Measurement>();
         boolean successful = true;
         List<Reading> readingsWithDate;
         Date date = isToday ? clock.today() : clock.yesterday();
         readingsWithDate = readingsRepository.getReadingsWithDate(date, getApplicationContext());
 
         for (int i = 0; i < flowMeterAdapter.getCount(); i++) {
+            Set<Measurement> measurements = new HashSet<Measurement>();
             FlowMeterReading flowMeterReading = flowMeterAdapter.getItem(i);
             if (flowMeterReading.getQuantity().isEmpty()) {
                 continue;
@@ -191,6 +191,7 @@ public class FlowMeterReadingActivity extends RoboActivity implements ActionBar.
                 measurements.add(new Measurement(flowMeterReading.getParameterName(), new BigDecimal(flowMeterReading.getQuantity())));
                 readingWithSite = new Reading(null, flowMeterReading.getSamplingName(), measurements, date);
             } else {
+                measurements = readingWithSite.getMeasurements();
                 Measurement measurement = readingWithSite.getMeasurement(flowMeterReading.getParameterName());
                 if (measurement != null) {
                     measurement.setValue(new BigDecimal(flowMeterReading.getQuantity()));

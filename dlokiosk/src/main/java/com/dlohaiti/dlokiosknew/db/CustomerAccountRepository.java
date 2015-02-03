@@ -16,6 +16,7 @@ import static com.dlohaiti.dlokiosknew.db.KioskDatabase.CustomerAccountsTable;
 import static com.dlohaiti.dlokiosknew.db.KioskDatabase.CustomerAccountsTable.TABLE_NAME;
 import static com.dlohaiti.dlokiosknew.db.KioskDatabaseUtils.matches;
 import static com.dlohaiti.dlokiosknew.db.KioskDatabaseUtils.where;
+import static com.dlohaiti.dlokiosknew.db.KioskDatabaseUtils.whereWithLike;
 import static java.lang.String.format;
 
 public class CustomerAccountRepository {
@@ -270,7 +271,7 @@ public class CustomerAccountRepository {
         List<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
         SQLiteDatabase rdb = db.getReadableDatabase();
         rdb.beginTransaction();
-        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, where(CustomerAccountsTable.CONTACT_NAME), matches(contactName), null, null, null);
+        Cursor cursor = rdb.query(TABLE_NAME, COLUMNS, whereWithLike(CustomerAccountsTable.CONTACT_NAME), matches(contactName), null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {

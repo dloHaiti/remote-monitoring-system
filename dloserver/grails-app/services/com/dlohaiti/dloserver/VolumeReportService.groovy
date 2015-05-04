@@ -127,6 +127,20 @@ class VolumeReportService {
             }
             tableData.add(row)
         }
+
+        def totalRow = ['TOTAL']
+        for(def i = 0; i < tableData.size(); i++){
+            def total = 0;
+            for(def j = 1; j < tableData[i].size(); j++){
+                if (i==0){
+                    totalRow[j]=0
+                    continue
+                }
+
+                totalRow[j]=new BigDecimal(totalRow[j]) + new BigDecimal(tableData[i][j])
+            }
+        }
+        tableData.add(totalRow)
         tableData
     }
 

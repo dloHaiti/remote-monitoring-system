@@ -46,7 +46,7 @@ class SalesReportService {
     private List<List<String>> buildTableDataFilteredBySKU(List<Product> products, List<LocalDate> previousWeek, List<Receipt> receipts, List<String> tableHeader) {
         def tableData = [tableHeader]
         for (product in products) {
-            def row = [product.sku]
+            def row = [product.description]
             // Not including the product in the report data if the price of product is 0
             if (product.price.getAmount() != null && product.price.getAmount() !=0.0) {
                 for (day in previousWeek) {

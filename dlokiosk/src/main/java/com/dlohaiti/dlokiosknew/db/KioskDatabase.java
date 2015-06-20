@@ -378,12 +378,12 @@ public class KioskDatabase extends SQLiteOpenHelper {
     }
 
     private void insertKioskConfig(SQLiteDatabase db, String insertConfig) {
-        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "Saintard"});
-        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), "pw1"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_ID.name(), "Chakipi"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.KIOSK_PASSWORD.name(), ""});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MIN.name(), "0"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_MAX.name(), "24"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.DELIVERY_TRACKING_DEFAULT.name(), "24"});
-        db.execSQL(insertConfig, new Object[]{ConfigurationKey.SERVER_URL.name(), "http://104.131.40.239:8080/dloserver"});
+        db.execSQL(insertConfig, new Object[]{ConfigurationKey.SERVER_URL.name(), "http://45.55.173.241:8080/dloserver"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.LAST_UPDATE.name(), "20130615"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.UNIT_OF_MEASURE.name(), "gallon"});
         db.execSQL(insertConfig, new Object[]{ConfigurationKey.CURRENCY.name(), "HTG"});

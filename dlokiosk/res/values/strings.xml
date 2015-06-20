@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">dloHaiti New</string>
+    <string name="app_name">Chakipi</string>
     <string name="action_configuration">Konfigirasyon</string>
     <string name="record_new_reading_button">Dyagnostik</string>
     <string name="manual_sync_button">Manual Sync</string>

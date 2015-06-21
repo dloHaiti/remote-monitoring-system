@@ -8,6 +8,7 @@ class CustomerAccount {
     String phoneNumber
     String address
     String contactName
+    Boolean active = true
     Double dueAmount = 0
     String gpsCoordinates
     CustomerType customerType

@@ -12,7 +12,7 @@ class AccountsService {
         if(account == null) {
             log.debug "Creating new customer account"
             newAccount=true
-            account = new CustomerAccount(id: params.id,kiosk: params.kiosk)
+            account = new CustomerAccount(id: params.id,kiosk: params.kiosk, active: true)
         }
         account.name=params.name
         account.contactName=params.contactName

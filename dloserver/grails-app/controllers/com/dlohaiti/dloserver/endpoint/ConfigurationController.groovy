@@ -14,7 +14,7 @@ class ConfigurationController {
     List<DeliveryAgent> deliveryAgents = DeliveryAgent.findAllByKioskAndActive(request.kiosk, true)
     List<ProductCategory> productCategories=ProductCategory.all
     List<SalesChannel> salesChannels=request.kiosk.getSalesChannels()
-    List<CustomerAccount> accounts = CustomerAccount.findAllByKiosk(request.kiosk)
+    List<CustomerAccount> accounts = CustomerAccount.findAllByKioskAndActive(request.kiosk, true)
     List<ProductMrp> productMrps = ProductMrp.findAllByKiosk(request.kiosk)
     List<Sponsor> sponsors = Sponsor.findAllByKiosk(request.kiosk)
     List<Rebate> rebates = request.kiosk.getRebates()

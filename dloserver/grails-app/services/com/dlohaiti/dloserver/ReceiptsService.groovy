@@ -100,7 +100,7 @@ class ReceiptsService {
      */
     def getReceiptsByCustomerInDateRange(def customers, LocalDate fromDate, LocalDate toDate) {
         def receipts = []
-        receipts.addAll(Receipt.findAllByCustomerAccountInListAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(customers, fromDate.toDate(), toDate.toDate()))
+        receipts.addAll(Receipt.findAllByCustomerAccountInListAndCreatedDateGreaterThanEqualsAndCreatedDateLessThan(customers, fromDate.toDate(), toDate.plusDays(1).toDate()))
         receipts
     }
 }

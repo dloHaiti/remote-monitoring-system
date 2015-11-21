@@ -21,6 +21,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
         String createReceipts = String.format(
                 "CREATE TABLE %s(" +
                         "%s INTEGER PRIMARY KEY," +
+                        "%s STRING," +
                         "%s DOUBLE," +
                         "%s TEXT," +
                         "%s TEXT," +
@@ -36,6 +37,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
                         ")",
                 ReceiptsTable.TABLE_NAME,
                 ReceiptsTable.ID,
+                ReceiptsTable.UUID,
                 ReceiptsTable.TOTAL_GALLONS,
                 ReceiptsTable.TOTAL,
                 ReceiptsTable.CREATED_AT,
@@ -434,6 +436,7 @@ public class KioskDatabase extends SQLiteOpenHelper {
     public static class ReceiptsTable {
         public static final String TABLE_NAME = "RECEIPTS";
         public static final String ID = "ID";
+        public static final String UUID = "UUID";
         public static final String CREATED_AT = "CREATED_DATE";
         public static final String TOTAL_GALLONS = "TOTAL_GALLONS";
         public static final String TOTAL = "TOTAL";

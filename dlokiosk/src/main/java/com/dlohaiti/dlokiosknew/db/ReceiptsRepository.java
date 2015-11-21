@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static com.dlohaiti.dlokiosknew.db.KioskDatabase.ReceiptLineItemsTable;
 import static com.dlohaiti.dlokiosknew.db.KioskDatabase.ReceiptsTable;
@@ -46,6 +47,7 @@ public class ReceiptsRepository {
         List<Receipt> receipts = new ArrayList<Receipt>();
         String[] columns = {
                 ReceiptsTable.ID,
+                ReceiptsTable.UUID,
                 ReceiptsTable.CREATED_AT,
                 ReceiptsTable.TOTAL_GALLONS,
                 ReceiptsTable.TOTAL,
@@ -75,6 +77,7 @@ public class ReceiptsRepository {
                 }
                 long id = getLongValueForColumn(cursor, ReceiptsTable.ID);
                 List<LineItem> lineItems = listLineItems(readableDatabase, id);
+                String UUID = getStringValueForColumn(cursor,ReceiptsTable.UUID);
                 Double totalGallons = getDoubleValueForColumn(cursor, ReceiptsTable.TOTAL_GALLONS);
                 Money total = new Money(new BigDecimal(getStringValueForColumn(cursor, ReceiptsTable.TOTAL)));
                 Long salesChannelId = getLongValueForColumn(cursor, ReceiptsTable.SALES_CHANNEL_ID);
@@ -89,7 +92,7 @@ public class ReceiptsRepository {
                 String paymentType = getStringValueForColumn(cursor, ReceiptsTable.PAYMENT_TYPE);
                 String deliveryTime = getStringValueForColumn(cursor, ReceiptsTable.DELIVERY_TIME);
 
-                receipts.add(makeReceipt(date, id, lineItems, totalGallons, total, salesChannelId, customerAccountId, paymentMode, isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime));
+                receipts.add(makeReceipt(date, id, UUID, lineItems, totalGallons, total, salesChannelId, customerAccountId, paymentMode, isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime));
                 cursor.moveToNext();
             }
             cursor.close();
@@ -103,8 +106,8 @@ public class ReceiptsRepository {
         }
     }
 
-    private Receipt makeReceipt(Date date, long id, List<LineItem> lineItems, Double totalGallons, Money total, Long salesChannelId, String customerAccountId, String paymentMode, Boolean isSponsorSelected, String sponsorId, Money sponsorAmount, Money customerAmount, String paymentType, String deliveryTime) {
-        return new Receipt(id, lineItems, date, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
+    private Receipt makeReceipt(Date date, long id, String UUID, List<LineItem> lineItems, Double totalGallons, Money total, Long salesChannelId, String customerAccountId, String paymentMode, Boolean isSponsorSelected, String sponsorId, Money sponsorAmount, Money customerAmount, String paymentType, String deliveryTime) {
+        return new Receipt(id, UUID, lineItems, date, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
                 isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime);
     }
 
@@ -174,6 +177,9 @@ public class ReceiptsRepository {
         SQLiteDatabase wdb = db.getWritableDatabase();
         wdb.beginTransaction();
         try {
+            String generatedUUID = UUID.randomUUID().toString();
+            receiptValues.put(ReceiptsTable.UUID, generatedUUID);
+            receipt.setUUID(generatedUUID);
             long receiptId = wdb.insert(ReceiptsTable.TABLE_NAME, null, receiptValues);
             for (LineItem orderedItem : receipt.getLineItems()) {
                 ContentValues productLineItemValue = buildContentValuesForLineItems(receiptId, orderedItem);
@@ -201,6 +207,7 @@ public class ReceiptsRepository {
         receiptValues.put(ReceiptsTable.SPONSOR_ID, receipt.getSponsorId());
         receiptValues.put(ReceiptsTable.SPONSOR_AMOUNT, receipt.getSponsorAmount().amountAsString());
         receiptValues.put(ReceiptsTable.CUSTOMER_AMOUNT, receipt.getCustomerAmount().amountAsString());
+        receiptValues.put(ReceiptsTable.UUID, receipt.getUUID());
         receiptValues.put(ReceiptsTable.PAYMENT_TYPE, receipt.getPaymentType());
         receiptValues.put(ReceiptsTable.DELIVERY_TIME, receipt.getDeliveryTime());
         return receiptValues;

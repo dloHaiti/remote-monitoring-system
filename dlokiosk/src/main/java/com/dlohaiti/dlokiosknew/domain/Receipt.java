@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Receipt {
     private final Long id;
+    private String UUID;
     private final List<LineItem> lineItems;
     private final Date createdDate;
     private final Double totalGallons;
@@ -25,16 +26,17 @@ public class Receipt {
     private PaymentHistory paymentHistory;
 
     public Receipt(List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total) {
-        this(null, lineItems, createdDate, totalGallons, total, null, null, null,
+        this(null, null, lineItems, createdDate, totalGallons, total, null, null, null,
                 null, null, null, null, null, null);
 
     }
 
-    public Receipt(Long id, List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total,
+    public Receipt(Long id, String UUID, List<LineItem> lineItems, Date createdDate, Double totalGallons, Money total,
                    Long salesChannelId, String customerAccountId, String paymentMode,
                    Boolean isSponsorSelected, String sponsorId, Money sponsorAmount,
                    Money customerAmount, String paymentType, String deliveryTime) {
         this.id = id;
+        this.UUID = UUID;
         this.lineItems = lineItems;
         this.createdDate = createdDate;
         this.totalGallons = totalGallons;
@@ -55,7 +57,7 @@ public class Receipt {
                    long salesChannelId, String customerAccountId, String paymentMode,
                    boolean isSponsorSelected, String sponsorId, Money sponsorAmount,
                    Money customerAmount, String paymentType, String deliveryTime) {
-        this(null, lineItems, createdDate, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
+        this(null, null,lineItems, createdDate, totalGallons, total, salesChannelId, customerAccountId, paymentMode,
                 isSponsorSelected, sponsorId, sponsorAmount, customerAmount, paymentType, deliveryTime);
     }
 
@@ -204,5 +206,13 @@ public class Receipt {
 
     public void setPaymentHistory(PaymentHistory paymentHistory) {
         this.paymentHistory=paymentHistory;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getUUID() {
+        return UUID;
     }
 }

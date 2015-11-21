@@ -22,8 +22,13 @@ class Receipt {
     BigDecimal customerAmount
     String paymentType
     String deliveryTime
+    String uuid
 
     static hasMany = [receiptLineItems: ReceiptLineItem]
+
+    static mapping = {
+        uuid column: 'uuid', index: 'uuid_Idx'
+    }
 
     boolean isOnDate(LocalDate date) {
         return date == new LocalDate(createdDate.getYear() + 1900, createdDate.getMonth() + 1, createdDate.getDate())
@@ -53,5 +58,6 @@ class Receipt {
         customerAmount(nullable: true)
         paymentType(nullable: false)
         deliveryTime(nullable: true)
+        uuid(nullable: true)
     }
 }

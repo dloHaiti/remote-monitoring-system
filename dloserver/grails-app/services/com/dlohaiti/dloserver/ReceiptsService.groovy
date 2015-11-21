@@ -13,6 +13,21 @@ class ReceiptsService {
         def salesChannel = SalesChannel.findById(params.salesChannelId)
         def customerAccount = CustomerAccount.findById(params.customerAccountId)
         def sponsor = null
+        def receiptWithUUID = null
+
+        if(params.uuid == null){
+            log.info "UUID is not being sent for this transaction";
+        }
+
+        if( params.uuid != null || StringUtils.isNotBlank(params.uuid)){
+            receiptWithUUID = Receipt.findByUuid(params.uuid);
+        }
+
+        if (receiptWithUUID != null){
+            log.info "Duplicate transaction information received" + receiptWithUUID
+            return receiptWithUUID
+        }
+
         if (StringUtils.isNotBlank(params.sponsorId)) {
             sponsor = Sponsor.findById(params.sponsorId)
         }
@@ -36,7 +51,9 @@ class ReceiptsService {
                 sponsorAmount    : params.sponsorAmount.amount,
                 customerAmount   : params.customerAmount.amount,
                 paymentType      : params.paymentType,
-                deliveryTime     : params.deliveryTime
+                deliveryTime     : params.deliveryTime,
+                uuid             : params.uuid
+
         ])
 
         params.lineItems?.each { item ->
